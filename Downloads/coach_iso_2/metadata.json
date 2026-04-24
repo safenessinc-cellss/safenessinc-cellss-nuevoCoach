@@ -1,0 +1,5 @@
+{
+  "name": "coachiso",
+  "description": "Portafolio profesional interactivo para Robert Terán, Auditor Líder ISO y Coach Ejecutivo. Incluye agendamiento de consultas conectado a Firebase, asistente virtual con IA (Gemini) y visualización dinámica de servicios y casos de éxito.",
+  "requestFramePermissions": []
+}

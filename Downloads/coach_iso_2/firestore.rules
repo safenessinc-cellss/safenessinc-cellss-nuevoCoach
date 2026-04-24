@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: consultations
+    // Document ID: Auto-generated
+    // Fields:
+    //   - uid: string (required, immutable) - The user ID of the person booking
+    //   - name: string (required) - Name of the person
+    //   - email: string (required) - Email of the person
+    //   - company: string (optional) - Company name
+    //   - date: string (required) - ISO date string of the requested consultation
+    //   - topic: string (required) - Topic of the consultation
+    //   - status: string (required) - Status of the booking ('pending', 'confirmed', 'cancelled')
+    //   - createdAt: timestamp (required, immutable) - When the booking was created
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == 'safeness.c.a@gmail.com'; 
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.uid;
+    }
+    function uidUnchanged() {
+      return !('uid' in request.resource.data) || request.resource.data.uid == request.auth.uid;
+    }
+    function uidNotModified() {
+      return !('uid' in request.resource.data) || request.resource.data.uid == resource.data.uid;
+    }
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // Domain Validators
+    function isValidConsultation(data) {
+      let allowedFields = ['uid', 'name', 'email', 'company', 'date', 'topic', 'status', 'createdAt'];
+      let hasRequired = hasRequiredFields(['uid', 'name', 'email', 'date', 'topic', 'status', 'createdAt']);
+      
+      // Permitir updates de status ignorando la fecha pasada si es admin
+      let isStatusUpdate = request.method == 'update' && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+      let dateValidation = isStatusUpdate ? true : (timestamp.value(data.date) > request.time);
+
+      return hasRequired &&
+             hasOnlyAllowedFields(allowedFields) &&
+             data.uid is string && data.uid.size() > 0 && data.uid.size() < 100 &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.email is string && isValidEmail(data.email) &&
+             (!('company' in data) || (data.company is string && data.company.size() <= 100)) &&
+             data.date is string && data.date.size() > 0 && data.date.size() < 50 &&
+             dateValidation &&
+             data.topic is string && data.topic.size() > 0 && data.topic.size() < 500 &&
+             data.status in ['pending', 'confirmed', 'cancelled'] &&
+             data.createdAt is timestamp;
+    }
+
+    match /consultations/{consultationId} {
+      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && 
+                    isValidConsultation(request.resource.data) && 
+                    request.resource.data.uid == request.auth.uid;
+      allow update: if isAuthenticated() && 
+                    (isDocOwner() || isAdmin()) &&
+                    isValidConsultation(request.resource.data) && 
+                    uidNotModified() &&
+                    request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isAdmin();
+    }
+
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() &&
+                    request.resource.data.keys().hasAll(['action', 'documentId', 'adminEmail', 'timestamp', 'details']) &&
+                    request.resource.data.adminEmail == request.auth.token.email;
+    }
+
+    match /mail/{mailId} {
+      // Allow sending emails via Firebase Extension (Trigger Email)
+      allow create: if isAdmin() || (isAuthenticated() && request.resource.data.to == 'safeness.c.a@gmail.com');
+      allow read: if isAdmin();
+    }
+    
+    match /2fa_sessions/{sessionId} {
+      allow read, write: if isAdmin();
+    }
+    
+    match /image_registry/{imageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

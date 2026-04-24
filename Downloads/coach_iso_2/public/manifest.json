@@ -1,0 +1,21 @@
+{
+  "name": "Robert Teran | Coach & ISO Auditor",
+  "short_name": "RT Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "description": "Portafolio profesional de Robert Teran, Auditor Líder ISO y Coach Ejecutivo.",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=RT&backgroundColor=dc2626",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "https://api.dicebear.com/7.x/initials/svg?seed=RT&backgroundColor=dc2626",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

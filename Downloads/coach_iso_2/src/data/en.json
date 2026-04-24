@@ -1,0 +1,192 @@
+{
+  "profile": {
+    "name": "Robert Teran",
+    "initials": "RT",
+    "title": "ISO Lead Auditor & Executive Coach",
+    "subtitle": "Quality is Non-negotiable.",
+    "description": "I fuse the technical precision of engineering with the development of human talent to create exponential companies.",
+    "email": "deuwyrobert@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/coach-robert-teran/"
+  },
+  "metrics": {
+    "yearsExperience": "+30",
+    "label": "Years of Experience"
+  },
+  "about": {
+    "bio": "Versatile professional certified as IBM 2025 Coach with over 30 years of industry experience. Solid track record in enterprise quality and environmental management systems, complemented with administrative management, sales, and commercial operations. Certifications as Lead Auditor in ISO 9001, ISO 14001, Lean Manufacturing, and Six Sigma Green Belt. Deep expertise in process optimization, quality management, and continuous improvement. Skills in strategic management, finance, contracts, and IT to integrate departments and lead multidisciplinary projects.",
+    "career": [
+      {
+        "area": "Executive and Commercial Management",
+        "description": "Over 20 years of experience leading sales and merchandising teams in international retail channels. Development of market strategies, sales training, aligning teams with strategic goals, and interpersonal relationship management.",
+        "roles": [
+          "Corporate Executive Director",
+          "Commercial Director",
+          "Market Manager & Purchasing Analyst SR",
+          "Sales & Administrative Management"
+        ]
+      },
+      {
+        "area": "Quality and Operations Management",
+        "description": "Leadership in implementing continuous improvement in production processes, Lean Manufacturing methodologies, and Six Sigma. Realization of internal and external audits, and development of quality control policies.",
+        "roles": [
+          "Quality & Product Director",
+          "Quality & Production Manager",
+          "Quality & Process Coordinator",
+          "Quality Analyst"
+        ]
+      }
+    ],
+    "badges": [
+      { "label": "ISO Quality Mgmt", "icon": "ShieldCheck" },
+      { "label": "Corporate Structures", "icon": "Network" },
+      { "label": "Process Mapping", "icon": "Workflow" },
+      { "label": "Critical Analysis", "icon": "Brain" },
+      { "label": "Management Stats", "icon": "BarChart3" },
+      { "label": "Risk Analysis", "icon": "ShieldAlert" },
+      { "label": "Market Analysis", "icon": "LineChart" },
+      { "label": "Startup & Entrep.", "icon": "Rocket" },
+      { "label": "IBM 2025 Coach", "icon": "Award" },
+      { "label": "Lead Auditor", "icon": "ClipboardCheck" }
+    ]
+  },
+  "services": [
+    {
+      "id": "iso",
+      "title": "ISO Lead Auditor",
+      "description": "Specialist in Quality (9001) and Environmental (14001) Management Systems. Over 30 years guaranteeing operational excellence.",
+      "detailedDescription": "As an ISO Lead Auditor, my approach goes beyond simple regulatory compliance. I implement robust management systems that act as the engine for continuous improvement in your organization. My methodology includes a deep Gap Analysis, custom process design, internal team training, and pre-certification audits. I have successfully led over 50 certification processes in industries ranging from manufacturing to technological services, ensuring not just the certificate, but a real transformation in the company's quality culture.",
+      "icon": "ShieldCheck"
+    },
+    {
+      "id": "coaching",
+      "title": "IBM 2025 Coach",
+      "description": "\"Leadership that inspires results.\"",
+      "detailedDescription": "Executive coaching is the bridge between potential and high performance. As a certified IBM 2025 Coach, I use proven frameworks to develop critical leadership skills in executives and middle managers. We focus on decision-making under pressure, organizational change management, assertive communication, and team alignment with strategic goals (OKRs). Each program is customized, combining individual sessions with team dynamics to ensure a systemic and lasting impact on the organization.",
+      "icon": "Users"
+    }
+  ],
+  "languages": [
+    {"code": "EN", "active": true},
+    {"code": "ES", "active": true},
+    {"code": "IT", "active": false},
+    {"code": "PT", "active": false}
+  ],
+  "certificationsInfo": {
+    "title": "Standards of Excellence",
+    "description": "ISO certifications are the gold standard for lead auditors. The most requested, upon which I base my methodology, include:"
+  },
+  "certifications": [
+    {
+      "title": "ISO 9001:2015",
+      "subtitle": "Quality Management",
+      "description": "Considered the highest level in the quality management career, allowing for the granting or suspension of company certifications."
+    },
+    {
+      "title": "ISO 14001:2015",
+      "subtitle": "Environmental Management",
+      "description": "Focused on compliance with environmental regulations and sustainability."
+    },
+    {
+      "title": "ISO 45001:2018",
+      "subtitle": "Occupational Health and Safety",
+      "description": "Key to auditing systems that protect worker integrity."
+    },
+    {
+      "title": "ISO 27001:2022",
+      "subtitle": "Information Security",
+      "description": "Vital in the digital age for data protection and cybersecurity."
+    },
+    {
+      "title": "ISO 22000",
+      "subtitle": "Food Safety",
+      "description": "Specific to the food industry and its supply chain."
+    },
+    {
+      "title": "ISO/IEC 42001:2023",
+      "subtitle": "Artificial Intelligence",
+      "description": "An emerging certification for the ethical and technical management of AI."
+    },
+    {
+      "title": "CIA",
+      "subtitle": "Certified Internal Auditor",
+      "description": "The only globally accepted certification for internal auditors, awarded by the IIA (Institute of Internal Auditors)."
+    },
+    {
+      "title": "CISA",
+      "subtitle": "Certified Information Systems Auditor",
+      "description": "Specialized in the control, assurance, and security of information systems."
+    },
+    {
+      "title": "CPA",
+      "subtitle": "Certified Public Accountant",
+      "description": "Fundamental for auditors in the financial and accounting field."
+    },
+    {
+      "title": "CRMA",
+      "subtitle": "Certification in Risk Management Assurance",
+      "description": "Focused on corporate risk management and assurance."
+    }
+  ],
+  "expertise": {
+    "title": "Process Structuring and Mapping",
+    "description": "We transform operational complexity into efficient, scalable, and measurable systems. We map your company's DNA to guarantee sustained and orderly growth.",
+    "areas": [
+      {
+        "title": "Organizational Structuring",
+        "icon": "Network",
+        "items": [
+          "Design of organizational charts and agile structures",
+          "Definition of roles, job profiles, and responsibilities",
+          "Alignment of strategic goals (OKRs and KPIs)"
+        ]
+      },
+      {
+        "title": "Mapping and Optimization",
+        "icon": "Map",
+        "items": [
+          "Gathering current (As-Is) and future (To-Be) processes",
+          "Advanced diagramming under international standards (BPMN)",
+          "Identification and elimination of bottlenecks (Lean Methodology)"
+        ]
+      },
+      {
+        "title": "Standardization (QMS)",
+        "icon": "FileCheck",
+        "items": [
+          "Development of Standard Operating Procedures (SOPs)",
+          "Creation of quality manuals and corporate policies",
+          "Design of balanced scorecards (Dashboards)"
+        ]
+      },
+      {
+        "title": "Risk Management and Improvement",
+        "icon": "Activity",
+        "items": [
+          "Development of corporate risk and impact matrices",
+          "Implementation of the PDCA Cycle (Plan-Do-Check-Act)",
+          "Preventive internal audits and corrective action plans"
+        ]
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "quote": "Robert's strategic vision completely transformed our operational structure. We achieved ISO 9001 certification in record time and our efficiency increased by 40%.",
+      "name": "Carlos Mendoza",
+      "title": "CEO, TechLogistics",
+      "caseStudy": "TechLogistics faced scalability issues due to manual processes and lack of standardization. Over 6 months, we implemented a Quality Management System from scratch. We mapped over 40 critical processes, trained 15 area leaders, and achieved ISO 9001:2015 certification with no major non-conformities. The result: a 40% reduction in delivery times and a 25% increase in customer satisfaction."
+    },
+    {
+      "quote": "His coaching approach not only improved our processes but empowered our entire executive team. A true leader who inspires tangible results.",
+      "name": "Ana Silva",
+      "title": "Operations Director, GlobalCorp",
+      "caseStudy": "GlobalCorp's executive team suffered from communication silos and lack of strategic alignment. Through a 12-week executive coaching program, we worked on role restructuring, OKR implementation, and improving interdepartmental communication. Key personnel turnover decreased by 30% and the team exceeded its annual revenue goals for the first time in 3 years."
+    },
+    {
+      "quote": "The process mapping he implemented allowed us to identify bottlenecks costing thousands of dollars a month. His experience is invaluable.",
+      "name": "Roberto Gómez",
+      "title": "General Manager, Food Industries",
+      "caseStudy": "Food Industries had high waste rates in its main production line. Applying Lean Manufacturing and Six Sigma methodologies, we conducted a detailed As-Is mapping. We identified 3 critical bottlenecks and redesigned the workflow (To-Be). We implemented Statistical Process Control (SPC) resulting in a 60% reduction in raw material waste, saving the company over $150,000 annually."
+    }
+  ]
+}
