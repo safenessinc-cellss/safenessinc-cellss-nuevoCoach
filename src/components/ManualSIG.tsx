@@ -11,12 +11,22 @@ import { SECTORS, SectorData, ProcessItem } from './DataModel';
 import { useProfileSettings } from '../data/useProfileSettings';
 import { db, auth } from '../firebase';
 import { collection, doc, setDoc, getDoc, addDoc, serverTimestamp, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { useSearchParams } from 'react-router-dom';
 
 export default function ManualSIG() {
   const { profile } = useProfileSettings();
+  const [searchParams] = useSearchParams();
   const [selectedSectorId, setSelectedSectorId] = useState<string>('tech_software');
   const [activeTab, setActiveTab] = useState<string>('procesos');
   const [selectedProcessId, setSelectedProcessId] = useState<string>('P1');
+
+  // Sync activeTab with searches
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
   
   // Real-time cloudsync states
   const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
@@ -2055,4 +2065,3 @@ export default function ManualSIG() {
     </div>
   );
 }
-
