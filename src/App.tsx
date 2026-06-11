@@ -516,6 +516,20 @@ export default function App() {
                         {resolvedInfo}
                       </p>
 
+                      {isFuchsiaSkill && (
+                        <div className="mb-4">
+                          <a 
+                            href="https://www.coach-iso.eu/normas" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-xs text-[#FF007A] hover:text-white bg-[#FF007A]/10 border border-[#FF007A]/30 rounded-xl px-4 py-2 hover:bg-[#FF007A]/20 transition duration-300 font-bold font-sans"
+                          >
+                            <span>[Visualizar Programa e Normas]</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </a>
+                        </div>
+                      )}
+
                       <div className="flex justify-between items-center text-[10px] text-[#64748B] pt-1">
                         <span>SYSTEM STATUS: COMPLIANT</span>
                         <span className="animate-pulse">{detail.systemLog}</span>
@@ -800,12 +814,14 @@ export default function App() {
             </motion.div>
 
             {/* Card 2: Coaching (Col: 2) */}
-            <motion.div 
+            <motion.a 
+              href="https://www.coach-iso.eu/normas"
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              onClick={() => setSelectedService(data.services[1])}
               className="md:col-span-2 glass rounded-3xl p-8 bento-card futuristic-card flex items-center gap-6 group cursor-pointer border-[#00F0FF]/15 hover:border-[#00F0FF] bg-[#090D1A]/50 hover:bg-[#00F0FF]/5 shadow-[0_0_30px_rgba(0,240,255,0.03)]"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#00F0FF]/10 to-transparent pointer-events-none rounded-full blur-2xl"></div>
@@ -818,10 +834,11 @@ export default function App() {
                 <h3 className="text-xl font-bold text-white group-hover:text-[#00F0FF] transition-colors">{t('services.coachTitle')}</h3>
                 <p className="text-gray-400 text-sm italic">{t('services.coachDesc')}</p>
               </div>
-              <div className="hidden md:block text-xs font-mono font-bold text-[#00F0FF] opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="hidden md:flex items-center gap-2 text-xs font-mono font-bold text-[#00F0FF] opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>[VER_INFO]</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
-            </motion.div>
+            </motion.a>
 
             {/* Card 3: Core Value (Col: 1, dynamic) */}
             <motion.div 
