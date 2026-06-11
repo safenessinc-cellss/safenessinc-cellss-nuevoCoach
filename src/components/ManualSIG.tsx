@@ -4,16 +4,23 @@ import {
   Cpu, Factory, Activity, AlertTriangle, Award, BarChart3, BookOpen, Briefcase, 
   Calendar, Check, CheckCircle2, ClipboardCheck, Layers, LayoutDashboard, Loader2, 
   Map, Network, Sliders, UserCheck, Users, Workflow, X, ArrowRight, ChevronRight, 
-  Info, FileText, HelpCircle, TrendingDown, TrendingUp, Gauge, FileCode, Plus, LogOut
+  Info, FileText, HelpCircle, TrendingDown, TrendingUp, Gauge, FileCode, Plus, LogOut,
+  Brain, Heart, Sparkles, MessageSquare, ShieldAlert
 } from 'lucide-react';
 import { SECTORS, SectorData, ProcessItem } from './DataModel';
 import { useProfileSettings } from '../data/useProfileSettings';
+import { db, auth } from '../firebase';
+import { collection, doc, setDoc, getDoc, addDoc, serverTimestamp, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 export default function ManualSIG() {
   const { profile } = useProfileSettings();
   const [selectedSectorId, setSelectedSectorId] = useState<string>('tech_software');
   const [activeTab, setActiveTab] = useState<string>('procesos');
   const [selectedProcessId, setSelectedProcessId] = useState<string>('P1');
+  
+  // Real-time cloudsync states
+  const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
+  const [cloudSyncedAt, setCloudSyncedAt] = useState<string | null>(null);
   
   // States read from active sector
   const currentSector = SECTORS.find(s => s.id === selectedSectorId) || SECTORS[0];
@@ -54,6 +61,20 @@ export default function ManualSIG() {
     externalFailureCost: 25000
   });
 
+  // New Leadership (IBM Coach 2025) Interactive States
+  const [coachingResults, setCoachingResults] = useState<Record<string, string>>({});
+  const [liderazgoQuizAnswers, setLiderazgoQuizAnswers] = useState<Record<number, string>>({});
+  const [showQuizResult, setShowQuizResult] = useState<boolean>(false);
+  const [conflictStep, setConflictStep] = useState<number>(1);
+  const [sgcClimateIndex, setSgcClimateIndex] = useState<number>(65);
+  const [sgcComplianceIndex, setSgcComplianceIndex] = useState<number>(60);
+  const [simFeedback, setSimFeedback] = useState<string>('');
+  const [humanAgreements, setHumanAgreements] = useState<Array<{ id: number; title: string; signed: boolean; description: string }>>([
+    { id: 1, title: 'Comunión de Criterio: Auditoría Empática', signed: false, description: 'Sustituir interrogatorios hostiles de calidad por diálogos de aprendizaje activo orientados a la mejora.' },
+    { id: 2, title: 'Pacto de Cero Represalias de Calidad', signed: false, description: 'Pacto corporativo firmado: La revelación asertiva de una desviación u error no será motivo de castigo, sino de asimilación.' },
+    { id: 3, title: 'Taller Colectivo de Clima y OKRs Emocionales', signed: false, description: 'Planificar dinámicas semanales breves de 15 minutos en piso de planta para erradicar silos informativos.' }
+  ]);
+
   // Calculate COQ totals
   const totalCOQ = customFinances.preventionCost + customFinances.evaluationCost + customFinances.internalFailureCost + customFinances.externalFailureCost;
   const cogq = customFinances.preventionCost + customFinances.evaluationCost; // Cost of Good Quality
@@ -71,23 +92,119 @@ export default function ManualSIG() {
   });
   const [ncList, setNcList] = useState<any[]>([]);
 
-  const handleAddNC = () => {
-    const newEntry = {
-      ...customNC,
-      id: `NC-CUST-${Date.now().toString().slice(-4)}`,
-      date: new Date().toLocaleDateString(),
-      status: 'Abierta'
-    };
-    setNcList([...ncList, newEntry]);
-    alert('¡No Conformidad registrada de forma interactiva en la bitácora del SGC!');
-    // Reset
-    setCustomNC({
-      title: 'Nueva No Conformidad Detectada',
-      proc: currentSector.processes[0]?.name || 'Operativo',
-      desc: 'Se encontró una desviación frente a la cláusula establecida...',
-      containment: 'Acción preventiva inmediata para acotar la falla...',
-      rootCause: 'Causa originaria debida a falta de capacitación...'
+  // SGC Identity - use authenticated uid if signed in, otherwise 'visitor'
+  const sgcUserId = auth.currentUser?.uid || 'visitor_global_sgc_state';
+
+  // 1. Load SGC Global State and non-conformities from Firestore inside useEffect
+  useEffect(() => {
+    // A. Listen to Non Conformities (Realtime)
+    const ncCollectionRef = collection(db, 'sgc_non_conformities_db');
+    const unsubscribeNC = onSnapshot(ncCollectionRef, (snapshot) => {
+      const dbNCList = snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }));
+      // Filter by user if auth exists, otherwise show visitor content
+      const filtered = dbNCList.filter((item: any) => item.ownerId === sgcUserId || !item.ownerId);
+      setNcList(filtered);
+    }, (error) => {
+      console.error("Firestore error hearing SGC NC list:", error);
     });
+
+    // B. Load stored state doc for checklist, acta, or prioritization matrices
+    const loadSgcDoc = async () => {
+      try {
+        const docRef = doc(db, 'sgc_states', sgcUserId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const fetchedData = docSnap.data();
+          if (fetchedData.checklistScores) setChecklistScores(fetchedData.checklistScores);
+          if (fetchedData.actaText) setActaText(fetchedData.actaText);
+          if (fetchedData.prioritizationMatrix) setPrioritizationMatrix(fetchedData.prioritizationMatrix);
+          if (fetchedData.customFinances) setCustomFinances(fetchedData.customFinances);
+          if (fetchedData.sgcClimateIndex) setSgcClimateIndex(fetchedData.sgcClimateIndex);
+          if (fetchedData.sgcComplianceIndex) setSgcComplianceIndex(fetchedData.sgcComplianceIndex);
+          if (fetchedData.humanAgreements) setHumanAgreements(fetchedData.humanAgreements);
+          setCloudSyncedAt(fetchedData.syncedAt || new Date().toLocaleTimeString());
+        }
+      } catch (error) {
+        console.error("Error fetching SGC persistent states:", error);
+      }
+    };
+    loadSgcDoc();
+
+    return () => {
+      unsubscribeNC();
+    };
+  }, [sgcUserId]);
+
+  // 2. Save SGC state manually or on demand via Cloud sync button
+  const handleCloudSgcSync = async () => {
+    setIsCloudSyncing(true);
+    try {
+      const docRef = doc(db, 'sgc_states', sgcUserId);
+      const rightNow = new Date().toLocaleTimeString();
+      await setDoc(docRef, {
+        checklistScores,
+        actaText,
+        prioritizationMatrix,
+        customFinances,
+        sgcClimateIndex,
+        sgcComplianceIndex,
+        humanAgreements,
+        syncedAt: rightNow,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+      setCloudSyncedAt(rightNow);
+      setIsCloudSyncing(false);
+    } catch (err) {
+      console.error("Error protecting state in cloudsync:", err);
+      setIsCloudSyncing(false);
+      alert("Error al sincronizar con la nube. ¿Tiene conexión?");
+    }
+  };
+
+  // 3. Add NC Persistent to Firestore
+  const handleAddNC = async () => {
+    try {
+      const newEntry = {
+        title: customNC.title,
+        proc: customNC.proc,
+        desc: customNC.desc,
+        containment: customNC.containment,
+        rootCause: customNC.rootCause,
+        date: new Date().toLocaleDateString(),
+        status: 'Abierta',
+        ownerId: sgcUserId,
+        createdAt: serverTimestamp()
+      };
+      await addDoc(collection(db, 'sgc_non_conformities_db'), newEntry);
+      
+      // Reset form fields
+      setCustomNC({
+        title: 'Nueva No Conformidad Detectada',
+        proc: currentSector.processes[0]?.name || 'Operativo',
+        desc: 'Se encontró una desviación frente a la cláusula establecida...',
+        containment: 'Acción preventiva inmediata para acotar la falla...',
+        rootCause: 'Causa originaria debida a falta de capacitación...'
+      });
+      alert('¡Excelente! No Conformidad guardada físicamente en Firestore.');
+    } catch (error) {
+      console.error("Error adding SGC NC:", error);
+      // Fallback local if offline
+      const newEntryLocal = {
+        title: customNC.title,
+        proc: customNC.proc,
+        desc: customNC.desc,
+        containment: customNC.containment,
+        rootCause: customNC.rootCause,
+        id: `NC-TEMP-${Date.now().toString().slice(-4)}`,
+        date: new Date().toLocaleDateString(),
+        status: 'Abierta'
+      };
+      setNcList(prev => [newEntryLocal, ...prev]);
+      alert('Se registró localmente (Modo Offline).');
+    }
   };
 
   const currentProcess = currentSector.processes.find(p => p.id === selectedProcessId) || currentSector.processes[0];
@@ -117,8 +234,30 @@ export default function ManualSIG() {
           </p>
         </div>
 
-        {/* Dynamic Sector Selector Dropdown */}
+        {/* Dynamic Sector Selector Dropdown & Cloud Sync */}
         <div className="w-full lg:w-auto flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-black/40 border border-white/10 p-3 rounded-2xl">
+          <button
+            onClick={handleCloudSgcSync}
+            disabled={isCloudSyncing}
+            className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all border ${
+              isCloudSyncing
+                ? 'bg-red-900/10 border-red-500/20 text-red-400'
+                : 'bg-red-600/10 border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white hover:border-red-500'
+            }`}
+          >
+            {isCloudSyncing ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-red-400" />
+                <span>Guardando...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 text-red-500 animate-pulse" />
+                <span>{cloudSyncedAt ? `Guardado ${cloudSyncedAt}` : 'Guardar SGC en Nube'}</span>
+              </>
+            )}
+          </button>
+          
           <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase tracking-widest pl-2">
             <Briefcase className="w-4 h-4 text-red-500" /> Giro Activo:
           </div>
@@ -173,7 +312,7 @@ export default function ManualSIG() {
         </div>
       </div>
 
-      {/* DETAILED HORIZONTAL NAVIGATION TABS (THE 7 REQUISITES CONNECTED) */}
+      {/* DETAILED HORIZONTAL NAVIGATION TABS (THE 8 REQUISITES CONNECTED) */}
       <div className="flex overflow-x-auto gap-2 p-4 border-b border-white/5 bg-black/20 scrollbar-none">
         {[
           { id: 'procesos', name: '1. Mapa Procesos (4.4)', icon: Workflow, badge: 'ISO 4.4' },
@@ -182,7 +321,8 @@ export default function ManualSIG() {
           { id: 'direccion', name: '4. Análisis por Dirección', icon: Award, badge: 'Cl. 9.3' },
           { id: 'problemas', name: '5. No Conformidades & 8D', icon: AlertTriangle, badge: 'Cl. 10.2' },
           { id: 'costos', name: '6. Costos de Calidad (COQ)', icon: Sliders, badge: 'PAF Model' },
-          { id: 'dashboard', name: '7. Tablero Integrado SGC', icon: LayoutDashboard, badge: 'Sinergia SGC' }
+          { id: 'dashboard', name: '7. Tablero Integrado SGC', icon: LayoutDashboard, badge: 'Sinergia SGC' },
+          { id: 'liderazgo', name: '8. Inteligencia Humana (IBM Coach)', icon: Brain, badge: 'Liderazgo & OKRs' }
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -1466,8 +1606,453 @@ export default function ManualSIG() {
           </div>
         )}
 
+        {/* TAB 8: INTELIGENCIA HUMANA / LIDERAZGO & BIENESTAR SGC (COACH IBM 2025) */}
+        {activeTab === 'liderazgo' && (
+          <div className="space-y-8 animate-fadeIn">
+            
+            {/* Elegant Hero Introduction */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-red-500" /> Inteligencia Humana: Liderazgo SGC & Psicología Organizacional
+                </h2>
+                <p className="text-gray-400 text-sm mt-1">
+                  El SGC no son solo papeles o normativas: está compuesto de seres humanos. Descubra el modelo de resiliencia directiva Coach IBM 2025 de Robert Terán.
+                </p>
+              </div>
+              <span className="px-3 py-1 bg-gradient-to-r from-red-600/15 to-amber-600/15 border border-red-500/30 rounded-full text-xs text-amber-400 font-bold uppercase tracking-wider font-mono">
+                Model: IBM Coach 2025
+              </span>
+            </div>
+
+            {/* COACH ROW INTRO */}
+            <div className="glass p-6 md:p-8 rounded-3xl border border-white/5 bg-gradient-to-br from-red-950/20 to-black relative overflow-hidden">
+              <div className="absolute right-0 top-0 w-64 h-64 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 flex items-center justify-center shrink-0 border border-white/10 shadow-lg">
+                  <Award className="w-10 h-10 text-white animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-white font-black text-lg">Robert Terán — Coach SGC & Terapeuta Gestalt Organizacional</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed max-w-3xl">
+                    "Detrás de cada no conformidad recurrente, cuello de botella operativo, o resistencia al cambio SGC, existe una desviación en la cohesión y en la inteligencia emocional de las personas. Los manuales fríos no salvan una auditoría; la convicción, empatía y el liderazgo de piso asertivo de la gerencia sí lo logran. Integre este pilar humano en su auditoría administrativa."
+                  </p>
+                  <div className="flex flex-wrap gap-3 pt-2 text-[10px] text-gray-500 font-mono">
+                    <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5 text-red-500" /> Executive Leadership Coach IBM 2025</span>
+                    <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5 text-red-500" /> Psicopedagogía del Trabajo Estructural</span>
+                    <span className="flex items-center gap-1"><Check className="w-3.5 h-3.5 text-red-500" /> Especialista SGC ISO 9001:2015</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* GRID OF TWO INTERACTIVE ELEMENTS: TEST SGC AND THE CONFLICT WIZARD */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* INTERACTIVE COLUMN 1: SGC LEADERSHIP TEST */}
+              <div className="glass p-6 rounded-3xl border border-white/10 bg-[#07070a] flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                    <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-1.5 font-mono">
+                      <Sparkles className="w-4 h-4 text-red-500" /> Test SGC: Aptitud Directiva de Calidad
+                    </h4>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-red-600/10 border border-red-500/20 text-red-400 font-bold uppercase font-mono">Métrica Humana</span>
+                  </div>
+                  
+                  <p className="text-xs text-gray-400">
+                    Responda constructivamente a los escenarios críticos de tensión de un SGC para recibir su reporte y diagnóstico conductual del Coach:
+                  </p>
+
+                  <div className="space-y-5 pt-2">
+                    {/* Pregunta 1 */}
+                    <div className="space-y-2 p-3 bg-black/40 border border-white/5 rounded-2xl">
+                      <p className="text-xs font-bold text-gray-200">1. Ante un hallazgo de No Conformidad Mayor inminente antes de la auditoría de certificación:</p>
+                      <div className="grid grid-cols-1 gap-1.5 text-[11px] text-gray-400">
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 1: 'A' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[1] === 'A' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          A. Exijo horas extras y recalco culpables para limpiar los reportes rápido.
+                        </button>
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 1: 'B' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[1] === 'B' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          B. Oculto o maquillo el hallazgo para que el auditor externo no lo detecte.
+                        </button>
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 1: 'C' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[1] === 'C' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          C. Ejecuto un análisis Ishikawa constructivo, contengo el riesgo y asumo el error de forma madura.
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Pregunta 2 */}
+                    <div className="space-y-2 p-3 bg-black/40 border border-white/5 rounded-2xl">
+                      <p className="text-xs font-bold text-gray-200">2. Un auditor externo asume una actitud rígida y de confrontación hostil:</p>
+                      <div className="grid grid-cols-1 gap-1.5 text-[11px] text-gray-400">
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 2: 'A' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[2] === 'A' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          A. Confronto agresivamente y dudo de su capacitación técnica ante todos.
+                        </button>
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 2: 'B' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[2] === 'B' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          B. Me someto con timidez tolerando malos tratos con tal de pasar la norma.
+                        </button>
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 2: 'C' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[2] === 'C' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          C. Ejerzo asertividad serena, pregunto de forma objetiva sobre sus dudas y exijo respeto técnico cordial.
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Pregunta 3 */}
+                    <div className="space-y-2 p-3 bg-black/40 border border-white/5 rounded-2xl">
+                      <p className="text-xs font-bold text-gray-200">3. El personal de piso muestra desinterés rotundo en registrar los desvíos logísticos u operativos:</p>
+                      <div className="grid grid-cols-1 gap-1.5 text-[11px] text-gray-400">
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 3: 'A' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[3] === 'A' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          A. Aplico actas administrativas y multas salariales inmediatas.
+                        </button>
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 3: 'B' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[3] === 'B' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          B. No insisto, automatizo todo sin consultarles y asumo que fallan por pereza.
+                        </button>
+                        <button 
+                          onClick={() => setLiderazgoQuizAnswers(p => ({ ...p, 3: 'C' }))}
+                          className={`text-left p-2.5 rounded-xl border transition-all ${liderazgoQuizAnswers[3] === 'C' ? 'bg-red-500/15 border-red-500/40 text-white' : 'bg-black/35 border-white/5 hover:border-white/10'}`}
+                        >
+                          C. Organizo Focus Groups breves de escucha, simplifico los formularios engorrosos e involucro sus ideas de solución.
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Test Actions and Results */}
+                <div className="mt-6 pt-4 border-t border-white/5">
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => {
+                        if (!liderazgoQuizAnswers[1] || !liderazgoQuizAnswers[2] || !liderazgoQuizAnswers[3]) {
+                          alert('Por favor responda las 3 preguntas situacionales para generar su reporte.');
+                          return;
+                        }
+                        setShowQuizResult(true);
+                      }}
+                      className="flex-1 bg-red-600 text-white text-xs font-bold uppercase py-3 rounded-xl hover:bg-red-500 transition-all font-mono tracking-wider"
+                    >
+                      Generar Reporte Directivo
+                    </button>
+                    {showQuizResult && (
+                      <button 
+                        onClick={() => {
+                          setLiderazgoQuizAnswers({});
+                          setShowQuizResult(false);
+                        }}
+                        className="bg-white/5 text-gray-400 text-xs px-4 rounded-xl hover:text-white hover:bg-white/10 transition-colors"
+                      >
+                        Reiniciar
+                      </button>
+                    )}
+                  </div>
+
+                  <AnimatePresence>
+                    {showQuizResult && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-4 p-4 bg-red-600/5 rounded-2xl border border-red-500/20 text-xs text-gray-200"
+                      >
+                        <div className="flex items-center gap-1.5 text-amber-400 font-bold uppercase tracking-wider mb-2 font-mono">
+                          <CheckCircle2 className="w-4 h-4" /> Diagnóstico del Coach Robert Terán:
+                        </div>
+                        <p className="leading-relaxed">
+                          {(() => {
+                            let pts = 0;
+                            if (liderazgoQuizAnswers[1] === 'C') pts += 30; else if (liderazgoQuizAnswers[1] === 'B') pts += 10; else pts += 15;
+                            if (liderazgoQuizAnswers[2] === 'C') pts += 30; else if (liderazgoQuizAnswers[2] === 'A') pts += 10; else pts += 15;
+                            if (liderazgoQuizAnswers[3] === 'C') pts += 30; else if (liderazgoQuizAnswers[3] === 'A') pts += 10; else pts += 15;
+
+                            if (pts >= 80) {
+                              return "Excelente Perfil Directivo Empático (Puntuación: 90/90). Usted encarna el modelo IBM Coach 2025. Entiende que un SGC es un organismo vivo conformado por personas que requieren contención, escucha asertiva y neutralidad técnica. Su enfoque constructivo minimiza el scrap operacional, fomenta la honestidad de datos de piso y reduce en un 60% la reincidencia de no conformidades.";
+                            } else if (pts >= 45) {
+                              return "Perfil de Dirección Pasivo/Tradicional (Puntuación: Moderada). Posee intenciones de mejora, pero suele recurrir a evasiones temporales o maquillajes regulatorios de control de riesgos. Recuerde que el control excesivo o punitivo eleva el miedo del personal, induciendo al encubrimiento de desperdicios y scrap. Adopte un enfoque de diálogo transformacional de Robert Terán.";
+                            } else {
+                              return "Perfil Autoritario o Punitivo Crítico (Puntuación: Baja). Su visión concibe al operador como una engranaje mecánico que funciona por miedo o sanciones. Este estilo colapsará frente a auditorías externas exhaustivas porque el clima laboral está erosionado, induciendo mentiras en la trazabilidad que la dirección no detecta. Se recomienda terapia gestalt integrativa organizacional de forma prioritaria.";
+                            }
+                          })()}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+              </div>
+
+              {/* INTERACTIVE COLUMN 2: PROBLEM CONFLICT RESOLUTION SIMULATOR */}
+              <div className="glass p-6 rounded-3xl border border-white/10 bg-[#07070a] flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                    <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-1.5 font-mono">
+                      <MessageSquare className="w-4 h-4 text-red-500" /> Simulador de Resolución de Conflictos SGC
+                    </h4>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold uppercase font-mono">Simulador Clínico</span>
+                  </div>
+
+                  {/* Escenario Físico */}
+                  <div className="p-4 bg-red-600/5 border border-red-500/10 rounded-2xl text-xs space-y-2">
+                    <p className="font-extrabold text-white uppercase tracking-wider flex items-center gap-1">
+                      <ShieldAlert className="w-4 h-4 text-red-400 animate-pulse" /> Escenario Real de Tensión de Planta:
+                    </p>
+                    <p className="text-gray-300 leading-normal">
+                      "El veterano Ing. Ramírez (Plant Supervisor) se niega a firmar de mutuo acuerdo la desviación de No Conformidad Mayor reportada en su turno. Afirma de mal humor que el SGC ralentiza el rendimiento de mermas y que calidad solo busca perjudicar su reputación personal y bonos de eficiencia laboral."
+                    </p>
+                  </div>
+
+                  {/* Gráficos de barra en vivo */}
+                  <div className="grid grid-cols-2 gap-4 p-3 bg-black/60 rounded-2xl border border-white/5 text-xs font-mono">
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[10px] uppercase font-bold text-gray-400">
+                        <span>Clima Laboral:</span>
+                        <span className={sgcClimateIndex > 70 ? "text-green-400" : sgcClimateIndex > 45 ? "text-amber-400" : "text-red-400"}>{sgcClimateIndex}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                        <div className={`h-full transition-all duration-500 ${sgcClimateIndex > 70 ? "bg-green-500" : sgcClimateIndex > 45 ? "bg-amber-500" : "bg-red-500"}`} style={{ width: `${sgcClimateIndex}%` }} />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[10px] uppercase font-bold text-gray-400">
+                        <span>Cumplimiento Normativo:</span>
+                        <span className={sgcComplianceIndex > 70 ? "text-green-400" : sgcComplianceIndex > 45 ? "text-amber-400" : "text-red-400"}>{sgcComplianceIndex}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                        <div className={`h-full transition-all duration-500 ${sgcComplianceIndex > 70 ? "bg-green-500" : sgcComplianceIndex > 45 ? "bg-amber-500" : "bg-red-500"}`} style={{ width: `${sgcComplianceIndex}%` }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Decision Tree rendering based on ConflictStep */}
+                  <div className="space-y-3 pt-2 text-xs">
+                    {conflictStep === 1 && (
+                      <div className="space-y-2">
+                        <p className="font-bold text-gray-200">Decisión 1: ¿Cómo aborda el descontento de Ramírez?</p>
+                        <div className="grid grid-cols-1 gap-1.5 text-[11px]">
+                          <button 
+                            onClick={() => {
+                              setSgcClimateIndex(35);
+                              setSgcComplianceIndex(85);
+                              setSimFeedback("Ramírez firma con desgana bajo amenaza pero el clima en su área se desploma. Los operarios sabotearán sutilmente los registros SGC más adelante.");
+                              setConflictStep(2);
+                            }}
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                          >
+                            Ruta Punitiva: Amonestarlo con severidad citando la cláusula de liderazgo 5.1 y reportarlo con Dirección.
+                          </button>
+                          <button 
+                            onClick={() => {
+                              setSgcClimateIndex(85);
+                              setSgcComplianceIndex(45);
+                              setSimFeedback("Ramírez sonríe agradecido y te regala un café, pero el SGC se debilita. No registrar la desviación repite el scrap costando cara la auditoría final.");
+                              setConflictStep(2);
+                            }}
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                          >
+                            Ruta Complaciente: Ignorar el reporte y dejar que continúe con el scrap sin asentar la No Conformidad.
+                          </button>
+                          <button 
+                            onClick={() => {
+                              setSgcClimateIndex(75);
+                              setSgcComplianceIndex(75);
+                              setSimFeedback("Robert Terán aprueba esta aproximación. Ramírez acepta sentarse a revisar los parámetros mecánicos de mermas de extrusión de forma asertiva.");
+                              setConflictStep(2);
+                            }}
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                          >
+                            Ruta Integradora Coach: Escuchar de forma empática sus cuellos de botella de planta, y pactar el hallazgo enfocado a la resolución técnica (8D).
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {conflictStep === 2 && (
+                      <div className="space-y-2">
+                        <p className="font-bold text-gray-200">Decisión 2: Ahora, Ramírez propone culpar a un operador temporal del problema de calidad:</p>
+                        <div className="grid grid-cols-1 gap-1.5 text-[11px]">
+                          <button 
+                            onClick={() => {
+                              setSgcClimateIndex(prev => Math.max(10, prev - 25));
+                              setSgcComplianceIndex(prev => Math.min(100, prev + 10));
+                              setSimFeedback("Paz temporal pero fractura moral. El equipo de planta siente terror e inseguridad psicológica extrema. La rotación de personal subirá.");
+                              setConflictStep(3);
+                            }}
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                          >
+                            Aceptar y aplicar despido o recriminación directa al operador temporal.
+                          </button>
+                          <button 
+                            onClick={() => {
+                              setSgcClimateIndex(prev => Math.min(100, prev + 15));
+                              setSgcComplianceIndex(prev => Math.max(10, prev - 15));
+                              setSimFeedback("Robert Terán advierte: El culpable chivo expiatorio soluciona momentáneamente el papel, pero la falla de la máquina de extrusión subsiste.");
+                              setConflictStep(3);
+                            }}
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                          >
+                            Rechazar, pero retrasar la investigación 8D para no discutir de nuevo con Ramírez.
+                          </button>
+                          <button 
+                            onClick={() => {
+                              setSgcClimateIndex(prev => Math.min(100, prev + 10));
+                              setSgcComplianceIndex(prev => Math.min(100, prev + 20));
+                              setSimFeedback("Excelente. Ramírez comprende que errar es humano, pero el error nace de un mal diseño de herramentales o instructivos del SGC.");
+                              setConflictStep(3);
+                            }}
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                          >
+                            Redirigir el enfoque: Establecer que el error es fallas del SISTEMA, no personas (Cláusula SGC 10.2).
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {conflictStep === 3 && (
+                      <div className="space-y-2 text-center p-4 bg-white/[0.02] border border-white/5 rounded-2xl">
+                        <p className="font-extrabold text-amber-400 uppercase tracking-widest font-mono text-[10px]">Simulación Finalizada con éxito</p>
+                        <p className="text-gray-300 italic my-2">"{simFeedback}"</p>
+                        <div className="flex flex-col gap-2 pt-2">
+                          <div className="text-xs font-mono font-bold text-white">
+                            Resultado Final SGC: Clima {sgcClimateIndex}% / Cumplimiento {sgcComplianceIndex}%
+                          </div>
+                          <button 
+                            onClick={() => {
+                              setConflictStep(1);
+                              setSgcClimateIndex(65);
+                              setSgcComplianceIndex(60);
+                              setSimFeedback('');
+                            }}
+                            className="mt-2 bg-white text-black font-extrabold uppercase py-2.5 rounded-xl hover:bg-red-600 hover:text-white transition-all font-mono text-[10px] tracking-widest"
+                          >
+                            Explorar Otras Alternativas de Liderazgo
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-4 p-3 bg-red-600/5 rounded-2xl border border-red-500/10 text-[10px] text-gray-400 italic text-center">
+                  "El clima organizacional es una variable cuantitativa en los costos indirectos de Prevención de Calidad (Crosby)."
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* INTERACTIVE COLUMN 3: HUMAN AGREEMENTS AND STREAK OKRS */}
+            <div className="glass p-6 md:p-8 rounded-3xl border border-white/10 bg-[#0c0c0f] space-y-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-4">
+                <div>
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-red-500" /> Acuerdos Humanos de Cohesión Corporativa
+                  </h3>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Suscriba estos OKRs de comunicación efectiva y cultura de cero culpa. Haga click para firmar y sincronizar con Firestore en vivo.
+                  </p>
+                </div>
+                <button
+                  onClick={async () => {
+                    const allSigned = humanAgreements.map(a => ({ ...a, signed: true }));
+                    setHumanAgreements(allSigned);
+                    // Autosync in background
+                    setIsCloudSyncing(true);
+                    try {
+                      const docRef = doc(db, 'sgc_states', sgcUserId);
+                      await setDoc(docRef, { humanAgreements: allSigned, syncedAt: new Date().toLocaleTimeString() }, { merge: true });
+                      setCloudSyncedAt(new Date().toLocaleTimeString());
+                    } catch (e) {
+                      console.error(e);
+                    }
+                    setIsCloudSyncing(false);
+                    alert('¡Todos los Acuerdos Humanos firmados por el comité ejecutivo y guardados en Firestore!');
+                  }}
+                  className="bg-white/5 hover:bg-white/10 text-white border border-white/10 text-[10px] px-3.5 py-2 rounded-xl font-bold uppercase transition-all"
+                >
+                  Firmar Todo el Pacto
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {humanAgreements.map((agreement) => (
+                  <div 
+                    key={agreement.id} 
+                    className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
+                      agreement.signed 
+                        ? 'bg-green-500/15 border-green-500/30' 
+                        : 'bg-black/40 border-white/5 hover:border-white/10'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-start">
+                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                          agreement.signed ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-gray-400'
+                        }`}>
+                          {agreement.signed ? 'Acuerdo Activo SGC' : 'Inactivo / Firma Pendiente'}
+                        </span>
+                        <Brain className={`w-4 h-4 ${agreement.signed ? 'text-green-400 animate-pulse' : 'text-gray-600'}`} />
+                      </div>
+                      <h4 className="font-extrabold text-white text-xs uppercase tracking-wide">{agreement.title}</h4>
+                      <p className="text-gray-400 text-[11px] leading-relaxed">{agreement.description}</p>
+                    </div>
+
+                    <button
+                      onClick={async () => {
+                        const updated = humanAgreements.map(a => a.id === agreement.id ? { ...a, signed: !a.signed } : a);
+                        setHumanAgreements(updated);
+                        // Autosyne data
+                        setIsCloudSyncing(true);
+                        try {
+                          const docRef = doc(db, 'sgc_states', sgcUserId);
+                          await setDoc(docRef, { humanAgreements: updated, syncedAt: new Date().toLocaleTimeString() }, { merge: true });
+                          setCloudSyncedAt(new Date().toLocaleTimeString());
+                        } catch (err) {
+                          console.error(err);
+                        }
+                        setIsCloudSyncing(false);
+                      }}
+                      className={`mt-4 w-full text-[10px] py-2 rounded-lg font-bold uppercase transition-all tracking-wider ${
+                        agreement.signed
+                          ? 'bg-green-500 hover:bg-red-600 text-black hover:text-white font-extrabold'
+                          : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
+                      }`}
+                    >
+                      {agreement.signed ? '✓ Firmado y Resguardado' : 'Estampar Firma Digital SGC'}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        )}
+
       </div>
 
     </div>
   );
 }
+
