@@ -518,15 +518,13 @@ export default function App() {
 
                       {isFuchsiaSkill && (
                         <div className="mb-4">
-                          <a 
-                            href="https://www.coach-iso.eu/normas" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
+                          <Link 
+                            to="/normas?tab=liderazgo" 
                             className="inline-flex items-center gap-2 text-xs text-[#FF007A] hover:text-white bg-[#FF007A]/10 border border-[#FF007A]/30 rounded-xl px-4 py-2 hover:bg-[#FF007A]/20 transition duration-300 font-bold font-sans"
                           >
-                            <span>[Visualizar Programa e Normas]</span>
+                            <span>[Visualizar Programa e Normas Interactivas]</span>
                             <ArrowRight className="w-3.5 h-3.5" />
-                          </a>
+                          </Link>
                         </div>
                       )}
 
@@ -814,16 +812,15 @@ export default function App() {
             </motion.div>
 
             {/* Card 2: Coaching (Col: 2) */}
-            <motion.a 
-              href="https://www.coach-iso.eu/normas"
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="md:col-span-2 glass rounded-3xl p-8 bento-card futuristic-card flex items-center gap-6 group cursor-pointer border-[#00F0FF]/15 hover:border-[#00F0FF] bg-[#090D1A]/50 hover:bg-[#00F0FF]/5 shadow-[0_0_30px_rgba(0,240,255,0.03)]"
+              className="md:col-span-2 glass rounded-3xl p-8 bento-card futuristic-card flex items-center gap-6 group cursor-pointer border-[#00F0FF]/15 hover:border-[#00F0FF] bg-[#090D1A]/50 hover:bg-[#00F0FF]/5 shadow-[0_0_30px_rgba(0,240,255,0.03)] relative"
             >
+              <Link to="/normas?tab=liderazgo" className="absolute inset-0 z-10" />
+              
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#00F0FF]/10 to-transparent pointer-events-none rounded-full blur-2xl"></div>
               
               <div className="w-16 h-16 bg-[#00F0FF]/10 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-[#00F0FF]/25 border border-[#00F0FF]/20 transition-colors">
@@ -838,7 +835,7 @@ export default function App() {
                 <span>[VER_INFO]</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
-            </motion.a>
+            </motion.div>
 
             {/* Card 3: Core Value (Col: 1, dynamic) */}
             <motion.div 
