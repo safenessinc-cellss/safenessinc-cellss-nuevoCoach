@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "perfil": "Perfil",
+    "servicios": "Serviços",
+    "procesos": "Processos",
+    "certificaciones": "Certificações",
+    "contacto": "Contato"
+  },
+  "footer": {
+    "agendar": "Agendar Consulta"
+  },
+  "hero": {
+    "badge": "Soluções de Engenharia e Liderança",
+    "title": "A Qualidade é",
+    "titleHighlight": "Inegociável.",
+    "description": "Fundo a precisão técnica da engenharia com o desenvolvimento do talento humano para criar empresas exponenciais."
+  },
+  "about": {
+    "badge": "Perfil Profissional",
+    "title": "Mais de 30 anos de Excelência"
+  },
+  "services": {
+    "badge": "Meus Serviços",
+    "title": "Suíte Integral de Gestão",
+    "auditorTitle": "Auditor Líder ISO",
+    "auditorDesc": "Especialista em ISO 9001 e ISO 14001",
+    "details": "Ver detalhes",
+    "coachTitle": "Coach IBM 2025",
+    "coachDesc": "Coaching executivo e liderança"
+  },
+  "global": {
+    "title": "Alcance Global"
+  },
+  "certifications": {
+    "badge": "O Padrão Ouro",
+    "title": "Sistemas de Gestão ISO",
+    "description": "Certificando a excelência em nível internacional."
+  },
+  "testimonials": {
+    "badge": "Casos de Sucesso",
+    "title": "O que nossos clientes dizem",
+    "viewCase": "Ver caso"
+  }
+}

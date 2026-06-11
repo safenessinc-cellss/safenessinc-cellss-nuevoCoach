@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "perfil": "Profile",
+    "servicios": "Services",
+    "procesos": "Processes",
+    "certificaciones": "Certifications",
+    "contacto": "Contact"
+  },
+  "footer": {
+    "agendar": "Book Consultation"
+  },
+  "hero": {
+    "badge": "Engineering & Leadership Solutions",
+    "title": "Quality is",
+    "titleHighlight": "Non-negotiable.",
+    "description": "I merge the technical precision of engineering with the development of human talent to create exponential companies."
+  },
+  "about": {
+    "badge": "Professional Profile",
+    "title": "Over 30 years of Excellence"
+  },
+  "services": {
+    "badge": "My Services",
+    "title": "Comprehensive Management Suite",
+    "auditorTitle": "Lead ISO Auditor",
+    "auditorDesc": "Specialist in ISO 9001 and ISO 14001",
+    "details": "View details",
+    "coachTitle": "IBM 2025 Coach",
+    "coachDesc": "Executive coaching and leadership"
+  },
+  "global": {
+    "title": "Global Reach"
+  },
+  "certifications": {
+    "badge": "The Gold Standard",
+    "title": "ISO Management Systems",
+    "description": "Certifying excellence on an international level."
+  },
+  "testimonials": {
+    "badge": "Success Stories",
+    "title": "What our clients say",
+    "viewCase": "View case"
+  }
+}

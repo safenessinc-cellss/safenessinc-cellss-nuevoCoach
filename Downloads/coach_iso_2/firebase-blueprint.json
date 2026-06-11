@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "Consultation": {
+      "title": "Consultation",
+      "description": "A booking request for a consultation.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user ID of the person booking" },
+        "name": { "type": "string", "description": "Name of the person" },
+        "email": { "type": "string", "format": "email", "description": "Email of the person" },
+        "company": { "type": "string", "description": "Company name" },
+        "date": { "type": "string", "description": "ISO date string of the requested consultation" },
+        "topic": { "type": "string", "description": "Topic of the consultation" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled"], "description": "Status of the booking" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the booking was created" }
+      },
+      "required": ["uid", "name", "email", "date", "topic", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/consultations/{consultationId}": {
+      "schema": { "$ref": "#/entities/Consultation" },
+      "description": "Stores user consultation bookings."
+    }
+  }
+}
