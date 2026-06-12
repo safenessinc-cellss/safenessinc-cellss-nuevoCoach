@@ -1,0 +1,182 @@
+{
+  "profile": {
+    "name": "Robert Terán",
+    "initials": "RT",
+    "title": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
+    "subtitle": "Optimización de procesos. Sincronización del equipo humano con el rendimiento económico.",
+    "description": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral con más de 30 años de experiencia mejorando la rentabilidad operativa y coordinando la optimización de procesos.",
+    "email": "deuwyrobert@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/coach-robert-teran/"
+  },
+  "metrics": {
+    "yearsExperience": "+30",
+    "label": "Años de Trayectoria"
+  },
+  "about": {
+    "bio": "Ingeniero y Economista con más de 30 años de experiencia como Especialista en Sistemas de Gestión Integral, Auditoría y Optimización de Procesos. Su enfoque integra los sistemas de gestión integral corporativa con el análisis estratégico financiero y del capital humano, orientando sus metodologías a resultados de alto impacto y de excelencia operativa.",
+    "career": [
+      {
+        "area": "Dirección Ejecutiva y Comercial",
+        "description": "Más de 20 años de experiencia liderando equipos de ventas y merchandising en canales de retail internacional. Desarrollo de estrategias de mercado, capacitación de vendedores, alineación de equipos con objetivos estratégicos y gestión de relaciones interpersonales.",
+        "roles": [
+          "Corporate Executive Director",
+          "Commercial Director",
+          "Market Manager & Purchasing Analyst SR",
+          "Sales & Administrative Management"
+        ]
+      },
+      {
+        "area": "Gestión de Calidad y Operaciones",
+        "description": "Liderazgo en la implementación de mejoras continuas en procesos productivos, metodologías Lean Manufacturing y Six Sigma. Realización de auditorías internas y externas, y desarrollo de políticas de control de calidad.",
+        "roles": [
+          "Quality & Product Director",
+          "Quality & Production Manager",
+          "Quality & Process Coordinator",
+          "Quality Analyst"
+        ]
+      }
+    ],
+    "badges": [
+      { "label": "ISO Gestión de Calidad", "icon": "ShieldCheck" },
+      { "label": "Estructuras de Empresas", "icon": "Network" },
+      { "label": "Mapeo de Procesos", "icon": "Workflow" },
+      { "label": "Análisis Crítico", "icon": "Brain" },
+      { "label": "Análisis de Gestión", "icon": "BarChart3" },
+      { "label": "Análisis de Riesgo", "icon": "ShieldAlert" },
+      { "label": "Análisis de Mercado", "icon": "LineChart" },
+      { "label": "Emprendimiento & Startup", "icon": "Rocket" },
+      { "label": "IBM 2025 Coach", "icon": "Award" },
+      { "label": "Auditor Leader", "icon": "ClipboardCheck" }
+    ]
+  },
+  "services": [
+    {
+      "id": "iso",
+      "title": "Auditor Líder ISO",
+      "description": "Especialista en Sistemas de Gestión de Calidad (9001) y Ambiental (14001). Más de 30 años garantizando la excelencia operativa.",
+      "detailedDescription": "Como Auditor Líder ISO, mi enfoque va más allá del simple cumplimiento normativo. Implemento sistemas de gestión robustos que actúan como el motor de la mejora continua en su organización. Mi metodología incluye un diagnóstico profundo (Gap Analysis), diseño de procesos a medida, formación de equipos internos y auditorías de pre-certificación. He liderado con éxito más de 50 procesos de certificación en industrias que van desde la manufactura hasta los servicios tecnológicos, asegurando no solo el certificado, sino una transformación real en la cultura de calidad de la empresa.",
+      "icon": "ShieldCheck"
+    },
+    {
+      "id": "coaching",
+      "title": "IBM 2025 Coach",
+      "description": "\"Liderazgo que inspira resultados.\"",
+      "detailedDescription": "El coaching ejecutivo es el puente entre el potencial y el alto rendimiento. Como IBM 2025 Coach certificado, utilizo marcos de trabajo probados para desarrollar habilidades de liderazgo crítico en directivos y mandos medios. Nos enfocamos en la toma de decisiones bajo presión, la gestión del cambio organizacional, la comunicación asertiva y la alineación de equipos con los objetivos estratégicos (OKRs). Cada programa es personalizado, combinando sesiones individuales con dinámicas de equipo para garantizar un impacto sistémico y duradero en la organización.",
+      "icon": "Users"
+    }
+  ],
+  "languages": [
+    {"code": "ES", "active": true},
+    {"code": "IT", "active": true},
+    {"code": "EN", "active": false},
+    {"code": "PT", "active": false}
+  ],
+  "certificationsInfo": {
+    "title": "Estándares de Excelencia",
+    "description": "Las certificaciones ISO son el estándar de oro para los auditores líderes. Las más solicitadas y en las que baso mi metodología incluyen:"
+  },
+  "certifications": [
+    {
+      "title": "Auditor Líder ISO (IRCA)",
+      "subtitle": "Sistemas de Gestión (9001, 14001, 27001, 45001, 22000, 42001)",
+      "description": "Certificación internacional de máximo nivel de IRCA que faculta para auditar y dirigir certificaciones en múltiples normas."
+    },
+    {
+      "title": "IBM 2025 Coach",
+      "subtitle": "Liderazgo y Transformación",
+      "description": "Certificación del programa de coaching ejecutivo enfocado en la agilidad de equipos digitales y líderes resilientes."
+    },
+    {
+      "title": "CIA",
+      "subtitle": "Certified Internal Auditor",
+      "description": "La única certificación aceptada globalmente para auditores internos, otorgada por el IIA (Institute of Internal Auditors)."
+    },
+    {
+      "title": "CISA",
+      "subtitle": "Certified Information Systems Auditor",
+      "description": "Especializada en el control, aseguramiento y seguridad de sistemas de información corporativos."
+    },
+    {
+      "title": "CPA",
+      "subtitle": "Certified Public Accountant",
+      "description": "Acreditación fundamental para evaluar de manera integral el área financiera, impositiva y de capital en organizaciones."
+    },
+    {
+      "title": "CRMA",
+      "subtitle": "Certification in Risk Management Assurance",
+      "description": "Designación dirigida a evaluar la mitigación y aseguramiento ante riesgos corporativos integrales."
+    },
+    {
+      "title": "Psicopedagogía Empresarial",
+      "subtitle": "Especialista en Aprendizaje Organizacional",
+      "description": "Gestión del aprendizaje directo de equipos, resolución de dinámicas grupales complejas y motivación directiva."
+    },
+    {
+      "title": "Coach Estratégico",
+      "subtitle": "Toma de Decisiones Críticas",
+      "description": "Coaching y mapeo de riesgos de alta presión para la toma de decisiones asertivas bajo incertidumbre de mercado."
+    }
+  ],
+  "expertise": {
+    "title": "Estructuración y Mapeo de Procesos",
+    "description": "Transformamos la complejidad operativa en sistemas eficientes, escalables y medibles. Mapeamos el ADN de tu empresa para garantizar un crecimiento sostenido y ordenado.",
+    "areas": [
+      {
+        "title": "Estructuración Organizacional",
+        "icon": "Network",
+        "items": [
+          "Diseño de organigramas y estructuras ágiles",
+          "Definición de roles, perfiles de puesto y responsabilidades",
+          "Alineación de objetivos estratégicos (OKRs y KPIs)"
+        ]
+      },
+      {
+        "title": "Mapeo y Optimización",
+        "icon": "Map",
+        "items": [
+          "Levantamiento de procesos actuales (As-Is) y futuros (To-Be)",
+          "Diagramación avanzada bajo estándares internacionales (BPMN)",
+          "Identificación y eliminación de cuellos de botella (Metodología Lean)"
+        ]
+      },
+      {
+        "title": "Estandarización (SGC)",
+        "icon": "FileCheck",
+        "items": [
+          "Desarrollo de Procedimientos Operativos Estándar (SOPs)",
+          "Creación de manuales de calidad y políticas corporativas",
+          "Diseño de cuadros de mando integrales (Dashboards)"
+        ]
+      },
+      {
+        "title": "Gestión de Riesgos y Mejora",
+        "icon": "Activity",
+        "items": [
+          "Elaboración de matrices de riesgos corporativos e impacto",
+          "Implementación del Ciclo PDCA (Plan-Do-Check-Act)",
+          "Auditorías internas preventivas y planes de acción correctiva"
+        ]
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "quote": "La visión estratégica de Robert transformó por completo nuestra estructura operativa. Logramos la certificación ISO 9001 en tiempo récord y nuestra eficiencia aumentó un 40%.",
+      "name": "Carlos Mendoza",
+      "title": "CEO, TechLogistics",
+      "caseStudy": "TechLogistics enfrentaba problemas de escalabilidad debido a procesos manuales y falta de estandarización. Durante 6 meses, implementamos un Sistema de Gestión de Calidad desde cero. Mapeamos más de 40 procesos críticos, capacitamos a 15 líderes de área y logramos la certificación ISO 9001:2015 sin no conformidades mayores. El resultado: reducción del 40% en tiempos de entrega y un aumento del 25% en la satisfacción del cliente."
+    },
+    {
+      "quote": "Su enfoque de coaching no solo mejoró nuestros procesos, sino que empoderó a todo nuestro equipo directivo. Un verdadero líder que inspira resultados tangibles.",
+      "name": "Ana Silva",
+      "title": "Directora de Operaciones, GlobalCorp",
+      "caseStudy": "El equipo directivo de GlobalCorp sufría de silos de comunicación y falta de alineación estratégica. A través de un programa de coaching ejecutivo de 12 semanas, trabajamos en la reestructuración de roles, la implementación de OKRs y la mejora de la comunicación interdepartamental. La rotación de personal clave disminuyó un 30% y el equipo logró superar sus metas de ingresos anuales por primera vez en 3 años."
+    },
+    {
+      "quote": "El mapeo de procesos que implementó nos permitió identificar cuellos de botella que nos costaban miles de dólares al mes. Su experiencia es invaluable.",
+      "name": "Roberto Gómez",
+      "title": "Gerente General, Industrias Alimenticias",
+      "caseStudy": "Industrias Alimenticias tenía altos índices de desperdicio en su línea de producción principal. Aplicando metodologías Lean Manufacturing y Six Sigma, realizamos un mapeo As-Is detallado. Identificamos 3 cuellos de botella críticos y rediseñamos el flujo de trabajo (To-Be). Implementamos controles estadísticos de procesos (SPC) que resultaron en una reducción del 60% en el desperdicio de materia prima, ahorrando a la empresa más de $150,000 anuales."
+    }
+  ]
+}
