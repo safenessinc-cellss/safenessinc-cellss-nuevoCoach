@@ -11,7 +11,7 @@ export interface ISOImageMetadata {
 export const imageRegistry: Record<string, ISOImageMetadata> = {
   'mapa-procesos-9001': {
     id: 'mapa-procesos-9001',
-    src: 'https://images.unsplash.com/photo-1507925922893-ce33af23b3f2?auto=format&fit=crop&q=80&w=1200',
+    src: '/src/assets/images/process_map_9001_1781269554845.jpg',
     alt: 'Mapa de Interacción de Procesos (SGC)',
     description: 'Representación visual de la interacción de los procesos del Sistema de Gestión de Calidad, incluyendo entradas, salidas y puntos de control operativos.',
     normaRelacionada: 'ISO 9001:2015',
