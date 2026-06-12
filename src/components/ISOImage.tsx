@@ -81,6 +81,7 @@ export default function ISOImage({
             loading="lazy" 
             decoding="async" 
             onError={handleImageError}
+            referrerPolicy="no-referrer"
             className="w-full h-auto object-cover max-h-[400px] transform group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100" 
           />
           
@@ -157,6 +158,7 @@ export default function ISOImage({
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               src={imageSrc || undefined} 
               alt={alt}
+              referrerPolicy="no-referrer"
               className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
               onClick={(e) => e.stopPropagation()} 
             />
