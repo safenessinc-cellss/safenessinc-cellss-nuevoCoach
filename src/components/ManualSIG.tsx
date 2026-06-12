@@ -825,7 +825,7 @@ export default function ManualSIG() {
 
                 <div className="space-y-6">
                   {currentSector.processes.flatMap(p => p.subprocesses.map((sub, sidx) => (
-                    <div key={sidx} className="p-5 bg-black/60 rounded-2xl border border-white/5 hover:border-red-500/20 transition-all space-y-4">
+                    <div key={`${p.id}-${sub.name}-${sidx}`} className="p-5 bg-black/60 rounded-2xl border border-white/5 hover:border-red-500/20 transition-all space-y-4">
                       
                       {/* Subprocess header */}
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/5 pb-3">
