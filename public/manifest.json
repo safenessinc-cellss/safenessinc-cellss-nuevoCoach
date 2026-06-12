@@ -1,11 +1,11 @@
 {
-  "name": "Robert Teran | Coach & ISO Auditor",
-  "short_name": "RT Portfolio",
+  "name": "Robert Terán | Ingeniero, Economista y Especialista en SGI",
+  "short_name": "RT SGI",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#050505",
   "theme_color": "#050505",
-  "description": "Portafolio profesional de Robert Teran, Auditor Líder ISO y Coach Ejecutivo.",
+  "description": "Portafolio profesional de Robert Terán, Ingeniero, Economista y Especialista en Sistemas de Gestión Integral / Optimización de Procesos.",
   "icons": [
     {
       "src": "https://api.dicebear.com/7.x/initials/svg?seed=RT&backgroundColor=dc2626",
