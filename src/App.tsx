@@ -11,6 +11,7 @@ import ChatWidget from './components/ChatWidget';
 import ISOImage from './components/ISOImage';
 import UserProfileModal from './components/UserProfileModal';
 import { useProfileSettings } from './data/useProfileSettings';
+import CoachingPillarsPanel from './components/CoachingPillarsPanel';
 
 const iconMap: Record<string, any> = {
   ShieldCheck, Network, Workflow, Brain, BarChart3, ShieldAlert, LineChart, Rocket, Award, ClipboardCheck, Map
@@ -217,6 +218,9 @@ export default function App() {
 
   // Interactive Specialties Modal State
   const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(null);
+
+  // New States for "Más Allá de la Certificación" Coaching & Psicopedagogía Pillars
+  const [selectedCoachingPillar, setSelectedCoachingPillar] = useState<'decision' | 'psicopedagogia' | 'cohesion' | null>(null);
 
   // States inside specialty interactive widgets
   const [angerLevel, setAngerLevel] = useState<number>(5);
@@ -1522,22 +1526,82 @@ export default function App() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-white/[0.02] hover:bg-white/[0.05] p-8 rounded-3xl border border-white/5 backdrop-blur-md transition group">
+            <button
+              onClick={() => setSelectedCoachingPillar(prev => prev === 'decision' ? null : 'decision')}
+              className={`p-8 rounded-3xl border backdrop-blur-md transition-all duration-300 text-left relative focus:outline-none cursor-pointer group ${
+                selectedCoachingPillar === 'decision'
+                  ? 'bg-blue-950/20 border-blue-500 shadow-xl shadow-blue-500/10'
+                  : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.04]'
+              }`}
+            >
               <span className="text-3xl mb-4 block">🎯</span>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">Decisiones Críticas</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Mapeo de riesgos + coaching bajo presión para que líderes y equipos actúen con claridad en momentos de alta incertidumbre laboral.</p>
-            </div>
-            <div className="bg-white/[0.02] hover:bg-white/[0.05] p-8 rounded-3xl border border-white/5 backdrop-blur-md transition group">
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Mapeo de riesgos + coaching bajo presión para que líderes y equipos actúen con claridad en momentos de alta incertidumbre laboral.
+              </p>
+              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-blue-400 mt-auto flex items-center gap-1">
+                <span>[ {selectedCoachingPillar === 'decision' ? 'CERRAR SIMULADOR' : 'ABRIR SIMULADOR Y DIAGRAMA'} ]</span>
+                <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+
+            <button
+              onClick={() => setSelectedCoachingPillar(prev => prev === 'psicopedagogia' ? null : 'psicopedagogia')}
+              className={`p-8 rounded-3xl border backdrop-blur-md transition-all duration-300 text-left relative focus:outline-none cursor-pointer group ${
+                selectedCoachingPillar === 'psicopedagogia'
+                  ? 'bg-amber-950/20 border-amber-500 shadow-xl shadow-amber-500/10'
+                  : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.04]'
+              }`}
+            >
               <span className="text-3xl mb-4 block">🧠</span>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">Psicopedagogía Empresarial</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Aprendizaje adaptativo, gestión del estrés y comunicación asertiva. Transformo de manera didáctica la forma en que tu equipo aprende y colabora.</p>
-            </div>
-            <div className="bg-white/[0.02] hover:bg-white/[0.05] p-8 rounded-3xl border border-white/5 backdrop-blur-md transition group">
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Aprendizaje adaptativo, gestión del estrés y comunicación asertiva. Transformo de manera didáctica la forma en que tu equipo aprende y colabora.
+              </p>
+              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-amber-400 mt-auto flex items-center gap-1">
+                <span>[ {selectedCoachingPillar === 'psicopedagogia' ? 'CERRAR SIMULADOR' : 'ABRIR SIMULADOR Y DIAGRAMA'} ]</span>
+                <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+
+            <button
+              onClick={() => setSelectedCoachingPillar(prev => prev === 'cohesion' ? null : 'cohesion')}
+              className={`p-8 rounded-3xl border backdrop-blur-md transition-all duration-300 text-left relative focus:outline-none cursor-pointer group ${
+                selectedCoachingPillar === 'cohesion'
+                  ? 'bg-red-950/20 border-red-500 shadow-xl shadow-red-500/10'
+                  : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.04]'
+              }`}
+            >
               <span className="text-3xl mb-4 block">🤝</span>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors">Cohesión de Equipos</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">De grupos disfuncionales a equipos de alto rendimiento. Alineación de OKRs estratégicos, resolución asertiva de conflictos y confianza operativa.</p>
-            </div>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                De grupos disfuncionales a equipos de alto rendimiento. Alineación de OKRs estratégicos, resolución asertiva de conflictos y confianza operativa.
+              </p>
+              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-red-500 mt-auto flex items-center gap-1">
+                <span>[ {selectedCoachingPillar === 'cohesion' ? 'CERRAR SIMULADOR' : 'ABRIR SIMULADOR Y DIAGRAMA'} ]</span>
+                <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
           </div>
+
+          {/* DYNAMIC EXPANSION FOR COACHING PILLARS */}
+          <AnimatePresence mode="wait">
+            {selectedCoachingPillar && (
+              <motion.div
+                key={selectedCoachingPillar}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="mb-16 overflow-hidden"
+              >
+                <CoachingPillarsPanel 
+                  initialPillar={selectedCoachingPillar} 
+                  onClose={() => setSelectedCoachingPillar(null)} 
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* ÁREAS DE ESPECIALIZACIÓN INTEGRADAS */}
           <div className="glass rounded-3xl border border-white/10 p-8 md:p-12 mb-16 overflow-hidden relative">
