@@ -102,149 +102,64 @@
     "rights": "Todos os direitos reservados",
     "made": "Feito com"
   },
-  "curriculumData": {
-    "name": "Deuwy Robert Terán Medina",
-    "title": "Coach Executivo • Auditor Líder SGC IRCA • Engenheiro Economista",
-    "summary": "Especialista em Sistemas de Gestão ISO com mais de 30 anos de experiência em auditoria e consultoria estratégica. Auditor Líder certificado pela IBM 2025 e Coach Empresarial, complementa seu perfil técnico com estudos em Psicopedagogia, Bem-Estar Laboral e Inteligência Emocional Organizacional.",
-    "contact": {
-      "phone": "+55 (51) 98280-4970",
-      "email": "robert@coach-iso.eu",
-      "location": "São Leopoldo, RS, Brasil"
+  "curriculum": {
+    "title": "Currículo Executivo & Portal de Credenciais",
+    "subtitle": "Coach Executivo • Auditor Líder SGC IRCA • Engenheiro Economista",
+    "export": "Exportar para PDF",
+    "print": "Imprimir",
+    "credly": "Credly",
+    "tabs": {
+      "cv": "Currículo Executivo (Modelo Oficial)",
+      "credentials": "Credenciais Credly (20)",
+      "activities": "Atividades & Cursos (188)",
+      "profile": "Perfil & Estatísticas"
     },
-    "languages": [
-      { "name": "Espanhol", "level": "Nativo", "written": "Escrita e fala nativas" },
-      { "name": "Português", "level": "Avançado", "written": "Fluente em leitura, escrita e conversação" },
-      { "name": "Inglês", "level": "Intermediário", "written": "Compreensão técnica e profissional" }
-    ],
-    "education": [
-      {
-        "title": "Engenheiro Industrial",
-        "institution": "Universidade Central da Venezuela",
-        "period": "1990 - 1995",
-        "description": "Especialização em processos produtivos e gestão da qualidade"
-      },
-      {
-        "title": "Economista",
-        "institution": "Universidade Central da Venezuela",
-        "period": "1996 - 2000",
-        "description": "Análise econômica e gestão financeira"
-      },
-      {
-        "title": "Especialização em Psicopedagogia Empresarial",
-        "institution": "Instituto de Psicopedagogia Aplicada",
-        "period": "2010 - 2012",
-        "description": "Gestão da aprendizagem organizacional e dinâmicas de grupo"
-      }
-    ],
-    "experience": [
-      {
-        "title": "Coordenador de Qualidade e Processos",
-        "company": "Rototech",
-        "period": "2000 - 2005",
-        "location": "Caracas, Venezuela",
-        "responsibilities": [
-          "Implementação de metodologias Lean e Six Sigma",
-          "Auditorias ISO 9001/14001/45001",
-          "Redução de sucata em 35%"
-        ],
-        "achievements": [
-          "Certificação ISO 9001 em 6 meses",
-          "Economia operacional de $320,000 USD/ano"
-        ]
-      },
-      {
-        "title": "Analista e Gestor de Qualidade",
-        "company": "Tapeçaria Palacio",
-        "period": "2006 - 2010",
-        "location": "São Paulo, Brasil",
-        "responsibilities": [
-          "Otimização do rendimento produtivo",
-          "Controle de qualidade e melhoria contínua",
-          "Implementação de indicadores KPI"
-        ],
-        "achievements": [
-          "Aumento de produtividade em 25%",
-          "Redução de reclamações em 40%"
-        ]
-      },
-      {
-        "title": "Gerente de Qualidade e Produção",
-        "company": "D'classe Papeis",
-        "period": "2010 - 2015",
-        "location": "São Paulo, Brasil",
-        "responsibilities": [
-          "Liderança de equipes multidisciplinares",
-          "Implementação de sistemas integrados de gestão",
-          "Gestão de projetos de melhoria contínua"
-        ],
-        "achievements": [
-          "Aumento de produtividade em 40%",
-          "Certificação ISO 14001"
-        ]
-      },
-      {
-        "title": "Analista de Compras SR & Qualidade",
-        "company": "General Motors",
-        "period": "2015 - 2020",
-        "location": "São Caetano do Sul, Brasil",
-        "responsibilities": [
-          "Negociação de abastecimento internacional",
-          "Homologação de fornecedores",
-          "Gestão de qualidade na cadeia de suprimentos"
-        ],
-        "achievements": [
-          "Redução de custos em 15%",
-          "Certificação de fornecedores em ISO 9001"
-        ]
-      }
-    ],
-    "certifications": [
-      {
-        "code": "AUD",
-        "name": "Auditor Líder ISO (IRCA)",
-        "description": "Sistemas de Gestão (9001, 14001, 27001, 45001, 22000, 42001)"
-      },
-      {
-        "code": "IBM",
-        "name": "IBM 2025 Coach",
-        "description": "Liderança e Transformação de equipes digitais"
-      },
-      {
-        "code": "CIA",
-        "name": "Certified Internal Auditor",
-        "description": "Auditoria interna global, concedida pelo IIA"
-      },
-      {
-        "code": "CISA",
-        "name": "Certified Information Systems Auditor",
-        "description": "Controle e segurança de sistemas de informação"
-      },
-      {
-        "code": "CPA",
-        "name": "Certified Public Accountant",
-        "description": "Avaliação integral da área financeira"
-      },
-      {
-        "code": "CRMA",
-        "name": "Certification in Risk Management Assurance",
-        "description": "Mitigação de riscos corporativos integrais"
-      },
-      {
-        "code": "PSI",
-        "name": "Psicopedagogia Empresarial",
-        "description": "Gestão da aprendizagem organizacional"
-      },
-      {
-        "code": "COA",
-        "name": "Coach Estratégico",
-        "description": "Tomada de decisões críticas"
-      }
-    ],
-    "metrics": [
-      { "value": "30+", "label": "Anos de Experiência", "detail": "em indústrias globais" },
-      { "value": "98.6%", "label": "Taxa de Conformidade", "detail": "em auditorias ISO" },
-      { "value": "500+", "label": "Líderes Capacitados", "detail": "em 15 países" },
-      { "value": "45+", "label": "Zonas de Varejo", "detail": "otimizadas comercialmente" }
-    ]
+    "preview": "Visualização oficial de impressão (Formato A4 Executivo)",
+    "contact": {
+      "title": "Contato",
+      "phone": "Telefone / WhatsApp",
+      "email": "Email / Credly",
+      "location": "Localização"
+    },
+    "languages": {
+      "title": "Idiomas",
+      "items": [
+        { "name": "Espanhol", "level": "Nativo", "written": "Escrito e Falado" },
+        { "name": "Português", "level": "Avançado", "written": "Escrito e Falado" },
+        { "name": "Inglês", "level": "Avançado", "written": "Escrito e Falado" },
+        { "name": "Italiano", "level": "Avançado", "written": "Escrito e Falado" },
+        { "name": "Russo", "level": "Avançado", "written": "Escrito e Falado" }
+      ]
+    },
+    "education": {
+      "title": "Formação Acadêmica",
+      "items": [
+        {
+          "title": "Engenharia de Produção e Qualidade",
+          "institution": "Universidade Simón Bolívar",
+          "period": "1995 - 1999",
+          "description": "Graduação em engenharia com foco em pesquisa operacional, gestão da qualidade, otimização de sistemas produtivos e custos."
+        },
+        {
+          "title": "Certificação em Lean Manufacturing",
+          "institution": "Instituto de Melhoria Contínua, Caracas, Venezuela",
+          "period": "2000",
+          "description": "Especialização avançada em VSM, fluxo contínuo, Kaizen, 5S e eliminação de desperdícios."
+        },
+        {
+          "title": "Certificação Green Belt Six Sigma",
+          "institution": "Instituto de Engenharia e Tecnologia, Caracas, Venezuela",
+          "period": "1999",
+          "description": "Domínio da metodologia DMAIC, análise estatística de variabilidade e Controle Estatístico de Processos (SPC)."
+        },
+        {
+          "title": "Técnico Superior em Controle de Qualidade",
+          "institution": "Instituto Germán Celis Sauné",
+          "period": "1992 - 1993",
+          "description": "Formação técnica especializada em metrologia, normas ISO, amostragem e técnicas de inspeção industrial."
+        }
+      ]
+    },
+    "transcript": "Transcript Oficial emitido em 22 de Julho de 2026"
   }
 }
