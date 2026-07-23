@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Linkedin, Mail, ShieldCheck, Award, Briefcase, Calendar } from 'lucide-react';
+import { X, Linkedin, Mail, ShieldCheck, Award, Briefcase, Calendar, GraduationCap, FileCode, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useProfileSettings } from '../data/useProfileSettings';
+import CurriculumShowcaseModal from './CurriculumShowcaseModal';
 
 interface UserProfileModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface UserProfileModalProps {
 export default function UserProfileModal({ isOpen, onClose, data }: UserProfileModalProps) {
   const { t } = useTranslation();
   const { profile } = useProfileSettings();
+  const [isCurriculumOpen, setIsCurriculumOpen] = useState(false);
 
   return (
     <AnimatePresence>
@@ -108,8 +110,28 @@ export default function UserProfileModal({ isOpen, onClose, data }: UserProfileM
                 </div>
               </div>
 
+              {/* Banner de Currículo & Certificados Credly IBM */}
+              <div className="mt-6 p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-red-500/10 to-black border border-amber-500/30 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-xl">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                    <GraduationCap className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Currículo & Certificados Acreditados</h4>
+                    <p className="text-xs text-gray-400 font-mono">20+ Credenciales IBM / Credly & Catálogo de Cursos</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsCurriculumOpen(true)}
+                  className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-black font-extrabold font-mono text-xs px-5 py-2.5 rounded-xl uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-lg"
+                >
+                  <Award className="w-4 h-4" />
+                  <span>Ver Modelos a Escala</span>
+                </button>
+              </div>
+
               {/* Call to Action & Social */}
-              <div className="mt-10 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div className="flex gap-4">
                   <a href={data.profile.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-gray-400 hover:text-blue-400 transition-all flex items-center gap-2 text-sm font-bold">
                     <Linkedin className="w-5 h-5" /> LinkedIn
@@ -130,6 +152,12 @@ export default function UserProfileModal({ isOpen, onClose, data }: UserProfileM
           </motion.div>
         </div>
       )}
+
+      {/* Curriculum & Certificate Showcase Modal */}
+      <CurriculumShowcaseModal
+        isOpen={isCurriculumOpen}
+        onClose={() => setIsCurriculumOpen(false)}
+      />
     </AnimatePresence>
   );
 }
