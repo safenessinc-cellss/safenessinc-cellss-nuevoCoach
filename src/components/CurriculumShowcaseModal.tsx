@@ -1,4 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+const CurriculumShowcaseModal: React.FC<Props> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation(); // Esto usará el archivo principal
+
+  // Uso de las claves:
+  // t('curriculum.title')
+  // t('curriculum.profile.title')
+  // t('curriculum.experience.items.0.role') - etc.
+  
+  // Para arrays, usa returnObjects:
+  // const items = t('curriculum.experience.items', { returnObjects: true });
+}import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
