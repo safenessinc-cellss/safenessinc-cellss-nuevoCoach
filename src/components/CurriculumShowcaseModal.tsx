@@ -18,7 +18,6 @@ import {
   Printer,
   FileText
 } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
 import { useProfileSettings } from '../data/useProfileSettings';
 import { 
   CANDIDATE_INFO, 
@@ -34,6 +33,31 @@ interface CurriculumShowcaseModalProps {
   onClose: () => void;
 }
 
+// Helper to dynamically load html2pdf from CDN without Rollup module import issues
+const getHtml2PdfLib = async () => {
+  if (typeof window === 'undefined') return null;
+  if ((window as any).html2pdf) {
+    return (window as any).html2pdf;
+  }
+  return new Promise<any>((resolve) => {
+    const existingScript = document.getElementById('html2pdf-cdn-script');
+    if (existingScript) {
+      if ((window as any).html2pdf) {
+        resolve((window as any).html2pdf);
+      } else {
+        existingScript.addEventListener('load', () => resolve((window as any).html2pdf));
+      }
+      return;
+    }
+    const script = document.createElement('script');
+    script.id = 'html2pdf-cdn-script';
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.onload = () => resolve((window as any).html2pdf);
+    script.onerror = () => resolve(null);
+    document.head.appendChild(script);
+  });
+};
+
 export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
   const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('cv_template');
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,22 +72,26 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
   if (!isOpen) return null;
 
-  // Export to PDF function using html2pdf.js
+  // Export to PDF function using dynamically loaded html2pdf.js
   const handleExportPDF = async () => {
     const element = document.getElementById('curriculum-cv-document');
     if (!element) return;
     
     setIsExporting(true);
     try {
-      const opt = {
-        margin: 0,
-        filename: `Curriculum_Robert_Teran.pdf`,
-        image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
-      };
-      
-      await html2pdf().set(opt).from(element).save();
+      const html2pdfLib = await getHtml2PdfLib();
+      if (html2pdfLib) {
+        const opt = {
+          margin: 0,
+          filename: `Curriculum_Robert_Teran.pdf`,
+          image: { type: 'jpeg' as const, quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, logging: false },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+        };
+        await html2pdfLib().set(opt).from(element).save();
+      } else {
+        window.print();
+      }
     } catch (err) {
       console.error("Error al exportar PDF con html2pdf, recurriendo a vista de impresión:", err);
       window.print();
