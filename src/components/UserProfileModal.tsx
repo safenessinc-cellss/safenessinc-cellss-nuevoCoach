@@ -1,176 +1,94 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const UserProfileModal: React.FC<Props> = ({ user, onClose }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="profile-modal">
-      <h2>{t('curriculum.profile.title')}</h2>
-      <p>{t('curriculum.profile.description')}</p>
-      {/* ... */}
-    </div>
-  );
-};import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { X, Linkedin, Mail, ShieldCheck, Award, Briefcase, Calendar, GraduationCap, FileCode, ExternalLink } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { useProfileSettings } from '../data/useProfileSettings';
-import CurriculumShowcaseModal from './CurriculumShowcaseModal';
-
 interface UserProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: any;
+  data?: any;
 }
 
 export default function UserProfileModal({ isOpen, onClose, data }: UserProfileModalProps) {
   const { t } = useTranslation();
-  const { profile } = useProfileSettings();
-  const [isCurriculumOpen, setIsCurriculumOpen] = useState(false);
+
+  if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-[600] flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-md"
-          />
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-2xl bg-gradient-to-br from-[#151515] to-[#0a0a0a] border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh] glass-effect"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Cabecera / Banner sutil */}
-            <div className="h-32 bg-gradient-to-r from-red-600/20 to-amber-500/10 border-b border-white/5 relative">
-              {profile.logoUrl && (
-                <div className="absolute top-6 left-6 h-12 w-12 rounded-xl bg-black/40 border border-white/10 p-1 flex items-center justify-center overflow-hidden backdrop-blur-sm">
-                  <img src={profile.logoUrl} alt="Logo" className="h-full w-full object-contain" />
-                </div>
-              )}
-              <button 
-                onClick={onClose}
-                className="absolute top-6 right-6 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white/50 hover:text-white transition-all border border-white/5"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={onClose}>
+      <div 
+        className="bg-zinc-900 border border-white/10 rounded-3xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto relative" 
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Botón cerrar */}
+        <button 
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+          onClick={onClose}
+        >
+          ✕
+        </button>
 
-            <div className="px-8 pb-8 -mt-16 relative">
-              {/* Avatar */}
-              <div className="relative inline-block">
-                <div className="w-32 h-32 rounded-full border-4 border-[#0a0a0a] overflow-hidden shadow-2xl bg-[#151515]">
-                  <img 
-                    src={profile.photoUrl || undefined} 
-                    alt={profile.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute bottom-2 right-2 bg-amber-500 text-black p-1.5 rounded-full shadow-lg border-2 border-[#0a0a0a]">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-              </div>
-
-              {/* Información Principal */}
-              <div className="mt-4">
-                <h2 className="text-3xl font-black text-white tracking-tighter">{profile.name}</h2>
-                <div className="flex flex-wrap gap-3 mt-2">
-                  <span className="flex items-center gap-1.5 text-amber-500 text-xs font-bold uppercase tracking-wider bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
-                    <Award className="w-3 h-3" /> {profile.title}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-red-500 text-xs font-bold uppercase tracking-wider bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
-                    <ShieldCheck className="w-3 h-3" /> {profile.coachTitle}
-                  </span>
-                </div>
-              </div>
-
-              {/* Biografía */}
-              <div className="mt-8">
-                <h3 className="text-white font-bold text-sm uppercase tracking-[0.2em] mb-3 opacity-50 flex items-center gap-2">
-                   <Briefcase className="w-4 h-4" /> Perfil Profesional
-                </h3>
-                <p className="text-gray-300 leading-relaxed text-lg font-light italic border-l-2 border-red-600 pl-4 bg-white/5 py-3 rounded-r-xl">
-                  "{profile.quote}"
-                </p>
-                <p className="text-gray-400 mt-4 leading-relaxed font-light">
-                  {profile.bio}
-                </p>
-              </div>
-
-              {/* Grid de Stats Rápidos */}
-              <div className="grid grid-cols-2 gap-4 mt-8">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                  <div className="flex items-center gap-3 mb-1">
-                    <Calendar className="w-4 h-4 text-red-500" />
-                    <span className="text-xs text-gray-500 font-bold uppercase tracking-widest text-center">Experiencia</span>
-                  </div>
-                  <p className="text-xl font-bold text-white">{profile.experienceYears} Años</p>
-                </div>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                  <div className="flex items-center gap-3 mb-1">
-                    <ShieldCheck className="w-4 h-4 text-amber-500" />
-                    <span className="text-xs text-gray-500 font-bold uppercase tracking-widest text-center">Certificación</span>
-                  </div>
-                  <p className="text-xl font-bold text-white">{profile.title}</p>
-                </div>
-              </div>
-
-              {/* Banner de Currículo & Certificados Credly IBM */}
-              <div className="mt-6 p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-red-500/10 to-black border border-amber-500/30 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-xl">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    <GraduationCap className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white uppercase tracking-wider">Currículo & Certificados Acreditados</h4>
-                    <p className="text-xs text-gray-400 font-mono">20+ Credenciales IBM / Credly & Catálogo de Cursos</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setIsCurriculumOpen(true)}
-                  className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-black font-extrabold font-mono text-xs px-5 py-2.5 rounded-xl uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-lg"
-                >
-                  <Award className="w-4 h-4" />
-                  <span>Ver Modelos a Escala</span>
-                </button>
-              </div>
-
-              {/* Call to Action & Social */}
-              <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="flex gap-4">
-                  <a href={data.profile.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-gray-400 hover:text-blue-400 transition-all flex items-center gap-2 text-sm font-bold">
-                    <Linkedin className="w-5 h-5" /> LinkedIn
-                  </a>
-                  <a href={`mailto:${data.profile.email}`} className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-gray-400 hover:text-red-500 transition-all flex items-center gap-2 text-sm font-bold">
-                    <Mail className="w-5 h-5" /> Contacto
-                  </a>
-                </div>
-                
-                <button 
-                  onClick={onClose}
-                  className="w-full sm:w-auto bg-white text-black px-8 py-3 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition-all shadow-lg"
-                >
-                  Cerrar Perfil
-                </button>
-              </div>
-            </div>
-          </motion.div>
+        {/* Perfil */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-white mb-2">{t('curriculum.profile.title')}</h2>
+          <h3 className="text-red-500 font-semibold text-lg">{t('curriculum.profile.subtitle')}</h3>
+          <p className="text-gray-300 mt-4 leading-relaxed">{t('curriculum.profile.description')}</p>
         </div>
-      )}
 
-      {/* Curriculum & Certificate Showcase Modal */}
-      <CurriculumShowcaseModal
-        isOpen={isCurriculumOpen}
-        onClose={() => setIsCurriculumOpen(false)}
-      />
-    </AnimatePresence>
+        {/* Línea divisoria */}
+        <div className="border-t border-white/10 my-6"></div>
+
+        {/* Experiencia */}
+        <div className="mb-6">
+          <h4 className="text-white font-bold text-lg mb-4">{t('curriculum.experience.title')}</h4>
+          {t('curriculum.experience.items', { returnObjects: true }).map((item: any, index: number) => (
+            <div key={index} className="mb-4 pb-4 border-b border-white/5 last:border-0">
+              <div className="flex justify-between items-start mb-1">
+                <h5 className="text-white font-medium">{item.role}</h5>
+                <span className="text-sm text-gray-400">{item.period}</span>
+              </div>
+              <p className="text-red-400 text-sm font-medium">{item.company}</p>
+              <p className="text-gray-400 text-sm mt-1">{item.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Logros */}
+        <div className="mb-6">
+          <h4 className="text-white font-bold text-lg mb-3">Logros Destacados</h4>
+          <ul className="space-y-2">
+            {t('curriculum.experience.achievements', { returnObjects: true }).map((achievement: string, index: number) => (
+              <li key={index} className="text-gray-300 text-sm flex items-start gap-2">
+                <span className="text-red-500">•</span>
+                {achievement}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Métricas */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-white/5 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-red-500">{t('curriculum.metrics.efficiency_value')}</div>
+            <div className="text-xs text-gray-400">{t('curriculum.metrics.efficiency')}</div>
+          </div>
+          <div className="bg-white/5 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-red-500">{t('curriculum.metrics.trained_value')}</div>
+            <div className="text-xs text-gray-400">{t('curriculum.metrics.trained')}</div>
+          </div>
+          <div className="bg-white/5 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-red-500">{t('curriculum.metrics.impact_value')}</div>
+            <div className="text-xs text-gray-400">{t('curriculum.metrics.impact')}</div>
+          </div>
+          <div className="bg-white/5 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-red-500">{t('curriculum.metrics.retention_value')}</div>
+            <div className="text-xs text-gray-400">{t('curriculum.metrics.retention')}</div>
+          </div>
+        </div>
+
+        {/* Botón de descarga */}
+        <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-3 rounded-xl hover:from-red-700 hover:to-red-800 transition shadow-lg shadow-red-500/20">
+          {t('curriculum.download')}
+        </button>
+      </div>
+    </div>
   );
 }
