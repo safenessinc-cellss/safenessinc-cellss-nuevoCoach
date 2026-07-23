@@ -7,26 +7,27 @@
     "contacto": "Contact"
   },
   "footer": {
-    "agendar": "Book Consultation"
+    "agendar": "Schedule a Consultation"
   },
   "hero": {
-    "badge": "Engineering & Leadership Solutions",
-    "title": "Quality is",
-    "titleHighlight": "Non-negotiable.",
-    "description": "I merge the technical precision of engineering with the development of human talent to create exponential companies."
+    "badge": "Engineer, Economist and Integrated Management Systems Specialist | Process Optimization",
+    "title": "Optimizing processes and leading human teams",
+    "titleHighlight": "with over 30 years of experience.",
+    "description": "“I integrate the technical precision of engineering with strategic economic analysis and integrated management systems. We optimize processes, unite teams and streamline critical decisions for your profitability.”"
   },
   "about": {
     "badge": "Professional Profile",
-    "title": "Over 30 years of Excellence"
+    "title": "Over 30 Years of Excellence",
+    "description": "ISO Management Systems Specialist with over 30 years of experience in auditing and strategic consulting. IBM 2025 Certified Lead Auditor and Business Coach, complementing technical expertise with studies in Psychopedagogy, Workplace Wellbeing, and Organizational Emotional Intelligence."
   },
   "services": {
     "badge": "My Services",
-    "title": "Comprehensive Management Suite",
-    "auditorTitle": "Lead ISO Auditor",
-    "auditorDesc": "Specialist in ISO 9001 and ISO 14001",
+    "title": "Integrated Management Suite",
+    "auditorTitle": "Integrated Management Systems",
+    "auditorDesc": "Engineering, economics and optimization",
     "details": "View details",
-    "coachTitle": "IBM 2025 Coach",
-    "coachDesc": "Executive coaching and leadership"
+    "coachTitle": "Process Optimization",
+    "coachDesc": "Efficiency, profitability and structure"
   },
   "global": {
     "title": "Global Reach"
@@ -34,18 +35,13 @@
   "certifications": {
     "badge": "The Gold Standard",
     "title": "ISO Management Systems",
-    "description": "Certifying excellence on an international level."
+    "description": "Certifying excellence internationally."
   },
   "testimonials": {
     "badge": "Success Stories",
     "title": "What our clients say",
     "viewCase": "View case"
-  }
-}
-{
-  // ... tus traducciones existentes ...
-  
-{
+  },
   "curriculum": {
     "title": "Professional Resume",
     "download": "Download PDF",
@@ -176,7 +172,6 @@
     },
     "footer": {
       "text": "Transforming businesses and human teams with over 30 years of experience"
-    },
-    "viewCase": "View case"
+    }
   }
 }
