@@ -1,177 +1,92 @@
 {
   "nav": {
     "perfil": "Perfil",
+    "curriculum": "Currículo & Certificados",
     "servicios": "Servicios",
     "procesos": "Procesos",
-    "certificaciones": "Certificaciones",
-    "contacto": "Contacto"
+    "certificaciones": "Certificaciones"
   },
-  "footer": {
-    "agendar": "Agendar Consulta"
-  },
-  "hero": {
-    "badge": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral | Optimización de Procesos",
-    "title": "Optimizando procesos y liderando equipos humanos",
-    "titleHighlight": "con más de 30 años de experiencia.",
-    "description": "“Integro la precisión técnica de la ingeniería con el análisis económico estratégico y los sistemas de gestión integral. Optimizamos procesos, cohesionamos equipos y agilizamos decisiones críticas para su rentabilidad.”"
-  },
-  "about": {
-    "badge": "Perfil Profesional",
-    "title": "Más de 30 años de Excelencia",
-    "description": "Especialista en Sistemas de Gestión ISO con más de 30 años de experiencia en auditoría y consultoría estratégica. Auditor Líder certificado por IBM 2025 y Coach Empresarial, complementa su perfil técnico con estudios en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional."
-  },
-  "services": {
-    "badge": "Mis Servicios",
-    "title": "Suite Integral de Gestión",
-    "auditorTitle": "Sistemas de Gestión Integral",
-    "auditorDesc": "Ingeniería, economía y optimización",
-    "details": "Ver detalles",
-    "coachTitle": "Optimización de Procesos",
-    "coachDesc": "Eficiencia, rentabilidad y estructura"
-  },
-  "global": {
-    "title": "Alcance Global"
-  },
-  "certifications": {
-    "badge": "El Estándar de Oro",
-    "title": "Sistemas de Gestión ISO",
-    "description": "Certificando la excelencia a nivel internacional."
-  },
-  "testimonials": {
-    "badge": "Casos de Éxito",
-    "title": "Lo que dicen nuestros clientes",
-    "viewCase": "Ver caso"
-  },
-  "curriculum": {
-    "title": "Currículum Profesional",
-    "download": "Descargar PDF",
-    "print": "Imprimir",
-    "close": "Cerrar",
-    "profile": {
-      "title": "Perfil Profesional",
-      "subtitle": "Más de 30 años de Excelencia",
-      "description": "Especialista en Sistemas de Gestión ISO con más de 30 años de experiencia en auditoría y consultoría estratégica. Auditor Líder certificado por IBM 2025 y Coach Empresarial, complementa su perfil técnico con estudios en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional."
+  "curriculumData": {
+    "name": "Deuwy Robert Terán Medina",
+    "title": "Coach Ejecutivo • Auditor Líder SGC IRCA • Ingeniero Economista",
+    "summary": "Especialista en Sistemas de Gestión ISO con más de 30 años de experiencia en auditoría y consultoría estratégica. Auditor Líder certificado por IBM 2025 y Coach Empresarial, complementa su perfil técnico con estudios en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional.",
+    "contact": {
+      "phone": "+55 (51) 98280-4970",
+      "email": "robert@coach-iso.eu",
+      "location": "São Leopoldo, RS, Brasil"
     },
-    "experience": {
-      "title": "Trayectoria Profesional",
-      "subtitle": "Sincronización de Impacto Corporativo",
-      "sections": {
-        "quality": "Gestión de Calidad, Procesos y Producción Industrial",
-        "executive": "Dirección Ejecutiva, Procura y Coaching Organizacional",
-        "audit": "Auditoría Canal & Resultados Corporativos"
+    "languages": [
+      { "name": "Español", "level": "Nativo", "written": "Escritura y habla nativas" },
+      { "name": "Portugués", "level": "Avanzado", "written": "Fluido en lectura, escritura y conversación" },
+      { "name": "Inglés", "level": "Intermedio", "written": "Comprensión técnica y profesional" }
+    ],
+    "education": [
+      {
+        "title": "Ingeniero Industrial",
+        "institution": "Universidad Central de Venezuela",
+        "period": "1990 - 1995",
+        "description": "Especialización en procesos productivos y gestión de calidad"
       },
-      "items": [
-        {
-          "period": "2000 - 2005",
-          "role": "Coordinador de Calidad y Procesos",
-          "company": "Rototech",
-          "description": "Implementación de metodologías Lean, Six Sigma y auditorías ISO 9001/14001/45001"
-        },
-        {
-          "period": "2006 - 2010",
-          "role": "Analista y Gestor de Calidad",
-          "company": "Tapeçaria Palacio",
-          "description": "Optimización del rendimiento productivo y control de calidad"
-        },
-        {
-          "period": "2010 - 2015",
-          "role": "Gerente de Calidad y Producción",
-          "company": "D'classe Papeis",
-          "description": "Dirección de equipos multidisciplinarios y sistemas integrados de gestión"
-        },
-        {
-          "period": "2015 - 2020",
-          "role": "Analista de Compras SR & Calidad",
-          "company": "General Motors",
-          "description": "Negociación de abastecimiento internacional y homologación de proveedores"
-        }
-      ],
-      "achievements": [
-        "Implementación de OKRs y KPIs en 5 organizaciones",
-        "Reducción de scrap en 35% en procesos industriales",
-        "Certificación ISO 9001 en tiempo récord"
-      ]
-    },
-    "education": {
-      "title": "Formación Académica",
-      "items": [
-        {
-          "degree": "Ingeniero Industrial",
-          "institution": "Universidad Central de Venezuela",
-          "year": "1995"
-        },
-        {
-          "degree": "Economista",
-          "institution": "Universidad Central de Venezuela",
-          "year": "1998"
-        },
-        {
-          "degree": "Especialización en Psicopedagogía Empresarial",
-          "institution": "Instituto de Psicopedagogía Aplicada",
-          "year": "2010"
-        }
-      ]
-    },
-    "certifications": {
-      "title": "Certificaciones",
-      "subtitle": "El Estándar de Oro",
-      "items": [
-        {
-          "code": "AUD",
-          "name": "Auditor Líder ISO (IRCA)",
-          "description": "Sistemas de Gestión (9001, 14001, 27001, 45001, 22000, 42001)"
-        },
-        {
-          "code": "IBM",
-          "name": "IBM 2025 Coach",
-          "description": "Liderazgo y Transformación de equipos digitales"
-        },
-        {
-          "code": "CIA",
-          "name": "Certified Internal Auditor",
-          "description": "Auditoría interna global, otorgada por el IIA"
-        },
-        {
-          "code": "CISA",
-          "name": "Certified Information Systems Auditor",
-          "description": "Control y seguridad de sistemas de información"
-        },
-        {
-          "code": "PSI",
-          "name": "Psicopedagogía Empresarial",
-          "description": "Gestión del aprendizaje organizacional y dinámicas grupales"
-        }
-      ]
-    },
-    "metrics": {
-      "efficiency": "Eficiencia Comercial",
-      "trained": "Capacitación Líderes",
-      "impact": "Impacto de Canales",
-      "retention": "Retención / Fidelización",
-      "efficiency_value": "98.6%",
-      "trained_value": "+500",
-      "impact_value": "45+",
-      "retention_value": "94.2%"
-    },
-    "simulator": {
-      "title": "Consola de Simulación Operativa (PHVA)",
-      "status": "SYS_STATUS: SIMULADOR_READY",
-      "config": "Configuración de Parámetros",
-      "results": "Consola de Evaluación & Resultados",
-      "options": {
-        "traditional": "Muestreo Táctico Tradicional",
-        "preventive": "Modelo Preventivo FMEA (Robert Terán)",
-        "absolute": "Inspección Absoluta 100%"
+      {
+        "title": "Economista",
+        "institution": "Universidad Central de Venezuela",
+        "period": "1996 - 2000",
+        "description": "Análisis económico y gestión financiera"
+      }
+    ],
+    "experience": [
+      {
+        "title": "Coordinador de Calidad y Procesos",
+        "company": "Rototech",
+        "period": "2000 - 2005",
+        "location": "Caracas, Venezuela",
+        "responsibilities": [
+          "Implementación de metodologías Lean y Six Sigma",
+          "Auditorías ISO 9001/14001/45001",
+          "Reducción de scrap en 35%"
+        ],
+        "achievements": [
+          "Certificación ISO 9001 en 6 meses",
+          "Ahorro operativo de $320,000 USD/año"
+        ]
       },
-      "compliance": "Tasa de Conformidad",
-      "goal": "Objetivo",
-      "roi": "Retorno Económico SGC",
-      "compliance_value": "98.6%",
-      "goal_value": "98%",
-      "roi_value": "+$32000 USD/año (COQ)"
-    },
-    "footer": {
-      "text": "Transformando empresas y equipos humanos con más de 30 años de experiencia"
-    }
+      {
+        "title": "Gerente de Calidad y Producción",
+        "company": "D'classe Papeis",
+        "period": "2010 - 2015",
+        "location": "São Paulo, Brasil",
+        "responsibilities": [
+          "Dirección de equipos multidisciplinarios",
+          "Implementación de sistemas integrados de gestión"
+        ],
+        "achievements": [
+          "Incremento de productividad en 40%",
+          "Certificación ISO 14001"
+        ]
+      }
+    ],
+    "certifications": [
+      {
+        "code": "AUD",
+        "name": "Auditor Líder ISO (IRCA)",
+        "description": "Sistemas de Gestión (9001, 14001, 27001, 45001, 22000, 42001)"
+      },
+      {
+        "code": "IBM",
+        "name": "IBM 2025 Coach",
+        "description": "Liderazgo y Transformación de equipos digitales"
+      },
+      {
+        "code": "CIA",
+        "name": "Certified Internal Auditor",
+        "description": "Auditoría interna global, otorgada por el IIA"
+      }
+    ],
+    "metrics": [
+      { "value": "30+", "label": "Años de Experiencia", "detail": "en industrias globales" },
+      { "value": "98.6%", "label": "Tasa de Conformidad", "detail": "en auditorías ISO" },
+      { "value": "500+", "label": "Líderes Capacitados", "detail": "en 15 países" },
+      { "value": "45+", "label": "Zonas de Retail", "detail": "optimizadas comercialmente" }
+    ]
   }
 }
