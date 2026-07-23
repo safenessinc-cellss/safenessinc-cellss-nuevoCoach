@@ -1,17 +1,4 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-
-const CurriculumShowcaseModal: React.FC<Props> = ({ isOpen, onClose }) => {
-  const { t } = useTranslation(); // Esto usará el archivo principal
-
-  // Uso de las claves:
-  // t('curriculum.title')
-  // t('curriculum.profile.title')
-  // t('curriculum.experience.items.0.role') - etc.
-  
-  // Para arrays, usa returnObjects:
-  // const items = t('curriculum.experience.items', { returnObjects: true });
-}import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   X, 
@@ -31,6 +18,7 @@ import {
   Printer,
   FileText
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useProfileSettings } from '../data/useProfileSettings';
 import { 
   CANDIDATE_INFO, 
@@ -77,6 +65,7 @@ const getHtml2PdfLib = async () => {
 };
 
 export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('cv_template');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -334,7 +323,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
             {/* Scrollable Content Body */}
             <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#06050a] print:bg-white print:p-0">
               
-              {/* TAB 0: EXECUTIVE CV TEMPLATE MATCHING THE DESIGN IN THE IMAGE */}
+              {/* TAB 0: EXECUTIVE CV TEMPLATE */}
               {activeTab === 'cv_template' && (
                 <div className="flex flex-col items-center">
                   
