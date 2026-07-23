@@ -1,50 +1,4 @@
 {
-  "nav": {
-    "perfil": "Perfil",
-    "servicios": "Servicios",
-    "procesos": "Procesos",
-    "certificaciones": "Certificaciones",
-    "contacto": "Contacto"
-  },
-  "footer": {
-    "agendar": "Agendar Consulta"
-  },
-  "hero": {
-    "badge": "Auditor Líder ISO | Coach Estratégico IBM 2025 | Ingeniero de Procesos",
-    "title": "Transformando empresas y equipos humanos",
-    "titleHighlight": "con más de 30 años de experiencia.",
-    "description": "“Integro la precisión técnica de las normativas internacionales con la inteligencia emocional del coaching estratégico. Certifico sistemas, pero sobre todo, cohesiono equipos y agilizo decisiones críticas.”"
-  },
-  "about": {
-    "badge": "Perfil Profesional",
-    "title": "Más de 30 años de Excelencia"
-  },
-  "services": {
-    "badge": "Mis Servicios",
-    "title": "Suite Integral de Gestión",
-    "auditorTitle": "Auditor Líder ISO",
-    "auditorDesc": "Especialista en ISO 9001 e ISO 14001",
-    "details": "Ver detalles",
-    "coachTitle": "IBM 2025 Coach",
-    "coachDesc": "Coaching ejecutivo y liderazgo"
-  },
-  "global": {
-    "title": "Alcance Global"
-  },
-  "certifications": {
-    "badge": "El Estándar de Oro",
-    "title": "Sistemas de Gestión ISO",
-    "description": "Certificando la excelencia a nivel internacional."
-  },
-  "testimonials": {
-    "badge": "Casos de Éxito",
-    "title": "Lo que dicen nuestros clientes",
-    "viewCase": "Ver caso"
-  }
-}
-{
-  // ... tus traducciones existentes ...
-  
   "curriculum": {
     "title": "Currículum Profesional",
     "download": "Descargar PDF",
@@ -175,6 +129,7 @@
     },
     "footer": {
       "text": "Transformando empresas y equipos humanos con más de 30 años de experiencia"
-    }
+    },
+    "viewCase": "Ver caso"
   }
 }
