@@ -1,75 +1,74 @@
 {
   "profile": {
-    "name": "Robert Terán",
+    "name": "Deuwy Robert Terán Medina",
     "initials": "RT",
-    "title": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
-    "subtitle": "Optimización de procesos. Sincronización del equipo humano con el rendimiento económico.",
-    "description": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral con más de 30 años de experiencia mejorando la rentabilidad operativa y coordinando la optimización de procesos.",
+    "title": "Ingeniero de Producción y Calidad • Economista • Auditor Líder SIG • IBM 2025 Coach",
+    "subtitle": "Optimización de procesos productivos. Integración de Lean Manufacturing, Six Sigma, ISO 9001/14001/45001 y Liderazgo de Alto Rendimiento.",
+    "description": "Ingeniero de Producción y Calidad y Economista con 30 años de experiencia en la industria (Rototech, Tapeçaria Palacio, D'classe Papeis, General Motors), especializado en optimización de procesos, gestión de la calidad, reducción de costos y formación de equipos.",
     "email": "deuwyrobert@gmail.com",
     "linkedin": "https://www.linkedin.com/in/coach-robert-teran/"
   },
   "metrics": {
     "yearsExperience": "+30",
-    "label": "Años de Trayectoria"
+    "label": "Años de Trayectoria Industrial"
   },
   "about": {
-    "bio": "Ingeniero y Economista con más de 30 años de experiencia como Especialista en Sistemas de Gestión Integral, Auditoría y Optimización de Procesos. Su enfoque integra los sistemas de gestión integral corporativa con el análisis estratégico financiero y del capital humano, orientando sus metodologías a resultados de alto impacto y de excelencia operativa.",
+    "bio": "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder SGC RAC/IRCA (ISO 9001, 14001, 45001, IATF-16949) e IBM 2025 Executive Coach con 30 años de sólida trayectoria en la industria. Experto en optimización de procesos, gestión de la calidad, metodologías Lean Manufacturing, Green Belt Six Sigma, análisis 8D, RNCs y sistemas Just-in-Time.",
     "career": [
       {
-        "area": "Dirección Ejecutiva y Comercial",
-        "description": "Más de 20 años de experiencia liderando equipos de ventas y merchandising en canales de retail internacional. Desarrollo de estrategias de mercado, capacitación de vendedores, alineación de equipos con objetivos estratégicos y gestión de relaciones interpersonales.",
+        "area": "Gestión de Calidad, Procesos y Producción Industrial",
+        "description": "Más de 30 años de experiencia en liderazgo de operaciones industriales en Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors. Implementación de metodologías Lean, Six Sigma, auditorías ISO 9001/14001/45001 y optimización del rendimiento productivo.",
         "roles": [
-          "Corporate Executive Director",
-          "Commercial Director",
-          "Market Manager & Purchasing Analyst SR",
-          "Sales & Administrative Management"
+          "Coordinador de Calidad y Procesos (Rototech)",
+          "Analista y Gestor de Calidad (Tapeçaria Palacio)",
+          "Gerente de Calidad y Producción (D'classe Papeis)",
+          "Analista de Compras SR & Calidad (General Motors)"
         ]
       },
       {
-        "area": "Gestión de Calidad y Operaciones",
-        "description": "Liderazgo en la implementación de mejoras continuas en procesos productivos, metodologías Lean Manufacturing y Six Sigma. Realización de auditorías internas y externas, y desarrollo de políticas de control de calidad.",
+        "area": "Dirección Ejecutiva, Procura y Coaching Organizacional",
+        "description": "Desarrollo estratégico de proveedores, negociación de abastecimiento internacional, liderazgo de equipos multidisciplinarios y consultoría ejecutiva en Sistemas Integrados de Gestión y Coaching IBM 2025.",
         "roles": [
-          "Quality & Product Director",
-          "Quality & Production Manager",
-          "Quality & Process Coordinator",
-          "Quality Analyst"
+          "Director de Consultoría & Coach SIG",
+          "Auditor Líder Gestão Integrada RAC/IRCA",
+          "Especialista en Homologación de Proveedores",
+          "Instructor de Metodologías de Calidad (8D, FMEA, PPAP)"
         ]
       }
     ],
     "badges": [
-      { "label": "ISO Gestión de Calidad", "icon": "ShieldCheck" },
-      { "label": "Estructuras de Empresas", "icon": "Network" },
-      { "label": "Mapeo de Procesos", "icon": "Workflow" },
-      { "label": "Análisis Crítico", "icon": "Brain" },
-      { "label": "Análisis de Gestión", "icon": "BarChart3" },
-      { "label": "Análisis de Riesgo", "icon": "ShieldAlert" },
-      { "label": "Análisis de Mercado", "icon": "LineChart" },
-      { "label": "Emprendimiento & Startup", "icon": "Rocket" },
-      { "label": "IBM 2025 Coach", "icon": "Award" },
-      { "label": "Auditor Leader", "icon": "ClipboardCheck" }
+      { "label": "ISO 9001 / 14001 / 45001", "icon": "ShieldCheck" },
+      { "label": "Engenharia de Produção", "icon": "Workflow" },
+      { "label": "Green Belt Six Sigma", "icon": "Brain" },
+      { "label": "Lean Manufacturing & JIT", "icon": "BarChart3" },
+      { "label": "Análisis 8D & RNC", "icon": "ShieldAlert" },
+      { "label": "Auditor Líder RAC / IRCA", "icon": "ClipboardCheck" },
+      { "label": "Compras SR & Proveedores", "icon": "LineChart" },
+      { "label": "IBM 2025 Coach", "icon": "Award" }
     ]
   },
   "services": [
     {
       "id": "iso",
-      "title": "Auditor Líder ISO",
-      "description": "Especialista en Sistemas de Gestión de Calidad (9001) y Ambiental (14001). Más de 30 años garantizando la excelencia operativa.",
-      "detailedDescription": "Como Auditor Líder ISO, mi enfoque va más allá del simple cumplimiento normativo. Implemento sistemas de gestión robustos que actúan como el motor de la mejora continua en su organización. Mi metodología incluye un diagnóstico profundo (Gap Analysis), diseño de procesos a medida, formación de equipos internos y auditorías de pre-certificación. He liderado con éxito más de 50 procesos de certificación en industrias que van desde la manufactura hasta los servicios tecnológicos, asegurando no solo el certificado, sino una transformación real en la cultura de calidad de la empresa.",
+      "title": "Auditor Líder & Gestión de Calidad (SIG)",
+      "description": "Especialista en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001, IATF-16949). 30 años de excelencia en auditorías, RNCs y tratamiento 8D.",
+      "detailedDescription": "Como Auditor Líder e Ingeniero de Producción y Calidad, implemento y audito Sistemas Integrados de Gestión robustos. Mi enfoque abarca diagnósticos de brechas (Gap Analysis), estandarización de procesos, resolución de problemas con 8D e Ishikawa, auditorías internas y preparación para certificaciones internacionales con impacto directo en reducción de rechazos.",
       "icon": "ShieldCheck"
     },
     {
       "id": "coaching",
-      "title": "IBM 2025 Coach",
-      "description": "\"Liderazgo que inspira resultados.\"",
-      "detailedDescription": "El coaching ejecutivo es el puente entre el potencial y el alto rendimiento. Como IBM 2025 Coach certificado, utilizo marcos de trabajo probados para desarrollar habilidades de liderazgo crítico en directivos y mandos medios. Nos enfocamos en la toma de decisiones bajo presión, la gestión del cambio organizacional, la comunicación asertiva y la alineación de equipos con los objetivos estratégicos (OKRs). Cada programa es personalizado, combinando sesiones individuales con dinámicas de equipo para garantizar un impacto sistémico y duradero en la organización.",
+      "title": "IBM 2025 Coach & Optimización de Procesos",
+      "description": "\"Liderazgo industrial que inspira resultados medibles.\"",
+      "detailedDescription": "El coaching ejecutivo combinado con ingeniería de procesos conecta a los equipos operativos con metas económicas claras. Como IBM 2025 Coach certificado y Green Belt Six Sigma, guío a líderes industriales e ingenieros en la toma de decisiones, despliegue de Lean/JIT, eliminación de cuellos de botella y alineación con OKRs estratégicos.",
       "icon": "Users"
     }
   ],
   "languages": [
     {"code": "ES", "active": true},
+    {"code": "PT", "active": true},
+    {"code": "EN", "active": true},
     {"code": "IT", "active": true},
-    {"code": "EN", "active": false},
-    {"code": "PT", "active": false}
+    {"code": "RU", "active": true}
   ],
   "certificationsInfo": {
     "title": "Estándares de Excelencia",

@@ -2,10 +2,28 @@ export interface CandidateInfo {
   name: string;
   birthDate: string;
   email: string;
+  phone?: string;
+  location?: string;
   credlyProfile: string;
   credlyId: string;
   transcriptDate: string;
   summary: string;
+}
+
+export interface CareerRole {
+  period: string;
+  title: string;
+  company: string;
+  location: string;
+  responsibilities: string[];
+  achievements?: string[];
+}
+
+export interface EducationItem {
+  period: string;
+  title: string;
+  institution: string;
+  description?: string;
 }
 
 export interface OfficialCertificate {
@@ -31,11 +49,164 @@ export const CANDIDATE_INFO: CandidateInfo = {
   name: "Deuwy Robert Teran Medina",
   birthDate: "7 August 1975",
   email: "deuwyrobert@gmail.com",
+  phone: "+55 (51) 98280-4970",
+  location: "São Leopoldo, RS, Brasil (LATAM & Global)",
   credlyProfile: "https://www.credly.com/users/deuwy-medina",
   credlyId: "198445cf-bf48-4c32-aaee-d0e81b149fd2",
   transcriptDate: "22 July 2026",
-  summary: "Ingeniero Economista, Auditor Líder SGC IRCA & Coach Estratégico Organizacional con sólida trayectoria internacional. Posee más de 20 acreditaciones y credenciales digitales emitidas por IBM, IBM SkillsBuild y Pearson Credly en Ciberseguridad, Inteligencia Artificial, Ciencia de Datos, Design Thinking, Gestión Agil de Proyectos, Cloud Computing y Psicopedagogía Empresarial."
+  summary: "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en empresas como Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva."
 };
+
+export const IMPACT_METRICS = [
+  { value: "30%", label: "Reducción en reclamos de clientes", detail: "Sistema de rastreo de quejas y acciones correctivas" },
+  { value: "15%", label: "Aumento en capacidad de producción", detail: "Optimización de líneas VSM, Kaizen y redistribución" },
+  { value: "25%", label: "Reducción en costos de inventario", detail: "Despliegue Just-in-Time (JIT) y flujo tenso" },
+  { value: "20%", label: "Reducción en índice de rechazos", detail: "Metodología 8D, RNCs y control estadístico" },
+  { value: "$195k", label: "Ahorro estimado en proyectos TCC GM", detail: "Aplicación de herramientas de calidad en capacitores" }
+];
+
+export const CAREER_EXPERIENCE: CareerRole[] = [
+  {
+    period: "Enero de 2024 – Actualidad",
+    title: "Coordinador de Calidad y Procesos",
+    company: "Rototech",
+    location: "São Leopoldo, RS, Brasil",
+    responsibilities: [
+      "Coordinar las actividades integrales de gestión de la calidad y optimización de procesos productivos.",
+      "Liderar la implementación de mejoría continua en las líneas operativas aplicando Lean Manufacturing y Six Sigma.",
+      "Garantizar la conformidad con las normas de calidad ISO 9001, ISO 14001, ISO 45001 y requisitos del cliente.",
+      "Realizar auditorías internas y externas, identificando no conformidades (RNCs) e impulsando tratamientos 8D.",
+      "Monitorear indicadores clave de desempeño (KPIs), analizando tendencias operativas para la toma de decisiones.",
+      "Elaborar, estandarizar y mantener actualizada la documentación del Sistema de Gestión de la Calidad (SGC).",
+      "Realizar programas de formación y capacitación técnica continua sobre procedimientos de calidad e higiene operativa."
+    ]
+  },
+  {
+    period: "2021 – 2023",
+    title: "Analista y Gestor de Calidad",
+    company: "Tapeçaria Palacio",
+    location: "Canoas, RS, Brasil",
+    responsibilities: [
+      "Desarrollo e implementación de estrategias de gestión de calidad en la línea de producción.",
+      "Análisis de calidad de materias primas e insumos en estrecha colaboración con ingeniería y producción.",
+      "Diseño y supervisión de procedimientos de control de calidad para cada etapa productiva.",
+      "Investigación sistemática de problemas e implementación de soluciones con Ishikawa y 5 Porqués.",
+      "Liderazgo en la homologación, auditoría y evaluación periódica de proveedores."
+    ],
+    achievements: [
+      "Reducción del 15% en el índice de defectos del proceso productivo gracias al flujo sistemático de control.",
+      "Diseño e implementación de un sistema de rastreo de reclamos de clientes con 30% de reducción en quejas.",
+      "Optimización del proceso de aprobación de proveedores, reduciendo en 25% el tiempo de homologación."
+    ]
+  },
+  {
+    period: "2019 – 2021",
+    title: "Gerente de Calidad y Producción",
+    company: "D'classe Papeis",
+    location: "Portão, RS, Brasil",
+    responsibilities: [
+      "Gestión integral de producción y calidad liderando un equipo multidisciplinario de ingenieros, técnicos y supervisores.",
+      "Implementación de metodologías Lean Manufacturing y Six Sigma para maximizar la eficiencia y reducir costos.",
+      "Desarrollo de políticas de control de calidad garantizando la satisfacción del cliente y normas sectoriales.",
+      "Liderazgo en la implantación de sistemas integrados de gestión de producción, calidad y seguridad laboral.",
+      "Análisis sistemático para minimizar el tiempo de inactividad de equipos en coordinación con mantenimiento."
+    ],
+    achievements: [
+      "Implementación de un sistema automatizado de control de calidad que mejoró la precisión y velocidad en 30%.",
+      "Liderazgo en la implementación de un sistema Just-in-Time, reduciendo costos de inventario en 25%.",
+      "Desarrollo de un sistema de mejora continua en producción con reducción del 20% en tasa de rechazos.",
+      "Colaboración con ingeniería en mejoras de línea de producción, aumentando la capacidad productiva en 15%."
+    ]
+  },
+  {
+    period: "2005 – 2018",
+    title: "Analista de Compras Senior & Gestión Comercial / Retail",
+    company: "General Motors",
+    location: "Brasil & LATAM",
+    responsibilities: [
+      "Gestión estratégica y operacional de compras de materiales e insumos críticos para la producción automotriz.",
+      "Liderazgo en la adquisición de insumos negociando con proveedores para asegurar calidad y tiempos JIT.",
+      "Análisis de costos y evaluación continua de proveedores para una cadena de suministro rentable.",
+      "Estrategias de negociación y reducción de costos mediante metodologías Lean y Six Sigma.",
+      "Colaboración multidisciplinaria en proyectos de desarrollo de nuevos productos desde diseño hasta masa."
+    ],
+    achievements: [
+      "Optimización de la cadena de suministro reduciendo costos de adquisición en 15% mediante negociación estratégica.",
+      "Programa de desarrollo de proveedores que mejoró la calidad recibida, reduciendo reclamos en 20%.",
+      "Integración de nuevos proveedores internacionales, ampliando la base de suministro."
+    ]
+  },
+  {
+    period: "1999 – 2005",
+    title: "Auditor Interno de Calidad & Proyectos de Proceso (Estadía)",
+    company: "General Motors",
+    location: "Planta Automotriz",
+    responsibilities: [
+      "Participación en auditorías internas y externas ISO 9001.",
+      "Elaboración y gestión de PPAP (Production Part Approval Process) junto a proveedores.",
+      "Tratamiento de productos no conformes (RNC) y análisis de desvíos de proceso mediante metodología 8D.",
+      "Aplicación de herramientas de la calidad: Ishikawa, 5 Porqués, Brainstorming, FMEA y Control Estadístico."
+    ],
+    achievements: [
+      "TCC Aplicación de Herramientas de la Calidad en producción de capacitores con ganancias estimadas de $195,000.00 USD.",
+      "Análisis y proyectos de mejora en pruebas finales, con aumento de 7 puntos en piezas aprobadas al primer intento."
+    ]
+  }
+];
+
+export const ACADEMIC_EDUCATION: EducationItem[] = [
+  {
+    period: "1995 - 1999",
+    title: "Engenharia de Produção e Qualidade",
+    institution: "Universidad Simón Bolívar",
+    description: "Título universitario en ingeniería enfocado en investigación operativa, gestión de la calidad, optimización de sistemas productivos y costos."
+  },
+  {
+    period: "2000",
+    title: "Certificación en Lean Manufacturing",
+    institution: "Instituto de Mejora Continua, Caracas, Venezuela",
+    description: "Especialización avanzada en VSM, flujo continuo, Kaizen, 5S y eliminación de desperdicios."
+  },
+  {
+    period: "1999",
+    title: "Certificación Green Belt Six Sigma",
+    institution: "Instituto de Ingeniería y Tecnología, Caracas, Venezuela",
+    description: "Dominio de la metodología DMAIC, análisis estadístico de variabilidad y control estadístico de procesos (SPC)."
+  },
+  {
+    period: "1992 - 1993",
+    title: "Técnico Superior en Control de Calidad",
+    institution: "Instituto Germán Celis Sauné",
+    description: "Formación técnica especializada en metrología, normas ISO, muestreo y técnicas de inspección industrial."
+  }
+];
+
+export const LANGUAGES_LIST = [
+  { name: "Español", level: "Proficiente / Nativo", written: "Escrito e Falado", percentage: 100 },
+  { name: "Portugués", level: "Proficiente", written: "Escrito e Falado", percentage: 100 },
+  { name: "Inglés", level: "Proficiente", written: "Escrito e Falado", percentage: 95 },
+  { name: "Italiano", level: "Proficiente", written: "Escrito e Falado", percentage: 90 },
+  { name: "Ruso", level: "Proficiente", written: "Escrito e Falado", percentage: 85 }
+];
+
+export const INDUSTRIAL_COURSES = [
+  "Auditor Líder Gestão Integrada | ISO 9001, ISO 14001 e ISO 45001 | RAC",
+  "V Programa de Especialização em Gestão por Processos Qualidade & Formação de Auditor Interno ISO 9001",
+  "Curso de Interpretação da Norma ISO 9001:2015",
+  "Técnico em Control de Qualidade (Normas ISO)",
+  "Auditoria Interna - Conceitos Principais",
+  "O Processo de Certificação de Sistemas de Gestão",
+  "Lean Manufacturing Basic & Advanced",
+  "IATF-16949:2016 - Formação de Auditor Interno",
+  "Green Belt Six Sigma",
+  "Just-in-Time (JIT)",
+  "QualityGB",
+  "Quality 1",
+  "Kanban & Produção",
+  "Equipes de trabalho & Kaizen",
+  "Value Stream Mapping (VSM)",
+  "Herramientas de la Calidad (Ishikawa, 5 Porquês, Brainstorming, FMEA, PPAP, 8D, RNC)"
+];
 
 export const OFFICIAL_CERTIFICATES: OfficialCertificate[] = [
   {
