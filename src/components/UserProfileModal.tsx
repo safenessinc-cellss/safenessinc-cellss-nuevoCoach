@@ -1,4 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+const UserProfileModal: React.FC<Props> = ({ user, onClose }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="profile-modal">
+      <h2>{t('curriculum.profile.title')}</h2>
+      <p>{t('curriculum.profile.description')}</p>
+      {/* ... */}
+    </div>
+  );
+};import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Linkedin, Mail, ShieldCheck, Award, Briefcase, Calendar, GraduationCap, FileCode, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
