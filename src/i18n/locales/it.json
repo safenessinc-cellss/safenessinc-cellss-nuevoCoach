@@ -7,26 +7,27 @@
     "contacto": "Contatto"
   },
   "footer": {
-    "agendar": "Prenota Consulenza"
+    "agendar": "Prenota una Consulenza"
   },
   "hero": {
-    "badge": "Soluzioni di Ingegneria e Leadership",
-    "title": "La Qualità è",
-    "titleHighlight": "Non Negoziabile.",
-    "description": "Fondo la precisione tecnica dell'ingegneria con lo sviluppo del talento umano per creare aziende esponenziali."
+    "badge": "Ingegnere, Economista e Specialista in Sistemi di Gestione Integrata | Ottimizzazione dei Processi",
+    "title": "Ottimizzando processi e guidando team umani",
+    "titleHighlight": "con oltre 30 anni di esperienza.",
+    "description": "“Integro la precisione tecnica dell'ingegneria con l'analisi economica strategica e i sistemi di gestione integrata. Ottimizziamo processi, uniamo team e snelliamo le decisioni critiche per la vostra redditività.”"
   },
   "about": {
     "badge": "Profilo Professionale",
-    "title": "Oltre 30 anni di Eccellenza"
+    "title": "Oltre 30 Anni di Eccellenza",
+    "description": "Specialista in Sistemi di Gestione ISO con oltre 30 anni di esperienza in audit e consulenza strategica. Lead Auditor certificato IBM 2025 e Business Coach, integra competenze tecniche con studi in Psicopedagogia, Benessere Lavorativo e Intelligenza Emotiva Organizzativa."
   },
   "services": {
     "badge": "I Miei Servizi",
-    "title": "Suite Integrale di Gestione",
-    "auditorTitle": "Lead Auditor ISO",
-    "auditorDesc": "Specialista in ISO 9001 e ISO 14001",
+    "title": "Suite Integrata di Gestione",
+    "auditorTitle": "Sistemi di Gestione Integrata",
+    "auditorDesc": "Ingegneria, economia e ottimizzazione",
     "details": "Vedi dettagli",
-    "coachTitle": "Coach IBM 2025",
-    "coachDesc": "Coaching esecutivo e leadership"
+    "coachTitle": "Ottimizzazione dei Processi",
+    "coachDesc": "Efficienza, redditività e struttura"
   },
   "global": {
     "title": "Portata Globale"
@@ -34,18 +35,13 @@
   "certifications": {
     "badge": "Lo Standard d'Oro",
     "title": "Sistemi di Gestione ISO",
-    "description": "Certificare l'eccellenza a livello internazionale."
+    "description": "Certificando l'eccellenza a livello internazionale."
   },
   "testimonials": {
     "badge": "Casi di Successo",
     "title": "Cosa dicono i nostri clienti",
-    "viewCase": "Vedi caso"
-  }
-}
-{
-  // ... tus traducciones existentes ...
-  
- {
+    "viewCase": "Visualizza caso"
+  },
   "curriculum": {
     "title": "Curriculum Professionale",
     "download": "Scarica PDF",
@@ -176,7 +172,6 @@
     },
     "footer": {
       "text": "Trasformando aziende e team umani con oltre 30 anni di esperienza"
-    },
-    "viewCase": "Visualizza caso"
+    }
   }
 }
