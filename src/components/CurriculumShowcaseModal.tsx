@@ -24,7 +24,12 @@ import {
   OFFICIAL_CERTIFICATES, 
   ALL_LEARNING_ACTIVITIES, 
   OfficialCertificate, 
-  LearningActivity 
+  LearningActivity,
+  CAREER_EXPERIENCE,
+  ACADEMIC_EDUCATION,
+  IMPACT_METRICS,
+  LANGUAGES_LIST,
+  INDUSTRIAL_COURSES
 } from '../data/robertTeranCurriculumData';
 import ScaledCertificateModal from './ScaledCertificateModal';
 
@@ -393,8 +398,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             <div className="relative space-y-0.5">
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">Teléfono / WhatsApp</span>
-                              <span className="font-semibold text-white block">+51 984 45C F48</span>
-                              <span className="text-gray-300 text-[10px] block">+51 970 533 393</span>
+                              <span className="font-semibold text-white block">{CANDIDATE_INFO.phone || "+55 (51) 98280-4970"}</span>
                             </div>
 
                             {/* Email & Web */}
@@ -411,64 +415,56 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             <div className="relative space-y-0.5">
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">Ubicación</span>
-                              <span className="font-medium text-white block">Lima, Perú</span>
-                              <span className="text-gray-300 text-[9.5px] block">Cobertura LATAM & Global</span>
+                              <span className="font-medium text-white block">{CANDIDATE_INFO.location || "São Leopoldo, RS, Brasil"}</span>
                             </div>
                           </div>
                         </div>
 
-                        {/* REFERENCIAS / CREDENCIALES CLAVE */}
+                        {/* IDIOMAS */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2 border-b border-amber-500/40 pb-1.5">
                             <span className="p-1 rounded-full bg-amber-500 text-black shrink-0">
-                              <ShieldCheck className="w-3.5 h-3.5" />
+                              <BookOpen className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
-                              Referencias
+                              Idiomas
                             </h3>
                           </div>
 
-                          <div className="relative pl-4 space-y-3 border-l-2 border-amber-500 ml-2 text-[11px]">
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="font-bold text-amber-400 block">IBM SkillsBuild & Credly</span>
-                              <span className="text-gray-300 text-[9.5px] block font-mono">ID: {CANDIDATE_INFO.credlyId}</span>
-                              <span className="text-gray-400 text-[9px] block">20+ Insignias Digitales Acreditadas</span>
-                            </div>
-
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="font-bold text-amber-400 block">Auditor Líder SGC IRCA</span>
-                              <span className="text-gray-300 text-[9.5px] block">ISO 9001, 14001, 45001, 27001</span>
-                            </div>
+                          <div className="relative pl-4 space-y-2 border-l-2 border-amber-500 ml-2 text-[10.5px]">
+                            {LANGUAGES_LIST.map((lang, idx) => (
+                              <div key={`lang-${idx}`} className="relative space-y-0.5">
+                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                                <div className="flex justify-between items-center text-white font-bold">
+                                  <span>{lang.name}</span>
+                                  <span className="text-[9px] text-amber-400 font-mono">{lang.level}</span>
+                                </div>
+                                <span className="text-gray-400 text-[9px] block">{lang.written}</span>
+                              </div>
+                            ))}
                           </div>
                         </div>
 
-                        {/* EDUCACIÓN */}
+                        {/* EDUCACIÓN Y FORMACIÓN */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2 border-b border-amber-500/40 pb-1.5">
                             <span className="p-1 rounded-full bg-amber-500 text-black shrink-0">
                               <GraduationCap className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
-                              Educación
+                              Formación Académica
                             </h3>
                           </div>
 
                           <div className="relative pl-4 space-y-3 border-l-2 border-amber-500 ml-2 text-[11px]">
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="font-bold text-white uppercase block">Grado Universitario</span>
-                              <span className="text-amber-400 text-[10.5px] font-semibold block">Ingeniero Economista</span>
-                              <span className="text-gray-400 text-[9px] block">Especialización en Finanzas y Costos</span>
-                            </div>
-
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="font-bold text-white uppercase block">Certificaciones de Posgrado</span>
-                              <span className="text-amber-400 text-[10.5px] font-semibold block">Coach Estratégico & Psicopedagogía</span>
-                              <span className="text-gray-400 text-[9px] block">Sistemas Integrados de Gestión ISO</span>
-                            </div>
+                            {ACADEMIC_EDUCATION.map((edu, idx) => (
+                              <div key={`edu-${idx}`} className="relative space-y-0.5">
+                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                                <span className="font-bold text-white uppercase block leading-tight">{edu.title}</span>
+                                <span className="text-amber-400 text-[10px] font-semibold block">{edu.institution} ({edu.period})</span>
+                                {edu.description && <span className="text-gray-400 text-[9px] block leading-tight">{edu.description}</span>}
+                              </div>
+                            ))}
                           </div>
                         </div>
 
@@ -489,8 +485,8 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-gray-900 leading-tight">
                             DEUWY ROBERT <span className="text-amber-500">TERÁN MEDINA</span>
                           </h1>
-                          <p className="text-[11px] font-black uppercase text-gray-600 tracking-wider mt-1.5">
-                            COACH EJECUTIVO • INGENIERO ECONOMISTA • AUDITOR LÍDER SIG ISO
+                          <p className="text-[10.5px] font-black uppercase text-gray-600 tracking-wider mt-1.5">
+                            INGENIERO DE PRODUCCIÓN Y CALIDAD • ECONOMISTA • AUDITOR LÍDER SIG ISO • IBM 2025 COACH
                           </p>
                         </div>
 
@@ -501,12 +497,34 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <User className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Sobre Mí
+                              Resumen Profesional
                             </h2>
                           </div>
                           <p className="text-gray-600 leading-relaxed text-xs pl-7 text-justify font-normal">
                             {CANDIDATE_INFO.summary}
                           </p>
+                        </div>
+
+                        {/* IMPACTO Y RESULTADOS QUANTITATIVOS */}
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                              <Sparkles className="w-3 h-3" />
+                            </span>
+                            <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
+                              Impacto y Resultados Operativos Comprobados
+                            </h2>
+                          </div>
+
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pl-7">
+                            {IMPACT_METRICS.map((metric, idx) => (
+                              <div key={`metric-${idx}`} className="bg-amber-50/70 border border-amber-200/80 p-2.5 rounded-xl">
+                                <span className="text-lg font-black text-amber-700 font-mono block leading-none">{metric.value}</span>
+                                <span className="text-[10px] font-extrabold text-gray-900 block leading-tight mt-1">{metric.label}</span>
+                                <span className="text-[8.5px] text-gray-500 block mt-0.5">{metric.detail}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
 
                         {/* EXPERIENCIA LABORAL / JOB EXPERIENCE */}
@@ -516,151 +534,62 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <Building className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Experiencia Laboral
+                              Experiencia Profesional
                             </h2>
                           </div>
 
                           <div className="relative pl-7 space-y-4 border-l-2 border-amber-500 ml-2.5">
-                            
-                            {/* Role 1 */}
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
-                              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                                <h3 className="font-extrabold uppercase text-xs text-gray-900">
-                                  DIRECTOR DE CONSULTORÍA & COACH EJECUTIVO SIG
-                                </h3>
-                                <span className="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                                  2020 - Presente
-                                </span>
+                            {CAREER_EXPERIENCE.map((role, idx) => (
+                              <div key={`career-role-${idx}`} className="relative space-y-1">
+                                <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
+                                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
+                                  <h3 className="font-extrabold uppercase text-xs text-gray-900">
+                                    {role.title}
+                                  </h3>
+                                  <span className="text-[9.5px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 shrink-0">
+                                    {role.period}
+                                  </span>
+                                </div>
+                                <p className="text-[10.5px] font-bold text-amber-600 italic">
+                                  {role.company} | {role.location}
+                                </p>
+                                <ul className="list-disc list-inside text-[10.5px] text-gray-600 space-y-0.5 pt-0.5">
+                                  {role.responsibilities.slice(0, 4).map((resp, rIdx) => (
+                                    <li key={`resp-${idx}-${rIdx}`} className="leading-tight">{resp}</li>
+                                  ))}
+                                </ul>
+                                {role.achievements && role.achievements.length > 0 && (
+                                  <div className="mt-1.5 p-2 bg-gray-50 border border-gray-200 rounded-lg text-[10px] text-gray-700">
+                                    <span className="font-bold text-amber-700 block mb-0.5">★ Conquistas Notables:</span>
+                                    <ul className="list-square list-inside space-y-0.5">
+                                      {role.achievements.map((ach, aIdx) => (
+                                        <li key={`ach-${idx}-${aIdx}`} className="text-[9.5px]">{ach}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
                               </div>
-                              <p className="text-[10.5px] font-bold text-amber-600 italic">
-                                SGC Coach / Firma de Consultoría ISO
-                              </p>
-                              <p className="text-[11px] text-gray-600 leading-relaxed pt-0.5">
-                                Dirección e implementación de Sistemas Integrados de Gestión (ISO 9001, 14001, 45001, 27001, 42001). Acompañamiento directivo mediante Coaching Estratégico y Psicopedagogía Organizacional para alinear el liderazgo directivo con la rentabilidad y la excelencia operativa.
-                              </p>
-                            </div>
-
-                            {/* Role 2 */}
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
-                              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                                <h3 className="font-extrabold uppercase text-xs text-gray-900">
-                                  AUDITOR LÍDER SIG & CONSULTOR SÉNIOR ISO
-                                </h3>
-                                <span className="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                                  2015 - 2020
-                                </span>
-                              </div>
-                              <p className="text-[10.5px] font-bold text-amber-600 italic">
-                                Certificadoras Internacionales & Sector Industrial
-                              </p>
-                              <p className="text-[11px] text-gray-600 leading-relaxed pt-0.5">
-                                Ejecución de auditorías de tercera parte acreditadas IRCA, identificación de brechas normativas, matrices de gestión de riesgos ISO 31000 / FMEA y facilitación de tableros de control con OKRs operacionales en sectores industriales y servicios.
-                              </p>
-                            </div>
-
-                            {/* Role 3 */}
-                            <div className="relative space-y-0.5">
-                              <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
-                              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
-                                <h3 className="font-extrabold uppercase text-xs text-gray-900">
-                                  INGENIERO ECONOMISTA & ANALISTA DE CONTROL OPERATIVO
-                                </h3>
-                                <span className="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                                  2010 - 2015
-                                </span>
-                              </div>
-                              <p className="text-[10.5px] font-bold text-amber-600 italic">
-                                Sector Corporativo & Financiero
-                              </p>
-                              <p className="text-[11px] text-gray-600 leading-relaxed pt-0.5">
-                                Modelado financiero de costes de calidad, análisis de viabilidad económica de proyectos, optimización de flujos de valor (Value Stream Mapping) y auditorías internas de cumplimiento organizativo.
-                              </p>
-                            </div>
-
+                            ))}
                           </div>
                         </div>
 
-                        {/* SKILLS / HABILIDADES & COMPETENCIAS */}
+                        {/* CURSOS Y CERTIFICACIONES DESTACADAS */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
                               <Award className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Habilidades & Competencias
+                              Acreditaciones & Certificaciones de Calidad
                             </h2>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-7">
-                            
-                            {/* Skill 1 */}
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-[10px] font-bold text-gray-800">
-                                <span>Sistemas Integrados ISO (9001, 14001, 45001)</span>
-                                <span className="text-amber-600">98%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div className="bg-amber-500 h-full rounded-full" style={{ width: '98%' }} />
-                              </div>
-                            </div>
-
-                            {/* Skill 2 */}
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-[10px] font-bold text-gray-800">
-                                <span>Coaching Estratégico & Liderazgo</span>
-                                <span className="text-amber-600">95%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div className="bg-amber-500 h-full rounded-full" style={{ width: '95%' }} />
-                              </div>
-                            </div>
-
-                            {/* Skill 3 */}
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-[10px] font-bold text-gray-800">
-                                <span>Auditoría Líder IRCA & Control Interno</span>
-                                <span className="text-amber-600">96%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div className="bg-amber-500 h-full rounded-full" style={{ width: '96%' }} />
-                              </div>
-                            </div>
-
-                            {/* Skill 4 */}
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-[10px] font-bold text-gray-800">
-                                <span>Ciberseguridad & ISO 27001 (IBM)</span>
-                                <span className="text-amber-600">90%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div className="bg-amber-500 h-full rounded-full" style={{ width: '90%' }} />
-                              </div>
-                            </div>
-
-                            {/* Skill 5 */}
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-[10px] font-bold text-gray-800">
-                                <span>Inteligencia Artificial (IBM Watson)</span>
-                                <span className="text-amber-600">88%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div className="bg-amber-500 h-full rounded-full" style={{ width: '88%' }} />
-                              </div>
-                            </div>
-
-                            {/* Skill 6 */}
-                            <div className="space-y-1">
-                              <div className="flex justify-between text-[10px] font-bold text-gray-800">
-                                <span>Design Thinking & Metodologías Ágiles</span>
-                                <span className="text-amber-600">92%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div className="bg-amber-500 h-full rounded-full" style={{ width: '92%' }} />
-                              </div>
-                            </div>
-
+                          <div className="flex flex-wrap gap-1.5 pl-7">
+                            {INDUSTRIAL_COURSES.map((course, idx) => (
+                              <span key={`ind-course-${idx}`} className="text-[9.5px] font-mono font-medium px-2.5 py-1 bg-gray-100 border border-gray-200 text-gray-800 rounded-md">
+                                ✓ {course}
+                              </span>
+                            ))}
                           </div>
                         </div>
 
