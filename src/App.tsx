@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ShieldCheck, Users, Globe, Linkedin, Mail, Award, Network, Workflow, FileCheck, Activity, CheckCircle2, Menu, X, Brain, BarChart3, ShieldAlert, LineChart, Rocket, ClipboardCheck, Briefcase, Map, Quote, ArrowRight, Image as ImageIcon, Layers, Play, Sliders, RotateCcw, Terminal, Check, HelpCircle, CheckSquare, TrendingUp, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, Users, Globe, Linkedin, Mail, Award, Network, Workflow, FileCheck, Activity, CheckCircle2, Menu, X, Brain, BarChart3, ShieldAlert, LineChart, Rocket, ClipboardCheck, Briefcase, Map, Quote, ArrowRight, Image as ImageIcon, Layers, Play, Sliders, RotateCcw, Terminal, Check, HelpCircle, CheckSquare, TrendingUp, AlertTriangle, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import dataES from './data/es.json';
@@ -12,6 +12,7 @@ import ISOImage from './components/ISOImage';
 import UserProfileModal from './components/UserProfileModal';
 import { useProfileSettings } from './data/useProfileSettings';
 import CoachingPillarsPanel from './components/CoachingPillarsPanel';
+import CurriculumShowcaseModal from './components/CurriculumShowcaseModal';
 
 const iconMap: Record<string, any> = {
   ShieldCheck, Network, Workflow, Brain, BarChart3, ShieldAlert, LineChart, Rocket, Award, ClipboardCheck, Map
@@ -165,6 +166,7 @@ export default function App() {
   const [selectedService, setSelectedService] = useState<any>(null);
   const [selectedTestimonial, setSelectedTestimonial] = useState<any>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
   const [isBioModalOpen, setIsBioModalOpen] = useState(false);
   const [isCertificationsModalOpen, setIsCertificationsModalOpen] = useState(false);
   const [selectedConcept, setSelectedConcept] = useState<any>(null);
@@ -496,6 +498,9 @@ export default function App() {
           {/* Desktop Nav */}
           <div className="hidden md:flex gap-6 text-xs font-medium uppercase tracking-widest text-gray-400 items-center">
             <button onClick={() => setIsProfileModalOpen(true)} className={`transition ${isProfileModalOpen ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.perfil')}</button>
+            <button onClick={() => setIsCurriculumModalOpen(true)} className="text-amber-400 font-bold hover:text-amber-300 transition flex items-center gap-1">
+              <GraduationCap className="w-4 h-4" /> Currículo & Certificados
+            </button>
             <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`transition ${activeSection === 'services' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.servicios')}</a>
             <a href="#procesos" onClick={(e) => handleNavClick(e, 'procesos')} className={`transition ${activeSection === 'procesos' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.procesos')}</a>
             <a href="#certifications" onClick={(e) => handleNavClick(e, 'certifications')} className={`transition ${activeSection === 'certifications' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.certificaciones')}</a>
@@ -532,6 +537,13 @@ export default function App() {
                 className={`text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${isProfileModalOpen ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}
               >
                 {t('nav.perfil')}
+              </button>
+              <button 
+                onClick={() => { setIsCurriculumModalOpen(true); closeMenu(); }} 
+                className="text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition text-amber-400 hover:bg-amber-500/10 flex items-center gap-2"
+              >
+                <GraduationCap className="w-4 h-4" />
+                <span>Currículo & Certificados Escala</span>
               </button>
               <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'services' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.servicios')}</a>
               <a href="#procesos" onClick={(e) => handleNavClick(e, 'procesos')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'procesos' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.procesos')}</a>
@@ -2055,28 +2067,28 @@ export default function App() {
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {selectedCert.title.includes("ISO") && ["9001:2015", "14001:2015", "45001:2018", "27001", "42001 (IA)"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-[10px] font-mono font-semibold text-red-400">{n}</span>
+                        <span key={`iso-${n}`} className="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-[10px] font-mono font-semibold text-red-400">{n}</span>
                       ))}
                       {selectedCert.title.includes("Coach") && ["IBM Executive", "Agilidad", "Feedback 360", "Psicopedagogía"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-[10px] font-mono font-semibold text-amber-400">{n}</span>
+                        <span key={`coach-${n}`} className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-[10px] font-mono font-semibold text-amber-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("CIA") && ["IIA Framework", "Control Interno", "Muestreo Táctico"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-semibold text-blue-400">{n}</span>
+                      {(selectedCert.title === "CIA" || /\bCIA\b/.test(selectedCert.title)) && ["IIA Framework", "Control Interno", "Muestreo Táctico"].map(n => (
+                        <span key={`cia-${n}`} className="px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-semibold text-blue-400">{n}</span>
                       ))}
                       {selectedCert.title.includes("CISA") && ["Seguridad de Datos", "ISO 27001", "COBIT Controls"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/20 text-[10px] font-mono font-semibold text-purple-400">{n}</span>
+                        <span key={`cisa-${n}`} className="px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/20 text-[10px] font-mono font-semibold text-purple-400">{n}</span>
                       ))}
                       {selectedCert.title.includes("CPA") && ["Costo de Calidad", "Evaluación Financiera", "Scrap Ledger"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-semibold text-emerald-400">{n}</span>
+                        <span key={`cpa-${n}`} className="px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-semibold text-emerald-400">{n}</span>
                       ))}
                       {selectedCert.title.includes("CRMA") && ["ISO 31000", "Matriz FMEA", "Mitigación de Riesgo"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-[10px] font-mono font-semibold text-rose-400">{n}</span>
+                        <span key={`crma-${n}`} className="px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-[10px] font-mono font-semibold text-rose-400">{n}</span>
                       ))}
                       {selectedCert.title.includes("Psicopedagogía") && ["David Kolb", "Equipos Cohesionados", "Curva de Aprendizaje"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-teal-500/10 border border-teal-500/20 text-[10px] font-mono font-semibold text-teal-400">{n}</span>
+                        <span key={`psico-${n}`} className="px-2.5 py-1 rounded bg-teal-500/10 border border-teal-500/20 text-[10px] font-mono font-semibold text-teal-400">{n}</span>
                       ))}
                       {selectedCert.title.includes("Estratégico") && ["Decisiones Críticas", "Triage de Crisis", "Mapas Mentales"].map(n => (
-                        <span key={n} className="px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono font-semibold text-cyan-400">{n}</span>
+                        <span key={`estrat-${n}`} className="px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono font-semibold text-cyan-400">{n}</span>
                       ))}
                     </div>
                   </div>
@@ -3495,12 +3507,17 @@ export default function App() {
           onClose={() => setIsProfileModalOpen(false)} 
           data={data}
         />
+
+        <CurriculumShowcaseModal
+          isOpen={isCurriculumModalOpen}
+          onClose={() => setIsCurriculumModalOpen(false)}
+        />
       </AnimatePresence>
       <ChatWidget />
       
       {/* Botón flotante de WhatsApp */}
       <a 
-        href={`https://wa.me/+5551982804970?text=${encodeURIComponent("Hola Robert, vengo de tu portafolio web. Me gustaría obtener más información sobre tus servicios.")}`}
+        href={`https://wa.me/584143431185?text=${encodeURIComponent("Hola Robert, vengo de tu portafolio web. Me gustaría obtener más información sobre tus servicios.")}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 left-6 p-4 rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/20 hover:bg-[#20bd5a] hover:scale-110 transition-all z-50 flex items-center justify-center group"
