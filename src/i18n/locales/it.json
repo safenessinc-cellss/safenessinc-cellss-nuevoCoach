@@ -45,6 +45,7 @@
 {
   // ... tus traducciones existentes ...
   
+ {
   "curriculum": {
     "title": "Curriculum Professionale",
     "download": "Scarica PDF",
@@ -175,6 +176,7 @@
     },
     "footer": {
       "text": "Trasformando aziende e team umani con oltre 30 anni di esperienza"
-    }
+    },
+    "viewCase": "Visualizza caso"
   }
 }
