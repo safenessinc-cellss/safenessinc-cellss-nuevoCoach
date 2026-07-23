@@ -4,7 +4,103 @@
     "curriculum": "Curriculum & Certificati",
     "servicios": "Servizi",
     "procesos": "Processi",
-    "certificaciones": "Certificazioni"
+    "certificaciones": "Certificazioni",
+    "contacto": "Contatto"
+  },
+  "hero": {
+    "badge": "Ingegnere, Economista e Specialista in Sistemi di Gestione Integrata | Ottimizzazione dei Processi",
+    "title": "Ottimizzando processi e guidando team umani",
+    "titleHighlight": "con oltre 30 anni di esperienza.",
+    "description": "“Integro la precisione tecnica dell'ingegneria con l'analisi economica strategica e i sistemi di gestione integrata. Ottimizziamo processi, uniamo team e snelliamo le decisioni critiche per la vostra redditività.”"
+  },
+  "about": {
+    "badge": "Profilo Professionale",
+    "title": "Oltre 30 Anni di Eccellenza",
+    "description": "Specialista in Sistemi di Gestione ISO con oltre 30 anni di esperienza in audit e consulenza strategica. Lead Auditor certificato IBM 2025 e Business Coach, integra competenze tecniche con studi in Psicopedagogia, Benessere Lavorativo e Intelligenza Emotiva Organizzativa."
+  },
+  "services": {
+    "badge": "I Miei Servizi",
+    "title": "Suite Integrata di Gestione",
+    "auditorTitle": "Sistemi di Gestione Integrata",
+    "auditorDesc": "Ingegneria, economia e ottimizzazione",
+    "details": "Vedi dettagli",
+    "coachTitle": "Ottimizzazione dei Processi",
+    "coachDesc": "Efficienza, redditività e struttura",
+    "consultingTitle": "Consulenza Strategica",
+    "consultingDesc": "Analisi, diagnosi e trasformazione organizzativa"
+  },
+  "processes": {
+    "badge": "Ingegneria Organizzativa",
+    "title": "Mappa di Interazione dei Processi",
+    "description": "Rappresentazione visiva dell'interazione dei processi del Sistema di Gestione della Qualità, inclusi input, output e punti di controllo operativi.",
+    "simulator": "Console di Simulazione Operativa (PHVA)",
+    "status": "SYS_STATUS: SIMULATORE_READY",
+    "config": "Configurazione Parametri",
+    "results": "Console di Valutazione & Risultati",
+    "compliance": "Tasso di Conformità",
+    "goal": "Obiettivo",
+    "roi": "Ritorno Economico SGC",
+    "compliance_value": "98.6%",
+    "goal_value": "98%",
+    "roi_value": "+$32,000 USD/anno (COQ)"
+  },
+  "certifications": {
+    "badge": "Lo Standard d'Oro",
+    "title": "Sistemi di Gestione ISO",
+    "description": "Certificando l'eccellenza a livello internazionale.",
+    "items": [
+      {
+        "code": "AUD",
+        "name": "Auditor Leader ISO (IRCA)",
+        "description": "Sistemi di Gestione (9001, 14001, 27001, 45001, 22000, 42001)"
+      },
+      {
+        "code": "IBM",
+        "name": "IBM 2025 Coach",
+        "description": "Leadership e Trasformazione di team digitali"
+      },
+      {
+        "code": "CIA",
+        "name": "Certified Internal Auditor",
+        "description": "Audit interno globale, rilasciato dall'IIA"
+      },
+      {
+        "code": "CISA",
+        "name": "Certified Information Systems Auditor",
+        "description": "Controllo e sicurezza dei sistemi informativi"
+      },
+      {
+        "code": "CPA",
+        "name": "Certified Public Accountant",
+        "description": "Valutazione integrale dell'area finanziaria, fiscale e patrimoniale"
+      },
+      {
+        "code": "CRMA",
+        "name": "Certification in Risk Management Assurance",
+        "description": "Mitigazione e assicurazione dei rischi aziendali integrati"
+      },
+      {
+        "code": "PSI",
+        "name": "Psicopedagogia Aziendale",
+        "description": "Gestione dell'apprendimento organizzativo e dinamiche di gruppo"
+      },
+      {
+        "code": "COA",
+        "name": "Coach Strategico",
+        "description": "Decisioni critiche in condizioni di incertezza del mercato"
+      }
+    ]
+  },
+  "testimonials": {
+    "badge": "Casi di Successo",
+    "title": "Cosa dicono i nostri clienti",
+    "viewCase": "Visualizza caso"
+  },
+  "footer": {
+    "agendar": "Prenota una Consulenza",
+    "contact": "Contatto",
+    "rights": "Tutti i diritti riservati",
+    "made": "Fatto con"
   },
   "curriculumData": {
     "name": "Deuwy Robert Terán Medina",
@@ -32,6 +128,12 @@
         "institution": "Università Centrale del Venezuela",
         "period": "1996 - 2000",
         "description": "Analisi economica e gestione finanziaria"
+      },
+      {
+        "title": "Specializzazione in Psicopedagogia Aziendale",
+        "institution": "Istituto di Psicopedagogia Applicata",
+        "period": "2010 - 2012",
+        "description": "Gestione dell'apprendimento organizzativo e dinamiche di gruppo"
       }
     ],
     "experience": [
@@ -47,7 +149,22 @@
         ],
         "achievements": [
           "Certificazione ISO 9001 in 6 mesi",
-          "Risparmio operativo di $320.000 USD/anno"
+          "Risparmio operativo di $320,000 USD/anno"
+        ]
+      },
+      {
+        "title": "Analista e Gestore della Qualità",
+        "company": "Tapeçaria Palacio",
+        "period": "2006 - 2010",
+        "location": "San Paolo, Brasile",
+        "responsibilities": [
+          "Ottimizzazione della performance produttiva",
+          "Controllo qualità e miglioramento continuo",
+          "Implementazione di indicatori KPI"
+        ],
+        "achievements": [
+          "Aumento di produttività del 25%",
+          "Riduzione dei reclami del 40%"
         ]
       },
       {
@@ -57,11 +174,27 @@
         "location": "San Paolo, Brasile",
         "responsibilities": [
           "Leadership di team multidisciplinari",
-          "Implementazione di sistemi di gestione integrati"
+          "Implementazione di sistemi di gestione integrati",
+          "Gestione di progetti di miglioramento continuo"
         ],
         "achievements": [
           "Aumento di produttività del 40%",
           "Certificazione ISO 14001"
+        ]
+      },
+      {
+        "title": "Analista Acquisti SR & Qualità",
+        "company": "General Motors",
+        "period": "2015 - 2020",
+        "location": "São Caetano do Sul, Brasile",
+        "responsibilities": [
+          "Negoziazione di approvvigionamento internazionale",
+          "Qualificazione fornitori",
+          "Gestione della qualità nella catena di fornitura"
+        ],
+        "achievements": [
+          "Riduzione dei costi del 15%",
+          "Certificazione fornitori in ISO 9001"
         ]
       }
     ],
@@ -80,6 +213,31 @@
         "code": "CIA",
         "name": "Certified Internal Auditor",
         "description": "Audit interno globale, rilasciato dall'IIA"
+      },
+      {
+        "code": "CISA",
+        "name": "Certified Information Systems Auditor",
+        "description": "Controllo e sicurezza dei sistemi informativi"
+      },
+      {
+        "code": "CPA",
+        "name": "Certified Public Accountant",
+        "description": "Valutazione integrale dell'area finanziaria"
+      },
+      {
+        "code": "CRMA",
+        "name": "Certification in Risk Management Assurance",
+        "description": "Mitigazione dei rischi aziendali integrati"
+      },
+      {
+        "code": "PSI",
+        "name": "Psicopedagogia Aziendale",
+        "description": "Gestione dell'apprendimento organizzativo"
+      },
+      {
+        "code": "COA",
+        "name": "Coach Strategico",
+        "description": "Decisioni critiche"
       }
     ],
     "metrics": [

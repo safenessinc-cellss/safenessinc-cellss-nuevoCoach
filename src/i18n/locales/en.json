@@ -4,7 +4,103 @@
     "curriculum": "Resume & Certificates",
     "servicios": "Services",
     "procesos": "Processes",
-    "certificaciones": "Certifications"
+    "certificaciones": "Certifications",
+    "contacto": "Contact"
+  },
+  "hero": {
+    "badge": "Engineer, Economist and Integrated Management Systems Specialist | Process Optimization",
+    "title": "Optimizing processes and leading human teams",
+    "titleHighlight": "with over 30 years of experience.",
+    "description": "“I integrate the technical precision of engineering with strategic economic analysis and integrated management systems. We optimize processes, unite teams and streamline critical decisions for your profitability.”"
+  },
+  "about": {
+    "badge": "Professional Profile",
+    "title": "Over 30 Years of Excellence",
+    "description": "ISO Management Systems Specialist with over 30 years of experience in auditing and strategic consulting. IBM 2025 Certified Lead Auditor and Business Coach, complementing technical expertise with studies in Psychopedagogy, Workplace Wellbeing, and Organizational Emotional Intelligence."
+  },
+  "services": {
+    "badge": "My Services",
+    "title": "Integrated Management Suite",
+    "auditorTitle": "Integrated Management Systems",
+    "auditorDesc": "Engineering, economics and optimization",
+    "details": "View details",
+    "coachTitle": "Process Optimization",
+    "coachDesc": "Efficiency, profitability and structure",
+    "consultingTitle": "Strategic Consulting",
+    "consultingDesc": "Analysis, diagnosis and organizational transformation"
+  },
+  "processes": {
+    "badge": "Organizational Engineering",
+    "title": "Process Interaction Map",
+    "description": "Visual representation of the interaction of Quality Management System processes, including inputs, outputs and operational control points.",
+    "simulator": "Operational Simulation Console (PHVA)",
+    "status": "SYS_STATUS: SIMULATOR_READY",
+    "config": "Parameter Configuration",
+    "results": "Evaluation & Results Console",
+    "compliance": "Compliance Rate",
+    "goal": "Target",
+    "roi": "SGC Economic Return",
+    "compliance_value": "98.6%",
+    "goal_value": "98%",
+    "roi_value": "+$32,000 USD/year (COQ)"
+  },
+  "certifications": {
+    "badge": "The Gold Standard",
+    "title": "ISO Management Systems",
+    "description": "Certifying excellence internationally.",
+    "items": [
+      {
+        "code": "AUD",
+        "name": "ISO Lead Auditor (IRCA)",
+        "description": "Management Systems (9001, 14001, 27001, 45001, 22000, 42001)"
+      },
+      {
+        "code": "IBM",
+        "name": "IBM 2025 Coach",
+        "description": "Leadership and Digital Team Transformation"
+      },
+      {
+        "code": "CIA",
+        "name": "Certified Internal Auditor",
+        "description": "Global internal auditing, awarded by the IIA"
+      },
+      {
+        "code": "CISA",
+        "name": "Certified Information Systems Auditor",
+        "description": "Information systems control and security"
+      },
+      {
+        "code": "CPA",
+        "name": "Certified Public Accountant",
+        "description": "Comprehensive financial, tax and capital area evaluation"
+      },
+      {
+        "code": "CRMA",
+        "name": "Certification in Risk Management Assurance",
+        "description": "Integrated corporate risk mitigation and assurance"
+      },
+      {
+        "code": "PSI",
+        "name": "Business Psychopedagogy",
+        "description": "Organizational learning management and group dynamics"
+      },
+      {
+        "code": "COA",
+        "name": "Strategic Coach",
+        "description": "Critical decision making under market uncertainty"
+      }
+    ]
+  },
+  "testimonials": {
+    "badge": "Success Stories",
+    "title": "What our clients say",
+    "viewCase": "View case"
+  },
+  "footer": {
+    "agendar": "Schedule a Consultation",
+    "contact": "Contact",
+    "rights": "All rights reserved",
+    "made": "Made with"
   },
   "curriculumData": {
     "name": "Deuwy Robert Terán Medina",
@@ -32,6 +128,12 @@
         "institution": "Central University of Venezuela",
         "period": "1996 - 2000",
         "description": "Economic analysis and financial management"
+      },
+      {
+        "title": "Specialization in Business Psychopedagogy",
+        "institution": "Institute of Applied Psychopedagogy",
+        "period": "2010 - 2012",
+        "description": "Organizational learning management and group dynamics"
       }
     ],
     "experience": [
@@ -51,17 +153,48 @@
         ]
       },
       {
+        "title": "Quality Analyst and Manager",
+        "company": "Tapeçaria Palacio",
+        "period": "2006 - 2010",
+        "location": "São Paulo, Brazil",
+        "responsibilities": [
+          "Production performance optimization",
+          "Quality control and continuous improvement",
+          "KPI implementation"
+        ],
+        "achievements": [
+          "25% productivity increase",
+          "40% complaint reduction"
+        ]
+      },
+      {
         "title": "Quality and Production Manager",
         "company": "D'classe Papeis",
         "period": "2010 - 2015",
         "location": "São Paulo, Brazil",
         "responsibilities": [
           "Leadership of multidisciplinary teams",
-          "Implementation of integrated management systems"
+          "Implementation of integrated management systems",
+          "Continuous improvement project management"
         ],
         "achievements": [
           "40% productivity increase",
           "ISO 14001 certification"
+        ]
+      },
+      {
+        "title": "SR Purchasing & Quality Analyst",
+        "company": "General Motors",
+        "period": "2015 - 2020",
+        "location": "São Caetano do Sul, Brazil",
+        "responsibilities": [
+          "International supply negotiation",
+          "Supplier qualification",
+          "Quality management in supply chain"
+        ],
+        "achievements": [
+          "15% cost reduction",
+          "Supplier certification in ISO 9001"
         ]
       }
     ],
@@ -80,6 +213,31 @@
         "code": "CIA",
         "name": "Certified Internal Auditor",
         "description": "Global internal auditing, awarded by the IIA"
+      },
+      {
+        "code": "CISA",
+        "name": "Certified Information Systems Auditor",
+        "description": "Information systems control and security"
+      },
+      {
+        "code": "CPA",
+        "name": "Certified Public Accountant",
+        "description": "Comprehensive financial area evaluation"
+      },
+      {
+        "code": "CRMA",
+        "name": "Certification in Risk Management Assurance",
+        "description": "Integrated corporate risk mitigation"
+      },
+      {
+        "code": "PSI",
+        "name": "Business Psychopedagogy",
+        "description": "Organizational learning management"
+      },
+      {
+        "code": "COA",
+        "name": "Strategic Coach",
+        "description": "Critical decision making"
       }
     ],
     "metrics": [
