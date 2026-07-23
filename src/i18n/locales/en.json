@@ -45,6 +45,7 @@
 {
   // ... tus traducciones existentes ...
   
+{
   "curriculum": {
     "title": "Professional Resume",
     "download": "Download PDF",
@@ -175,6 +176,7 @@
     },
     "footer": {
       "text": "Transforming businesses and human teams with over 30 years of experience"
-    }
+    },
+    "viewCase": "View case"
   }
 }
