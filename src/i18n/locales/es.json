@@ -40,10 +40,12 @@
     "badge": "Casos de Éxito",
     "title": "Lo que dicen nuestros clientes",
     "viewCase": "Ver caso"
-  }
-}
+
 {
   "curriculum": {
+    ...todo el contenido...
+  }
+}
     "title": "Currículum Profesional",
     "download": "Descargar PDF",
     "print": "Imprimir",
