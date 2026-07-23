@@ -1124,7 +1124,7 @@ export default function AdminPanel() {
                       ) : (
                         nextActivities.map((act, index) => (
                           <div 
-                            key={index} 
+                            key={`next-act-${act.title || index}-${index}`} 
                             className="bg-zinc-900/40 p-4 rounded-xl border border-white/5 flex items-center justify-between gap-4 hover:bg-zinc-900/80 transition"
                           >
                             <div className="flex items-center gap-3">
@@ -1455,7 +1455,7 @@ export default function AdminPanel() {
                           {hasEvents && (
                             <div className="flex gap-1 justify-center mt-auto">
                               {calendarEvents[dayNumber].slice(0, 3).map((ev: any, idx: number) => (
-                                <span key={idx} className={`w-1.5 h-1.5 rounded-full ${ev.color}`}></span>
+                                <span key={`ev-dot-${ev.id || idx}-${idx}`} className={`w-1.5 h-1.5 rounded-full ${ev.color}`}></span>
                               ))}
                             </div>
                           )}
@@ -1486,7 +1486,7 @@ export default function AdminPanel() {
                           );
                         }
                         return dayEvents.map((ev, idx) => (
-                          <div key={idx} className="bg-black/40 p-3 rounded-lg border border-white/5 space-y-2">
+                          <div key={`day-ev-${ev.id || ev.company || idx}-${idx}`} className="bg-black/40 p-3 rounded-lg border border-white/5 space-y-2">
                             <span className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase border inline-block ${
                               ev.labelType === 'Visita' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-teal-500/10 text-teal-400 border-teal-500/20'
                             }`}>

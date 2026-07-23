@@ -99,6 +99,15 @@ export default function ManualSIG() {
     { id: 3, title: 'Taller Colectivo de Clima y OKRs Emocionales', signed: false, description: 'Planificar dinámicas semanales breves de 15 minutos en piso de planta para erradicar silos informativos.' }
   ]);
 
+  // Leadership tab Sub-navigation state & interactive Decisiones Criticas states
+  const [leadershipSubTab, setLeadershipSubTab] = useState<'critical' | 'test' | 'conflict' | 'agreements'>('critical');
+  const [selectedPhase, setSelectedPhase] = useState<number>(1);
+  const [selectedRiskKey, setSelectedRiskKey] = useState<string>('paralisis');
+  const [riskAnswers, setRiskAnswers] = useState<Record<string, string>>({});
+  const [customCriticalDecisionCase, setCustomCriticalDecisionCase] = useState<'A' | 'B' | 'C' | null>(null);
+  const [socraticAnswer, setSocraticAnswer] = useState<string>('');
+  const [socraticSavedAnswers, setSocraticSavedAnswers] = useState<Record<string, string>>({});
+
   // TAB 1: ISO Gestión de Calidad
   const [gapScores, setGapScores] = useState<Record<string, number>>({
     'Cls 4 (Contexto)': 80,
@@ -859,7 +868,7 @@ export default function ManualSIG() {
                         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Documentación SGC Relacionada (Procedimientos, Instructivos, Formatos)</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                           {sub.documents.map((doc, docIdx) => (
-                            <div key={docIdx} className="p-2.5 bg-[#060608] border border-white/5 rounded-xl flex items-center gap-2">
+                            <div key={`${doc.code || 'doc'}-${docIdx}`} className="p-2.5 bg-[#060608] border border-white/5 rounded-xl flex items-center gap-2">
                               <FileCode className={`w-4 h-4 shrink-0 ${
                                 doc.type === 'procedimiento' ? 'text-blue-400' :
                                 doc.type === 'instructivo' ? 'text-amber-400' : 'text-red-400'
@@ -1124,7 +1133,7 @@ export default function ManualSIG() {
                     { month: 'Junio', status: 'En Proceso', color: 'bg-red-500/10 text-red-400 border-red-500/20 animate-pulse' },
                     { month: 'Noviembre', status: 'Planificada', color: 'bg-white/5 text-gray-400 border-white/5' }
                   ].map((aud, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-black/40 border border-white/5 rounded-xl text-xs">
+                    <div key={`aud-${aud.month}-${index}`} className="flex justify-between items-center p-3 bg-black/40 border border-white/5 rounded-xl text-xs">
                       <span className="font-bold text-white">{aud.month}: Auditoría Interna General SGC</span>
                       <span className={`px-2 py-0.5 rounded-full border text-[9px] font-bold ${aud.color}`}>{aud.status}</span>
                     </div>
@@ -1874,7 +1883,7 @@ export default function ManualSIG() {
 
                 <div className="space-y-3 text-xs">
                   {currentSector.processes.map((proc, index) => (
-                    <div key={index} className="space-y-1 p-2 bg-black/40 border border-white/5 rounded-xl">
+                    <div key={`proc-sec-${proc.id || index}`} className="space-y-1 p-2 bg-black/40 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center">
                         <span className="font-bold text-white truncate max-w-[170px]">{proc.name}</span>
                         <span className="text-green-400 font-bold font-mono">94%</span>
@@ -2047,10 +2056,666 @@ export default function ManualSIG() {
               </div>
             </div>
 
-            {/* GRID OF TWO INTERACTIVE ELEMENTS: TEST SGC AND THE CONFLICT WIZARD */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              
-              {/* INTERACTIVE COLUMN 1: SGC LEADERSHIP TEST */}
+            {/* SUBTAB HOVER MATRIX */}
+            <div className="flex flex-wrap gap-2.5 pb-2 border-b border-white/5">
+              <button
+                onClick={() => setLeadershipSubTab('critical')}
+                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  leadershipSubTab === 'critical'
+                    ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-600/10'
+                    : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10 hover:text-white'
+                }`}
+              >
+                <Activity className="w-3.5 h-3.5 animate-pulse" />
+                ⚡ Decisiones Críticas bajo Presión
+              </button>
+              <button
+                onClick={() => setLeadershipSubTab('test')}
+                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  leadershipSubTab === 'test'
+                    ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-600/10'
+                    : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                📋 Test de Aptitud Directiva SGC
+              </button>
+              <button
+                onClick={() => setLeadershipSubTab('conflict')}
+                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  leadershipSubTab === 'conflict'
+                    ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-600/10'
+                    : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10 hover:text-white'
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                🤝 Simulador de Conflictos de Planta
+              </button>
+              <button
+                onClick={() => setLeadershipSubTab('agreements')}
+                className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  leadershipSubTab === 'agreements'
+                    ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-600/10'
+                    : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10 hover:text-white'
+                }`}
+              >
+                <Heart className="w-3.5 h-3.5" />
+                ❤️ Acuerdos Humanos de Cohesión
+              </button>
+            </div>
+
+            {/* SUB-TAB 1: DECISIONES CRÍTICAS BAJO PRESIÓN */}
+            {leadershipSubTab === 'critical' && (
+              <div className="space-y-8 animate-fadeIn">
+                {/* Header of Section */}
+                <div className="border-b border-white/5 pb-4">
+                  <h3 className="text-base font-extrabold text-white flex items-center gap-1.5 font-mono uppercase tracking-wider">
+                    <Activity className="w-5 h-5 text-red-500" />
+                    Mapeo de Decisiones Críticas bajo Presión (Incertidumbre Laboral)
+                  </h3>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Gestión emocional y resiliencia estratégica elaborada desde el rol de coach empresarial en ambientes ISO. Reduzca la parálisis por análisis y lidere con certeza.
+                  </p>
+                </div>
+
+                {/* Fases del Coach roadmap */}
+                <div className="glass p-5 rounded-3xl border border-white/10 bg-[#07070a]/60 space-y-4">
+                  <h4 className="text-xs font-black text-gray-300 uppercase tracking-widest font-mono flex items-center gap-1.5">
+                    <Workflow className="w-4 h-4 text-red-400" />
+                    Las 8 Fases del Acompañamiento en Incertidumbre
+                  </h4>
+                  <p className="text-[11px] text-gray-400">
+                    Haga click en cada fase del proceso de mentoring corporativo para revelar la lógica: <strong>Concepto clave ➔ Diagnóstico clínico ➔ Acción de coaching</strong>:
+                  </p>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 pt-2">
+                    {[
+                      { id: 1, title: '1. Conceptualizar', short: 'Definición' },
+                      { id: 2, title: '2. Mapeo de riesgos', short: 'Riesgos SGI' },
+                      { id: 3, title: '3. Diagnóstico', short: 'Clima Líder' },
+                      { id: 4, title: '4. Separación', short: 'Hechos vs Sesgos' },
+                      { id: 5, title: '5. Criterios claros', short: 'Veto/Acuerdos' },
+                      { id: 6, title: '6. Escenarios', short: 'Pre-mortem' },
+                      { id: 7, title: '7. Decisión', short: 'Acompañamiento' },
+                      { id: 8, title: '8. Post-Decisión', short: 'Aprendizaje' }
+                    ].map((ph) => {
+                      const isActive = selectedPhase === ph.id;
+                      return (
+                        <button
+                          key={ph.id}
+                          onClick={() => setSelectedPhase(ph.id)}
+                          className={`p-2.5 rounded-xl border text-center flex flex-col justify-between items-center h-20 transition duration-300 ${
+                            isActive 
+                              ? 'bg-red-500/15 border-red-500/40 text-white font-extrabold shadow-md' 
+                              : 'bg-black/35 border-white/5 text-gray-400 hover:border-white/10 hover:text-white'
+                          }`}
+                        >
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
+                            isActive ? 'bg-red-500 text-black font-extrabold' : 'bg-white/5 text-gray-400'
+                          }`}>
+                            {ph.id}
+                          </span>
+                          <span className="text-[9px] font-bold truncate w-full" title={ph.title}>
+                            {ph.short}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Display content for selectedPhase base on user literal mapping */}
+                  {(() => {
+                    const phaseDetails = [
+                      {
+                        id: 1,
+                        title: '1. Conceptualización',
+                        coachAction: 'Definir qué hace que una decisión sea "crítica" y no solo "importante".',
+                        keyConcept: `Una decisión es crítica cuando:
+• Tiene alto impacto (negativo o positivo)
+• Es irreversible o costosa de revertir
+• Se toma con información incompleta
+• Hay presión de tiempo o emocional
+• Afecta a muchas personas o recursos clave.`,
+                        diagnostico: 'Diferenciar entre "Urgente" (presión externa inmediata) e "Importante" (daño operativo o estructural si se posterga). Evitar pánicos.',
+                        coachingAction: 'El coach guía una validación rápida del umbral de reversibilidad y afectación para medir la criticidad real antes de sobrereaccionar.'
+                      },
+                      {
+                        id: 2,
+                        title: '2. Mapeo de riesgos',
+                        coachAction: 'Identificar qué puede salir mal, con qué probabilidad y qué consecuencias tiene.',
+                        keyConcept: `El coach ayuda a separar:
+• Riesgos reales (datos, hechos objetivos de planta y financieros)
+• Temores infundados (sesgos psicológicos, historias catastróficas, proyecciones)
+• Riesgo de parálisis por análisis excesivo.`,
+                        diagnostico: 'Inundación emocional que desdibuja el mapa de riesgos reales, transformando inseguridad directiva en supuestas deficiencias operacionales.',
+                        coachingAction: 'Construir una matriz simplificada vinculando Probabilidad objetiva, Daño financiero exacto, y el diseño asertivo de un Plan de Contención.'
+                      },
+                      {
+                        id: 3,
+                        title: '3. Diagnóstico del estado del líder / equipo',
+                        coachAction: 'Evaluar el nivel de estrés, asertividad y claridad cognitiva del equipo directivo.',
+                        keyConcept: `Indicadores clínicos de tensión:
+• Visión de túnel (ver únicamente dos soluciones polares u extremas)
+• Actitudes defensivas y búsqueda de chivos expiatorios
+• Clima de rumor de pasillo en planta.`,
+                        diagnostico: 'Gobernanza directiva bajo secuestro de amígdala cerebral, desactivando el pensamiento racional y creativo del comité.',
+                        coachingAction: 'Efectuar una pausa consciente de autorregulación emocional Gestalt liderada por Robert Terán antes de revisar la minuta.'
+                      },
+                      {
+                        id: 4,
+                        title: '4. Separación de problemas',
+                        coachAction: 'Descomponer una crisis compleja en variables autónomas abordables.',
+                        keyConcept: `Triage operativo:
+• Problemas controlables técnicamente (Mermas, calibraciones)
+• Problemas fuera de control sistémico directo (Rumores de mercado)
+• Problemas resolubles mediante negociación externa.`,
+                        diagnostico: 'Apreciación del problema como bloque monolítico irresoluble, paralizando la proactividad del personal.',
+                        coachingAction: 'Dividir la crisis en tres columnas asertivas: Lo que controlamos internamente, lo que influenciamos, y lo que soltamos.'
+                      },
+                      {
+                        id: 5,
+                        title: '5. Creación de criterios claros',
+                        coachAction: 'Definir límites innegociables antes de barajar alternativas.',
+                        keyConcept: `Parámetros de decisión:
+• ¿Cuál es la tasa de pérdida máxima tolerable (lucro cesante)?
+• ¿Cuáles son las cláusulas de ética SGI e ISO inviolables?
+• ¿Qué decisiones desencadenarán un veto absoluto de planta?`,
+                        diagnostico: 'Evaluación asimétrica de opciones basada en favoritismos internos u sesgos presupuestarios inmediatistas.',
+                        coachingAction: 'Fijar matrices de "Pasa / No Pasa" cuantitativas y éticas de forma consensuada previa a cualquier propuesta creativa.'
+                      },
+                      {
+                        id: 6,
+                        title: '6. Escenarios y preparación (Pre-mortem)',
+                        coachAction: 'Visualizar las ramificaciones de cada vía y pre-establecer salvaguardas directivas.',
+                        keyConcept: `Análisis predictivo:
+• Formulación del Plan B estructurado
+• Análisis Pre-Mortem (asumir el fallo total para deducir causas ocultas)
+• Respaldos regulatorios de mermas e inventario.`,
+                        diagnostico: 'Gobernanza sesgada por exceso de optimismo o, inversamente, por catastrofismo preventivo destructivo de clima directivo.',
+                        coachingAction: 'Facilitar un taller clínico: viajar mentalmente un año en el futuro donde el proyecto falló drásticamente y redactar la autopsia técnica.'
+                      },
+                      {
+                        id: 7,
+                        title: '7. Acompañamiento en la decisión bajo presión',
+                        coachAction: 'Soportar al directivo para presionar el gatillo con convicción asertiva.',
+                        keyConcept: `Toma de acción serena:
+• Filtrado estricto a un máximo de 3 caminos viables
+• Votación asertiva sopesando costo, ética y adaptabilidad SGC
+• Abrazar el residuo de incertidumbre restante.`,
+                        diagnostico: 'Parálisis por indecisión prolongada o el clásico sesgo de "coste hundido" financiero.',
+                        coachingAction: 'Lanzar la pregunta crítica integradora: "¿Iniciaríamos este exacto proyecto de planta hoy si estuviéramos fundando esta organización de cero?"'
+                      },
+                      {
+                        id: 8,
+                        title: '8. Post-decisión y aprendizaje',
+                        coachAction: 'Evaluar no sólo el resultado comercial sino la calidad del proceso cognitivo.',
+                        keyConcept: `Trazabilidad de sabiduría:
+• Corregir sesgos de confirmación detectados tardíamente
+• Restauración del clima de piso tras el periodo estresante
+• Registro en acciones correctivas de la Cláusula 10.2 SGC.`,
+                        diagnostico: 'Sesgo de retrospectiva directiva ("siempre supe que fracasaría") u hostigamiento punitivo si la merma requiere adaptación.',
+                        coachingAction: 'Documentar el veredicto en el "Historial de Resiliencia Organizacional" para inmunizar el SGC corporativo contra futuras crisis.'
+                      }
+                    ];
+
+                    const currentPh = phaseDetails.find(p => p.id === selectedPhase) || phaseDetails[0];
+
+                    return (
+                      <div className="mt-4 p-5 bg-white/[0.02] border border-white/5 rounded-2xl space-y-4">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/5 pb-3">
+                          <h5 className="font-extrabold text-white text-sm uppercase tracking-wider text-red-400">
+                            Fase {currentPh.id}: {currentPh.title}
+                          </h5>
+                          <span className="text-[10px] font-mono bg-red-600/10 border border-red-500/20 px-2.5 py-0.5 rounded text-red-400 font-bold">
+                            Acción del Coach: {currentPh.coachAction}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-gray-300">
+                          {/* CONCEPTO */}
+                          <div className="space-y-2 p-4 bg-black/40 border border-white/5 rounded-2xl hover:border-red-500/15 transition-all">
+                            <span className="text-[10px] uppercase font-mono font-bold text-amber-400 block border-b border-white/5 pb-1.5">
+                              Concepto clave desde coaching
+                            </span>
+                            <p className="leading-relaxed whitespace-pre-line text-gray-300 pr-1 text-[11px]">
+                              {currentPh.keyConcept}
+                            </p>
+                          </div>
+
+                          {/* DIAGNÓSTICO */}
+                          <div className="space-y-2 p-4 bg-black/40 border border-white/5 rounded-2xl hover:border-red-500/15 transition-all">
+                            <span className="text-[10px] uppercase font-mono font-bold text-red-500 block border-b border-white/5 pb-1.5">
+                              Diagnóstico del Estado
+                            </span>
+                            <p className="leading-relaxed text-[11px] text-gray-300">
+                              {currentPh.diagnostico}
+                            </p>
+                          </div>
+
+                          {/* ACCIÓN */}
+                          <div className="space-y-2 p-4 bg-black/40 border border-white/5 rounded-2xl hover:border-red-500/15 transition-all">
+                            <span className="text-[10px] uppercase font-mono font-bold text-green-400 block border-b border-white/5 pb-1.5">
+                              Acción de coaching en planta
+                            </span>
+                            <p className="leading-relaxed text-[11px] text-gray-300 font-medium">
+                              {currentPh.coachingAction}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                {/* Esquema Visual */}
+                <div className="glass p-6 rounded-3xl border border-white/10 bg-[#07070a] space-y-4">
+                  <div className="flex justify-between items-center border-b border-white/5 pb-3">
+                    <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-1.5 font-mono">
+                      <Brain className="w-4 h-4 text-red-500" />
+                      Esquema Visual: Decisión Crítica bajo Presión SGC
+                    </h4>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-red-600/15 border border-red-500/20 text-red-400 font-bold font-mono">
+                      Visual Map
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Visualice la progresión estructural que sigue el comité directivo ante el asalto de una crisis operativa de planta:
+                  </p>
+
+                  <div className="bg-black/50 p-6 rounded-2xl border border-white/5 overflow-x-auto">
+                    <div className="min-w-[700px] flex justify-between items-center py-4 relative font-mono text-[11px]">
+                      {/* Connection line */}
+                      <div className="absolute top-1/2 left-[50px] right-[50px] h-[2px] bg-gradient-to-r from-red-600 via-amber-500 to-green-600 transform -translate-y-1/2 z-0" />
+
+                      {[
+                        { name: '1. Shock / Crisis', desc: 'Factor desencadenante', color: 'border-red-500 bg-red-500/10 text-red-400', glow: 'shadow-red-500/20' },
+                        { name: '2. Sesgo Directivo', desc: 'Parálisis o urgencia falsa', color: 'border-amber-500 bg-amber-500/10 text-amber-400', glow: 'shadow-amber-500/20' },
+                        { name: '3. Pausa Gestalt', desc: 'Intervención del Coach', color: 'border-blue-500 bg-blue-500/10 text-blue-400', glow: 'shadow-blue-500/25' },
+                        { name: '4. Triage SGC', desc: 'Separar hechos de temor', color: 'border-teal-500 bg-teal-500/10 text-teal-400', glow: 'shadow-teal-500/20' },
+                        { name: '5. Veredicto Calidad', desc: 'Acción con claridad asertiva', color: 'border-green-500 bg-green-500/10 text-green-400', glow: 'shadow-green-500/20' }
+                      ].map((node, i) => (
+                        <div key={i} className="flex flex-col items-center space-y-2 z-10 shrink-0 select-none">
+                          <div className={`p-3 rounded-2xl border-2 ${node.color} ${node.glow} shadow-lg text-center font-bold w-[130px] transition-all duration-300 hover:scale-105`}>
+                            {node.name}
+                          </div>
+                          <p className="text-[10px] text-gray-400 font-sans text-center max-w-[125px]">
+                            {node.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Interactive Triage & Risks Notebook */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                  {/* Left: Typical risks */}
+                  <div className="lg:col-span-5 glass p-6 rounded-3xl border border-white/10 bg-[#07070a] flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="border-b border-white/5 pb-3">
+                        <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-1.5 font-mono">
+                          <ShieldAlert className="w-4 h-4 text-amber-500" />
+                          Riesgos Típicos en Decisiones (con Enfoque Coach)
+                        </h4>
+                        <p className="text-[11px] text-gray-400 mt-1">
+                          Inseguridades directivas recurrentes en SGC. Haga click sobre un riesgo para abrir la guía clínica del terapeuta:
+                        </p>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        {[
+                          { key: 'paralisis', name: 'Riesgo de parálisis' },
+                          { key: 'urgencia_falsa', name: 'Riesgo de urgencia falsa' },
+                          { key: 'sesgo_confirmacion', name: 'Riesgo de sesgo de confirmación' },
+                          { key: 'fatiga_decision', name: 'Riesgo de fatiga de decisión' },
+                          { key: 'unanimidad_falsa', name: 'Riesgo de unanimidad falsa' },
+                          { key: 'exceso_opciones', name: 'Riesgo de exceso de opciones' }
+                        ].map((rk) => (
+                          <button
+                            key={rk.key}
+                            onClick={() => {
+                              setSelectedRiskKey(rk.key);
+                              setSocraticAnswer(socraticSavedAnswers[rk.key] || '');
+                            }}
+                            className={`w-full text-left p-2.5 rounded-xl border text-xs transition duration-200 flex justify-between items-center ${
+                              selectedRiskKey === rk.key 
+                                ? 'bg-amber-600/10 border-amber-500/40 text-amber-400 font-bold' 
+                                : 'bg-black/35 border-white/5 text-gray-400 hover:border-white/10 hover:text-white'
+                            }`}
+                          >
+                            <span>{rk.name}</span>
+                            <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Socratic Question & Live Input */}
+                  {(() => {
+                    const riskSpecs: Record<string, { alert: string; coachQuestion: string; recovery: string }> = {
+                      paralisis: {
+                        alert: 'Buscar infinitos datos técnicos absurdos para posponer el riesgo emocional de asentar o firmar.',
+                        coachQuestion: '¿Qué dato nuevo haría realmente diferente esta decisión? Si ese dato no llega, ¿cuándo decidimos igual?',
+                        recovery: 'Cierre hermético de ventana informativa al tener 80% de certezas objetivas (Crosby).'
+                      },
+                      urgencia_falsa: {
+                        alert: 'Sentir que se tiene que decidir ya en caliente, bajo pánico inducido, sin consultar los OKRs.',
+                        coachQuestion: '¿Qué pasa realmente si esperamos 24 horas? ¿Quién nos está presionando internamente y por qué?',
+                        recovery: 'Cuarentena psíquica corporativa: 2 horas de silencio absoluto antes de emitir un fallo mayor.'
+                      },
+                      sesgo_confirmacion: {
+                        alert: 'Consultar solo a jefes de planta alineados para autovalidar la predecisión ya tomada.',
+                        coachQuestion: 'Si esta opción fuera mala por diseño, ¿qué evidencia buscaríamos activamente en piso para demostrar su error?',
+                        recovery: 'Nombrar un "Abogado del Diablo" temporal encargado exclusivamente de refutar la idea.'
+                      },
+                      fatiga_decision: {
+                        alert: 'Tomar resoluciones o firmar actas de scrap cansado e irritable al cabo de revisiones exhaustivas.',
+                        coachQuestion: '¿Decidimos esto por estricta convicción del SGI o simplemente por el cansancio de acabar el día?',
+                        recovery: 'Veto clínico: Prohibición absoluta de abrir minutas de alta trascendencia técnica después de las 4 PM.'
+                      },
+                      unanimidad_falsa: {
+                        alert: 'Ver al equipo de calidad asentir mecánicamente en completo silencio por miedo a reprimendas.',
+                        coachQuestion: '¿Qué temores y críticas se quedarían callados en esta sala de juntas si yo no estuviera presente?',
+                        recovery: 'Realizar consultas cruzadas anónimas o mesas de diálogo dinámicas sin mandos jerárquicos punitivos.'
+                      },
+                      exceso_opciones: {
+                        alert: 'Redactar 15 planes de mitigación de merma paralelos que aturden al supervisor de planta.',
+                        coachQuestion: 'Si tuviéramos que elegir una sola variable que salve el proceso de extrusión, ¿cuál priorizaríamos?',
+                        recovery: 'Regla del Triage: Descartar de tajo el 80% de alternativas accesorias centrándose exclusivamente en Pareto.'
+                      }
+                    };
+
+                    const rSpec = riskSpecs[selectedRiskKey] || riskSpecs['paralisis'];
+
+                    return (
+                      <div className="lg:col-span-7 glass p-6 rounded-3xl border border-white/10 bg-[#07070a]/80 flex flex-col justify-between space-y-4">
+                        <div className="space-y-4 text-xs">
+                          <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span className="font-mono text-amber-500 font-bold uppercase text-[10px]">
+                              Acompañamiento en Riesgo Líder
+                            </span>
+                            <span className="text-[10px] text-gray-500 italic">Intervención Robert Terán</span>
+                          </div>
+
+                          <div className="p-3 bg-red-600/5 border border-red-500/10 rounded-xl space-y-1">
+                            <p className="font-bold text-gray-300 uppercase tracking-wide text-[10px]">Indicador de Alerta de Riesgo:</p>
+                            <p className="text-gray-300 italic">"{rSpec.alert}"</p>
+                          </div>
+
+                          <div className="p-4 bg-amber-600/5 border border-amber-500/15 rounded-xl space-y-2">
+                            <p className="font-bold text-amber-400 uppercase tracking-wide text-[10px] flex items-center gap-1">
+                              <Brain className="w-3.5 h-3.5" /> Pregunta Poderosa del Coach:
+                            </p>
+                            <p className="text-white text-xs font-bold leading-relaxed italic">
+                              "{rSpec.coachQuestion}"
+                            </p>
+                          </div>
+
+                          <div className="p-3 bg-green-500/5 border border-green-500/10 rounded-xl space-y-1 text-gray-300">
+                            <p className="font-bold text-green-400 uppercase tracking-wide text-[10px]">Acción de mitigación recomendada:</p>
+                            <p className="text-gray-300 font-semibold">{rSpec.recovery}</p>
+                          </div>
+
+                          {/* Interactive text response area */}
+                          <div className="space-y-2 border-t border-white/5 pt-3">
+                            <label className="block text-[10px] uppercase font-bold text-gray-400 font-mono">
+                              Bloc de Respuestas Directivas (Anote sus reflexiones reales o hipotéticas):
+                            </label>
+                            <div className="flex gap-2">
+                              <textarea
+                                value={socraticAnswer}
+                                onChange={(e) => setSocraticAnswer(e.target.value)}
+                                placeholder="Redacte el plan o la respuesta de su comité ante esta pregunta clínica para asentar el aprendizaje de SGC..."
+                                className="flex-1 bg-black/60 border border-white/5 p-2 rounded-xl text-[11px] text-white focus:outline-none focus:border-amber-500 font-sans min-h-[50px] resize-none"
+                              />
+                              <button
+                                onClick={() => {
+                                  if (!socraticAnswer.trim()) return;
+                                  const updated = { ...socraticSavedAnswers, [selectedRiskKey]: socraticAnswer };
+                                  setSocraticSavedAnswers(updated);
+                                  alert('Reflexión directiva guardada exitosamente en el panel temporal de decisiones.');
+                                }}
+                                className="bg-amber-600 hover:bg-amber-500 text-black px-4 rounded-xl font-bold uppercase text-[10px] tracking-wider transition-colors shrink-0"
+                              >
+                                Asentar
+                              </button>
+                            </div>
+                            {socraticSavedAnswers[selectedRiskKey] && (
+                              <div className="mt-2 p-2.5 bg-green-500/10 border border-green-500/20 rounded-lg text-[10px] text-green-400 leading-normal">
+                                <span className="font-bold block uppercase font-mono mb-0.5">Compromiso Asentado:</span>
+                                "{socraticSavedAnswers[selectedRiskKey]}"
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                {/* Practical Case Study */}
+                <div className="glass p-6 md:p-8 rounded-3xl border border-white/10 bg-[#07070a] space-y-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/5 pb-4">
+                    <div>
+                      <h4 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-1.5 font-mono">
+                        <Layers className="w-5 h-5 text-red-500" />
+                        Caso Práctico Clínico: Empresa Frente al Precipicio
+                      </h4>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Estudie este caso real de alta incertidumbre laboral. Analice los caminos estratégicos y vea los resultados estimados en vivo:
+                      </p>
+                    </div>
+                    <span className="text-[9px] font-mono px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-gray-400 uppercase">
+                      Estabilidad Laboral GPS
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                    {/* Context of the Case study */}
+                    <div className="lg:col-span-5 p-5 bg-red-600/5 border border-red-500/10 rounded-2xl flex flex-col justify-between">
+                      <div className="space-y-3 text-xs">
+                        <span className="font-mono text-red-400 font-bold uppercase text-[10px] tracking-wider">
+                          Contexto del Conflicto Real:
+                        </span>
+                        <p className="leading-relaxed text-gray-300">
+                          <strong>La Organización:</strong> Empresa de desarrollo técnico e ingeniería con <strong>120 personas</strong> bajo nómina SGC.
+                        </p>
+                        <p className="leading-relaxed text-gray-300">
+                          <strong>El Detonante:</strong> Su principal cliente comercial, que aportaba el <strong>65% de la facturación global</strong> de la empresa, cancela su contrato anual debido a una desviación imprevista de mermas y retraso logístico. Cunde el pánico directivo.
+                        </p>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-white/5 text-[10px] text-gray-400 italic">
+                        "El sesgo de coste hundido empuja a inyectar capital en la división fallida antes de pausar y recalcular el SGI." — Robert Terán
+                      </div>
+                    </div>
+
+                    {/* Pathways options */}
+                    <div className="lg:col-span-7 space-y-4">
+                      <p className="text-xs font-bold text-gray-200 uppercase tracking-widest font-mono">
+                        Seleccione el Camino Directivo a Explorar:
+                      </p>
+
+                      <div className="grid grid-cols-1 gap-2.5 text-xs">
+                        <button
+                          onClick={() => setCustomCriticalDecisionCase('A')}
+                          className={`p-3 rounded-xl border text-left transition duration-200 flex flex-col gap-1 ${
+                            customCriticalDecisionCase === 'A' 
+                              ? 'bg-red-500/15 border-red-500/40 text-white' 
+                              : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10'
+                          }`}
+                        >
+                          <span className="font-bold text-red-400">Opción A: Reacción Convencional de Supervivencia</span>
+                          <span className="text-[11px] leading-normal text-gray-300">
+                            Despidos severos: Recortar de inmediato al 40% del personal operativo para salvar balances financieros y liquidez de emergencia.
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={() => setCustomCriticalDecisionCase('B')}
+                          className={`p-3 rounded-xl border text-left transition duration-200 flex flex-col gap-1 ${
+                            customCriticalDecisionCase === 'B' 
+                              ? 'bg-amber-500/15 border-amber-500/40 text-white' 
+                              : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10'
+                          }`}
+                        >
+                          <span className="font-bold text-amber-400">Opción B: Blindaje Temerario por deudas</span>
+                          <span className="text-[11px] leading-normal text-gray-300">
+                            Blindar proyectos: Seguir gastando reservas por 90 días pretendiendo certificar un nuevo software alternativo sin tracción real.
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={() => setCustomCriticalDecisionCase('C')}
+                          className={`p-3 rounded-xl border text-left transition duration-200 flex flex-col gap-1 ${
+                            customCriticalDecisionCase === 'C' 
+                              ? 'bg-green-500/15 border-green-500/40 text-white' 
+                              : 'bg-black/40 border-white/5 text-gray-400 hover:border-white/10'
+                          }`}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-bold text-green-400">Opción C: Diagnóstico e Intervención Robert Terán (Metodología Coach SGI)</span>
+                            <span className="bg-green-500 text-black text-[9px] px-1.5 py-0.2 rounded font-extrabold uppercase font-mono">Propuesta Integradora</span>
+                          </div>
+                          <span className="text-[11px] leading-normal text-gray-300">
+                            Diálogo asertivo: Plantear reducción temporal de jornada al 80% del salario corporativo por 60 días, priorizar mermas críticas, acelerar prospección y evaluar al día 30.
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Diagnostic commentary based on option */}
+                      <AnimatePresence mode="wait">
+                        {customCriticalDecisionCase && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="p-4 bg-black/60 border border-white/5 rounded-2xl text-xs space-y-4"
+                          >
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-[10px]">
+                              {/* Prob 1 */}
+                              <div className="space-y-1">
+                                <span className="text-gray-400 uppercase">Supervivienda Financiera (60d):</span>
+                                <div className="flex items-center gap-1.5">
+                                  <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div 
+                                      className={`h-full transition-all duration-500 ${
+                                        customCriticalDecisionCase === 'A' ? 'bg-green-500 w-[90%]' :
+                                        customCriticalDecisionCase === 'B' ? 'bg-red-500 w-[20%]' : 'bg-green-500 w-[85%]'
+                                      }`} 
+                                    />
+                                  </div>
+                                  <span className="font-bold text-white shrink-0">
+                                    {customCriticalDecisionCase === 'A' ? '90%' : customCriticalDecisionCase === 'B' ? '20%' : '85%'}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Prob 2 */}
+                              <div className="space-y-1">
+                                <span className="text-gray-400 uppercase">Clima y Confianza Directiva:</span>
+                                <div className="flex items-center gap-1.5">
+                                  <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div 
+                                      className={`h-full transition-all duration-500 ${
+                                        customCriticalDecisionCase === 'A' ? 'bg-red-500 w-[15%]' :
+                                        customCriticalDecisionCase === 'B' ? 'bg-amber-500 w-[55%]' : 'bg-green-500 w-[90%]'
+                                      }`} 
+                                    />
+                                  </div>
+                                  <span className="font-bold text-white shrink-0">
+                                    {customCriticalDecisionCase === 'A' ? '15%' : customCriticalDecisionCase === 'B' ? '55%' : '90%'}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Prob 3 */}
+                              <div className="space-y-1">
+                                <span className="text-gray-400 uppercase">Capacidad Técnica Retenida:</span>
+                                <div className="flex items-center gap-1.5">
+                                  <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div 
+                                      className={`h-full transition-all duration-500 ${
+                                        customCriticalDecisionCase === 'A' ? 'bg-red-500 w-[60%]' :
+                                        customCriticalDecisionCase === 'B' ? 'bg-green-500 w-[100%]' : 'bg-green-500 w-[100%]'
+                                      }`} 
+                                    />
+                                  </div>
+                                  <span className="font-bold text-white shrink-0">
+                                    {customCriticalDecisionCase === 'A' ? '60%' : customCriticalDecisionCase === 'B' ? '100%' : '100%'}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="p-3 bg-white/[0.02] border-l-2 border-amber-500 text-gray-300 leading-relaxed text-[11px]">
+                              <span className="font-bold text-amber-400 block mb-1">
+                                Análisis Técnico del Terapeuta Robert Terán:
+                              </span>
+                              {customCriticalDecisionCase === 'A' && (
+                                'FALLO HUMANO SEVERO. Aunque los balances financieros respiran a corto plazo, usted ha aserrado el clima y la confianza directiva en un 85%. Los profesionales técnicos remanentes operarán bajo terror absoluto, ocultando fallas mecánicas de planta para evitar ser despedidos, detonando una caída en picada de la trazabilidad durante la auditoría externa.'
+                              )}
+                              {customCriticalDecisionCase === 'B' && (
+                                'FALLO DE COSTO HUNDIDO. Ha quemado toda su liquidez en un proyecto alternativo ficticio impulsado por el orgullo directivo, desatendiendo la corrección de fallas críticas. Su equipo experimenta estrés crónico extremo y se expone a quiebras técnicas súbitas sin plan de mitigación viable.'
+                              )}
+                              {customCriticalDecisionCase === 'C' && (
+                                'ÉXITO ESTRATÉGICO DIRECTIVO. Eligió actuar mediante psicología laboral y transparencia Gestalt. Al asociar a sus 120 ingenieros a la resolución activa de la merma mediante sacrificios colectivos pautados en vez de despidos hostiles, salvaguardó el 100% de la capacidad técnica interna de la organización. El clima asume el reto y la auditoría regulatoria se superará con lealtad indisoluble.'
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Socratic Questions Cards */}
+                <div className="glass p-6 md:p-8 rounded-3xl border border-white/10 bg-[#07070a] space-y-4">
+                  <h4 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-1.5 font-mono border-b border-white/5 pb-3">
+                    <HelpCircle className="w-4 h-4 text-amber-500" />
+                    Preguntas Poderosas de Robert Terán para Incertidumbres Laborales
+                  </h4>
+
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4 pt-2 text-xs">
+                    {[
+                      { category: 'Antes de decidir', q: '¿Qué es lo peor que ocurriría ante un fracaso absoluto? ¿Cómo lo mitigaría el SGI de planta?' },
+                      { category: 'Durante la presión', q: '¿Qué porción de este problema es un dato duro y comprobable y qué porción es histeria del comité?' },
+                      { category: 'Cuando hay empate', q: '¿Cuál de las dos alternativas salvaguarda la vida del personal y la ética de la norma ISO?' },
+                      { category: 'Cuando falta dato', q: '¿Prefiere equivocarse habiendo actuado con audacia asertiva o por temor inmovilizador administrativo?' },
+                      { category: 'Después del veredicto', q: '¿Qué descubrimos acerca de nuestra resiliencia directiva real al recibir el impacto adverso?' }
+                    ].map((ps, idx) => (
+                      <div key={`dec-q-${idx}`} className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl flex flex-col justify-between space-y-2 hover:border-amber-500/15 hover:bg-amber-500/5 transition duration-300">
+                        <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-400 w-fit">
+                          {ps.category}
+                        </span>
+                        <p className="font-bold text-gray-200 italic leading-relaxed">
+                          "{ps.q}"
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 p-4 rounded-2xl bg-gradient-to-r from-red-600/10 to-amber-600/10 border border-red-500/25 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div className="space-y-1">
+                      <p className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                        Frase de Estabilidad Líder ante la Incertidumbre:
+                      </p>
+                      <p className="text-xs text-gray-300 italic">
+                        "En la tempestad, el directivo asertivo de calidad no grita que el buque zozobra; asume el panel, silencia especulaciones vacías, y vincula la mente de los operarios a la exactitud de los instrumentos."
+                      </p>
+                    </div>
+                    <span className="px-3 py-1 bg-red-600 text-white rounded font-mono font-bold text-[9px] uppercase hover:bg-red-500 transition-colors shrink-0">
+                      Robert Terán
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SUB-TAB 2: LEADER APTITUDE TEST */}
+            {leadershipSubTab === 'test' && (
               <div className="glass p-6 rounded-3xl border border-white/10 bg-[#07070a] flex flex-col justify-between">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center border-b border-white/5 pb-3">
@@ -2201,10 +2866,11 @@ export default function ManualSIG() {
                     )}
                   </AnimatePresence>
                 </div>
-
               </div>
+            )}
 
-              {/* INTERACTIVE COLUMN 2: PROBLEM CONFLICT RESOLUTION SIMULATOR */}
+            {/* SUB-TAB 3: CONFLICT SIMULATOR */}
+            {leadershipSubTab === 'conflict' && (
               <div className="glass p-6 rounded-3xl border border-white/10 bg-[#07070a] flex flex-col justify-between">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center border-b border-white/5 pb-3">
@@ -2260,7 +2926,7 @@ export default function ManualSIG() {
                               setSimFeedback("Ramírez firma con desgana bajo amenaza pero el clima en su área se desploma. Los operarios sabotearán sutilmente los registros SGC más adelante.");
                               setConflictStep(2);
                             }}
-                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all w-full"
                           >
                             Ruta Punitiva: Amonestarlo con severidad citando la cláusula de liderazgo 5.1 y reportarlo con Dirección.
                           </button>
@@ -2271,7 +2937,7 @@ export default function ManualSIG() {
                               setSimFeedback("Ramírez sonríe agradecido y te regala un café, pero el SGC se debilita. No registrar la desviación repite el scrap costando cara la auditoría final.");
                               setConflictStep(2);
                             }}
-                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all w-full"
                           >
                             Ruta Complaciente: Ignorar el reporte y dejar que continúe con el scrap sin asentar la No Conformidad.
                           </button>
@@ -2282,7 +2948,7 @@ export default function ManualSIG() {
                               setSimFeedback("Robert Terán aprueba esta aproximación. Ramírez acepta sentarse a revisar los parámetros mecánicos de mermas de extrusión de forma asertiva.");
                               setConflictStep(2);
                             }}
-                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all w-full"
                           >
                             Ruta Integradora Coach: Escuchar de forma empática sus cuellos de botella de planta, y pactar el hallazgo enfocado a la resolución técnica (8D).
                           </button>
@@ -2301,7 +2967,7 @@ export default function ManualSIG() {
                               setSimFeedback("Paz temporal pero fractura moral. El equipo de planta siente terror e inseguridad psicológica extrema. La rotación de personal subirá.");
                               setConflictStep(3);
                             }}
-                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all w-full"
                           >
                             Aceptar y aplicar despido o recriminación directa al operador temporal.
                           </button>
@@ -2312,7 +2978,7 @@ export default function ManualSIG() {
                               setSimFeedback("Robert Terán advierte: El culpable chivo expiatorio soluciona momentáneamente el papel, pero la falla de la máquina de extrusión subsiste.");
                               setConflictStep(3);
                             }}
-                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all w-full"
                           >
                             Rechazar, pero retrasar la investigación 8D para no discutir de nuevo con Ramírez.
                           </button>
@@ -2323,7 +2989,7 @@ export default function ManualSIG() {
                               setSimFeedback("Excelente. Ramírez comprende que errar es humano, pero el error nace de un mal diseño de herramentales o instructivos del SGC.");
                               setConflictStep(3);
                             }}
-                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all"
+                            className="bg-black/35 hover:bg-white/5 p-2.5 rounded-xl border border-white/5 text-left text-gray-400 hover:text-white transition-all w-full"
                           >
                             Redirigir el enfoque: Establecer que el error es fallas del SISTEMA, no personas (Cláusula SGC 10.2).
                           </button>
@@ -2346,7 +3012,7 @@ export default function ManualSIG() {
                               setSgcComplianceIndex(60);
                               setSimFeedback('');
                             }}
-                            className="mt-2 bg-white text-black font-extrabold uppercase py-2.5 rounded-xl hover:bg-red-600 hover:text-white transition-all font-mono text-[10px] tracking-widest"
+                            className="mt-2 bg-white text-black font-extrabold uppercase py-2.5 rounded-xl hover:bg-red-600 hover:text-white transition-all font-mono text-[10px] tracking-widest w-full"
                           >
                             Explorar Otras Alternativas de Liderazgo
                           </button>
@@ -2359,94 +3025,94 @@ export default function ManualSIG() {
                 <div className="mt-4 p-3 bg-red-600/5 rounded-2xl border border-red-500/10 text-[10px] text-gray-400 italic text-center">
                   "El clima organizacional es una variable cuantitativa en los costos indirectos de Prevención de Calidad (Crosby)."
                 </div>
-
               </div>
+            )}
 
-            </div>
-
-            {/* INTERACTIVE COLUMN 3: HUMAN AGREEMENTS AND STREAK OKRS */}
-            <div className="glass p-6 md:p-8 rounded-3xl border border-white/10 bg-[#0c0c0f] space-y-6">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-4">
-                <div>
-                  <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
-                    <Heart className="w-5 h-5 text-red-500" /> Acuerdos Humanos de Cohesión Corporativa
-                  </h3>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Suscriba estos OKRs de comunicación efectiva y cultura de cero culpa. Haga click para firmar y sincronizar con Firestore en vivo.
-                  </p>
-                </div>
-                <button
-                  onClick={async () => {
-                    const allSigned = humanAgreements.map(a => ({ ...a, signed: true }));
-                    setHumanAgreements(allSigned);
-                    // Autosync in background
-                    setIsCloudSyncing(true);
-                    try {
-                      const docRef = doc(db, 'sgc_states', sgcUserId);
-                      await setDoc(docRef, { humanAgreements: allSigned, syncedAt: new Date().toLocaleTimeString() }, { merge: true });
-                      setCloudSyncedAt(new Date().toLocaleTimeString());
-                    } catch (e) {
-                      console.error(e);
-                    }
-                    setIsCloudSyncing(false);
-                    alert('¡Todos los Acuerdos Humanos firmados por el comité ejecutivo y guardados en Firestore!');
-                  }}
-                  className="bg-white/5 hover:bg-white/10 text-white border border-white/10 text-[10px] px-3.5 py-2 rounded-xl font-bold uppercase transition-all"
-                >
-                  Firmar Todo el Pacto
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {humanAgreements.map((agreement) => (
-                  <div 
-                    key={agreement.id} 
-                    className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
-                      agreement.signed 
-                        ? 'bg-green-500/15 border-green-500/30' 
-                        : 'bg-black/40 border-white/5 hover:border-white/10'
-                    }`}
+            {/* SUB-TAB 4: HUMAN AGREEMENTS */}
+            {leadershipSubTab === 'agreements' && (
+              <div className="glass p-6 md:p-8 rounded-3xl border border-white/10 bg-[#0c0c0f] space-y-6 animate-fadeIn">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-4">
+                  <div>
+                    <h3 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
+                      <Heart className="w-5 h-5 text-red-500" /> Acuerdos Humanos de Cohesión Corporativa
+                    </h3>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Suscriba estos OKRs de comunicación efectiva y cultura de cero culpa. Haga click para firmar y sincronizar con Firestore en vivo.
+                    </p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      const allSigned = humanAgreements.map(a => ({ ...a, signed: true }));
+                      setHumanAgreements(allSigned);
+                      // Autosync in background
+                      setIsCloudSyncing(true);
+                      try {
+                        const docRef = doc(db, 'sgc_states', sgcUserId);
+                        await setDoc(docRef, { humanAgreements: allSigned, syncedAt: new Date().toLocaleTimeString() }, { merge: true });
+                        setCloudSyncedAt(new Date().toLocaleTimeString());
+                      } catch (e) {
+                        console.error(e);
+                      }
+                      setIsCloudSyncing(false);
+                      alert('¡Todos los Acuerdos Humanos firmados por el comité ejecutivo y guardados en Firestore!');
+                    }}
+                    className="bg-white/5 hover:bg-white/10 text-white border border-white/10 text-[10px] px-3.5 py-2 rounded-xl font-bold uppercase transition-all shrink-0"
                   >
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-start">
-                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
-                          agreement.signed ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-gray-400'
-                        }`}>
-                          {agreement.signed ? 'Acuerdo Activo SGC' : 'Inactivo / Firma Pendiente'}
-                        </span>
-                        <Brain className={`w-4 h-4 ${agreement.signed ? 'text-green-400 animate-pulse' : 'text-gray-600'}`} />
-                      </div>
-                      <h4 className="font-extrabold text-white text-xs uppercase tracking-wide">{agreement.title}</h4>
-                      <p className="text-gray-400 text-[11px] leading-relaxed">{agreement.description}</p>
-                    </div>
+                    Firmar Todo el Pacto
+                  </button>
+                </div>
 
-                    <button
-                      onClick={async () => {
-                        const updated = humanAgreements.map(a => a.id === agreement.id ? { ...a, signed: !a.signed } : a);
-                        setHumanAgreements(updated);
-                        // Autosyne data
-                        setIsCloudSyncing(true);
-                        try {
-                          const docRef = doc(db, 'sgc_states', sgcUserId);
-                          await setDoc(docRef, { humanAgreements: updated, syncedAt: new Date().toLocaleTimeString() }, { merge: true });
-                          setCloudSyncedAt(new Date().toLocaleTimeString());
-                        } catch (err) {
-                          console.error(err);
-                        }
-                        setIsCloudSyncing(false);
-                      }}
-                      className={`mt-4 w-full text-[10px] py-2 rounded-lg font-bold uppercase transition-all tracking-wider ${
-                        agreement.signed
-                          ? 'bg-green-500 hover:bg-red-600 text-black hover:text-white font-extrabold'
-                          : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {humanAgreements.map((agreement) => (
+                    <div 
+                      key={agreement.id} 
+                      className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
+                        agreement.signed 
+                          ? 'bg-green-500/15 border-green-500/30' 
+                          : 'bg-black/40 border-white/5 hover:border-white/10'
                       }`}
                     >
-                      {agreement.signed ? '✓ Firmado y Resguardado' : 'Estampar Firma Digital SGC'}
-                    </button>
-                  </div>
-                ))}
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                            agreement.signed ? 'bg-green-500/20 text-green-400' : 'bg-white/5 text-gray-400'
+                          }`}>
+                            {agreement.signed ? 'Acuerdo Activo SGC' : 'Inactivo / Firma Pendiente'}
+                          </span>
+                          <Brain className={`w-4 h-4 ${agreement.signed ? 'text-green-400 animate-pulse' : 'text-gray-600'}`} />
+                        </div>
+                        <h4 className="font-extrabold text-white text-xs uppercase tracking-wide">{agreement.title}</h4>
+                        <p className="text-gray-400 text-[11px] leading-relaxed">{agreement.description}</p>
+                      </div>
+
+                      <button
+                        onClick={async () => {
+                          const updated = humanAgreements.map(a => a.id === agreement.id ? { ...a, signed: !a.signed } : a);
+                          setHumanAgreements(updated);
+                          // Autosyne data
+                          setIsCloudSyncing(true);
+                          try {
+                            const docRef = doc(db, 'sgc_states', sgcUserId);
+                            await setDoc(docRef, { humanAgreements: updated, syncedAt: new Date().toLocaleTimeString() }, { merge: true });
+                            setCloudSyncedAt(new Date().toLocaleTimeString());
+                          } catch (err) {
+                            console.error(err);
+                          }
+                          setIsCloudSyncing(false);
+                        }}
+                        className={`mt-4 w-full text-[10px] py-2 rounded-lg font-bold uppercase transition-all tracking-wider ${
+                          agreement.signed
+                            ? 'bg-green-500 hover:bg-red-600 text-black hover:text-white font-extrabold'
+                            : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
+                        }`}
+                      >
+                        {agreement.signed ? '✓ Firmado y Resguardado' : 'Estampar Firma Digital SGC'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
           </div>
         )}

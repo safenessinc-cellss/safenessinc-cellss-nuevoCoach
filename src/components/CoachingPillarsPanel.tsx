@@ -398,7 +398,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                     <div className="bg-black/50 p-3 rounded-xl border border-white/5 max-h-[100px] overflow-y-auto space-y-1 text-[10px]">
                       <span className="text-gray-500 block font-mono border-b border-white/5 pb-1">Compromisos Registrados en Bitácora Humana:</span>
                       {savedReflections.map((ref, idx) => (
-                        <p key={idx} className="text-green-400 leading-tight">
+                        <p key={`ref-${idx}-${ref.slice(0, 10)}`} className="text-green-400 leading-tight">
                           • {ref}
                         </p>
                       ))}
@@ -427,7 +427,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                   { step: '4. Diálogo de Plantilla', desc: 'Liderar la asertividad y escuchar las objeciones del operador en piso.', glow: 'border-teal-500/20 bg-teal-500/5 text-teal-400' },
                   { step: '5. Acta Directiva 9.3', desc: 'Asentar la acción correctiva mitigadora en el manual real de calidad.', glow: 'border-green-500/20 bg-green-500/5 text-green-400' }
                 ].map((s, idx) => (
-                  <div key={idx} className={`p-3.5 border rounded-xl flex flex-col justify-between hover:scale-102 transition duration-300 space-y-2 ${s.glow}`}>
+                  <div key={`step-gestalt-${idx}`} className={`p-3.5 border rounded-xl flex flex-col justify-between hover:scale-102 transition duration-300 space-y-2 ${s.glow}`}>
                     <div className="font-extrabold uppercase text-[10px] tracking-wider">{s.step}</div>
                     <p className="text-[10px] text-gray-300 font-sans leading-snug">{s.desc}</p>
                     {idx < 4 && (
@@ -637,7 +637,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                   { step: '3. Anclaje Operativo', desc: 'El trabajador manipula el scrap en el piso de planta para ligar el dato abstracto con una acción física.' },
                   { step: '4. OKRs Emocionales', desc: 'Se celebra el logro del equipo sin presiones comerciales inmediatas, reforzando la identidad grupal.' }
                 ].map((ph, i) => (
-                  <div key={i} className="p-4 bg-[#0a0a0f] border border-white/5 rounded-xl hover:border-teal-500/10 transition-colors flex flex-col justify-between space-y-2">
+                  <div key={`step-micro-${i}`} className="p-4 bg-[#0a0a0f] border border-white/5 rounded-xl hover:border-teal-500/10 transition-colors flex flex-col justify-between space-y-2">
                     <span className="text-[10px] font-bold text-teal-400 block border-b border-white/5 pb-1 uppercase">{ph.step}</span>
                     <p className="text-[10px] text-gray-400 font-sans leading-normal">{ph.desc}</p>
                     {i < 3 && (
@@ -862,7 +862,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                   { name: '4. Pruebas Cruzadas de Piso', desc: 'El supervisor de calidad opera 1 hora el equipo de extrusión para empatizar con el ruido.' },
                   { name: '5. Unión Consolidada SGC', desc: 'Madurez del sistema donde los mandos medios deciden con asertividad y orgullo de pertenencia.' }
                 ].map((s, idx) => (
-                  <div key={idx} className="p-3 bg-black/40 border border-white/5 rounded-xl hover:border-red-500/20 transition-all flex flex-col justify-between space-y-1.5">
+                  <div key={`step-union-${idx}`} className="p-3 bg-black/40 border border-white/5 rounded-xl hover:border-red-500/20 transition-all flex flex-col justify-between space-y-1.5">
                     <span className="text-[10px] font-bold text-red-400 uppercase block">{s.name}</span>
                     <p className="text-[9.5px] text-gray-400 font-sans leading-relaxed">{s.desc}</p>
                     {idx < 4 && (

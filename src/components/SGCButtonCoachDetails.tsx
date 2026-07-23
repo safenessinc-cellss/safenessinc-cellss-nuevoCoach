@@ -274,7 +274,7 @@ ${details.visualDiag1Mermaid}
           </div>
           <div className="md:col-span-8 space-y-3">
             {details.diagnostico.map((d, index) => (
-              <div key={index} className="flex gap-3 p-4 bg-white/[0.01] border border-white/5 rounded-2xl hover:border-red-500/20 hover:bg-red-500/5 transition duration-300">
+              <div key={`diag-${index}`} className="flex gap-3 p-4 bg-white/[0.01] border border-white/5 rounded-2xl hover:border-red-500/20 hover:bg-red-500/5 transition duration-300">
                 <span className="w-6 h-6 rounded-lg bg-red-600/10 text-red-400 font-mono font-bold flex items-center justify-center text-xs shrink-0">{index + 1}</span>
                 <p className="text-xs text-gray-300 leading-relaxed">{d}</p>
               </div>
@@ -319,7 +319,7 @@ ${details.visualDiag1Mermaid}
               </thead>
               <tbody className="divide-y divide-white/5">
                 {details.matrixIntervention.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-red-500/5 transition">
+                  <tr key={`matrix-${idx}`} className="hover:bg-red-500/5 transition">
                     <td className="p-4 font-bold text-white">{row.problemType}</td>
                     <td className="p-4 text-gray-400 leading-relaxed italic">"{row.coachingApproach}"</td>
                     <td className="p-4 text-red-400 font-mono font-bold flex items-center gap-1.5">
@@ -346,7 +346,7 @@ ${details.visualDiag1Mermaid}
           </div>
           <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {details.acompanamiento.map((ac, idx) => (
-              <div key={idx} className="p-4 bg-white/[0.01] border border-white/5 rounded-xl hover:border-green-500/20 transition-all flex items-start gap-2.5">
+              <div key={`acomp-${idx}`} className="p-4 bg-white/[0.01] border border-white/5 rounded-xl hover:border-green-500/20 transition-all flex items-start gap-2.5">
                 <Check className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
                 <span className="text-[11.5px] text-gray-300 leading-relaxed">{ac}</span>
               </div>
@@ -446,7 +446,7 @@ ${details.visualDiag2Mermaid}
             <div className="space-y-2">
               {details.connections.map((conn, idx) => (
                 <div 
-                  key={idx} 
+                  key={`conn-${conn.btnId || idx}`} 
                   onClick={() => onSelectTab(conn.btnId)}
                   className="p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:border-red-500/40 hover:bg-red-500/5 transition duration-300 flex items-center justify-between cursor-pointer group"
                 >
