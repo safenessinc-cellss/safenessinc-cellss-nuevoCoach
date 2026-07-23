@@ -10,23 +10,24 @@
     "agendar": "Agendar Consulta"
   },
   "hero": {
-    "badge": "Soluções de Engenharia e Liderança",
-    "title": "A Qualidade é",
-    "titleHighlight": "Inegociável.",
-    "description": "Fundo a precisão técnica da engenharia com o desenvolvimento do talento humano para criar empresas exponenciais."
+    "badge": "Engenheiro, Economista e Especialista em Sistemas de Gestão Integrada | Otimização de Processos",
+    "title": "Otimizando processos e liderando equipes humanas",
+    "titleHighlight": "com mais de 30 anos de experiência.",
+    "description": "“Integro a precisão técnica da engenharia com a análise econômica estratégica e os sistemas de gestão integrada. Otimizamos processos, unimos equipes e agilizamos decisões críticas para sua rentabilidade.”"
   },
   "about": {
     "badge": "Perfil Profissional",
-    "title": "Mais de 30 anos de Excelência"
+    "title": "Mais de 30 Anos de Excelência",
+    "description": "Especialista em Sistemas de Gestão ISO com mais de 30 anos de experiência em auditoria e consultoria estratégica. Auditor Líder certificado pela IBM 2025 e Coach Empresarial, complementa seu perfil técnico com estudos em Psicopedagogia, Bem-Estar Laboral e Inteligência Emocional Organizacional."
   },
   "services": {
     "badge": "Meus Serviços",
-    "title": "Suíte Integral de Gestão",
-    "auditorTitle": "Auditor Líder ISO",
-    "auditorDesc": "Especialista em ISO 9001 e ISO 14001",
+    "title": "Suite Integral de Gestão",
+    "auditorTitle": "Sistemas de Gestão Integrada",
+    "auditorDesc": "Engenharia, economia e otimização",
     "details": "Ver detalhes",
-    "coachTitle": "Coach IBM 2025",
-    "coachDesc": "Coaching executivo e liderança"
+    "coachTitle": "Otimização de Processos",
+    "coachDesc": "Eficiência, rentabilidade e estrutura"
   },
   "global": {
     "title": "Alcance Global"
@@ -34,17 +35,13 @@
   "certifications": {
     "badge": "O Padrão Ouro",
     "title": "Sistemas de Gestão ISO",
-    "description": "Certificando a excelência em nível internacional."
+    "description": "Certificando a excelência internacionalmente."
   },
   "testimonials": {
     "badge": "Casos de Sucesso",
-    "title": "O que nossos clientes dizem",
+    "title": "O que dizem nossos clientes",
     "viewCase": "Ver caso"
-  }
-}
-{
-  // ... tus traducciones existentes ...
-  {
+  },
   "curriculum": {
     "title": "Currículo Profissional",
     "download": "Baixar PDF",
@@ -175,7 +172,6 @@
     },
     "footer": {
       "text": "Transformando empresas e equipes humanas com mais de 30 anos de experiência"
-    },
-    "viewCase": "Ver caso"
+    }
   }
 }
