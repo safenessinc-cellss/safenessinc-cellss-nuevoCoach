@@ -461,7 +461,7 @@ export default function App() {
               <div className="flex justify-between items-center">
                 <div className="w-12 h-12 bg-white/5 rounded-lg animate-pulse"></div>
                 <div className="hidden md:flex gap-4">
-                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-20 h-4 bg-white/5 rounded animate-pulse"></div>)}
+                  {[1, 2, 3, 4, 5].map(i => <div key={`skel-hdr-${i}`} className="w-20 h-4 bg-white/5 rounded animate-pulse"></div>)}
                 </div>
               </div>
               {/* Hero Skeleton */}
@@ -677,7 +677,7 @@ export default function App() {
                     
                     return (
                       <button 
-                        key={idx} 
+                        key={`badge-${badge.label || idx}-${idx}`} 
                         onClick={() => setActiveSkillIdx(idx)}
                         onMouseEnter={() => setActiveSkillIdx(idx)}
                         className={`flex items-center gap-2.5 border rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 transform cursor-pointer ${
@@ -763,7 +763,7 @@ export default function App() {
                 <div className="flex items-center gap-4">
                   <div className="flex -space-x-2">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-black overflow-hidden">
+                      <div key={`cli-avatar-${i}`} className="w-8 h-8 rounded-full border-2 border-black overflow-hidden">
                         <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="Client" />
                       </div>
                     ))}
@@ -810,7 +810,7 @@ export default function App() {
                 
                 return (
                   <div 
-                    key={idx}
+                    key={`career-block-${block.area || idx}-${idx}`}
                     onClick={() => setActiveCareerIdx(idx)}
                     onMouseEnter={() => setActiveCareerIdx(idx)}
                     className={`futuristic-card p-8 rounded-3xl cursor-pointer transition-all duration-300 relative ${
@@ -856,7 +856,7 @@ export default function App() {
                     <div className="flex flex-wrap gap-2">
                       {block.roles.map((role, i) => (
                         <span 
-                          key={i} 
+                          key={`career-role-${block.area || 'area'}-${i}-${role}`} 
                           className={`text-[10px] font-mono font-semibold tracking-wider px-3 py-1.5 rounded-lg border ${
                             isActive
                               ? isFuchsia
@@ -1415,7 +1415,7 @@ export default function App() {
                             
                             <div className="max-h-24 overflow-y-auto space-y-1 select-none">
                               {sgcLogs.map((log, lidx) => (
-                                <div key={lidx} className="flex items-start gap-1">
+                                <div key={`sgc-log-${lidx}-${log}`} className="flex items-start gap-1">
                                   <span className="text-red-500/40 shrink-0">&gt;</span>
                                   <span>{log}</span>
                                 </div>
@@ -1445,7 +1445,7 @@ export default function App() {
 
               return (
                 <motion.div 
-                  key={idx}
+                  key={`exp-area-${area.title || idx}-${idx}`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
@@ -1460,7 +1460,7 @@ export default function App() {
                   </div>
                   <ul className="space-y-4">
                     {area.items.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-gray-400">
+                      <li key={`exp-item-${area.title || 'area'}-${i}`} className="flex items-start gap-3 text-gray-400">
                         <CheckCircle2 className="w-5 h-5 text-red-500/70 shrink-0 mt-0.5" />
                         <span className="text-sm leading-relaxed">{item}</span>
                       </li>
@@ -1489,7 +1489,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data.certifications.map((cert, idx) => (
               <motion.div 
-                key={idx}
+                key={`cert-card-${cert.title || idx}-${idx}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -1710,7 +1710,7 @@ export default function App() {
                 "Problemas relacionales", "Rendimiento deportivo", "Estrés", "Recursos humanos"
               ].map((specialty, idx) => (
                 <button 
-                  key={idx} 
+                  key={`spec-btn-${specialty}-${idx}`} 
                   onClick={() => {
                     // Reset custom states before opening
                     if (specialty === 'Impulsividad') {
@@ -1745,7 +1745,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {data.testimonials.map((testimonial, idx) => (
               <motion.div 
-                key={idx}
+                key={`testim-card-${testimonial.name || idx}-${idx}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -3213,7 +3213,7 @@ export default function App() {
                               const types = ['agressive', 'evasive', 'assertive'];
                               return (
                                 <button
-                                  key={idx}
+                                  key={`rel-style-btn-${types[idx]}`}
                                   onClick={() => setRelationStyleChosen(types[idx])}
                                   className={`py-2 px-1 rounded bg-white/[0.01] border text-[11px] font-medium transition-all cursor-pointer ${
                                     relationStyleChosen === types[idx] 
@@ -3335,7 +3335,7 @@ export default function App() {
                             { state: stressQ4, setter: setStressQ4, text: "4. ¿Sientes que la formalización excesiva del papeleo SGC te supera cognitivamente?" }
                           ].map((item, idx) => (
                             <div 
-                              key={idx}
+                              key={`stress-q-${idx}`}
                               onClick={() => item.setter(!item.state)}
                               className={`p-2.5 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
                                 item.state 
@@ -3463,7 +3463,7 @@ export default function App() {
                                 <span className="text-[10px] font-mono text-gray-400 block uppercase font-bold text-left">Plan de Capacitación Táctico (Robert Terán):</span>
                                 <div className="flex flex-wrap gap-1.5 mt-1.5 text-left">
                                   {plans.map((p, i) => (
-                                    <span key={i} className="px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-[10px] font-mono font-semibold text-red-500">
+                                    <span key={`plan-${i}-${p}`} className="px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-[10px] font-mono font-semibold text-red-500">
                                       {p}
                                     </span>
                                   ))}
