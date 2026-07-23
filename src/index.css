@@ -88,3 +88,36 @@ body {
   }
 }
 
+/* Reglas de Impresión y Exportación PDF del Currículo */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #curriculum-cv-document,
+  #curriculum-cv-document * {
+    visibility: visible;
+  }
+
+  #curriculum-cv-document {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
