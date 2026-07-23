@@ -40,16 +40,13 @@
     "badge": "Casos de Éxito",
     "title": "Lo que dicen nuestros clientes",
     "viewCase": "Ver caso"
-
 {
   "curriculum": {
-    ...todo el contenido...
-  }
-}
     "title": "Currículum Profesional",
     "download": "Descargar PDF",
     "print": "Imprimir",
     "close": "Cerrar",
+    "viewCase": "Ver caso",
     "profile": {
       "title": "Perfil Profesional",
       "subtitle": "Más de 30 años de Excelencia",
@@ -175,7 +172,6 @@
     },
     "footer": {
       "text": "Transformando empresas y equipos humanos con más de 30 años de experiencia"
-    },
-    "viewCase": "Ver caso"
+    }
   }
 }
