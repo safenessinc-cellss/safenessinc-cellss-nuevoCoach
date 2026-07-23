@@ -42,3 +42,139 @@
     "viewCase": "Ver caso"
   }
 }
+{
+  // ... tus traducciones existentes ...
+  
+  "curriculum": {
+    "title": "Currículo Profissional",
+    "download": "Baixar PDF",
+    "print": "Imprimir",
+    "close": "Fechar",
+    "profile": {
+      "title": "Perfil Profissional",
+      "subtitle": "Mais de 30 Anos de Excelência",
+      "description": "Especialista em Sistemas de Gestão ISO com mais de 30 anos de experiência em auditoria e consultoria estratégica. Auditor Líder certificado pela IBM 2025 e Coach Empresarial, complementa seu perfil técnico com estudos em Psicopedagogia, Bem-Estar Laboral e Inteligência Emocional Organizacional."
+    },
+    "experience": {
+      "title": "Trajetória Profissional",
+      "subtitle": "Sincronização de Impacto Corporativo",
+      "sections": {
+        "quality": "Gestão da Qualidade, Processos e Produção Industrial",
+        "executive": "Direção Executiva, Compras e Coaching Organizacional",
+        "audit": "Auditoria de Canais & Resultados Corporativos"
+      },
+      "items": [
+        {
+          "period": "2000 - 2005",
+          "role": "Coordenador de Qualidade e Processos",
+          "company": "Rototech",
+          "description": "Implementação de metodologias Lean, Six Sigma e auditorias ISO 9001/14001/45001"
+        },
+        {
+          "period": "2006 - 2010",
+          "role": "Analista e Gestor de Qualidade",
+          "company": "Tapeçaria Palacio",
+          "description": "Otimização do rendimento produtivo e controle de qualidade"
+        },
+        {
+          "period": "2010 - 2015",
+          "role": "Gerente de Qualidade e Produção",
+          "company": "D'classe Papeis",
+          "description": "Liderança de equipes multidisciplinares e sistemas integrados de gestão"
+        },
+        {
+          "period": "2015 - 2020",
+          "role": "Analista de Compras SR & Qualidade",
+          "company": "General Motors",
+          "description": "Negociação de abastecimento internacional e homologação de fornecedores"
+        }
+      ],
+      "achievements": [
+        "Implementação de OKRs e KPIs em 5 organizações",
+        "Redução de sucata em 35% em processos industriais",
+        "Certificação ISO 9001 em tempo recorde"
+      ]
+    },
+    "education": {
+      "title": "Formação Acadêmica",
+      "items": [
+        {
+          "degree": "Engenheiro Industrial",
+          "institution": "Universidade Central da Venezuela",
+          "year": "1995"
+        },
+        {
+          "degree": "Economista",
+          "institution": "Universidade Central da Venezuela",
+          "year": "1998"
+        },
+        {
+          "degree": "Especialização em Psicopedagogia Empresarial",
+          "institution": "Instituto de Psicopedagogia Aplicada",
+          "year": "2010"
+        }
+      ]
+    },
+    "certifications": {
+      "title": "Certificações",
+      "subtitle": "O Padrão Ouro",
+      "items": [
+        {
+          "code": "AUD",
+          "name": "Auditor Líder ISO (IRCA)",
+          "description": "Sistemas de Gestão (9001, 14001, 27001, 45001, 22000, 42001)"
+        },
+        {
+          "code": "IBM",
+          "name": "IBM 2025 Coach",
+          "description": "Liderança e Transformação de equipes digitais"
+        },
+        {
+          "code": "CIA",
+          "name": "Certified Internal Auditor",
+          "description": "Auditoria interna global, concedida pelo IIA"
+        },
+        {
+          "code": "CISA",
+          "name": "Certified Information Systems Auditor",
+          "description": "Controle e segurança de sistemas de informação"
+        },
+        {
+          "code": "PSI",
+          "name": "Psicopedagogia Empresarial",
+          "description": "Gestão da aprendizagem organizacional e dinâmicas de grupo"
+        }
+      ]
+    },
+    "metrics": {
+      "efficiency": "Eficiência Comercial",
+      "trained": "Líderes Capacitados",
+      "impact": "Impacto de Canais",
+      "retention": "Retenção / Fidelização",
+      "efficiency_value": "98.6%",
+      "trained_value": "+500",
+      "impact_value": "45+",
+      "retention_value": "94.2%"
+    },
+    "simulator": {
+      "title": "Consola de Simulação Operacional (PHVA)",
+      "status": "SYS_STATUS: SIMULADOR_READY",
+      "config": "Configuração de Parâmetros",
+      "results": "Consola de Avaliação & Resultados",
+      "options": {
+        "traditional": "Amostragem Tática Tradicional",
+        "preventive": "Modelo Preventivo FMEA (Robert Terán)",
+        "absolute": "Inspeção Absoluta 100%"
+      },
+      "compliance": "Taxa de Conformidade",
+      "goal": "Objetivo",
+      "roi": "Retorno Econômico SGC",
+      "compliance_value": "98.6%",
+      "goal_value": "98%",
+      "roi_value": "+$32000 USD/ano (COQ)"
+    },
+    "footer": {
+      "text": "Transformando empresas e equipes humanas com mais de 30 anos de experiência"
+    }
+  }
+}
