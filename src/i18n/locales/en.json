@@ -42,3 +42,139 @@
     "viewCase": "View case"
   }
 }
+{
+  // ... tus traducciones existentes ...
+  
+  "curriculum": {
+    "title": "Professional Resume",
+    "download": "Download PDF",
+    "print": "Print",
+    "close": "Close",
+    "profile": {
+      "title": "Professional Profile",
+      "subtitle": "Over 30 Years of Excellence",
+      "description": "ISO Management Systems Specialist with over 30 years of experience in auditing and strategic consulting. IBM 2025 Certified Lead Auditor and Business Coach, complementing technical expertise with studies in Psychopedagogy, Workplace Wellbeing, and Organizational Emotional Intelligence."
+    },
+    "experience": {
+      "title": "Professional Career",
+      "subtitle": "Corporate Impact Synchronization",
+      "sections": {
+        "quality": "Quality Management, Processes and Industrial Production",
+        "executive": "Executive Management, Procurement and Organizational Coaching",
+        "audit": "Channel Audit & Corporate Results"
+      },
+      "items": [
+        {
+          "period": "2000 - 2005",
+          "role": "Quality and Process Coordinator",
+          "company": "Rototech",
+          "description": "Implementation of Lean, Six Sigma methodologies and ISO 9001/14001/45001 audits"
+        },
+        {
+          "period": "2006 - 2010",
+          "role": "Quality Analyst and Manager",
+          "company": "Tapeçaria Palacio",
+          "description": "Production performance optimization and quality control"
+        },
+        {
+          "period": "2010 - 2015",
+          "role": "Quality and Production Manager",
+          "company": "D'classe Papeis",
+          "description": "Leadership of multidisciplinary teams and integrated management systems"
+        },
+        {
+          "period": "2015 - 2020",
+          "role": "SR Purchasing & Quality Analyst",
+          "company": "General Motors",
+          "description": "International supply negotiation and supplier qualification"
+        }
+      ],
+      "achievements": [
+        "Implementation of OKRs and KPIs in 5 organizations",
+        "35% scrap reduction in industrial processes",
+        "ISO 9001 certification in record time"
+      ]
+    },
+    "education": {
+      "title": "Academic Education",
+      "items": [
+        {
+          "degree": "Industrial Engineer",
+          "institution": "Central University of Venezuela",
+          "year": "1995"
+        },
+        {
+          "degree": "Economist",
+          "institution": "Central University of Venezuela",
+          "year": "1998"
+        },
+        {
+          "degree": "Specialization in Business Psychopedagogy",
+          "institution": "Institute of Applied Psychopedagogy",
+          "year": "2010"
+        }
+      ]
+    },
+    "certifications": {
+      "title": "Certifications",
+      "subtitle": "The Gold Standard",
+      "items": [
+        {
+          "code": "AUD",
+          "name": "ISO Lead Auditor (IRCA)",
+          "description": "Management Systems (9001, 14001, 27001, 45001, 22000, 42001)"
+        },
+        {
+          "code": "IBM",
+          "name": "IBM 2025 Coach",
+          "description": "Leadership and Digital Team Transformation"
+        },
+        {
+          "code": "CIA",
+          "name": "Certified Internal Auditor",
+          "description": "Global internal auditing, awarded by the IIA"
+        },
+        {
+          "code": "CISA",
+          "name": "Certified Information Systems Auditor",
+          "description": "Information systems control and security"
+        },
+        {
+          "code": "PSI",
+          "name": "Business Psychopedagogy",
+          "description": "Organizational learning management and group dynamics"
+        }
+      ]
+    },
+    "metrics": {
+      "efficiency": "Commercial Efficiency",
+      "trained": "Leaders Trained",
+      "impact": "Channel Impact",
+      "retention": "Retention / Loyalty",
+      "efficiency_value": "98.6%",
+      "trained_value": "+500",
+      "impact_value": "45+",
+      "retention_value": "94.2%"
+    },
+    "simulator": {
+      "title": "Operational Simulation Console (PHVA)",
+      "status": "SYS_STATUS: SIMULATOR_READY",
+      "config": "Parameter Configuration",
+      "results": "Evaluation & Results Console",
+      "options": {
+        "traditional": "Traditional Tactical Sampling",
+        "preventive": "Preventive FMEA Model (Robert Terán)",
+        "absolute": "100% Absolute Inspection"
+      },
+      "compliance": "Compliance Rate",
+      "goal": "Target",
+      "roi": "SGC Economic Return",
+      "compliance_value": "98.6%",
+      "goal_value": "98%",
+      "roi_value": "+$32000 USD/year (COQ)"
+    },
+    "footer": {
+      "text": "Transforming businesses and human teams with over 30 years of experience"
+    }
+  }
+}
