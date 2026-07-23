@@ -1,26 +1,31 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
-import esTranslations from './locales/es.json';
-import enTranslations from './locales/en.json';
-import ptTranslations from './locales/pt.json';
-import itTranslations from './locales/it.json';
+import translationES from './locales/es.json';
+import translationEN from './locales/en.json';
+import translationPT from './locales/pt.json';
+import translationIT from './locales/it.json';
 
 const resources = {
-  es: { translation: esTranslations },
-  en: { translation: enTranslations },
-  pt: { translation: ptTranslations },
-  it: { translation: itTranslations },
+  es: { translation: translationES },
+  en: { translation: translationEN },
+  pt: { translation: translationPT },
+  it: { translation: translationIT },
 };
 
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'es', // idioma por defecto
     fallbackLng: 'es',
     interpolation: {
-      escapeValue: false, // react ya hace safe escaping
+      escapeValue: false,
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
     },
   });
 
