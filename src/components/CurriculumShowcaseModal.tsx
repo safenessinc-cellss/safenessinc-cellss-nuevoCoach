@@ -18,8 +18,9 @@ import {
   Printer,
   FileText
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useProfileSettings } from '../data/useProfileSettings';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 import { 
   CANDIDATE_INFO, 
   OFFICIAL_CERTIFICATES, 
@@ -65,7 +66,7 @@ const getHtml2PdfLib = async () => {
 };
 
 export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('cv_template');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -76,6 +77,21 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
   // Selected certificate for scaled modal viewer
   const [viewingCertificate, setViewingCertificate] = useState<OfficialCertificate | LearningActivity | null>(null);
+
+  // Localized career, education, languages, summary, impact metrics
+  const rawCareer = t('curriculum.career.roles', { returnObjects: true });
+  const careerRoles = Array.isArray(rawCareer) ? rawCareer : CAREER_EXPERIENCE;
+
+  const rawEducation = t('curriculum.education.items', { returnObjects: true });
+  const educationItems = Array.isArray(rawEducation) ? rawEducation : ACADEMIC_EDUCATION;
+
+  const rawLanguages = t('curriculum.languages.items', { returnObjects: true });
+  const languagesList = Array.isArray(rawLanguages) ? rawLanguages : LANGUAGES_LIST;
+
+  const rawImpactMetrics = t('curriculum.impact_metrics', { returnObjects: true });
+  const impactMetrics = Array.isArray(rawImpactMetrics) ? rawImpactMetrics : IMPACT_METRICS;
+
+  const cvSummary = t('curriculum.summary', CANDIDATE_INFO.summary);
 
   if (!isOpen) return null;
 
@@ -88,9 +104,10 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
     try {
       const html2pdfLib = await getHtml2PdfLib();
       if (html2pdfLib) {
+        const langCode = (i18n.language || 'es').toUpperCase();
         const opt = {
           margin: 0,
-          filename: `Curriculum_Robert_Teran.pdf`,
+          filename: `Curriculum_Robert_Teran_${langCode}.pdf`,
           image: { type: 'jpeg' as const, quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true, logging: false },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
@@ -174,18 +191,21 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   </div>
                   <div>
                     <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest font-black flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" /> Currículo Ejecutivo & Portal de Credenciales
+                      <Sparkles className="w-3.5 h-3.5" /> {t('curriculum.title', 'Currículo Ejecutivo & Portal de Credenciales')}
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                       {CANDIDATE_INFO.name}
                     </h2>
                     <p className="text-xs text-gray-400 mt-0.5 font-mono">
-                      Coach Ejecutivo • Auditor Líder SGC IRCA • Ingeniero Economista
+                      {t('curriculum.subtitle', 'Coach Ejecutivo • Auditor Líder SGC IRCA • Ingeniero Economista')}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
+                  {/* Language Selector */}
+                  <LanguageSelector variant="buttons" className="shrink-0" />
+
                   {/* Export PDF Button */}
                   <button
                     onClick={handleExportPDF}
@@ -193,17 +213,17 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                     className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
                   >
                     <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
-                    <span>{isExporting ? 'Generando PDF...' : 'Exportar a PDF'}</span>
+                    <span>{isExporting ? 'Generando PDF...' : t('curriculum.export', 'Exportar a PDF')}</span>
                   </button>
 
                   {/* Print Button */}
                   <button
                     onClick={handlePrint}
                     className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 hover:text-white rounded-xl text-xs font-mono flex items-center gap-2 transition cursor-pointer"
-                    title="Imprimir o guardar PDF nativo del navegador"
+                    title={t('curriculum.print', 'Imprimir')}
                   >
                     <Printer className="w-4 h-4 text-amber-400" />
-                    <span className="hidden sm:inline">Imprimir</span>
+                    <span className="hidden sm:inline">{t('curriculum.print', 'Imprimir')}</span>
                   </button>
 
                   <a
@@ -236,7 +256,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   }`}
                 >
                   <FileText className="w-4 h-4" />
-                  <span>Currículo Ejecutivo (Plantilla Oficial)</span>
+                  <span>{t('curriculum.tabs.cv', 'Currículo Ejecutivo (Plantilla Oficial)')}</span>
                 </button>
 
                 <button
@@ -248,7 +268,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   }`}
                 >
                   <Award className="w-4 h-4" />
-                  <span>Credenciales Credly ({OFFICIAL_CERTIFICATES.length})</span>
+                  <span>{t('curriculum.tabs.credentials', 'Credenciales Credly')} ({OFFICIAL_CERTIFICATES.length})</span>
                 </button>
 
                 <button
@@ -260,7 +280,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   }`}
                 >
                   <Layers className="w-4 h-4" />
-                  <span>Actividades & Cursos ({ALL_LEARNING_ACTIVITIES.length})</span>
+                  <span>{t('curriculum.tabs.activities', 'Actividades & Cursos')} ({ALL_LEARNING_ACTIVITIES.length})</span>
                 </button>
 
                 <button
@@ -272,7 +292,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   }`}
                 >
                   <User className="w-4 h-4" />
-                  <span>Perfil & Estadísticas</span>
+                  <span>{t('curriculum.tabs.profile', 'Perfil & Estadísticas')}</span>
                 </button>
               </div>
             </div>
@@ -323,31 +343,35 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
             {/* Scrollable Content Body */}
             <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#06050a] print:bg-white print:p-0">
               
-              {/* TAB 0: EXECUTIVE CV TEMPLATE */}
+              {/* TAB 0: EXECUTIVE CV TEMPLATE MATCHING THE DESIGN IN THE IMAGE */}
               {activeTab === 'cv_template' && (
                 <div className="flex flex-col items-center">
                   
-                  {/* Floating Actions Bar */}
-                  <div className="w-full max-w-[820px] mb-4 flex justify-between items-center text-xs font-mono text-gray-400 bg-white/5 p-3 rounded-2xl border border-white/10 print:hidden">
-                    <span className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
-                      <span>Vista previa de impresión oficial (Formato A4 Ejecutivo)</span>
-                    </span>
+                  {/* Floating Actions Bar with Language Switcher */}
+                  <div className="w-full max-w-[820px] mb-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs font-mono text-gray-400 bg-white/5 p-3 sm:p-4 rounded-2xl border border-white/10 print:hidden">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="flex items-center gap-1.5 text-amber-400 font-bold">
+                        <Sparkles className="w-4 h-4" />
+                        <span>{t('curriculum.translate_label', 'Idioma del Currículo:')}</span>
+                      </span>
+                      <LanguageSelector variant="buttons" className="shrink-0" />
+                    </div>
+
                     <div className="flex items-center gap-2">
                       <button
                         onClick={handleExportPDF}
                         disabled={isExporting}
-                        className="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
+                        className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-md"
                       >
                         <Download className="w-3.5 h-3.5" />
-                        <span>Exportar PDF</span>
+                        <span>{isExporting ? 'Generando...' : t('curriculum.export', 'Exportar PDF')}</span>
                       </button>
                       <button
                         onClick={handlePrint}
                         className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
                       >
                         <Printer className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Imprimir</span>
+                        <span>{t('curriculum.print', 'Imprimir')}</span>
                       </button>
                     </div>
                   </div>
@@ -391,7 +415,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <User className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
-                              Contacto
+                              {t('curriculum.contact.title', 'Contacto')}
                             </h3>
                           </div>
 
@@ -399,14 +423,14 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             {/* Phone */}
                             <div className="relative space-y-0.5">
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">Teléfono / WhatsApp</span>
+                              <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.phone', 'Teléfono / WhatsApp')}</span>
                               <span className="font-semibold text-white block">{CANDIDATE_INFO.phone || "+55 (51) 98280-4970"}</span>
                             </div>
 
                             {/* Email & Web */}
                             <div className="relative space-y-0.5">
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">Email / Credly</span>
+                              <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.email', 'Email / Credly')}</span>
                               <a href={`mailto:${CANDIDATE_INFO.email}`} className="font-medium text-amber-400 hover:underline block break-all text-[10.5px]">
                                 {CANDIDATE_INFO.email}
                               </a>
@@ -416,7 +440,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             {/* Location */}
                             <div className="relative space-y-0.5">
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
-                              <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">Ubicación</span>
+                              <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.location', 'Ubicación')}</span>
                               <span className="font-medium text-white block">{CANDIDATE_INFO.location || "São Leopoldo, RS, Brasil"}</span>
                             </div>
                           </div>
@@ -429,12 +453,12 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <BookOpen className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
-                              Idiomas
+                              {t('curriculum.languages.title', 'Idiomas')}
                             </h3>
                           </div>
 
                           <div className="relative pl-4 space-y-2 border-l-2 border-amber-500 ml-2 text-[10.5px]">
-                            {LANGUAGES_LIST.map((lang, idx) => (
+                            {languagesList.map((lang: any, idx: number) => (
                               <div key={`lang-${idx}`} className="relative space-y-0.5">
                                 <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                                 <div className="flex justify-between items-center text-white font-bold">
@@ -454,12 +478,12 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <GraduationCap className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
-                              Formación Académica
+                              {t('curriculum.education.title', 'Formación Académica')}
                             </h3>
                           </div>
 
                           <div className="relative pl-4 space-y-3 border-l-2 border-amber-500 ml-2 text-[11px]">
-                            {ACADEMIC_EDUCATION.map((edu, idx) => (
+                            {educationItems.map((edu: any, idx: number) => (
                               <div key={`edu-${idx}`} className="relative space-y-0.5">
                                 <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                                 <span className="font-bold text-white uppercase block leading-tight">{edu.title}</span>
@@ -473,7 +497,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                       </div>
 
                       <div className="pt-6 text-[9px] font-mono text-gray-500 border-t border-white/5 relative z-10">
-                        <span>Transcript Oficial expedido el {CANDIDATE_INFO.transcriptDate}</span>
+                        <span>{t('curriculum.transcript', 'Transcript Oficial expedido el')} {CANDIDATE_INFO.transcriptDate}</span>
                       </div>
                     </div>
 
@@ -488,7 +512,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             DEUWY ROBERT <span className="text-amber-500">TERÁN MEDINA</span>
                           </h1>
                           <p className="text-[10.5px] font-black uppercase text-gray-600 tracking-wider mt-1.5">
-                            INGENIERO DE PRODUCCIÓN Y CALIDAD • ECONOMISTA • AUDITOR LÍDER SIG ISO • IBM 2025 COACH
+                            {t('curriculum.subtitle', 'INGENIERO DE PRODUCCIÓN Y CALIDAD • ECONOMISTA • AUDITOR LÍDER SIG ISO • IBM 2025 COACH')}
                           </p>
                         </div>
 
@@ -499,11 +523,11 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <User className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Resumen Profesional
+                              {t('about.badge', 'Resumen Profesional')}
                             </h2>
                           </div>
                           <p className="text-gray-600 leading-relaxed text-xs pl-7 text-justify font-normal">
-                            {CANDIDATE_INFO.summary}
+                            {cvSummary}
                           </p>
                         </div>
 
@@ -514,12 +538,12 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <Sparkles className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Impacto y Resultados Operativos Comprobados
+                              {t('curriculum.impact_title', 'Impacto y Resultados Operativos Comprobados')}
                             </h2>
                           </div>
 
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pl-7">
-                            {IMPACT_METRICS.map((metric, idx) => (
+                            {impactMetrics.map((metric: any, idx: number) => (
                               <div key={`metric-${idx}`} className="bg-amber-50/70 border border-amber-200/80 p-2.5 rounded-xl">
                                 <span className="text-lg font-black text-amber-700 font-mono block leading-none">{metric.value}</span>
                                 <span className="text-[10px] font-extrabold text-gray-900 block leading-tight mt-1">{metric.label}</span>
@@ -536,12 +560,12 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <Building className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Experiencia Profesional
+                              {t('curriculum.career.title', 'Experiencia Profesional')}
                             </h2>
                           </div>
 
                           <div className="relative pl-7 space-y-4 border-l-2 border-amber-500 ml-2.5">
-                            {CAREER_EXPERIENCE.map((role, idx) => (
+                            {careerRoles.map((role: any, idx: number) => (
                               <div key={`career-role-${idx}`} className="relative space-y-1">
                                 <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
@@ -556,15 +580,15 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                                   {role.company} | {role.location}
                                 </p>
                                 <ul className="list-disc list-inside text-[10.5px] text-gray-600 space-y-0.5 pt-0.5">
-                                  {role.responsibilities.slice(0, 4).map((resp, rIdx) => (
+                                  {role.responsibilities.slice(0, 4).map((resp: string, rIdx: number) => (
                                     <li key={`resp-${idx}-${rIdx}`} className="leading-tight">{resp}</li>
                                   ))}
                                 </ul>
                                 {role.achievements && role.achievements.length > 0 && (
                                   <div className="mt-1.5 p-2 bg-gray-50 border border-gray-200 rounded-lg text-[10px] text-gray-700">
-                                    <span className="font-bold text-amber-700 block mb-0.5">★ Conquistas Notables:</span>
+                                    <span className="font-bold text-amber-700 block mb-0.5">{t('curriculum.achievements_label', '★ Logros Notables:')}</span>
                                     <ul className="list-square list-inside space-y-0.5">
-                                      {role.achievements.map((ach, aIdx) => (
+                                      {role.achievements.map((ach: string, aIdx: number) => (
                                         <li key={`ach-${idx}-${aIdx}`} className="text-[9.5px]">{ach}</li>
                                       ))}
                                     </ul>
@@ -582,7 +606,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <Award className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              Acreditaciones & Certificaciones de Calidad
+                              {t('curriculum.accreditations_title', 'Acreditaciones & Certificaciones de Calidad')}
                             </h2>
                           </div>
 
