@@ -68,6 +68,18 @@ const allData = {
   pt: dataPT,
   it: dataIT
 };
+export default function App() {
+  const { t, i18n } = useTranslation();
+  
+  // ... obtener data ...
+  
+  // ✅ Función helper para arrays seguros
+  const safeArray = (value: any): any[] => {
+    return Array.isArray(value) ? value : [];
+  };
+  
+  // ... resto del código
+}
 
 const corporateBackgrounds = [
   'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920',
