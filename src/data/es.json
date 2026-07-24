@@ -1,156 +1,156 @@
 {
   "profile": {
     "name": "Robert Terán",
-    "coachTitle": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
-    "bio": "Especialista en Sistemas de Gestión ISO con más de 30 años de experiencia en auditoría y consultoría estratégica. Auditor Líder certificado por IBM 2025 y Coach Empresarial, complementa su perfil técnico con estudios en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional.",
-    "quote": "Integro la precisión técnica de la ingeniería con el análisis económico estratégico y los sistemas de gestión integral. Optimizamos procesos, cohesionamos equipos y agilizamos decisiones críticas para su rentabilidad.",
+    "coachTitle": "Engineer, Economist & Integrated Management Systems Specialist",
+    "bio": "ISO Management Systems Specialist with over 30 years of experience in auditing and strategic consulting. Lead Auditor certified by IBM 2025 and Executive Coach, complementing his technical profile with studies in Psychopedagogy, Occupational Well-being, and Organizational Emotional Intelligence.",
+    "quote": "I integrate the technical precision of engineering with strategic economic analysis and integrated management systems. We optimize processes, bring teams together, and streamline critical decisions for your profitability.",
     "experienceYears": "30",
     "linkedin": "https://www.linkedin.com/in/robertteran/",
     "email": "robert@coach-iso.eu"
   },
   "about": {
-    "badge": "Perfil Profesional",
+    "badge": "Professional Profile",
     "badges": [
-      { "label": "ISO Gestión de Calidad", "icon": "ShieldCheck" },
-      { "label": "Estructuras de Empresas", "icon": "Network" },
-      { "label": "Mapeo de Procesos", "icon": "Workflow" },
-      { "label": "Análisis Crítico", "icon": "Brain" },
-      { "label": "Análisis de Gestión", "icon": "BarChart3" },
-      { "label": "Análisis de Riesgo", "icon": "ShieldAlert" },
-      { "label": "Análisis de Mercado", "icon": "LineChart" },
-      { "label": "Emprendimiento & Startup", "icon": "Rocket" },
+      { "label": "ISO Quality Management", "icon": "ShieldCheck" },
+      { "label": "Corporate Structures", "icon": "Network" },
+      { "label": "Process Mapping", "icon": "Workflow" },
+      { "label": "Critical Analysis", "icon": "Brain" },
+      { "label": "Management Analysis", "icon": "BarChart3" },
+      { "label": "Risk Analysis", "icon": "ShieldAlert" },
+      { "label": "Market Analysis", "icon": "LineChart" },
+      { "label": "Entrepreneurship & Startup", "icon": "Rocket" },
       { "label": "IBM 2025 Coach", "icon": "Award" },
       { "label": "Auditor Leader", "icon": "ClipboardCheck" }
     ],
     "career": [
       {
-        "area": "Auditoría & Calidad",
-        "description": "Coordinador de Calidad y Procesos en Rototech, liderando la implementación de mejoría continua con Lean Manufacturing y Six Sigma.",
-        "roles": ["Auditor Líder IRCA", "Coordinador de Calidad", "Gestor de Procesos"]
+        "area": "Audit & Quality",
+        "description": "Quality and Process Coordinator at Rototech, leading continuous improvement implementation with Lean Manufacturing and Six Sigma.",
+        "roles": ["IRCA Lead Auditor", "Quality Coordinator", "Process Manager"]
       },
       {
-        "area": "Gestión Estratégica",
-        "description": "Gerente de Calidad y Producción en D'classe Papeis, implementando sistemas automatizados de control y metodologías Lean.",
-        "roles": ["Gerente de Calidad", "Gestor de Producción", "Líder de Equipos"]
+        "area": "Strategic Management",
+        "description": "Quality and Production Manager at D'classe Papeis, implementing automated control systems and Lean methodologies.",
+        "roles": ["Quality Manager", "Production Manager", "Team Leader"]
       },
       {
-        "area": "Cadena de Suministro",
-        "description": "Analista de Compras Senior en General Motors, gestionando la adquisición de insumos críticos y desarrollo de proveedores.",
-        "roles": ["Analista de Compras", "Gestión de Proveedores", "Negociación Estratégica"]
+        "area": "Supply Chain",
+        "description": "Senior Purchasing Analyst at General Motors, managing critical input procurement and supplier development.",
+        "roles": ["Purchasing Analyst", "Supplier Management", "Strategic Negotiation"]
       }
     ]
   },
   "expertise": {
     "areas": [
       {
-        "title": "Sistemas de Gestión ISO",
+        "title": "ISO Management Systems",
         "icon": "ShieldCheck",
         "items": [
-          "Auditoría Líder ISO 9001, 14001, 45001, 27001, 22000, 42001",
-          "Implementación y certificación de Sistemas de Gestión Integral",
-          "Auditorías internas y externas con enfoque en mejora continua"
+          "ISO 9001, 14001, 45001, 27001, 22000, 42001 Lead Auditor",
+          "Integrated Management Systems implementation and certification",
+          "Internal and external audits with focus on continuous improvement"
         ]
       },
       {
-        "title": "Optimización de Procesos",
+        "title": "Process Optimization",
         "icon": "Workflow",
         "items": [
-          "Lean Manufacturing y Six Sigma (Green Belt)",
-          "Mapeo de procesos BPMN y diagramas de flujo",
-          "Reducción de desperdicios y mejora de eficiencia operacional"
+          "Lean Manufacturing and Six Sigma (Green Belt)",
+          "BPMN process mapping and flow diagrams",
+          "Waste reduction and operational efficiency improvement"
         ]
       },
       {
-        "title": "Coaching Estratégico",
+        "title": "Strategic Coaching",
         "icon": "Brain",
         "items": [
           "IBM 2025 Executive Coach",
-          "Desarrollo de liderazgo y equipos de alto rendimiento",
-          "Toma de decisiones críticas bajo incertidumbre"
+          "Leadership development and high-performance teams",
+          "Critical decision-making under uncertainty"
         ]
       },
       {
-        "title": "Análisis Financiero",
+        "title": "Financial Analysis",
         "icon": "BarChart3",
         "items": [
-          "Evaluación de Costo de Calidad (COQ)",
-          "Análisis de rentabilidad y optimización de inventarios",
-          "Gestión de presupuestos y reducción de costos operacionales"
+          "Cost of Quality (COQ) evaluation",
+          "Profitability analysis and inventory optimization",
+          "Budget management and operational cost reduction"
         ]
       }
     ]
   },
   "certifications": [
     {
-      "title": "Auditor Líder ISO",
+      "title": "ISO Lead Auditor",
       "subtitle": "IRCA Certified",
-      "description": "Sistemas de Gestión (9001, 14001, 27001, 45001, 22000, 42001)"
+      "description": "Management Systems (9001, 14001, 27001, 45001, 22000, 42001)"
     },
     {
       "title": "IBM 2025 Coach",
       "subtitle": "Executive Coach",
-      "description": "Liderazgo y Transformación de equipos digitales"
+      "description": "Leadership and Digital Team Transformation"
     },
     {
       "title": "CIA - Certified Internal Auditor",
       "subtitle": "IIA Certified",
-      "description": "Auditoría interna global, otorgada por el IIA"
+      "description": "Global internal audit, awarded by the IIA"
     },
     {
       "title": "CISA - Certified Information Systems Auditor",
       "subtitle": "ISACA Certified",
-      "description": "Control y seguridad de sistemas de información"
+      "description": "Information systems control and security"
     },
     {
       "title": "CPA - Certified Public Accountant",
       "subtitle": "Financial Expert",
-      "description": "Evaluación integral del área financiera, impositiva y de capital"
+      "description": "Comprehensive financial, tax, and capital area evaluation"
     },
     {
       "title": "CRMA - Certification in Risk Management Assurance",
       "subtitle": "Risk Management",
-      "description": "Mitigación y aseguramiento ante riesgos corporativos integrales"
+      "description": "Mitigation and assurance against comprehensive corporate risks"
     },
     {
-      "title": "Psicopedagogía Empresarial",
+      "title": "Corporate Psychopedagogy",
       "subtitle": "Organizational Learning",
-      "description": "Gestión del aprendizaje organizacional y dinámicas grupales"
+      "description": "Organizational learning management and group dynamics"
     },
     {
-      "title": "Coach Estratégico",
+      "title": "Strategic Coach",
       "subtitle": "Strategic Coach",
-      "description": "Toma de decisiones críticas bajo incertidumbre de mercado"
+      "description": "Critical decision-making under market uncertainty"
     }
   ],
   "testimonials": [
     {
       "name": "Carlos Mendoza",
-      "title": "CEO, Empresa Líder en Manufactura",
-      "quote": "Robert Terán transformó nuestra cultura de calidad. Su enfoque integral de sistemas de gestión y coaching ejecutivo ha sido clave para nuestra certificación ISO 9001."
+      "title": "CEO, Leading Manufacturing Company",
+      "quote": "Robert Terán transformed our quality culture. His comprehensive approach to management systems and executive coaching was key to our ISO 9001 certification."
     },
     {
       "name": "Ana Silva",
-      "title": "Directora de Operaciones, Multinacional",
-      "quote": "La metodología de Robert para optimizar procesos y cohesionar equipos es excepcional. Logramos reducir costos en un 25% y aumentar la productividad en un 15%."
+      "title": "Operations Director, Multinational",
+      "quote": "Robert's methodology for optimizing processes and bringing teams together is exceptional. We reduced costs by 25% and increased productivity by 15%."
     },
     {
       "name": "Roberto Gómez",
-      "title": "Gerente de Calidad, Sector Automotriz",
-      "quote": "Su experiencia en auditoría líder ISO y su capacidad para tomar decisiones críticas bajo presión han sido fundamentales para nuestro éxito."
+      "title": "Quality Manager, Automotive Sector",
+      "quote": "His experience in ISO lead auditing and his ability to make critical decisions under pressure have been fundamental to our success."
     }
   ],
   "metrics": {
     "yearsExperience": "30+",
-    "label": "Años de Experiencia"
+    "label": "Years of Experience"
   },
   "services": {
-    "badge": "Mis Servicios",
-    "title": "Suite Integral de Gestión",
-    "auditorTitle": "Sistemas de Gestión Integral",
-    "auditorDesc": "Ingeniería, economía y optimización",
-    "coachTitle": "Optimización de Procesos",
-    "coachDesc": "Eficiencia, rentabilidad y estructura",
-    "consultingTitle": "Consultoría Estratégica",
-    "consultingDesc": "Análisis, diagnóstico y transformación organizacional"
+    "badge": "My Services",
+    "title": "Integrated Management Suite",
+    "auditorTitle": "Integrated Management Systems",
+    "auditorDesc": "Engineering, economics and optimization",
+    "coachTitle": "Process Optimization",
+    "coachDesc": "Efficiency, profitability and structure",
+    "consultingTitle": "Strategic Consulting",
+    "consultingDesc": "Analysis, diagnosis and organizational transformation"
   }
 }
