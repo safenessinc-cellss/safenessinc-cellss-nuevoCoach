@@ -592,7 +592,7 @@ export default function AdminPanel() {
         });
         // Simulate google calendar integration alert
         if (tutorialForm.sendInvitation) {
-          alert(`Invitación de Google Calendar y enlace ${tutorialForm.platform} enviada automáticamente a ${tutorialForm.studentEmail}`);
+          alert(`Invitación de Google Calendar y enlace ${tutorialForm.platform} enviada automáticamente a ${tutorialForm.email}`);
         }
         alert("Nueva tutoría online agendada con éxito");
       }
@@ -990,7 +990,7 @@ export default function AdminPanel() {
         {/* --- DYNAMIC TAB VIEWS IMPLEMENTATION --- */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeTab}
+            key={`admin-tab-view-${activeTab}`}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
