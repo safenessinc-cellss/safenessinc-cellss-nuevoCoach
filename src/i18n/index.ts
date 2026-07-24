@@ -13,7 +13,7 @@ const resources = {
   it: { translation: translationIT },
 };
 
-// Detector de idioma manual (sin dependencias externas)
+// Detector de idioma manual
 const getInitialLanguage = () => {
   if (typeof window !== 'undefined') {
     const savedLang = localStorage.getItem('i18nextLng');
@@ -38,6 +38,7 @@ const saveLanguage = (lng: string) => {
   }
 };
 
+// Inicializar i18n
 i18n
   .use(initReactI18next)
   .init({
