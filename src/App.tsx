@@ -14,8 +14,34 @@ import { useProfileSettings } from './data/useProfileSettings';
 import CoachingPillarsPanel from './components/CoachingPillarsPanel';
 import CurriculumShowcaseModal from './components/CurriculumShowcaseModal';
 
+// ✅ iconMap COMPLETO
 const iconMap: Record<string, any> = {
-  ShieldCheck, Network, Workflow, Brain, BarChart3, ShieldAlert, LineChart, Rocket, Award, ClipboardCheck, Map
+  ShieldCheck,
+  Network,
+  Workflow,
+  Brain,
+  BarChart3,
+  ShieldAlert,
+  LineChart,
+  Rocket,
+  Award,
+  ClipboardCheck,
+  Map,
+  FileCheck,
+  Activity,
+  CheckCircle2,
+  Users,
+  GraduationCap,
+  Briefcase,
+  Quote,
+  ArrowRight,
+  ImageIcon,
+  Layers,
+  Terminal,
+  Check,
+  AlertTriangle,
+  Menu,
+  X,
 };
 
 const allData = {
