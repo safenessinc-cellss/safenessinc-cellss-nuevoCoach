@@ -670,7 +670,7 @@ export default function App() {
 
                 {/* Badges Grid */}
                 <div className="flex flex-wrap gap-2.5 mb-6">
-                  {data.about.badges.map((badge, idx) => {
+                  {(data?.about?.badges || []).map((badge, idx) => {
                     const Icon = iconMap[badge.icon] || CheckCircle2;
                     const isActive = activeSkillIdx === idx;
                     const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(badge.label);
@@ -710,7 +710,7 @@ export default function App() {
 
                   return (
                     <motion.div 
-                      key={activeSkillIdx}
+                      key={`active-skill-${activeSkillIdx}`}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
@@ -804,7 +804,7 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Eras Timeline Selector */}
             <div className="lg:col-span-6 space-y-4">
-              {data.about.career.map((block, idx) => {
+              {(data?.about?.career || []).map((block, idx) => {
                 const isActive = activeCareerIdx === idx;
                 const isFuchsia = idx === 0;
                 
@@ -854,7 +854,7 @@ export default function App() {
                     </p>
 
                     <div className="flex flex-wrap gap-2">
-                      {block.roles.map((role, i) => (
+                      {(block?.roles || []).map((role, i) => (
                         <span 
                           key={`career-role-${block.area || 'area'}-${i}-${role}`} 
                           className={`text-[10px] font-mono font-semibold tracking-wider px-3 py-1.5 rounded-lg border ${
@@ -878,7 +878,7 @@ export default function App() {
             <div className="lg:col-span-6">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={activeCareerIdx}
+                  key={`active-career-${activeCareerIdx}`}
                   initial={{ opacity: 0, scale: 0.98, x: 15 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.98, x: -15 }}
@@ -1145,7 +1145,7 @@ export default function App() {
           <AnimatePresence mode="wait">
             {sgcSimulatorMode === 'diagram' ? (
               <motion.div 
-                key="diagram-view"
+                key="sgc-diagram-view"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
@@ -1210,7 +1210,7 @@ export default function App() {
               </motion.div>
             ) : (
               <motion.div 
-                key="interactive-view"
+                key="sgc-interactive-view"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
@@ -1259,9 +1259,9 @@ export default function App() {
                       <div className="space-y-2">
                         <label className="block text-gray-300 text-xs font-bold uppercase tracking-wider">Complejidad y Mermas de Entrada:</label>
                         <div className="grid grid-cols-3 gap-2">
-                          {['baja', 'media', 'alta'].map((level) => (
+                          {['baja', 'media', 'alta'].map((level, lIdx) => (
                             <button
-                              key={level}
+                              key={`sgc-complexity-${level}-${lIdx}`}
                               onClick={() => setSgcComplexity(level)}
                               className={`py-2 rounded-xl text-xs font-mono font-bold uppercase border transition-all ${
                                 sgcComplexity === level 
@@ -1283,9 +1283,9 @@ export default function App() {
                             { id: 'muestreo', title: 'Muestreo Táctico Tradicional', desc: 'Control básico por lotes al final, propenso a scrap.' },
                             { id: 'fmea', title: 'Modelo Preventivo FMEA (Robert Terán)', desc: 'Gobernanza bajo enfoque de riesgos ISO 31000.' },
                             { id: '100%_control', title: 'Inspección Absoluta 100%', desc: 'Cero defectos salientes pero costo operativo crítico.' }
-                          ].map((ctrl) => (
+                          ].map((ctrl, idx) => (
                             <div 
-                              key={ctrl.id}
+                              key={`ctrl-${ctrl.id}-${idx}`}
                               onClick={() => setSgcControlMode(ctrl.id)}
                               className={`p-3 rounded-xl border cursor-pointer transition-all ${
                                 sgcControlMode === ctrl.id 
@@ -1437,7 +1437,7 @@ export default function App() {
           </AnimatePresence>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {data.expertise.areas.map((area, idx) => {
+            {(data?.expertise?.areas || []).map((area, idx) => {
               const IconComponent = 
                 area.icon === 'Network' ? Network :
                 area.icon === 'Workflow' ? Workflow :
@@ -1459,7 +1459,7 @@ export default function App() {
                     <h3 className="text-2xl font-bold text-white">{area.title}</h3>
                   </div>
                   <ul className="space-y-4">
-                    {area.items.map((item, i) => (
+                    {(area?.items || []).map((item, i) => (
                       <li key={`exp-item-${area.title || 'area'}-${i}`} className="flex items-start gap-3 text-gray-400">
                         <CheckCircle2 className="w-5 h-5 text-red-500/70 shrink-0 mt-0.5" />
                         <span className="text-sm leading-relaxed">{item}</span>
@@ -1487,7 +1487,7 @@ export default function App() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.certifications.map((cert, idx) => (
+            {(data?.certifications || []).map((cert, idx) => (
               <motion.div 
                 key={`cert-card-${cert.title || idx}-${idx}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -1600,7 +1600,7 @@ export default function App() {
           <AnimatePresence mode="wait">
             {selectedCoachingPillar && (
               <motion.div
-                key={selectedCoachingPillar}
+                key={`coaching-pillar-panel-${selectedCoachingPillar}`}
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -1743,7 +1743,7 @@ export default function App() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {data.testimonials.map((testimonial, idx) => (
+            {(data?.testimonials || []).map((testimonial, idx) => (
               <motion.div 
                 key={`testim-card-${testimonial.name || idx}-${idx}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -2066,29 +2066,29 @@ export default function App() {
                       CAMPOS DE ACCIÓN CRÍTICOS
                     </span>
                     <div className="flex flex-wrap gap-2">
-                      {selectedCert.title.includes("ISO") && ["9001:2015", "14001:2015", "45001:2018", "27001", "42001 (IA)"].map(n => (
-                        <span key={`iso-${n}`} className="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-[10px] font-mono font-semibold text-red-400">{n}</span>
+                      {selectedCert.title.includes("ISO") && ["9001:2015", "14001:2015", "45001:2018", "27001", "42001 (IA)"].map((n, idx) => (
+                        <span key={`iso-${n}-${idx}`} className="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/20 text-[10px] font-mono font-semibold text-red-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("Coach") && ["IBM Executive", "Agilidad", "Feedback 360", "Psicopedagogía"].map(n => (
-                        <span key={`coach-${n}`} className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-[10px] font-mono font-semibold text-amber-400">{n}</span>
+                      {selectedCert.title.includes("Coach") && ["IBM Executive", "Agilidad", "Feedback 360", "Psicopedagogía"].map((n, idx) => (
+                        <span key={`coach-${n}-${idx}`} className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-[10px] font-mono font-semibold text-amber-400">{n}</span>
                       ))}
-                      {(selectedCert.title === "CIA" || /\bCIA\b/.test(selectedCert.title)) && ["IIA Framework", "Control Interno", "Muestreo Táctico"].map(n => (
-                        <span key={`cia-${n}`} className="px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-semibold text-blue-400">{n}</span>
+                      {(selectedCert.title === "CIA" || /\bCIA\b/.test(selectedCert.title)) && ["IIA Framework", "Control Interno", "Muestreo Táctico"].map((n, idx) => (
+                        <span key={`cia-${n}-${idx}`} className="px-2.5 py-1 rounded bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-semibold text-blue-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("CISA") && ["Seguridad de Datos", "ISO 27001", "COBIT Controls"].map(n => (
-                        <span key={`cisa-${n}`} className="px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/20 text-[10px] font-mono font-semibold text-purple-400">{n}</span>
+                      {selectedCert.title.includes("CISA") && ["Seguridad de Datos", "ISO 27001", "COBIT Controls"].map((n, idx) => (
+                        <span key={`cisa-${n}-${idx}`} className="px-2.5 py-1 rounded bg-purple-500/10 border border-purple-500/20 text-[10px] font-mono font-semibold text-purple-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("CPA") && ["Costo de Calidad", "Evaluación Financiera", "Scrap Ledger"].map(n => (
-                        <span key={`cpa-${n}`} className="px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-semibold text-emerald-400">{n}</span>
+                      {selectedCert.title.includes("CPA") && ["Costo de Calidad", "Evaluación Financiera", "Scrap Ledger"].map((n, idx) => (
+                        <span key={`cpa-${n}-${idx}`} className="px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono font-semibold text-emerald-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("CRMA") && ["ISO 31000", "Matriz FMEA", "Mitigación de Riesgo"].map(n => (
-                        <span key={`crma-${n}`} className="px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-[10px] font-mono font-semibold text-rose-400">{n}</span>
+                      {selectedCert.title.includes("CRMA") && ["ISO 31000", "Matriz FMEA", "Mitigación de Riesgo"].map((n, idx) => (
+                        <span key={`crma-${n}-${idx}`} className="px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/20 text-[10px] font-mono font-semibold text-rose-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("Psicopedagogía") && ["David Kolb", "Equipos Cohesionados", "Curva de Aprendizaje"].map(n => (
-                        <span key={`psico-${n}`} className="px-2.5 py-1 rounded bg-teal-500/10 border border-teal-500/20 text-[10px] font-mono font-semibold text-teal-400">{n}</span>
+                      {selectedCert.title.includes("Psicopedagogía") && ["David Kolb", "Equipos Cohesionados", "Curva de Aprendizaje"].map((n, idx) => (
+                        <span key={`psico-${n}-${idx}`} className="px-2.5 py-1 rounded bg-teal-500/10 border border-teal-500/20 text-[10px] font-mono font-semibold text-teal-400">{n}</span>
                       ))}
-                      {selectedCert.title.includes("Estratégico") && ["Decisiones Críticas", "Triage de Crisis", "Mapas Mentales"].map(n => (
-                        <span key={`estrat-${n}`} className="px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono font-semibold text-cyan-400">{n}</span>
+                      {selectedCert.title.includes("Estratégico") && ["Decisiones Críticas", "Triage de Crisis", "Mapas Mentales"].map((n, idx) => (
+                        <span key={`estrat-${n}-${idx}`} className="px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono font-semibold text-cyan-400">{n}</span>
                       ))}
                     </div>
                   </div>
@@ -2118,9 +2118,9 @@ export default function App() {
                             { key: '8.1', label: 'Cláusula 8.1: Planificación y control operacional en piso' },
                             { key: '9.3', label: 'Cláusula 9.3: Revisión del SGC por la Dirección' },
                             { key: '10.2', label: 'Cláusula 10.2: No Conformidad y tratamiento activo del Scrap' },
-                          ].map((item) => (
+                          ].map((item, idx) => (
                             <div 
-                              key={item.key}
+                              key={`chk-${item.key}-${idx}`}
                               onClick={() => setAuditChecklist(prev => ({ ...prev, [item.key]: !prev[item.key] }))}
                               className={`p-3 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
                                 auditChecklist[item.key] 
@@ -2189,9 +2189,9 @@ export default function App() {
                                 { id: 'coaching', label: 'Coaching Activo / SGC Persona' },
                                 { id: 'democratic', label: 'Democrático / Consenso' },
                                 { id: 'laissez', label: 'Laissez-faire / Descentralizado' },
-                              ].map(style => (
+                              ].map((style, idx) => (
                                 <button
-                                  key={style.id}
+                                  key={`style-${style.id}-${idx}`}
                                   onClick={() => setLeadershipStyle(style.id)}
                                   className={`py-2 px-3 rounded-xl text-xs font-medium text-left border transition-all ${
                                     leadershipStyle === style.id 
@@ -2257,9 +2257,9 @@ export default function App() {
                                 { id: 'finanzas', label: 'Finanzas' },
                                 { id: 'ventas', label: 'Ventas' },
                                 { id: 'abastecimiento', label: 'Abastecimiento' },
-                              ].map(dept => (
+                              ].map((dept, idx) => (
                                 <button
-                                  key={dept.id}
+                                  key={`dept-${dept.id}-${idx}`}
                                   onClick={() => setCiaFocusDept(dept.id)}
                                   className={`py-2 px-1 rounded-xl text-xs font-mono uppercase text-center border transition-all ${
                                     ciaFocusDept === dept.id 
@@ -2458,7 +2458,7 @@ export default function App() {
                               <div className="flex gap-1.5">
                                 {[1, 2, 3, 4, 5].map((val) => (
                                   <button
-                                    key={val}
+                                    key={`risk-prob-${val}`}
                                     onClick={() => setRiskProbability(val)}
                                     className={`w-8 h-8 rounded-lg font-mono text-xs font-bold border transition-all ${
                                       riskProbability === val 
@@ -2477,7 +2477,7 @@ export default function App() {
                               <div className="flex gap-1.5">
                                 {[1, 2, 3, 4, 5].map((val) => (
                                   <button
-                                    key={val}
+                                    key={`risk-impact-${val}`}
                                     onClick={() => setRiskImpact(val)}
                                     className={`w-8 h-8 rounded-lg font-mono text-xs font-bold border transition-all ${
                                       riskImpact === val 
@@ -2981,9 +2981,9 @@ export default function App() {
                             { key: 'hallazgo', label: '1. El auditor de SGS detecta una No Conformidad Mayor.' },
                             { key: 'ceocritic', label: '2. El CEO cuestiona severamente el retorno de inversión del SGC.' },
                             { key: 'perdidatraz', label: '3. Pérdida accidental de registros de lote de materia prima.' }
-                          ].map((item) => (
+                          ].map((item, idx) => (
                             <button
-                              key={item.key}
+                              key={`coping-${item.key}-${idx}`}
                               onClick={() => setCopingScenario(item.key)}
                               className={`w-full p-2.5 rounded-lg text-left text-xs border transition-all ${
                                 copingScenario === item.key 
@@ -3042,9 +3042,9 @@ export default function App() {
                             { id: 'apatia', label: 'Apatía / Sin Motivación', color: 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 text-blue-400 font-semibold' },
                             { id: 'incertidumbre', label: 'Incertidumbre / Ansiedad', color: 'bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/20 text-amber-400 font-semibold' },
                             { id: 'calma', label: 'Enfoque / Calma Productiva', color: 'bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/20 text-green-400 font-semibold' }
-                          ].map(quad => (
+                          ].map((quad, idx) => (
                             <button
-                              key={quad.id}
+                              key={`quad-${quad.id}-${idx}`}
                               onClick={() => setEmotionalQuadrant(quad.id)}
                               className={`py-3 px-2 rounded-xl text-center text-xs font-semibold border transition-all ${
                                 emotionalQuadrant === quad.id 
@@ -3400,9 +3400,9 @@ export default function App() {
                                 { id: 'auditor', label: 'Auditor de Calidad' },
                                 { id: 'supervisor', label: 'Supervisor de Turno' },
                                 { id: 'operator', label: 'Operador de Prensa/Extrusión' }
-                              ].map(role => (
+                              ].map((role, idx) => (
                                 <button
-                                  key={role.id}
+                                  key={`hrrole-${role.id}-${idx}`}
                                   onClick={() => setHrRole(role.id)}
                                   className={`py-2 px-1 rounded-lg border text-left font-mono tracking-tight text-[10px] uppercase transition-all cursor-pointer ${
                                     hrRole === role.id 
