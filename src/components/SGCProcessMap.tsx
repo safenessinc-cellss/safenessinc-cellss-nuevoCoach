@@ -300,9 +300,9 @@ export default function SGCProcessMap() {
             <h4 className="text-[10px] font-bold tracking-widest text-blue-400 uppercase font-mono mb-2">// 1. Requisitos & Entradas</h4>
             <p className="text-xs text-gray-500">Inputs técnicos y de mercado que movilizan la operación corporativa.</p>
           </div>
-          {processes.filter(p => p.type === 'entradas').map(node => (
+          {processes.filter(p => p.type === 'entradas').map((node, idx) => (
             <div
-              key={node.id}
+              key={`entradas-${node.id}-${idx}`}
               onClick={() => setSelectedNode(node)}
               className={`p-4 rounded-2xl border text-left cursor-pointer transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.4)] ${node.color} ${node.glowColor} group-hover:scale-[1.02]`}
             >
@@ -330,11 +330,11 @@ export default function SGCProcessMap() {
               <span className="text-[9px] font-mono text-gray-500">Cláusula 5 (Liderazgo) & Cláusula 6 (Planificación)</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {processes.filter(p => p.type === 'estrategicos').map(node => {
+              {processes.filter(p => p.type === 'estrategicos').map((node, idx) => {
                 const isSelectedTab = activeCycleTab === 'all' || activeCycleTab === node.phase;
                 return (
                   <div
-                    key={node.id}
+                    key={`estrategicos-${node.id}-${idx}`}
                     onClick={() => setSelectedNode(node)}
                     className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all duration-300 shadow-md ${node.color} ${node.glowColor} ${!isSelectedTab ? 'opacity-40 filter grayscale' : 'scale-[1.01]'}`}
                   >
@@ -369,7 +369,7 @@ export default function SGCProcessMap() {
                 if (node.phase === "A") phaseColorClass = "bg-green-500";
 
                 return (
-                  <div key={node.id} className="relative flex flex-col justify-between">
+                  <div key={`operacionales-${node.id}-${idx}`} className="relative flex flex-col justify-between">
                     <div
                       onClick={() => setSelectedNode(node)}
                       className={`p-2.5 rounded-xl border text-left cursor-pointer transition-all duration-300 shadow h-full flex flex-col justify-between ${node.color} ${node.glowColor} ${!isSelectedTab ? 'opacity-30 filter grayscale' : 'scale-[1.01]'}`}
@@ -396,9 +396,9 @@ export default function SGCProcessMap() {
               <span className="text-[9px] font-mono text-gray-500">Sostenibilidad operante y de personas</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {processes.filter(p => p.type === 'soporte').map(node => (
+              {processes.filter(p => p.type === 'soporte').map((node, idx) => (
                 <div
-                  key={node.id}
+                  key={`soporte-${node.id}-${idx}`}
                   onClick={() => setSelectedNode(node)}
                   className={`p-3 rounded-xl border text-left cursor-pointer transition-all duration-300 shadow-md ${node.color} ${node.glowColor}`}
                 >
@@ -420,9 +420,9 @@ export default function SGCProcessMap() {
             <h4 className="text-[10px] font-bold tracking-widest text-green-400 uppercase font-mono mb-2">// 2. Resultados & Retorno</h4>
             <p className="text-xs text-gray-500">Impacto medible en reputación corporativa y rentabilidad acumulada.</p>
           </div>
-          {processes.filter(p => p.type === 'salidas').map(node => (
+          {processes.filter(p => p.type === 'salidas').map((node, idx) => (
             <div
-              key={node.id}
+              key={`salidas-${node.id}-${idx}`}
               onClick={() => setSelectedNode(node)}
               className={`p-4 rounded-2xl border text-left cursor-pointer transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.4)] ${node.color} ${node.glowColor} group-hover:scale-[1.02]`}
             >

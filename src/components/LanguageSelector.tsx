@@ -1,26 +1,40 @@
 import React from 'react';
-import { useLanguage } from '../hooks/useLanguage';
+import { useTranslation } from 'react-i18next';
 
 interface LanguageSelectorProps {
   variant?: 'buttons' | 'dropdown' | 'icons';
   className?: string;
 }
 
+const LANGUAGES = [
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'pt', label: 'Português', flag: '🇧🇷' },
+  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+];
+
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({ 
   variant = 'buttons', 
   className = '' 
 }) => {
-  const { changeLanguage, isLanguage, languages, getCurrentLanguage } = useLanguage();
-  const current = getCurrentLanguage();
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || 'es';
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('i18nextLng', lng);
+  };
+
+  const isLanguage = (lng: string) => currentLanguage.startsWith(lng);
 
   if (variant === 'dropdown') {
     return (
       <select 
         onChange={(e) => changeLanguage(e.target.value)}
         className={`language-selector-dropdown ${className}`}
-        value={languages.find(lang => isLanguage(lang.code))?.code || 'es'}
+        value={LANGUAGES.find(lang => isLanguage(lang.code))?.code || 'es'}
       >
-        {languages.map((lang) => (
+        {LANGUAGES.map((lang) => (
           <option key={lang.code} value={lang.code}>
             {lang.flag} {lang.label}
           </option>
@@ -32,7 +46,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   if (variant === 'icons') {
     return (
       <div className={`language-selector-icons ${className}`}>
-        {languages.map((lang) => (
+        {LANGUAGES.map((lang) => (
           <button
             key={lang.code}
             onClick={() => changeLanguage(lang.code)}
@@ -49,8 +63,8 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
 
   return (
     <div className={`language-selector-buttons ${className}`}>
-      {languages.map((lang) => {
-        const active = current.startsWith(lang.code);
+      {LANGUAGES.map((lang) => {
+        const active = currentLanguage.startsWith(lang.code);
         return (
           <button
             key={lang.code}

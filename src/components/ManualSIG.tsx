@@ -436,12 +436,12 @@ export default function ManualSIG() {
           { id: 'dashboard', name: '8. Emprendimiento & Startup', icon: Sparkles, badge: 'SGC Ágil' },
           { id: 'liderazgo', name: '9. IBM 2025 Coach', icon: Brain, badge: 'Liderazgo' },
           { id: 'auditor_leader', name: '10. Auditor Leader', icon: UserCheck, badge: 'ISO 19011' }
-        ].map((tab) => {
+        ].map((tab, idx) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
             <button
-              key={tab.id}
+              key={`sig-tab-${tab.id}-${idx}`}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider shrink-0 transition-all border ${
                 isActive 
@@ -493,8 +493,8 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="space-y-4 font-mono text-xs text-gray-300">
-                  {Object.keys(gapScores).map((clause) => (
-                    <div key={clause} className="space-y-1">
+                  {Object.keys(gapScores).map((clause, cIdx) => (
+                    <div key={`gap-clause-${clause}-${cIdx}`} className="space-y-1">
                       <div className="flex justify-between">
                         <span className="font-bold">{clause}</span>
                         <span className="text-red-400 font-extrabold">{gapScores[clause]}%</span>
@@ -1157,10 +1157,10 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar">
-                  {currentProcess.checklist.map((q) => {
+                  {currentProcess.checklist.map((q, qIdx) => {
                     const activeScore = checklistScores[q.id];
                     return (
-                      <div key={q.id} className="p-4 bg-black/40 rounded-xl border border-white/5 hover:bg-black/60 transition-colors space-y-3">
+                      <div key={`sig-chk-${q.id || qIdx}-${qIdx}`} className="p-4 bg-black/40 rounded-xl border border-white/5 hover:bg-black/60 transition-colors space-y-3">
                         <div className="flex justify-between items-start gap-3">
                           <span className="text-[10px] font-mono text-red-500 bg-red-600/10 border border-red-500/20 px-2.5 py-0.5 rounded-full uppercase font-bold">
                             Requisito {q.isorReq}
@@ -1176,11 +1176,11 @@ export default function ManualSIG() {
                             { value: 'NC_MIN', label: 'No Conf. Menor', color: 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20' },
                             { value: 'NC_MAJ', label: 'No Conf. Mayor', color: 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20' },
                             { value: 'OPM', label: 'Op. de Mejora', color: 'bg-blue-500/10 border-blue-500/30 text-blue-400 hover:bg-blue-500/20' }
-                          ].map((opt) => {
+                          ].map((opt, oIdx) => {
                             const isSelected = activeScore === opt.value;
                             return (
                               <button
-                                key={opt.value}
+                                key={`sig-opt-${opt.value}-${oIdx}`}
                                 onClick={() => setChecklistScores(prev => ({ ...prev, [q.id]: opt.value as any }))}
                                 className={`text-[10px] font-bold px-3 py-1.5 rounded-lg border transition-all ${
                                   isSelected 
@@ -1239,8 +1239,8 @@ export default function ManualSIG() {
                   </p>
 
                   <div className="space-y-2">
-                    {Object.entries(prioritizationMatrix).map(([task, state]) => (
-                      <div key={task} className="p-3 bg-black/40 border border-white/5 rounded-xl space-y-2">
+                    {Object.entries(prioritizationMatrix).map(([task, state], tIdx) => (
+                      <div key={`prio-task-${task}-${tIdx}`} className="p-3 bg-black/40 border border-white/5 rounded-xl space-y-2">
                         <div className="flex justify-between items-center text-xs">
                           <span className="font-bold text-gray-200 truncate max-w-[170px]">{task}</span>
                           <span className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase ${
@@ -1253,9 +1253,9 @@ export default function ManualSIG() {
                         </div>
                         
                         <div className="flex gap-1">
-                          {['critica', 'alta', 'media', 'baja'].map((st) => (
+                          {['critica', 'alta', 'media', 'baja'].map((st, sIdx) => (
                             <button
-                              key={st}
+                              key={`prio-st-${st}-${sIdx}`}
                               onClick={() => setPrioritizationMatrix(prev => ({ ...prev, [task]: st as any }))}
                               className={`text-[8px] font-bold uppercase flex-1 py-1 rounded transition-colors ${
                                 state === st ? 'bg-white text-black font-extrabold' : 'bg-white/5 text-gray-400 hover:bg-white/10'
@@ -1514,8 +1514,8 @@ export default function ManualSIG() {
                     <div className="space-y-3 pt-3 border-t border-white/5">
                       <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Tablero de Causa-Efecto (Diagrama de Ishikawa - 6Ms):</p>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {Object.entries(activeNC.ishikawa).map(([cat, list]) => (
-                          <div key={cat} className="p-3 bg-black/40 border border-white/5 rounded-xl text-left">
+                        {Object.entries(activeNC.ishikawa).map(([cat, list], catIdx) => (
+                          <div key={`ishi-cat-${cat}-${catIdx}`} className="p-3 bg-black/40 border border-white/5 rounded-xl text-left">
                             <h5 className="text-[10px] font-black text-red-400 uppercase tracking-widest border-b border-white/5 pb-1 mb-2">
                               {cat === 'personal' ? '🧑‍💼 Personal' :
                                cat === 'maquinaria' ? '⚙️ Maquinaria' :
@@ -1626,8 +1626,8 @@ export default function ManualSIG() {
                       onChange={(e) => setCustomNC(prev => ({ ...prev, proc: e.target.value }))}
                       className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500"
                     >
-                      {currentSector.processes.map(p => (
-                        <option key={p.id} value={p.name}>{p.name}</option>
+                      {currentSector.processes.map((p, pIdx) => (
+                        <option key={`opt-proc-${p.id || pIdx}-${pIdx}`} value={p.name}>{p.name}</option>
                       ))}
                     </select>
                   </div>
@@ -1675,8 +1675,8 @@ export default function ManualSIG() {
                 <div className="mt-8 border-t border-white/5 pt-6 space-y-4">
                   <p className="text-xs font-black text-gray-300 uppercase tracking-widest">Bitácora de Desviaciones Propias (Generadas Dinámicamente):</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {ncList.map((nc) => (
-                      <div key={nc.id} className="p-4 bg-orange-500/5 rounded-2xl border border-orange-500/20 text-xs relative overflow-hidden">
+                    {ncList.map((nc, ncIdx) => (
+                      <div key={`nc-card-${nc.id || ncIdx}-${ncIdx}`} className="p-4 bg-orange-500/5 rounded-2xl border border-orange-500/20 text-xs relative overflow-hidden">
                         <div className="absolute top-2 right-2 bg-orange-600/20 border border-orange-500/30 text-orange-400 px-2.5 py-0.5 rounded text-[8px] font-bold uppercase">
                           {nc.status}
                         </div>
@@ -2138,11 +2138,11 @@ export default function ManualSIG() {
                       { id: 6, title: '6. Escenarios', short: 'Pre-mortem' },
                       { id: 7, title: '7. Decisión', short: 'Acompañamiento' },
                       { id: 8, title: '8. Post-Decisión', short: 'Aprendizaje' }
-                    ].map((ph) => {
+                    ].map((ph, phIdx) => {
                       const isActive = selectedPhase === ph.id;
                       return (
                         <button
-                          key={ph.id}
+                          key={`ph-${ph.id}-${phIdx}`}
                           onClick={() => setSelectedPhase(ph.id)}
                           className={`p-2.5 rounded-xl border text-center flex flex-col justify-between items-center h-20 transition duration-300 ${
                             isActive 
@@ -2371,9 +2371,9 @@ export default function ManualSIG() {
                           { key: 'fatiga_decision', name: 'Riesgo de fatiga de decisión' },
                           { key: 'unanimidad_falsa', name: 'Riesgo de unanimidad falsa' },
                           { key: 'exceso_opciones', name: 'Riesgo de exceso de opciones' }
-                        ].map((rk) => (
+                        ].map((rk, rkIdx) => (
                           <button
-                            key={rk.key}
+                            key={`rk-${rk.key}-${rkIdx}`}
                             onClick={() => {
                               setSelectedRiskKey(rk.key);
                               setSocraticAnswer(socraticSavedAnswers[rk.key] || '');
@@ -3063,9 +3063,9 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {humanAgreements.map((agreement) => (
+                  {humanAgreements.map((agreement, agIdx) => (
                     <div 
-                      key={agreement.id} 
+                      key={`agr-${agreement.id || agIdx}-${agIdx}`} 
                       className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
                         agreement.signed 
                           ? 'bg-green-500/15 border-green-500/30' 
@@ -3207,11 +3207,11 @@ export default function ManualSIG() {
                   <div className="space-y-1">
                     <span className="block text-gray-400 font-bold">Cláusulas en Alcance (Scope):</span>
                     <div className="flex flex-wrap gap-2 mt-1">
-                      {['4.4', '5.3', '6.1.2', '7.5', '8.1', '9.3'].map((cls) => {
+                      {['4.4', '5.3', '6.1.2', '7.5', '8.1', '9.3'].map((cls, clsIdx) => {
                         const included = auditScope.includes(cls);
                         return (
                           <button
-                            key={cls}
+                            key={`scope-cls-${cls}-${clsIdx}`}
                             onClick={() => {
                               if (included) {
                                 setAuditScope(auditScope.filter(c => c !== cls));
@@ -3372,7 +3372,7 @@ export default function ManualSIG() {
 
               {/* Findings list */}
               <div className="space-y-2 mt-4 max-h-[300px] overflow-y-auto scrollbar-thin">
-                {auditFindings.map((f) => {
+                {auditFindings.map((f, fIdx) => {
                   let badgeColor = "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
                   let label = "NC Menor";
                   if (f.type === 'major') {
@@ -3387,7 +3387,7 @@ export default function ManualSIG() {
                   }
 
                   return (
-                    <div key={f.id} className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl flex items-center justify-between gap-4">
+                    <div key={`foda-${f.id || fIdx}-${fIdx}`} className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl flex items-center justify-between gap-4">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className={`px-2.5 py-0.5 rounded-full border text-[9px] font-mono font-bold uppercase ${badgeColor}`}>

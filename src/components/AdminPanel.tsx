@@ -1155,7 +1155,7 @@ export default function AdminPanel() {
                     <h4 className="text-sm font-bold text-white border-b border-white/5 pb-2">Destacados ISO de Robert</h4>
                     <div className="space-y-4">
                       {books.sort((a,b) => b.downloadsCount - a.downloadsCount).slice(0, 3).map((b, idx) => (
-                        <div key={b.id} className="flex gap-3 items-center">
+                        <div key={`topbook-${b.id || idx}-${idx}`} className="flex gap-3 items-center">
                           <div className="w-10 h-14 bg-zinc-800 rounded overflow-hidden shadow shrink-0">
                             <img src={b.coverUrl || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=150"} alt="" className="w-full h-full object-cover" />
                           </div>
@@ -1216,8 +1216,8 @@ export default function AdminPanel() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredCourses.map((c) => (
-                      <div key={c.id} className="glass rounded-2xl border border-white/5 overflow-hidden flex flex-col hover:border-white/10 transition duration-300 relative group">
+                    {filteredCourses.map((c, idx) => (
+                      <div key={`course-${c.id || idx}-${idx}`} className="glass rounded-2xl border border-white/5 overflow-hidden flex flex-col hover:border-white/10 transition duration-300 relative group">
                         
                         {/* Status tag */}
                         <span className={`absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase border shadow-md font-mono ${
@@ -1330,8 +1330,8 @@ export default function AdminPanel() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {filteredBooks.map((b) => (
-                      <div key={b.id} className="glass rounded-xl border border-white/5 overflow-hidden flex flex-col justify-between hover:border-white/10 transition">
+                    {filteredBooks.map((b, idx) => (
+                      <div key={`book-${b.id || idx}-${idx}`} className="glass rounded-xl border border-white/5 overflow-hidden flex flex-col justify-between hover:border-white/10 transition">
                         <div className="p-4 space-y-4">
                           
                           {/* Book Portada */}
@@ -1424,7 +1424,7 @@ export default function AdminPanel() {
 
                   {/* Calendar Grid Header */}
                   <div className="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-gray-500 uppercase">
-                    {['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'].map(d => <span key={d}>{d}</span>)}
+                    {['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'].map((d, dIdx) => <span key={`cal-hdr-${d}-${dIdx}`}>{d}</span>)}
                   </div>
 
                   {/* Days grid */}
@@ -1513,8 +1513,8 @@ export default function AdminPanel() {
                     </h4>
                     
                     <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
-                      {visits.map((v) => (
-                        <div key={v.id} className="bg-zinc-900/50 p-3.5 rounded-xl border border-white/5 text-xs space-y-2 flex justify-between gap-1">
+                      {visits.map((v, idx) => (
+                        <div key={`video-${v.id || idx}-${idx}`} className="bg-zinc-900/50 p-3.5 rounded-xl border border-white/5 text-xs space-y-2 flex justify-between gap-1">
                           <div className="space-y-1">
                             <p className="font-extrabold text-white text-[13px]">{v.company}</p>
                             <p className="text-gray-400 text-[11px]">{v.clientName}</p>
@@ -1575,8 +1575,8 @@ export default function AdminPanel() {
                   </div>
                 ) : (
                   <div className="grid gap-6">
-                    {tutorials.map((t) => (
-                      <div key={t.id} className="glass p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden hover:border-white/10 transition">
+                    {tutorials.map((t, idx) => (
+                      <div key={`testim-${t.id || idx}-${idx}`} className="glass p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden hover:border-white/10 transition">
                         
                         {/* Status bar left */}
                         <div className={`absolute left-0 top-0 bottom-0 w-1 ${
@@ -1717,8 +1717,8 @@ export default function AdminPanel() {
                           {hasAdminRights && <td className="p-4 pr-6 text-right text-gray-500 italic text-[11px] font-medium">—</td>}
                         </tr>
 
-                        {usersList.map((usr) => (
-                          <tr key={usr.id} className="hover:bg-white/2 transition">
+                        {usersList.map((usr, idx) => (
+                          <tr key={`usr-${usr.id || idx}-${idx}`} className="hover:bg-white/2 transition">
                             <td className="p-4 pl-6 text-white font-medium">{usr.name}</td>
                             <td className="p-4 text-gray-400">{usr.email}</td>
                             <td className="p-4">
@@ -1865,8 +1865,8 @@ export default function AdminPanel() {
                   <p className="text-[10px] text-gray-500">No hay libros dados de alta para vincular como material de estudio.</p>
                 ) : (
                   <div className="space-y-1.5 max-h-24 overflow-y-auto bg-black/40 p-2.5 rounded-lg border border-white/5">
-                    {books.map(b => (
-                      <label key={b.id} className="flex items-center gap-2 text-xs text-gray-300">
+                    {books.map((b, idx) => (
+                      <label key={`book-lbl-${b.id || idx}-${idx}`} className="flex items-center gap-2 text-xs text-gray-300">
                         <input 
                           type="checkbox"
                           checked={courseForm.materials?.includes(b.id) || false}

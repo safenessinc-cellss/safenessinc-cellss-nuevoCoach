@@ -189,9 +189,9 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
           { id: 'decision', title: '🎯 Decisiones Críticas', subtitle: 'Simulador de Triage y Riesgos de Planta' },
           { id: 'psicopedagogia', title: '🧠 Psicopedagogía Empresarial', subtitle: 'Núcleo de Carga Mental y Aprendizaje' },
           { id: 'cohesion', title: '🤝 Cohesión de Equipos', subtitle: 'Sala de Control de Silos y OKRs de Confianza' }
-        ].map((tab) => (
+        ].map((tab, idx) => (
           <button
-            key={tab.id}
+            key={`pillar-tab-${tab.id}-${idx}`}
             onClick={() => setActivePillar(tab.id as any)}
             className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden ${
               activePillar === tab.id
@@ -273,9 +273,9 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                     Escenario de Conflicto en Planta:
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {crises.map((c) => (
+                    {crises.map((c, idx) => (
                       <button
-                        key={c.id}
+                        key={`pillar-crisis-${c.id || idx}-${idx}`}
                         onClick={() => handleApplyCrisisScenario(c.id)}
                         className={`p-2.5 rounded-xl border text-left text-xs transition duration-200 ${
                           selectedCrisis === c.id
