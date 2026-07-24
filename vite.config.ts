@@ -30,41 +30,45 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: true,
-      chunkSizeWarningLimit: 1000, // Aumenta el límite de advertencia a 1MB
+      chunkSizeWarningLimit: 1000,
       
       rollupOptions: {
         output: {
-          // Estrategia de chunking optimizada
+          // ✅ CHUNKING CORREGIDO - Sin dependencias circulares
           manualChunks: (id) => {
-            // Core de React y sus dependencias
-            if (id.includes('node_modules/react') || 
-                id.includes('node_modules/react-dom') || 
-                id.includes('node_modules/react-router-dom') ||
-                id.includes('node_modules/scheduler')) {
-              return 'vendor-react';
-            }
-            
-            // i18n y sus dependencias
-            if (id.includes('node_modules/i18next') || 
-                id.includes('node_modules/react-i18next')) {
-              return 'vendor-i18n';
-            }
-            
-            // Animaciones y UI
-            if (id.includes('node_modules/framer-motion') || 
-                id.includes('node_modules/motion') ||
-                id.includes('node_modules/lucide-react')) {
-              return 'vendor-ui';
-            }
-            
-            // Utilidades y otras dependencias
-            if (id.includes('node_modules/') && 
-                !id.includes('node_modules/.vite') &&
-                !id.includes('node_modules/@vitejs')) {
+            // Primero, los chunks de vendor (sin circularidad)
+            if (id.includes('node_modules/')) {
+              // React y sus dependencias principales
+              if (id.includes('node_modules/react') || 
+                  id.includes('node_modules/react-dom') || 
+                  id.includes('node_modules/scheduler')) {
+                return 'vendor-react';
+              }
+              
+              // i18n
+              if (id.includes('node_modules/i18next') || 
+                  id.includes('node_modules/react-i18next')) {
+                return 'vendor-i18n';
+              }
+              
+              // UI y animaciones
+              if (id.includes('node_modules/framer-motion') || 
+                  id.includes('node_modules/motion') ||
+                  id.includes('node_modules/lucide-react')) {
+                return 'vendor-ui';
+              }
+              
+              // Router
+              if (id.includes('node_modules/react-router-dom') || 
+                  id.includes('node_modules/react-router')) {
+                return 'vendor-router';
+              }
+              
+              // Todo lo demás de node_modules
               return 'vendor-other';
             }
             
-            // Componentes específicos (code-splitting por módulos)
+            // Componentes principales (solo si existen)
             if (id.includes('/src/components/AdminPanel')) {
               return 'admin-panel';
             }
@@ -89,13 +93,16 @@ export default defineConfig(({ mode }) => {
               return 'chat-widget';
             }
             
-            // Páginas principales
+            // Páginas
             if (id.includes('/src/pages/') || id.includes('/src/views/')) {
               return 'pages';
             }
+            
+            // Si no coincide con nada, va al chunk principal
+            return null;
           },
           
-          // Nombres de archivos más descriptivos
+          // Nombres de archivos
           entryFileNames: 'assets/[name]-[hash].js',
           chunkFileNames: 'assets/[name]-[hash].js',
           assetFileNames: 'assets/[name]-[hash].[ext]',
@@ -105,19 +112,10 @@ export default defineConfig(({ mode }) => {
       assetsDir: 'assets',
       copyPublicDir: true,
       
-      // Minificación avanzada
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: process.env.NODE_ENV === 'production',
-          drop_debugger: process.env.NODE_ENV === 'production',
-        },
-      },
+      // ✅ ELIMINAR TERSER - Usar esbuild por defecto (más rápido)
+      // minify: 'esbuild' es el valor por defecto, no hace falta especificarlo
       
-      // Separación de CSS
       cssCodeSplit: true,
-      
-      // Target de navegadores
       target: 'es2020',
     },
     
@@ -137,19 +135,14 @@ export default defineConfig(({ mode }) => {
         'framer-motion',
         'lucide-react',
       ],
-      exclude: [
-        // Excluye paquetes que no necesitan optimización
-      ],
     },
     
-    // Configuración de CSS
     css: {
       modules: {
         localsConvention: 'camelCase',
       },
     },
     
-    // Preview (para ver el build localmente)
     preview: {
       port: 4173,
       open: true,
