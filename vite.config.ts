@@ -9,37 +9,31 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
     
-    // ⭐ 1. BASE CORRECTA para Vercel
     base: './',
     
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
-      // ⭐ 2. Variables de entorno para Vercel
       'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
     },
     
     resolve: {
       alias: {
-        // ⭐ 3. ALIAS CORRECTO (apunta a src/)
         '@': path.resolve(__dirname, './src'),
-        // Si usas otros alias, añádelos aquí
       },
     },
     
-    // ⭐ 4. CONFIGURACIÓN DE BUILD para Vercel
     build: {
       outDir: 'dist',
-      sourcemap: true, // Para debugging en producción
+      sourcemap: true,
       rollupOptions: {
         output: {
           manualChunks: {
-            // Separa librerías grandes para mejor caché
+            // ✅ Solo incluye lo que realmente usas
             vendor: ['react', 'react-dom'],
-            i18n: ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
+            i18n: ['i18next', 'react-i18next'], // ← ELIMINADO i18next-browser-languagedetector
           },
         },
       },
-      // ⭐ 5. Asegura que los assets se copien correctamente
       assetsDir: 'assets',
       copyPublicDir: true,
     },
@@ -48,14 +42,13 @@ export default defineConfig(({ mode }) => {
       hmr: process.env.DISABLE_HMR !== 'true',
     },
     
-    // ⭐ 6. Optimiza dependencias para Vercel
     optimizeDeps: {
       include: [
         'react',
         'react-dom',
         'i18next',
         'react-i18next',
-        'i18next-browser-languagedetector',
+        // ← ELIMINADO i18next-browser-languagedetector de aquí también
       ],
     },
   };
