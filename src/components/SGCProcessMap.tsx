@@ -240,7 +240,7 @@ export default function SGCProcessMap() {
 
   const filteredProcesses = activeCycleTab === 'all' 
     ? processes 
-    : processes.filter(p => p.phase === activeCycleTab || p.type !== 'operacionales' && p.type !== 'estrategicos');
+    : (Array.isArray(processes) ? processes : []).filter(p => p.phase === activeCycleTab || p.type !== 'operacionales' && p.type !== 'estrategicos');
 
   return (
     <div className="w-full flex flex-col gap-6" id="sgc-process-map-container">
@@ -300,7 +300,7 @@ export default function SGCProcessMap() {
             <h4 className="text-[10px] font-bold tracking-widest text-blue-400 uppercase font-mono mb-2">// 1. Requisitos & Entradas</h4>
             <p className="text-xs text-gray-500">Inputs técnicos y de mercado que movilizan la operación corporativa.</p>
           </div>
-          {processes.filter(p => p.type === 'entradas').map((node, idx) => (
+          {(Array.isArray(processes) ? processes : []).filter(p => p.type === 'entradas').map((node, idx) => (
             <div
               key={`entradas-${node.id}-${idx}`}
               onClick={() => setSelectedNode(node)}
@@ -330,7 +330,7 @@ export default function SGCProcessMap() {
               <span className="text-[9px] font-mono text-gray-500">Cláusula 5 (Liderazgo) & Cláusula 6 (Planificación)</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {processes.filter(p => p.type === 'estrategicos').map((node, idx) => {
+              {(Array.isArray(processes) ? processes : []).filter(p => p.type === 'estrategicos').map((node, idx) => {
                 const isSelectedTab = activeCycleTab === 'all' || activeCycleTab === node.phase;
                 return (
                   <div
@@ -359,7 +359,7 @@ export default function SGCProcessMap() {
             
             {/* Camino interactivo */}
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5">
-              {processes.filter(p => p.type === 'operacionales').map((node, idx) => {
+              {(Array.isArray(processes) ? processes : []).filter(p => p.type === 'operacionales').map((node, idx) => {
                 const isSelectedTab = activeCycleTab === 'all' || activeCycleTab === node.phase;
                 
                 // Color mapping for phases
@@ -396,7 +396,7 @@ export default function SGCProcessMap() {
               <span className="text-[9px] font-mono text-gray-500">Sostenibilidad operante y de personas</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {processes.filter(p => p.type === 'soporte').map((node, idx) => (
+              {(Array.isArray(processes) ? processes : []).filter(p => p.type === 'soporte').map((node, idx) => (
                 <div
                   key={`soporte-${node.id}-${idx}`}
                   onClick={() => setSelectedNode(node)}
@@ -420,7 +420,7 @@ export default function SGCProcessMap() {
             <h4 className="text-[10px] font-bold tracking-widest text-green-400 uppercase font-mono mb-2">// 2. Resultados & Retorno</h4>
             <p className="text-xs text-gray-500">Impacto medible en reputación corporativa y rentabilidad acumulada.</p>
           </div>
-          {processes.filter(p => p.type === 'salidas').map((node, idx) => (
+          {(Array.isArray(processes) ? processes : []).filter(p => p.type === 'salidas').map((node, idx) => (
             <div
               key={`salidas-${node.id}-${idx}`}
               onClick={() => setSelectedNode(node)}
@@ -540,8 +540,8 @@ export default function SGCProcessMap() {
                       Entradas Clínicas (Inputs)
                     </h4>
                     <ul className="space-y-1.5">
-                      {selectedNode.inputs.map((inp, i) => (
-                        <li key={i} className="text-xs text-gray-400 flex items-start gap-1.5">
+                      {(selectedNode.inputs || []).map((inp, i) => (
+                        <li key={`inp-${i}`} className="text-xs text-gray-400 flex items-start gap-1.5">
                           <span className="text-blue-500 font-bold mt-0.5">•</span>
                           <span>{inp}</span>
                         </li>
@@ -555,8 +555,8 @@ export default function SGCProcessMap() {
                       Resultados Entregables (Outputs)
                     </h4>
                     <ul className="space-y-1.5">
-                      {selectedNode.outputs.map((out, i) => (
-                        <li key={i} className="text-xs text-gray-400 flex items-start gap-1.5">
+                      {(selectedNode.outputs || []).map((out, i) => (
+                        <li key={`out-${i}`} className="text-xs text-gray-400 flex items-start gap-1.5">
                           <span className="text-green-500 font-bold mt-0.5">•</span>
                           <span>{out}</span>
                         </li>
@@ -573,8 +573,8 @@ export default function SGCProcessMap() {
                       KPIs de Control Continuo
                     </h4>
                     <ul className="space-y-1.5 font-mono text-[11px]">
-                      {selectedNode.kpis.map((kpi, i) => (
-                        <li key={i} className="text-gray-300 flex items-start gap-1.5">
+                      {(selectedNode.kpis || []).map((kpi, i) => (
+                        <li key={`kpi-${i}`} className="text-gray-300 flex items-start gap-1.5">
                           <span className="text-red-500 font-bold">•</span>
                           <span>{kpi}</span>
                         </li>
@@ -588,8 +588,8 @@ export default function SGCProcessMap() {
                       Riesgos Operacionales ISO 31000
                     </h4>
                     <ul className="space-y-1.5 text-xs">
-                      {selectedNode.risks.map((risk, i) => (
-                        <li key={i} className="text-gray-400 flex items-start gap-1.5">
+                      {(selectedNode.risks || []).map((risk, i) => (
+                        <li key={`risk-${i}`} className="text-gray-400 flex items-start gap-1.5">
                           <span className="text-orange-400 font-bold">•</span>
                           <span className="italic">{risk}</span>
                         </li>

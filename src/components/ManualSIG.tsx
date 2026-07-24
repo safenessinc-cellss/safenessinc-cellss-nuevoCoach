@@ -441,7 +441,7 @@ export default function ManualSIG() {
           const isActive = activeTab === tab.id;
           return (
             <button
-              key={`sig-tab-${tab.id}-${idx}`}
+              key={`sig-tab-${tab.id}-${idx}-${idx}`}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-wider shrink-0 transition-all border ${
                 isActive 
@@ -815,7 +815,7 @@ export default function ManualSIG() {
                     <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" /> Nivel 1: Procesos Clave ({currentSector.processes.length})
                   </div>
                   <div className="space-y-2">
-                    {currentSector.processes.map((proc, index) => (
+                    {(currentSector?.processes || []).map((proc, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-black/40 border border-white/5 rounded-xl text-xs">
                         <span className="font-bold text-white max-w-[170px] truncate">{proc.name}</span>
                         <span className="text-gray-500 font-mono tracking-tighter">N1_{proc.id}</span>
@@ -833,8 +833,8 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="space-y-6">
-                  {currentSector.processes.flatMap(p => p.subprocesses.map((sub, sidx) => (
-                    <div key={`${p.id}-${sub.name}-${sidx}`} className="p-5 bg-black/60 rounded-2xl border border-white/5 hover:border-red-500/20 transition-all space-y-4">
+                  {currentSector.processes.flatMap(p => (p?.subprocesses || []).map((sub, sidx) => (
+                    <div key={`proc-p-${p.id || sidx}-${sub.name}-${sidx}`} className="p-5 bg-black/60 rounded-2xl border border-white/5 hover:border-red-500/20 transition-all space-y-4">
                       
                       {/* Subprocess header */}
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/5 pb-3">
@@ -867,7 +867,7 @@ export default function ManualSIG() {
                       <div className="space-y-2">
                         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Documentación SGC Relacionada (Procedimientos, Instructivos, Formatos)</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                          {sub.documents.map((doc, docIdx) => (
+                          {(sub?.documents || []).map((doc, docIdx) => (
                             <div key={`${doc.code || 'doc'}-${docIdx}`} className="p-2.5 bg-[#060608] border border-white/5 rounded-xl flex items-center gap-2">
                               <FileCode className={`w-4 h-4 shrink-0 ${
                                 doc.type === 'procedimiento' ? 'text-blue-400' :
@@ -1157,7 +1157,7 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar">
-                  {currentProcess.checklist.map((q, qIdx) => {
+                  {(currentProcess?.checklist || []).map((q, qIdx) => {
                     const activeScore = checklistScores[q.id];
                     return (
                       <div key={`sig-chk-${q.id || qIdx}-${qIdx}`} className="p-4 bg-black/40 rounded-xl border border-white/5 hover:bg-black/60 transition-colors space-y-3">
@@ -1406,7 +1406,7 @@ export default function ManualSIG() {
                       { step: 8, label: 'D8: Cierre' }
                     ].map((s) => (
                       <button
-                        key={s.step}
+                        key={`s-step-${s.step}`}
                         onClick={() => setCurrent8DStep(s.step)}
                         className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
                           current8DStep === s.step 
@@ -1501,7 +1501,7 @@ export default function ManualSIG() {
                     <div className="space-y-2">
                       <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Perforación de Causalidad (5 Whys Directos):</p>
                       <div className="space-y-1.5 font-mono text-[11px]">
-                        {activeNC.fiveWhys.map((why, widx) => (
+                        {(activeNC?.fiveWhys || []).map((why, widx) => (
                           <div key={widx} className="p-2.5 bg-[#09090c] border border-white/5 rounded-xl flex items-start gap-2">
                             <span className="text-red-500 font-black">W{widx+1}:</span>
                             <span className="text-gray-300">{why}</span>
@@ -1626,7 +1626,7 @@ export default function ManualSIG() {
                       onChange={(e) => setCustomNC(prev => ({ ...prev, proc: e.target.value }))}
                       className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500"
                     >
-                      {currentSector.processes.map((p, pIdx) => (
+                      {(currentSector?.processes || []).map((p, pIdx) => (
                         <option key={`opt-proc-${p.id || pIdx}-${pIdx}`} value={p.name}>{p.name}</option>
                       ))}
                     </select>
@@ -1675,7 +1675,7 @@ export default function ManualSIG() {
                 <div className="mt-8 border-t border-white/5 pt-6 space-y-4">
                   <p className="text-xs font-black text-gray-300 uppercase tracking-widest">Bitácora de Desviaciones Propias (Generadas Dinámicamente):</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {ncList.map((nc, ncIdx) => (
+                    {(Array.isArray(ncList) ? ncList : []).map((nc, ncIdx) => (
                       <div key={`nc-card-${nc.id || ncIdx}-${ncIdx}`} className="p-4 bg-orange-500/5 rounded-2xl border border-orange-500/20 text-xs relative overflow-hidden">
                         <div className="absolute top-2 right-2 bg-orange-600/20 border border-orange-500/30 text-orange-400 px-2.5 py-0.5 rounded text-[8px] font-bold uppercase">
                           {nc.status}
@@ -1882,7 +1882,7 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="space-y-3 text-xs">
-                  {currentSector.processes.map((proc, index) => (
+                  {(currentSector?.processes || []).map((proc, index) => (
                     <div key={`proc-sec-${proc.id || index}`} className="space-y-1 p-2 bg-black/40 border border-white/5 rounded-xl">
                       <div className="flex justify-between items-center">
                         <span className="font-bold text-white truncate max-w-[170px]">{proc.name}</span>
@@ -2142,7 +2142,7 @@ export default function ManualSIG() {
                       const isActive = selectedPhase === ph.id;
                       return (
                         <button
-                          key={`ph-${ph.id}-${phIdx}`}
+                          key={`ph-${ph.id || phIdx}-${phIdx}`}
                           onClick={() => setSelectedPhase(ph.id)}
                           className={`p-2.5 rounded-xl border text-center flex flex-col justify-between items-center h-20 transition duration-300 ${
                             isActive 
@@ -2373,7 +2373,7 @@ export default function ManualSIG() {
                           { key: 'exceso_opciones', name: 'Riesgo de exceso de opciones' }
                         ].map((rk, rkIdx) => (
                           <button
-                            key={`rk-${rk.key}-${rkIdx}`}
+                            key={`rk-${rk.key || rkIdx}-${rkIdx}`}
                             onClick={() => {
                               setSelectedRiskKey(rk.key);
                               setSocraticAnswer(socraticSavedAnswers[rk.key] || '');
@@ -3042,7 +3042,7 @@ export default function ManualSIG() {
                   </div>
                   <button
                     onClick={async () => {
-                      const allSigned = humanAgreements.map(a => ({ ...a, signed: true }));
+                      const allSigned = (Array.isArray(humanAgreements) ? humanAgreements : []).map(a => ({ ...a, signed: true }));
                       setHumanAgreements(allSigned);
                       // Autosync in background
                       setIsCloudSyncing(true);
@@ -3063,7 +3063,7 @@ export default function ManualSIG() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {humanAgreements.map((agreement, agIdx) => (
+                  {(Array.isArray(humanAgreements) ? humanAgreements : []).map((agreement, agIdx) => (
                     <div 
                       key={`agr-${agreement.id || agIdx}-${agIdx}`} 
                       className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
@@ -3087,7 +3087,7 @@ export default function ManualSIG() {
 
                       <button
                         onClick={async () => {
-                          const updated = humanAgreements.map(a => a.id === agreement.id ? { ...a, signed: !a.signed } : a);
+                          const updated = (Array.isArray(humanAgreements) ? humanAgreements : []).map(a => a.id === agreement.id ? { ...a, signed: !a.signed } : a);
                           setHumanAgreements(updated);
                           // Autosyne data
                           setIsCloudSyncing(true);
@@ -3372,7 +3372,7 @@ export default function ManualSIG() {
 
               {/* Findings list */}
               <div className="space-y-2 mt-4 max-h-[300px] overflow-y-auto scrollbar-thin">
-                {auditFindings.map((f, fIdx) => {
+                {(Array.isArray(auditFindings) ? auditFindings : []).map((f, fIdx) => {
                   let badgeColor = "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
                   let label = "NC Menor";
                   if (f.type === 'major') {

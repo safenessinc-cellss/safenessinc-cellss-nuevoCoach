@@ -181,8 +181,8 @@ export default function ChatWidget() {
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((msg, idx) => (
-                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              {(Array.isArray(messages) ? messages : []).map((msg, idx) => (
+                <div key={`chat-msg-${idx}`} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${
                     msg.role === 'user' 
                       ? 'bg-red-600 text-white rounded-tr-sm' 

@@ -212,7 +212,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
       <AnimatePresence mode="wait">
         {activePillar === 'decision' && (
           <motion.div
-            key="decision-pillar"
+            key="pill-sec-decision"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
@@ -273,7 +273,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                     Escenario de Conflicto en Planta:
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {crises.map((c, idx) => (
+                    {(Array.isArray(crises) ? crises : []).map((c, idx) => (
                       <button
                         key={`pillar-crisis-${c.id || idx}-${idx}`}
                         onClick={() => handleApplyCrisisScenario(c.id)}
@@ -397,7 +397,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
                   {savedReflections.length > 0 && (
                     <div className="bg-black/50 p-3 rounded-xl border border-white/5 max-h-[100px] overflow-y-auto space-y-1 text-[10px]">
                       <span className="text-gray-500 block font-mono border-b border-white/5 pb-1">Compromisos Registrados en Bitácora Humana:</span>
-                      {savedReflections.map((ref, idx) => (
+                      {(Array.isArray(savedReflections) ? savedReflections : []).map((ref, idx) => (
                         <p key={`ref-${idx}-${ref.slice(0, 10)}`} className="text-green-400 leading-tight">
                           • {ref}
                         </p>
@@ -443,7 +443,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
         {/* PILLAR 2: PSICOPEDAGOGÍA EMPRESARIAL */}
         {activePillar === 'psicopedagogia' && (
           <motion.div
-            key="psicopedagogia-pillar"
+            key="pill-sec-psicopedagogia"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
@@ -653,7 +653,7 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
         {/* PILLAR 3: COHESIÓN DE EQUIPOS */}
         {activePillar === 'cohesion' && (
           <motion.div
-            key="cohesion-pillar"
+            key="pill-sec-cohesion"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}

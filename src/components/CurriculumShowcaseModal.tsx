@@ -458,7 +458,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           </div>
 
                           <div className="relative pl-4 space-y-2 border-l-2 border-amber-500 ml-2 text-[10.5px]">
-                            {languagesList.map((lang: any, idx: number) => (
+                            {(Array.isArray(languagesList) ? languagesList : []).map((lang: any, idx: number) => (
                               <div key={`lang-${idx}`} className="relative space-y-0.5">
                                 <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                                 <div className="flex justify-between items-center text-white font-bold">
@@ -483,7 +483,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           </div>
 
                           <div className="relative pl-4 space-y-3 border-l-2 border-amber-500 ml-2 text-[11px]">
-                            {educationItems.map((edu: any, idx: number) => (
+                            {(Array.isArray(educationItems) ? educationItems : []).map((edu: any, idx: number) => (
                               <div key={`edu-${idx}`} className="relative space-y-0.5">
                                 <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                                 <span className="font-bold text-white uppercase block leading-tight">{edu.title}</span>
@@ -543,7 +543,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           </div>
 
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pl-7">
-                            {impactMetrics.map((metric: any, idx: number) => (
+                            {(Array.isArray(impactMetrics) ? impactMetrics : []).map((metric: any, idx: number) => (
                               <div key={`metric-${idx}`} className="bg-amber-50/70 border border-amber-200/80 p-2.5 rounded-xl">
                                 <span className="text-lg font-black text-amber-700 font-mono block leading-none">{metric.value}</span>
                                 <span className="text-[10px] font-extrabold text-gray-900 block leading-tight mt-1">{metric.label}</span>
@@ -565,7 +565,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           </div>
 
                           <div className="relative pl-7 space-y-4 border-l-2 border-amber-500 ml-2.5">
-                            {careerRoles.map((role: any, idx: number) => (
+                            {(Array.isArray(careerRoles) ? careerRoles : []).map((role: any, idx: number) => (
                               <div key={`career-role-${idx}`} className="relative space-y-1">
                                 <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
@@ -580,7 +580,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                                   {role.company} | {role.location}
                                 </p>
                                 <ul className="list-disc list-inside text-[10.5px] text-gray-600 space-y-0.5 pt-0.5">
-                                  {role.responsibilities.slice(0, 4).map((resp: string, rIdx: number) => (
+                                  {(role.responsibilities || []).slice(0, 4).map((resp: string, rIdx: number) => (
                                     <li key={`resp-${idx}-${rIdx}`} className="leading-tight">{resp}</li>
                                   ))}
                                 </ul>
@@ -588,7 +588,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                                   <div className="mt-1.5 p-2 bg-gray-50 border border-gray-200 rounded-lg text-[10px] text-gray-700">
                                     <span className="font-bold text-amber-700 block mb-0.5">{t('curriculum.achievements_label', '★ Logros Notables:')}</span>
                                     <ul className="list-square list-inside space-y-0.5">
-                                      {role.achievements.map((ach: string, aIdx: number) => (
+                                      {(role.achievements || []).map((ach: string, aIdx: number) => (
                                         <li key={`ach-${idx}-${aIdx}`} className="text-[9.5px]">{ach}</li>
                                       ))}
                                     </ul>
@@ -640,7 +640,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredOfficial.map((cert, idx) => (
+                    {(Array.isArray(filteredOfficial) ? filteredOfficial : []).map((cert, idx) => (
                       <div
                         key={`official-cert-${cert.code || idx}-${idx}`}
                         onClick={() => setViewingCertificate(cert)}
@@ -715,7 +715,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5 text-xs font-mono">
-                          {filteredActivities.map((act, idx) => (
+                          {(Array.isArray(filteredActivities) ? filteredActivities : []).map((act, idx) => (
                             <tr
                               key={`official-act-${act.code || idx}-${idx}`}
                               onClick={() => setViewingCertificate(act)}
