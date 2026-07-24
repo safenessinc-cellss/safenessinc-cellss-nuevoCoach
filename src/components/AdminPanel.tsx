@@ -867,13 +867,13 @@ export default function AdminPanel() {
             { id: 'users', name: 'Gestión Usuarios', icon: Users },
             { id: 'registry', name: 'Activos ISO', icon: CabinetIconPlaceholder },
             { id: 'profile', name: 'Perfil Público', icon: Settings }
-          ].map((item) => {
+          ].map((item, idx) => {
             const Icon = item.icon as any;
             const isActive = activeTab === item.id;
             return (
               <button
                 id={`sidebar-tab-${item.id}`}
-                key={item.id}
+                key={`admin-nav-${item.id}-${idx}`}
                 onClick={() => {
                   setActiveTab(item.id as any);
                   setSearchTerm('');
@@ -1441,7 +1441,7 @@ export default function AdminPanel() {
                       const isSelected = selectedCalendarDay === dayNumber;
                       return (
                         <button
-                          key={dayNumber}
+                          key={`cal-active-day-${dayNumber}`}
                           onClick={() => setSelectedCalendarDay(dayNumber)}
                           className={`aspect-square rounded-xl p-1.5 flex flex-col justify-between items-center transition relative border cursor-pointer ${
                             isSelected 

@@ -217,9 +217,9 @@ export default function ImageRegistryManager() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredImages.map((img) => (
+          {filteredImages.map((img, idx) => (
             <motion.div 
-              key={img.id}
+              key={`img-${img.id || idx}-${idx}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="glass p-4 rounded-2xl border border-white/5 flex flex-col gap-4"

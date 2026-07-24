@@ -329,8 +329,8 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                       onChange={(e) => setSelectedCategory(e.target.value)}
                       className="bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-amber-500 font-mono"
                     >
-                      {categories.map((c) => (
-                        <option key={c.id} value={c.id}>
+                      {categories.map((c, idx) => (
+                        <option key={`curr-cat-${c.id || idx}-${idx}`} value={c.id}>
                           {c.label}
                         </option>
                       ))}
@@ -642,7 +642,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredOfficial.map((cert, idx) => (
                       <div
-                        key={`${cert.code}-${idx}`}
+                        key={`official-cert-${cert.code || idx}-${idx}`}
                         onClick={() => setViewingCertificate(cert)}
                         className="bg-[#100e17] border border-white/5 hover:border-amber-500/50 rounded-2xl p-5 hover:bg-[#151220] transition duration-300 cursor-pointer flex flex-col justify-between group relative overflow-hidden shadow-lg"
                       >
@@ -717,7 +717,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                         <tbody className="divide-y divide-white/5 text-xs font-mono">
                           {filteredActivities.map((act, idx) => (
                             <tr
-                              key={`${act.code}-${idx}`}
+                              key={`official-act-${act.code || idx}-${idx}`}
                               onClick={() => setViewingCertificate(act)}
                               className="hover:bg-amber-500/10 transition cursor-pointer group"
                             >
