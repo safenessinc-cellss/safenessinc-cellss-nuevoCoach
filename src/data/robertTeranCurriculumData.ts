@@ -79,6 +79,11 @@ export const CAREER_EXPERIENCE: CareerRole[] = [
       "Monitorear indicadores clave de desempeño (KPIs), analizando tendencias operativas para la toma de decisiones.",
       "Elaborar, estandarizar y mantener actualizada la documentación del Sistema de Gestión de la Calidad (SGC).",
       "Realizar programas de formación y capacitación técnica continua sobre procedimientos de calidad e higiene operativa."
+    ],
+    achievements: [
+      "Liderazgo y logro de 1 recertificación exitosa de la norma ISO 9001:2015 del Sistema de Gestión de Calidad (SGC).",
+      "Logro de 1 auditoría de manutención (mantenimiento) del SGC aprobada sin no conformidades críticas.",
+      "Fortalecimiento de la cultura de calidad e higiene operativa en planta con alineación a estándares de clientes."
     ]
   },
   {
