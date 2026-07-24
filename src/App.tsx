@@ -10,10 +10,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
-import dataES from './data/es.json';
-import dataEN from './data/en.json';
-import dataPT from './data/pt.json';
-import dataIT from './data/it.json';
 import ChatWidget from './components/ChatWidget';
 import ISOImage from './components/ISOImage';
 import UserProfileModal from './components/UserProfileModal';
@@ -31,13 +27,6 @@ const iconMap: Record<string, any> = {
 };
 
 const getIcon = (iconName: string) => iconMap[iconName] || Activity;
-
-const allData = {
-  es: dataES,
-  en: dataEN,
-  pt: dataPT,
-  it: dataIT
-};
 
 const corporateBackgrounds = [
   'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920',
@@ -269,17 +258,45 @@ const safeArray = (value: any): any[] => {
 export default function App() {
   const { t, i18n } = useTranslation();
   
-  // ✅ OBTENER DATOS CON FALLBACK
-  const currentLang = i18n.language as keyof typeof allData;
-  const rawData = allData[currentLang];
-  const data = rawData && typeof rawData === 'object' ? rawData : DEFAULT_DATA;
+  // ✅ Estado para los datos
+  const [data, setData] = useState<any>(DEFAULT_DATA);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const { profile, loading: profileLoading } = useProfileSettings();
+
+  // ✅ Cargar datos dinámicamente
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        setLoadError(null);
+        
+        const lang = i18n.language || 'es';
+        const response = await fetch(`/data/${lang}.json`);
+        
+        if (!response.ok) {
+          throw new Error(`Error loading ${lang}.json: ${response.status}`);
+        }
+        
+        const jsonData = await response.json();
+        setData(jsonData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setLoadError(error instanceof Error ? error.message : 'Unknown error');
+        setIsLoading(false);
+        // Usar DEFAULT_DATA como fallback
+        setData(DEFAULT_DATA);
+      }
+    };
+
+    loadData();
+  }, [i18n.language]);
 
   const [bgImage, setBgImage] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('inicio');
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<any>(null);
   const [selectedTestimonial, setSelectedTestimonial] = useState<any>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -357,13 +374,6 @@ export default function App() {
   const activeBadge = badges.length > 0 ? badges[activeSkillIdx] || badges[0] : null;
 
   // Efectos
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -530,7 +540,28 @@ export default function App() {
     );
   }
 
-  // ✅ Si no hay datos, mostrar error
+  // ✅ Si hay error pero tenemos DEFAULT_DATA, mostrar advertencia
+  if (loadError && badges.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#03050C]">
+        <div className="text-center max-w-md px-4">
+          <AlertTriangle className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+          <h2 className="text-xl text-white font-bold mb-2">Error al cargar los datos</h2>
+          <p className="text-gray-400 text-sm mb-4">
+            No se pudieron cargar los datos de la aplicación. Usando datos de respaldo.
+          </p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="mt-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+          >
+            Recargar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ Si no hay badges, mostrar error
   if (badges.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#03050C]">
