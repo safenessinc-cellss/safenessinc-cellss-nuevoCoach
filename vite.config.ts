@@ -1,3 +1,4 @@
+
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -29,31 +30,19 @@ export default defineConfig(({ mode }) => {
       
       rollupOptions: {
         output: {
-          manualChunks: (id) => {
-            // ⭐ SIMPLIFICADO: Sin chunks complejos para evitar errores
-            if (id.includes('node_modules/')) {
-              if (id.includes('react') || id.includes('react-dom')) {
-                return 'vendor-react';
-              }
-              if (id.includes('lucide-react')) {
-                return 'vendor-icons'; // ← SEPARADO para evitar conflictos
-              }
-              if (id.includes('i18next') || id.includes('react-i18next')) {
-                return 'vendor-i18n';
-              }
-              return 'vendor-other';
-            }
-            return null;
+          // ✅ CONFIGURACIÓN SIMPLIFICADA - Sin manualChunks complejos
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            'i18n-vendor': ['i18next', 'react-i18next'],
+            // 👇 LUCIDE-REACT va SOLO en este chunk
+            'icons-vendor': ['lucide-react'],
           },
         },
       },
       
       assetsDir: 'assets',
       copyPublicDir: true,
-      
-      // ⭐ MINIFICACIÓN CON ESBUILD (más rápido y estable)
       minify: 'esbuild',
-      
       cssCodeSplit: true,
       target: 'es2020',
     },
@@ -64,7 +53,6 @@ export default defineConfig(({ mode }) => {
       open: true,
     },
     
-    // ⭐ OPTIMIZACIÓN DE DEPENDENCIAS
     optimizeDeps: {
       include: [
         'react',
@@ -72,10 +60,12 @@ export default defineConfig(({ mode }) => {
         'react-router-dom',
         'i18next',
         'react-i18next',
-        'lucide-react', // ← AÑADIDO explícitamente
+        'lucide-react',
       ],
-      // ⭐ EXCLUYE paquetes que causan problemas
+      // ✅ EXCLUYE todo lo demás para evitar conflictos
       exclude: [],
+      // ✅ FORZA el rebuild de lucide-react
+      force: true,
     },
     
     css: {
