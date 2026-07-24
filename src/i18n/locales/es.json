@@ -108,13 +108,14 @@
     "export": "Exportar a PDF",
     "print": "Imprimir",
     "credly": "Credly",
+    "transcript": "Transcript Oficial expedido el 22 July 2026",
+    "preview": "Vista previa de impresión oficial (Formato A4 Ejecutivo)",
     "tabs": {
       "cv": "Currículo Ejecutivo (Plantilla Oficial)",
       "credentials": "Credenciales Credly (20)",
       "activities": "Actividades & Cursos (188)",
       "profile": "Perfil & Estadísticas"
     },
-    "preview": "Vista previa de impresión oficial (Formato A4 Ejecutivo)",
     "contact": {
       "title": "Contacto",
       "phone": "Teléfono / WhatsApp",
@@ -160,6 +161,70 @@
         }
       ]
     },
-    "transcript": "Transcript Oficial expedido el 22 July 2026"
+    "career": {
+      "title": "Experiencia Profesional",
+      "roles": [
+        {
+          "period": "Enero de 2024 – Actualidad",
+          "title": "Coordinador de Calidad y Procesos",
+          "company": "Rototech",
+          "location": "São Leopoldo, RS, Brasil",
+          "responsibilities": [
+            "Coordinar las actividades integrales de gestión de la calidad y optimización de procesos productivos.",
+            "Liderar la implementación de mejoría continua en las líneas operativas aplicando Lean Manufacturing y Six Sigma.",
+            "Garantizar la conformidad con las normas de calidad ISO 9001, ISO 14001, ISO 45001 y requisitos del cliente.",
+            "Realizar auditorías internas y externas, identificando no conformidades (RNCs) e impulsando tratamientos 8D."
+          ],
+          "achievements": [
+            "Conquista de 1 recertificación exitosa de la norma ISO 9001:2015 del Sistema de Gestión de Calidad (SGC).",
+            "Conquista de 1 auditoría de manutención (mantenimiento) del SGC aprobada sin no conformidades críticas.",
+            "Fortalecimiento de la cultura de calidad e higiene operativa en planta con alineación a estándares de clientes."
+          ]
+        },
+        {
+          "period": "2021 – 2023",
+          "title": "Analista y Gestor de Calidad",
+          "company": "Tapeçaria Palacio",
+          "location": "Canoas, RS, Brasil",
+          "responsibilities": [
+            "Desarrollo e implementación de estrategias de gestión de calidad en la línea de producción.",
+            "Análisis de calidad de materias primas e insumos en estrecha colaboración con ingeniería y producción.",
+            "Diseño y supervisión de procedimientos de control de calidad para cada etapa productiva."
+          ],
+          "achievements": [
+            "Reducción del 15% en el índice de defectos del proceso productivo gracias al flujo sistemático de control.",
+            "Diseño e implementación de un sistema de rastreo de reclamos de clientes con 30% de reducción en quejas."
+          ]
+        },
+        {
+          "period": "2019 – 2021",
+          "title": "Gerente de Calidad y Producción",
+          "company": "D'classe Papeis",
+          "location": "Portão, RS, Brasil",
+          "responsibilities": [
+            "Gestión integral de producción y calidad liderando un equipo multidisciplinario de ingenieros, técnicos y supervisores.",
+            "Implementación de metodologías Lean Manufacturing y Six Sigma para maximizar la eficiencia y reducir costos."
+          ],
+          "achievements": [
+            "Implementación de un sistema automatizado de control de calidad que mejoró la precisión y velocidad en 30%.",
+            "Liderazgo en la implementación de un sistema Just-in-Time, reduciendo costos de inventario en 25%."
+          ]
+        },
+        {
+          "period": "2005 – 2018",
+          "title": "Analista de Compras Senior & Gestión Comercial / Retail",
+          "company": "General Motors",
+          "location": "Brasil & LATAM",
+          "responsibilities": [
+            "Gestión estratégica y operacional de compras de materiales e insumos críticos para la producción automotriz.",
+            "Liderazgo en la adquisición de insumos negociando con proveedores para asegurar calidad y tiempos JIT."
+          ],
+          "achievements": [
+            "Optimización de la cadena de suministro reduciendo costos de adquisición en 15% mediante negociación estratégica.",
+            "Programa de desarrollo de proveedores que mejoró la calidad recibida, reduciendo reclamos en 20%."
+          ]
+        }
+      ]
+    }
   }
 }
