@@ -1,242 +1,156 @@
 {
-  "nav": {
-    "perfil": "Perfil",
-    "curriculum": "Currículo & Certificados",
-    "servicios": "Servicios",
-    "procesos": "Procesos",
-    "certificaciones": "Certificaciones",
-    "contacto": "Contacto"
-  },
-  "hero": {
-    "badge": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral | Optimización de Procesos",
-    "title": "Optimizando procesos y liderando equipos humanos",
-    "titleHighlight": "con más de 30 años de experiencia.",
-    "description": "“Integro la precisión técnica de la ingeniería con el análisis económico estratégico y los sistemas de gestión integral. Optimizamos procesos, cohesionamos equipos y agilizamos decisiones críticas para su rentabilidad.”"
+  "profile": {
+    "name": "Robert Terán",
+    "coachTitle": "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
+    "bio": "Especialista en Sistemas de Gestión ISO con más de 30 años de experiencia en auditoría y consultoría estratégica. Auditor Líder certificado por IBM 2025 y Coach Empresarial, complementa su perfil técnico con estudios en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional.",
+    "quote": "Integro la precisión técnica de la ingeniería con el análisis económico estratégico y los sistemas de gestión integral. Optimizamos procesos, cohesionamos equipos y agilizamos decisiones críticas para su rentabilidad.",
+    "experienceYears": "30",
+    "linkedin": "https://www.linkedin.com/in/robertteran/",
+    "email": "robert@coach-iso.eu"
   },
   "about": {
     "badge": "Perfil Profesional",
-    "title": "Más de 30 años de Excelencia",
-    "description": "Especialista en Sistemas de Gestión ISO con más de 30 años de experiencia en auditoría y consultoría estratégica. Auditor Líder certificado por IBM 2025 y Coach Empresarial, complementa su perfil técnico con estudios en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional."
+    "badges": [
+      { "label": "ISO Gestión de Calidad", "icon": "ShieldCheck" },
+      { "label": "Estructuras de Empresas", "icon": "Network" },
+      { "label": "Mapeo de Procesos", "icon": "Workflow" },
+      { "label": "Análisis Crítico", "icon": "Brain" },
+      { "label": "Análisis de Gestión", "icon": "BarChart3" },
+      { "label": "Análisis de Riesgo", "icon": "ShieldAlert" },
+      { "label": "Análisis de Mercado", "icon": "LineChart" },
+      { "label": "Emprendimiento & Startup", "icon": "Rocket" },
+      { "label": "IBM 2025 Coach", "icon": "Award" },
+      { "label": "Auditor Leader", "icon": "ClipboardCheck" }
+    ],
+    "career": [
+      {
+        "area": "Auditoría & Calidad",
+        "description": "Coordinador de Calidad y Procesos en Rototech, liderando la implementación de mejoría continua con Lean Manufacturing y Six Sigma.",
+        "roles": ["Auditor Líder IRCA", "Coordinador de Calidad", "Gestor de Procesos"]
+      },
+      {
+        "area": "Gestión Estratégica",
+        "description": "Gerente de Calidad y Producción en D'classe Papeis, implementando sistemas automatizados de control y metodologías Lean.",
+        "roles": ["Gerente de Calidad", "Gestor de Producción", "Líder de Equipos"]
+      },
+      {
+        "area": "Cadena de Suministro",
+        "description": "Analista de Compras Senior en General Motors, gestionando la adquisición de insumos críticos y desarrollo de proveedores.",
+        "roles": ["Analista de Compras", "Gestión de Proveedores", "Negociación Estratégica"]
+      }
+    ]
+  },
+  "expertise": {
+    "areas": [
+      {
+        "title": "Sistemas de Gestión ISO",
+        "icon": "ShieldCheck",
+        "items": [
+          "Auditoría Líder ISO 9001, 14001, 45001, 27001, 22000, 42001",
+          "Implementación y certificación de Sistemas de Gestión Integral",
+          "Auditorías internas y externas con enfoque en mejora continua"
+        ]
+      },
+      {
+        "title": "Optimización de Procesos",
+        "icon": "Workflow",
+        "items": [
+          "Lean Manufacturing y Six Sigma (Green Belt)",
+          "Mapeo de procesos BPMN y diagramas de flujo",
+          "Reducción de desperdicios y mejora de eficiencia operacional"
+        ]
+      },
+      {
+        "title": "Coaching Estratégico",
+        "icon": "Brain",
+        "items": [
+          "IBM 2025 Executive Coach",
+          "Desarrollo de liderazgo y equipos de alto rendimiento",
+          "Toma de decisiones críticas bajo incertidumbre"
+        ]
+      },
+      {
+        "title": "Análisis Financiero",
+        "icon": "BarChart3",
+        "items": [
+          "Evaluación de Costo de Calidad (COQ)",
+          "Análisis de rentabilidad y optimización de inventarios",
+          "Gestión de presupuestos y reducción de costos operacionales"
+        ]
+      }
+    ]
+  },
+  "certifications": [
+    {
+      "title": "Auditor Líder ISO",
+      "subtitle": "IRCA Certified",
+      "description": "Sistemas de Gestión (9001, 14001, 27001, 45001, 22000, 42001)"
+    },
+    {
+      "title": "IBM 2025 Coach",
+      "subtitle": "Executive Coach",
+      "description": "Liderazgo y Transformación de equipos digitales"
+    },
+    {
+      "title": "CIA - Certified Internal Auditor",
+      "subtitle": "IIA Certified",
+      "description": "Auditoría interna global, otorgada por el IIA"
+    },
+    {
+      "title": "CISA - Certified Information Systems Auditor",
+      "subtitle": "ISACA Certified",
+      "description": "Control y seguridad de sistemas de información"
+    },
+    {
+      "title": "CPA - Certified Public Accountant",
+      "subtitle": "Financial Expert",
+      "description": "Evaluación integral del área financiera, impositiva y de capital"
+    },
+    {
+      "title": "CRMA - Certification in Risk Management Assurance",
+      "subtitle": "Risk Management",
+      "description": "Mitigación y aseguramiento ante riesgos corporativos integrales"
+    },
+    {
+      "title": "Psicopedagogía Empresarial",
+      "subtitle": "Organizational Learning",
+      "description": "Gestión del aprendizaje organizacional y dinámicas grupales"
+    },
+    {
+      "title": "Coach Estratégico",
+      "subtitle": "Strategic Coach",
+      "description": "Toma de decisiones críticas bajo incertidumbre de mercado"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Carlos Mendoza",
+      "title": "CEO, Empresa Líder en Manufactura",
+      "quote": "Robert Terán transformó nuestra cultura de calidad. Su enfoque integral de sistemas de gestión y coaching ejecutivo ha sido clave para nuestra certificación ISO 9001."
+    },
+    {
+      "name": "Ana Silva",
+      "title": "Directora de Operaciones, Multinacional",
+      "quote": "La metodología de Robert para optimizar procesos y cohesionar equipos es excepcional. Logramos reducir costos en un 25% y aumentar la productividad en un 15%."
+    },
+    {
+      "name": "Roberto Gómez",
+      "title": "Gerente de Calidad, Sector Automotriz",
+      "quote": "Su experiencia en auditoría líder ISO y su capacidad para tomar decisiones críticas bajo presión han sido fundamentales para nuestro éxito."
+    }
+  ],
+  "metrics": {
+    "yearsExperience": "30+",
+    "label": "Años de Experiencia"
   },
   "services": {
     "badge": "Mis Servicios",
     "title": "Suite Integral de Gestión",
     "auditorTitle": "Sistemas de Gestión Integral",
     "auditorDesc": "Ingeniería, economía y optimización",
-    "details": "Ver detalles",
     "coachTitle": "Optimización de Procesos",
     "coachDesc": "Eficiencia, rentabilidad y estructura",
     "consultingTitle": "Consultoría Estratégica",
     "consultingDesc": "Análisis, diagnóstico y transformación organizacional"
-  },
-  "processes": {
-    "badge": "Ingeniería Organizacional",
-    "title": "Mapa de Interacción de Procesos",
-    "description": "Representación visual de la interacción de los procesos del Sistema de Gestión de Calidad, incluyendo entradas, salidas y puntos de control operativos.",
-    "simulator": "Consola de Simulación Operativa (PHVA)",
-    "status": "SYS_STATUS: SIMULADOR_READY",
-    "config": "Configuración de Parámetros",
-    "results": "Consola de Evaluación & Resultados",
-    "compliance": "Tasa de Conformidad",
-    "goal": "Objetivo",
-    "roi": "Retorno Económico SGC",
-    "compliance_value": "98.6%",
-    "goal_value": "98%",
-    "roi_value": "+$32,000 USD/año (COQ)"
-  },
-  "certifications": {
-    "badge": "El Estándar de Oro",
-    "title": "Sistemas de Gestión ISO",
-    "description": "Certificando la excelencia a nivel internacional.",
-    "items": [
-      {
-        "code": "AUD",
-        "name": "Auditor Líder ISO (IRCA)",
-        "description": "Sistemas de Gestión (9001, 14001, 27001, 45001, 22000, 42001)"
-      },
-      {
-        "code": "IBM",
-        "name": "IBM 2025 Coach",
-        "description": "Liderazgo y Transformación de equipos digitales"
-      },
-      {
-        "code": "CIA",
-        "name": "Certified Internal Auditor",
-        "description": "Auditoría interna global, otorgada por el IIA"
-      },
-      {
-        "code": "CISA",
-        "name": "Certified Information Systems Auditor",
-        "description": "Control y seguridad de sistemas de información"
-      },
-      {
-        "code": "CPA",
-        "name": "Certified Public Accountant",
-        "description": "Evaluación integral del área financiera, impositiva y de capital"
-      },
-      {
-        "code": "CRMA",
-        "name": "Certification in Risk Management Assurance",
-        "description": "Mitigación y aseguramiento ante riesgos corporativos integrales"
-      },
-      {
-        "code": "PSI",
-        "name": "Psicopedagogía Empresarial",
-        "description": "Gestión del aprendizaje organizacional y dinámicas grupales"
-      },
-      {
-        "code": "COA",
-        "name": "Coach Estratégico",
-        "description": "Toma de decisiones críticas bajo incertidumbre de mercado"
-      }
-    ]
-  },
-  "testimonials": {
-    "badge": "Casos de Éxito",
-    "title": "Lo que dicen nuestros clientes",
-    "viewCase": "Ver caso"
-  },
-  "footer": {
-    "agendar": "Agendar Consulta",
-    "contact": "Contacto",
-    "rights": "Todos los derechos reservados",
-    "made": "Hecho con"
-  },
-  "curriculum": {
-    "title": "Currículo Ejecutivo & Portal de Credenciales",
-    "subtitle": "Coach Ejecutivo • Auditor Líder SGC IRCA • Ingeniero Economista",
-    "export": "Exportar a PDF",
-    "print": "Imprimir",
-    "credly": "Credly",
-    "transcript": "Transcript Oficial expedido el 22 July 2026",
-    "preview": "Vista previa de impresión oficial (Formato A4 Ejecutivo)",
-    "translate_label": "Idioma del Currículo para exportación:",
-    "summary": "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en empresas como Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva.",
-    "impact_title": "Impacto y Resultados Operativos Comprobados",
-    "accreditations_title": "Acreditaciones & Certificaciones de Calidad",
-    "achievements_label": "★ Logros Notables:",
-    "impact_metrics": [
-      { "value": "30%", "label": "Reducción en reclamos de clientes", "detail": "Sistema de rastreo de quejas y acciones correctivas" },
-      { "value": "15%", "label": "Aumento en capacidad productiva", "detail": "Optimización de líneas VSM, Kaizen y redistribución" },
-      { "value": "25%", "label": "Reducción en costos de inventario", "detail": "Despliegue Just-in-Time (JIT) y flujo tenso" },
-      { "value": "20%", "label": "Reducción en índice de rechazos", "detail": "Metodología 8D, RNCs y control estadístico" },
-      { "value": "$195k", "label": "Ahorro estimado en proyectos GM", "detail": "Aplicación de herramientas de calidad en capacitores" }
-    ],
-    "tabs": {
-      "cv": "Currículo Ejecutivo (Plantilla Oficial)",
-      "credentials": "Credenciales Credly (20)",
-      "activities": "Actividades & Cursos (188)",
-      "profile": "Perfil & Estadísticas"
-    },
-    "contact": {
-      "title": "Contacto",
-      "phone": "Teléfono / WhatsApp",
-      "email": "Email / Credly",
-      "location": "Ubicación"
-    },
-    "languages": {
-      "title": "Idiomas",
-      "items": [
-        { "name": "Español", "level": "Nativo", "written": "Escrito y Hablado" },
-        { "name": "Portugués", "level": "Avanzado", "written": "Escrito y Hablado" },
-        { "name": "Inglés", "level": "Avanzado", "written": "Escrito y Hablado" },
-        { "name": "Italiano", "level": "Avanzado", "written": "Escrito y Hablado" },
-        { "name": "Ruso", "level": "Avanzado", "written": "Escrito y Hablado" }
-      ]
-    },
-    "education": {
-      "title": "Formación Académica",
-      "items": [
-        {
-          "title": "Ingeniería de Producción y Calidad",
-          "institution": "Universidad Simón Bolívar",
-          "period": "1995 - 1999",
-          "description": "Título universitario en ingeniería enfocado en investigación operativa, gestión de la calidad, optimización de sistemas productivos y costos."
-        },
-        {
-          "title": "Certificación en Lean Manufacturing",
-          "institution": "Instituto de Mejora Continua, Caracas, Venezuela",
-          "period": "2000",
-          "description": "Especialización avanzada en VSM, flujo continuo, Kaizen, 5S y eliminación de desperdicios."
-        },
-        {
-          "title": "Certificación Green Belt Six Sigma",
-          "institution": "Instituto de Ingeniería y Tecnología, Caracas, Venezuela",
-          "period": "1999",
-          "description": "Dominio de la metodología DMAIC, análisis estadístico de variabilidad y control estadístico de procesos (SPC)."
-        },
-        {
-          "title": "Técnico Superior en Control de Calidad",
-          "institution": "Instituto Germán Celis Sauné",
-          "period": "1992 - 1993",
-          "description": "Formación técnica especializada en metrología, normas ISO, muestreo y técnicas de inspección industrial."
-        }
-      ]
-    },
-    "career": {
-      "title": "Experiencia Profesional",
-      "roles": [
-        {
-          "period": "Enero de 2024 – Actualidad",
-          "title": "Coordinador de Calidad y Procesos",
-          "company": "Rototech",
-          "location": "São Leopoldo, RS, Brasil",
-          "responsibilities": [
-            "Coordinar las actividades integrales de gestión de la calidad y optimización de procesos productivos.",
-            "Liderar la implementación de mejoría continua en las líneas operativas aplicando Lean Manufacturing y Six Sigma.",
-            "Garantizar la conformidad con las normas de calidad ISO 9001, ISO 14001, ISO 45001 y requisitos del cliente.",
-            "Realizar auditorías internas y externas, identificando no conformidades (RNCs) e impulsando tratamientos 8D."
-          ],
-          "achievements": [
-            "Conquista de 1 recertificación exitosa de la norma ISO 9001:2015 del Sistema de Gestión de Calidad (SGC).",
-            "Conquista de 1 auditoría de manutención (mantenimiento) del SGC aprobada sin no conformidades críticas.",
-            "Fortalecimiento de la cultura de calidad e higiene operativa en planta con alineación a estándares de clientes."
-          ]
-        },
-        {
-          "period": "2021 – 2023",
-          "title": "Analista y Gestor de Calidad",
-          "company": "Tapeçaria Palacio",
-          "location": "Canoas, RS, Brasil",
-          "responsibilities": [
-            "Desarrollo e implementación de estrategias de gestión de calidad en la línea de producción.",
-            "Análisis de calidad de materias primas e insumos en estrecha colaboración con ingeniería y producción.",
-            "Diseño y supervisión de procedimientos de control de calidad para cada etapa productiva."
-          ],
-          "achievements": [
-            "Reducción del 15% en el índice de defectos del proceso productivo gracias al flujo sistemático de control.",
-            "Diseño e implementación de un sistema de rastreo de reclamos de clientes con 30% de reducción en quejas."
-          ]
-        },
-        {
-          "period": "2019 – 2021",
-          "title": "Gerente de Calidad y Producción",
-          "company": "D'classe Papeis",
-          "location": "Portão, RS, Brasil",
-          "responsibilities": [
-            "Gestión integral de producción y calidad liderando un equipo multidisciplinario de ingenieros, técnicos y supervisores.",
-            "Implementación de metodologías Lean Manufacturing y Six Sigma para maximizar la eficiencia y reducir costos."
-          ],
-          "achievements": [
-            "Implementación de un sistema automatizado de control de calidad que mejoró la precisión y velocidad en 30%.",
-            "Liderazgo en la implementación de un sistema Just-in-Time, reduciendo costos de inventario en 25%."
-          ]
-        },
-        {
-          "period": "2005 – 2018",
-          "title": "Analista de Compras Senior & Gestión Comercial / Retail",
-          "company": "General Motors",
-          "location": "Brasil & LATAM",
-          "responsibilities": [
-            "Gestión estratégica y operacional de compras de materiales e insumos críticos para la producción automotriz.",
-            "Liderazgo en la adquisición de insumos negociando con proveedores para asegurar calidad y tiempos JIT."
-          ],
-          "achievements": [
-            "Optimización de la cadena de suministro reduciendo costos de adquisición en 15% mediante negociación estratégica.",
-            "Programa de desarrollo de proveedores que mejoró la calidad recibida, reduciendo reclamos en 20%."
-          ]
-        }
-      ]
-    }
   }
 }
