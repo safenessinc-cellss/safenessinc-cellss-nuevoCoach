@@ -13,20 +13,53 @@ const resources = {
   it: { translation: translationIT },
 };
 
-const savedLng = typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : null;
-const navLang = typeof window !== 'undefined' && navigator.language ? navigator.language.split('-')[0] : 'es';
-const initialLng = savedLng || (['es', 'en', 'pt', 'it'].includes(navLang) ? navLang : 'es');
+// Detector de idioma manual (sin dependencias externas)
+const getInitialLanguage = () => {
+  // 1. Verificar localStorage
+  if (typeof window !== 'undefined') {
+    const savedLang = localStorage.getItem('i18nextLng');
+    if (savedLang && ['es', 'en', 'pt', 'it'].includes(savedLang)) {
+      return savedLang;
+    }
+  }
 
+  // 2. Verificar navegador
+  if (typeof window !== 'undefined' && navigator.language) {
+    const navLang = navigator.language.split('-')[0];
+    if (['es', 'en', 'pt', 'it'].includes(navLang)) {
+      return navLang;
+    }
+  }
+
+  // 3. Fallback a español
+  return 'es';
+};
+
+// Guardar idioma en localStorage cuando cambie
+const saveLanguage = (lng: string) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('i18nextLng', lng);
+  }
+};
+
+// Inicializar i18n
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: initialLng,
+    lng: getInitialLanguage(),
     fallbackLng: 'es',
     interpolation: {
       escapeValue: false,
     },
+    react: {
+      useSuspense: false, // Evita problemas de carga
+    },
   });
 
-export default i18n;
+// Escuchar cambios de idioma para guardarlos
+i18n.on('languageChanged', (lng) => {
+  saveLanguage(lng);
+});
 
+export default i18n;
