@@ -25,6 +25,7 @@ import {
 import { Course, Book, Visit, Tutorial, UserProfile, UserRole } from '../types';
 import ImageRegistryManager from './ImageRegistryManager';
 import ProfileEditor from './ProfileEditor';
+import CurriculumEditor from './CurriculumEditor';
 
 // Operation Types for Audit and Errors
 enum OperationType {
@@ -77,7 +78,7 @@ export default function AdminPanel() {
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
   
   // Active Tab State
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum'>('dashboard');
 
   // Domain Collections States
   const [courses, setCourses] = useState<Course[]>([]);
@@ -866,6 +867,7 @@ export default function AdminPanel() {
             { id: 'tutorials', name: 'Tutorías Online', icon: Video },
             { id: 'users', name: 'Gestión Usuarios', icon: Users },
             { id: 'registry', name: 'Activos ISO', icon: CabinetIconPlaceholder },
+            { id: 'curriculum', name: 'Gestor Currículo', icon: FileText },
             { id: 'profile', name: 'Perfil Público', icon: Settings }
           ].map((item, idx) => {
             const Icon = item.icon as any;
@@ -939,6 +941,7 @@ export default function AdminPanel() {
               {activeTab === 'tutorials' && 'Agenda de Tutorías Online'}
               {activeTab === 'users' && 'Colaboradores y Permisos'}
               {activeTab === 'registry' && 'Gestor de Activos ISO'}
+              {activeTab === 'curriculum' && 'Gestión y Corrección de Currículo'}
               {activeTab === 'profile' && 'Configuración del Consultor'}
             </h2>
             <p className="text-sm text-gray-400">
@@ -949,6 +952,7 @@ export default function AdminPanel() {
               {activeTab === 'tutorials' && 'Coaching telemático con enlaces automatizados de Zoom y Meet.'}
               {activeTab === 'users' && 'Control de accesos y roles (Admin, Editor y Viewer).'}
               {activeTab === 'registry' && 'Subidas y organización integrada de diagramas de cumplimiento.'}
+              {activeTab === 'curriculum' && 'Modifica datos ejecutivos, trayectoria, métricas y formación del CV.'}
               {activeTab === 'profile' && 'Modificar información pública, logo y testimonios.'}
             </p>
           </div>
@@ -961,7 +965,7 @@ export default function AdminPanel() {
                 Modo lectura (Viewer/Editor)
               </span>
             )}
-            {activeTab !== 'dashboard' && activeTab !== 'registry' && activeTab !== 'profile' && activeTab !== 'users' && canEdit && (
+            {activeTab !== 'dashboard' && activeTab !== 'registry' && activeTab !== 'profile' && activeTab !== 'curriculum' && activeTab !== 'users' && canEdit && (
               <button 
                 onClick={() => {
                   if (activeTab === 'courses') { setEditingCourse(null); setIsCourseModalOpen(true); }
@@ -1760,6 +1764,13 @@ export default function AdminPanel() {
                 ======================================================= */}
             {activeTab === 'profile' && (
               <ProfileEditor />
+            )}
+
+            {/* =======================================================
+                T9: CURRICULUM EDITOR TAB
+                ======================================================= */}
+            {activeTab === 'curriculum' && (
+              <CurriculumEditor />
             )}
 
           </motion.div>
