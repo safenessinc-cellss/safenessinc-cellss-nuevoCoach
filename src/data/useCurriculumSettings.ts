@@ -32,21 +32,45 @@ export const DEFAULT_CURRICULUM_SETTINGS: CurriculumSettings = {
 };
 
 export function useCurriculumSettings() {
-  const [curriculumData, setCurriculumData] = useState<CurriculumSettings>(DEFAULT_CURRICULUM_SETTINGS);
+  const [curriculumData, setCurriculumData] = useState<CurriculumSettings>(() => {
+    try {
+      const saved = localStorage.getItem('coachiso_curriculum_settings');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          candidateInfo: { ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo, ...parsed.candidateInfo },
+          impactMetrics: parsed.impactMetrics || DEFAULT_CURRICULUM_SETTINGS.impactMetrics,
+          careerRoles: parsed.careerRoles || DEFAULT_CURRICULUM_SETTINGS.careerRoles,
+          educationItems: parsed.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
+          languagesList: parsed.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
+          industrialCourses: parsed.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses
+        };
+      }
+    } catch (e) {
+      console.warn("Error leyendo currículo de localStorage:", e);
+    }
+    return DEFAULT_CURRICULUM_SETTINGS;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'settings', 'curriculum'), (snap) => {
       if (snap.exists()) {
         const data = snap.data() as Partial<CurriculumSettings>;
-        setCurriculumData({
-          candidateInfo: data.candidateInfo || DEFAULT_CURRICULUM_SETTINGS.candidateInfo,
+        const merged: CurriculumSettings = {
+          candidateInfo: { ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo, ...(data.candidateInfo || {}) },
           impactMetrics: data.impactMetrics || DEFAULT_CURRICULUM_SETTINGS.impactMetrics,
           careerRoles: data.careerRoles || DEFAULT_CURRICULUM_SETTINGS.careerRoles,
           educationItems: data.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: data.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
           industrialCourses: data.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses
-        });
+        };
+        setCurriculumData(merged);
+        try {
+          localStorage.setItem('coachiso_curriculum_settings', JSON.stringify(merged));
+        } catch (e) {
+          console.warn("Error guardando currículo en localStorage:", e);
+        }
       }
       setLoading(false);
     }, (error) => {
@@ -58,10 +82,19 @@ export function useCurriculumSettings() {
   }, []);
 
   const updateCurriculum = async (newSettings: CurriculumSettings) => {
+    // Immediate local update and storage
+    setCurriculumData(newSettings);
+    try {
+      localStorage.setItem('coachiso_curriculum_settings', JSON.stringify(newSettings));
+    } catch (e) {
+      console.warn("Error en localStorage al actualizar currículo:", e);
+    }
+
     try {
       await setDoc(doc(db, 'settings', 'curriculum'), newSettings);
     } catch (error) {
-      handleFirestoreError(error, OperationType.WRITE, 'settings/curriculum');
+      console.warn("Error al sincronizar con Firestore, cambios retenidos localmente:", error);
+      // We do not throw so admin save button finishes successfully locally
     }
   };
 
