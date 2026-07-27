@@ -44,7 +44,7 @@ interface CurriculumShowcaseModalProps {
 
 export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('cv_template');
+  const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('official_certificates');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
@@ -278,18 +278,6 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
               {/* Navigation Tabs */}
               <div className="flex flex-wrap gap-2 mt-4 border-t border-white/10 pt-3">
                 <button
-                  onClick={() => setActiveTab('cv_template')}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-                    activeTab === 'cv_template'
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-                  }`}
-                >
-                  <FileText className="w-4 h-4" />
-                  <span>{t('curriculum.tabs.cv', 'Currículo Ejecutivo (Plantilla Oficial)')}</span>
-                </button>
-
-                <button
                   onClick={() => setActiveTab('official_certificates')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                     activeTab === 'official_certificates'
@@ -298,7 +286,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   }`}
                 >
                   <Award className="w-4 h-4" />
-                  <span>{t('curriculum.tabs.credentials', 'Credenciales Credly')} ({OFFICIAL_CERTIFICATES.length})</span>
+                  <span>{t('curriculum.tabs.credentials', 'Certificados & Credenciales')} ({OFFICIAL_CERTIFICATES.length})</span>
                 </button>
 
                 <button
@@ -311,6 +299,18 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                 >
                   <Layers className="w-4 h-4" />
                   <span>{t('curriculum.tabs.activities', 'Actividades & Cursos')} ({ALL_LEARNING_ACTIVITIES.length})</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('cv_template')}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+                    activeTab === 'cv_template'
+                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
+                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>{t('curriculum.tabs.cv', 'Currículo Ejecutivo (Plantilla Oficial)')}</span>
                 </button>
 
                 <button
