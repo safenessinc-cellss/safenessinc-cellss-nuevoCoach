@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import html2pdf from 'html2pdf.js';
 import { 
   X, 
   Award, 
@@ -40,31 +41,6 @@ interface CurriculumShowcaseModalProps {
   onClose: () => void;
 }
 
-// Helper to dynamically load html2pdf from CDN without Rollup module import issues
-const getHtml2PdfLib = async () => {
-  if (typeof window === 'undefined') return null;
-  if ((window as any).html2pdf) {
-    return (window as any).html2pdf;
-  }
-  return new Promise<any>((resolve) => {
-    const existingScript = document.getElementById('html2pdf-cdn-script');
-    if (existingScript) {
-      if ((window as any).html2pdf) {
-        resolve((window as any).html2pdf);
-      } else {
-        existingScript.addEventListener('load', () => resolve((window as any).html2pdf));
-      }
-      return;
-    }
-    const script = document.createElement('script');
-    script.id = 'html2pdf-cdn-script';
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-    script.onload = () => resolve((window as any).html2pdf);
-    script.onerror = () => resolve(null);
-    document.head.appendChild(script);
-  });
-};
-
 export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('cv_template');
@@ -78,7 +54,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
   // Selected certificate for scaled modal viewer
   const [viewingCertificate, setViewingCertificate] = useState<OfficialCertificate | LearningActivity | null>(null);
 
-  // Localized career, education, languages, summary, impact metrics
+  // Localized career, education, languages, summary, impact metrics, accreditations
   const rawCareer = t('curriculum.career.roles', { returnObjects: true });
   const careerRoles = Array.isArray(rawCareer) ? rawCareer : CAREER_EXPERIENCE;
 
@@ -91,33 +67,43 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
   const rawImpactMetrics = t('curriculum.impact_metrics', { returnObjects: true });
   const impactMetrics = Array.isArray(rawImpactMetrics) ? rawImpactMetrics : IMPACT_METRICS;
 
+  const rawAccreditations = t('curriculum.industrial_courses', { returnObjects: true });
+  const accreditationsList = Array.isArray(rawAccreditations) ? rawAccreditations : INDUSTRIAL_COURSES;
+
   const cvSummary = t('curriculum.summary', CANDIDATE_INFO.summary);
+  const summaryTitle = t('curriculum.summary_title', 'Resumen Profesional');
+  const candidateLocation = t('curriculum.contact.location_value', CANDIDATE_INFO.location);
+  const transcriptText = t('curriculum.transcript', 'Transcript Oficial expedido el') + ' ' + CANDIDATE_INFO.transcriptDate;
 
   if (!isOpen) return null;
 
-  // Export to PDF function using dynamically loaded html2pdf.js
+  // Export to PDF function using html2pdf.js with fallback to window.print()
   const handleExportPDF = async () => {
     const element = document.getElementById('curriculum-cv-document');
     if (!element) return;
     
     setIsExporting(true);
     try {
-      const html2pdfLib = await getHtml2PdfLib();
-      if (html2pdfLib) {
-        const langCode = (i18n.language || 'es').toUpperCase();
-        const opt = {
-          margin: 0,
-          filename: `Curriculum_Robert_Teran_${langCode}.pdf`,
-          image: { type: 'jpeg' as const, quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, logging: false },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
-        };
-        await html2pdfLib().set(opt).from(element).save();
-      } else {
-        window.print();
-      }
+      const langCode = (i18n.language || 'es').toUpperCase();
+      const opt = {
+        margin: 0,
+        filename: `Curriculum_Robert_Teran_${langCode}.pdf`,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true, 
+          allowTaint: true, 
+          logging: false,
+          scrollY: 0,
+          scrollX: 0
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      await html2pdf().set(opt as any).from(element).save();
     } catch (err) {
-      console.error("Error al exportar PDF con html2pdf, recurriendo a vista de impresión:", err);
+      console.warn("Error al exportar PDF con html2pdf, recurriendo a impresión de sistema:", err);
       window.print();
     } finally {
       setIsExporting(false);
@@ -384,8 +370,10 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                     {/* LEFT SIDEBAR COLUMN - DARK CHARCOAL */}
                     <div className="w-full md:w-[290px] bg-[#1a1d20] text-gray-200 p-6 flex flex-col justify-between relative shrink-0">
                       
-                      {/* Top-Left Geometric Amber Triangle Cutout */}
-                      <div className="absolute top-0 left-0 w-0 h-0 border-t-[95px] border-t-amber-500 border-r-[95px] border-r-transparent pointer-events-none z-0" />
+                      {/* Top-Left Geometric Amber Vector SVG Cutout */}
+                      <svg className="absolute top-0 left-0 w-24 h-24 pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polygon points="0,0 100,0 0,100" fill="#f59e0b" />
+                      </svg>
 
                       <div className="relative z-10 space-y-6">
                         
@@ -397,6 +385,8 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                                 src={profilePhotoUrl}
                                 alt={CANDIDATE_INFO.name}
                                 className="w-full h-full object-cover object-top"
+                                crossOrigin="anonymous"
+                                referrerPolicy="no-referrer"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
                                 }}
@@ -441,7 +431,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             <div className="relative space-y-0.5">
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.location', 'Ubicación')}</span>
-                              <span className="font-medium text-white block">{CANDIDATE_INFO.location || "São Leopoldo, RS, Brasil"}</span>
+                              <span className="font-medium text-white block">{candidateLocation}</span>
                             </div>
                           </div>
                         </div>
@@ -497,7 +487,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                       </div>
 
                       <div className="pt-6 text-[9px] font-mono text-gray-500 border-t border-white/5 relative z-10">
-                        <span>{t('curriculum.transcript', 'Transcript Oficial expedido el')} {CANDIDATE_INFO.transcriptDate}</span>
+                        <span>{transcriptText}</span>
                       </div>
                     </div>
 
@@ -523,7 +513,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                               <User className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              {t('about.badge', 'Resumen Profesional')}
+                              {summaryTitle}
                             </h2>
                           </div>
                           <p className="text-gray-600 leading-relaxed text-xs pl-7 text-justify font-normal">
@@ -611,7 +601,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                           </div>
 
                           <div className="flex flex-wrap gap-1.5 pl-7">
-                            {INDUSTRIAL_COURSES.map((course, idx) => (
+                            {(Array.isArray(accreditationsList) ? accreditationsList : []).map((course, idx) => (
                               <span key={`ind-course-${idx}`} className="text-[9.5px] font-mono font-medium px-2.5 py-1 bg-gray-100 border border-gray-200 text-gray-800 rounded-md">
                                 ✓ {course}
                               </span>
@@ -621,8 +611,10 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
                       </div>
 
-                      {/* Bottom Right Geometric Amber Accent Cutout */}
-                      <div className="absolute bottom-0 right-0 w-0 h-0 border-b-[95px] border-b-amber-500 border-l-[95px] border-l-transparent pointer-events-none z-0" />
+                      {/* Bottom Right Geometric Amber Vector SVG Cutout */}
+                      <svg className="absolute bottom-0 right-0 w-24 h-24 pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <polygon points="100,100 0,100 100,0" fill="#f59e0b" />
+                      </svg>
 
                     </div>
 
