@@ -108,28 +108,82 @@
     "export": "Exportar a PDF",
     "print": "Imprimir",
     "credly": "Credly",
-    "transcript": "Transcript Oficial expedido el 22 July 2026",
+    "transcript": "Transcript Oficial expedido el",
     "preview": "Vista previa de impresión oficial (Formato A4 Ejecutivo)",
+    "translate_label": "Idioma del Currículo:",
+    "summary_title": "Resumen Profesional",
+    "summary": "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en empresas como Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva.",
+    "impact_title": "Impacto y Resultados Operativos Comprobados",
+    "accreditations_title": "Acreditaciones & Certificaciones de Calidad",
+    "achievements_label": "★ Logros Notables:",
+    "impact_metrics": [
+      {
+        "value": "30%",
+        "label": "Reducción en reclamos de clientes",
+        "detail": "Sistema de rastreo de quejas y acciones correctivas"
+      },
+      {
+        "value": "15%",
+        "label": "Aumento en capacidad de producción",
+        "detail": "Optimización de líneas VSM, Kaizen y redistribución"
+      },
+      {
+        "value": "25%",
+        "label": "Reducción en costos de inventario",
+        "detail": "Despliegue Just-in-Time (JIT) y flujo tenso"
+      },
+      {
+        "value": "20%",
+        "label": "Reducción en índice de rechazos",
+        "detail": "Metodología 8D, RNCs y control estadístico"
+      },
+      {
+        "value": "$195k",
+        "label": "Ahorro estimado en proyectos TCC GM",
+        "detail": "Aplicación de herramientas de calidad en capacitores"
+      }
+    ],
     "tabs": {
       "cv": "Currículo Ejecutivo (Plantilla Oficial)",
-      "credentials": "Credenciales Credly (20)",
-      "activities": "Actividades & Cursos (188)",
+      "credentials": "Credenciales Credly",
+      "activities": "Actividades & Cursos",
       "profile": "Perfil & Estadísticas"
     },
     "contact": {
       "title": "Contacto",
       "phone": "Teléfono / WhatsApp",
       "email": "Email / Credly",
-      "location": "Ubicación"
+      "location": "Ubicación",
+      "location_value": "São Leopoldo, RS, Brasil (LATAM y Global)"
     },
     "languages": {
       "title": "Idiomas",
       "items": [
-        { "name": "Español", "level": "Nativo", "written": "Escrito y Hablado" },
-        { "name": "Portugués", "level": "Avanzado", "written": "Escrito y Hablado" },
-        { "name": "Inglés", "level": "Avanzado", "written": "Escrito y Hablado" },
-        { "name": "Italiano", "level": "Avanzado", "written": "Escrito y Hablado" },
-        { "name": "Ruso", "level": "Avanzado", "written": "Escrito y Hablado" }
+        {
+          "name": "Español",
+          "level": "Nativo",
+          "written": "Escrito y Hablado"
+        },
+        {
+          "name": "Portugués",
+          "level": "Avanzado",
+          "written": "Escrito y Hablado"
+        },
+        {
+          "name": "Inglés",
+          "level": "Avanzado",
+          "written": "Escrito y Hablado"
+        },
+        {
+          "name": "Italiano",
+          "level": "Avanzado",
+          "written": "Escrito y Hablado"
+        },
+        {
+          "name": "Ruso",
+          "level": "Avanzado",
+          "written": "Escrito y Hablado"
+        }
       ]
     },
     "education": {
@@ -139,11 +193,11 @@
           "title": "Ingeniería de Producción y Calidad",
           "institution": "Universidad Simón Bolívar",
           "period": "1995 - 1999",
-          "description": "Título universitario en ingeniería enfocado en investigación operativa, gestión de la calidad, optimización de sistemas productivos y costos."
+          "description": "Título universitario en ingeniería enfocado en investigación de operaciones, gestión de la calidad, optimización de sistemas de producción y costos."
         },
         {
-          "title": "Certificación en Lean Manufacturing",
-          "institution": "Instituto de Mejora Continua, Caracas, Venezuela",
+          "title": "Certificación Lean Manufacturing",
+          "institution": "Instituto de Mejoramiento Continuo, Caracas, Venezuela",
           "period": "2000",
           "description": "Especialización avanzada en VSM, flujo continuo, Kaizen, 5S y eliminación de desperdicios."
         },
@@ -151,7 +205,7 @@
           "title": "Certificación Green Belt Six Sigma",
           "institution": "Instituto de Ingeniería y Tecnología, Caracas, Venezuela",
           "period": "1999",
-          "description": "Dominio de la metodología DMAIC, análisis estadístico de variabilidad y control estadístico de procesos (SPC)."
+          "description": "Dominio de metodología DMAIC, análisis estadístico de variabilidad y Control Estadístico de Procesos (SPC)."
         },
         {
           "title": "Técnico Superior en Control de Calidad",
@@ -225,6 +279,35 @@
           ]
         }
       ]
+    },
+    "industrial_courses": [
+      "Auditor Líder Gestión Integrada | ISO 9001, ISO 14001 e ISO 45001 | RAC",
+      "V Programa de Especialización en Gestión por Procesos Calidad & Formación de Auditor Interno ISO 9001",
+      "Curso de Interpretación de la Norma ISO 9001:2015",
+      "Técnico en Control de Calidad (Normas ISO)",
+      "Auditoría Interna - Conceptos Principales",
+      "El Proceso de Certificación de Sistemas de Gestión",
+      "Lean Manufacturing Básico & Avanzado",
+      "IATF-16949:2016 - Formación de Auditor Interno",
+      "Green Belt Six Sigma",
+      "Just-in-Time (JIT)",
+      "QualityGB",
+      "Quality 1",
+      "Kanban & Producción",
+      "Equipos de Trabajo & Kaizen",
+      "Value Stream Mapping (VSM)",
+      "Herramientas de la Calidad (Ishikawa, 5 Porqués, Brainstorming, FMEA, PPAP, 8D, RNC)"
+    ],
+    "ui": {
+      "showing": "Mostrando {{count}} credenciales acreditadas. Haga clic en cualquiera para abrir su modelo de certificado a escala.",
+      "search_placeholder": "Buscar por código (ID) o título...",
+      "view_scale_model": "Ver Modelo Escala",
+      "open": "Abrir",
+      "no_credentials": "No se encontraron credenciales que coincidan con la búsqueda.",
+      "catalog_desc": "Catálogo completo de {{count}} actividades formativas, unidades, cursos y módulos acreditados por código oficial.",
+      "code_header": "Código / ID",
+      "title_header": "Título de la Actividad Formativa",
+      "scale_cert_header": "Certificado Escala"
     }
   }
 }

@@ -33,13 +33,13 @@
     "badge": "Organizational Engineering",
     "title": "Process Interaction Map",
     "description": "Visual representation of the interaction of Quality Management System processes, including inputs, outputs and operational control points.",
-    "simulator": "Operational Simulation Console (PHVA)",
+    "simulator": "Operational Simulation Console (PDCA)",
     "status": "SYS_STATUS: SIMULATOR_READY",
     "config": "Parameter Configuration",
     "results": "Evaluation & Results Console",
     "compliance": "Compliance Rate",
-    "goal": "Target",
-    "roi": "SGC Economic Return",
+    "goal": "Target Goal",
+    "roi": "QMS Economic Return",
     "compliance_value": "98.6%",
     "goal_value": "98%",
     "roi_value": "+$32,000 USD/year (COQ)"
@@ -97,38 +97,93 @@
     "viewCase": "View case"
   },
   "footer": {
-    "agendar": "Schedule a Consultation",
+    "agendar": "Schedule Consultation",
     "contact": "Contact",
     "rights": "All rights reserved",
     "made": "Made with"
   },
   "curriculum": {
     "title": "Executive Resume & Credentials Portal",
-    "subtitle": "Executive Coach • ISO Lead Auditor • Engineer Economist",
+    "subtitle": "Executive Coach • ISO Lead Auditor • Production Engineer & Economist",
     "export": "Export to PDF",
     "print": "Print",
     "credly": "Credly",
+    "transcript": "Official Transcript issued on",
+    "preview": "Official print preview (Executive A4 Format)",
+    "translate_label": "Resume Language:",
+    "summary_title": "Professional Summary",
+    "summary": "Production & Quality Engineer (Simón Bolívar University), Economist, ISO Lead Auditor in Integrated Management Systems (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949), and IBM 2025 Executive Coach with 30 years of international industrial experience. Specialist in process optimization, quality management, continuous improvement (Lean Manufacturing, Green Belt Six Sigma, 8D, NCR), and JIT inventory management. Proven track record at companies like Rototech, Tapeçaria Palacio, D'classe Papeis, and General Motors, leading projects with a proven 30% reduction in customer complaints, 25% reduction in inventory costs, and 15% increase in production capacity.",
+    "impact_title": "Proven Operational Impact & Results",
+    "accreditations_title": "Accreditations & Quality Certifications",
+    "achievements_label": "★ Key Achievements:",
+    "impact_metrics": [
+      {
+        "value": "30%",
+        "label": "Customer Complaints Reduction",
+        "detail": "Complaint tracking system & corrective action plan"
+      },
+      {
+        "value": "15%",
+        "label": "Production Capacity Increase",
+        "detail": "VSM line optimization, Kaizen, and balancing"
+      },
+      {
+        "value": "25%",
+        "label": "Inventory Cost Reduction",
+        "detail": "Just-In-Time (JIT) deployment and lean flow"
+      },
+      {
+        "value": "20%",
+        "label": "Defect Rate Reduction",
+        "detail": "8D methodology, NCRs, and statistical process control"
+      },
+      {
+        "value": "$195k",
+        "label": "Estimated Savings GM TCC Projects",
+        "detail": "Quality tools applied to capacitor production lines"
+      }
+    ],
     "tabs": {
       "cv": "Executive Resume (Official Template)",
-      "credentials": "Credly Credentials (20)",
-      "activities": "Activities & Courses (188)",
+      "credentials": "Credly Credentials",
+      "activities": "Activities & Courses",
       "profile": "Profile & Statistics"
     },
-    "preview": "Official print preview (Executive A4 Format)",
     "contact": {
       "title": "Contact",
       "phone": "Phone / WhatsApp",
       "email": "Email / Credly",
-      "location": "Location"
+      "location": "Location",
+      "location_value": "São Leopoldo, RS, Brazil (LATAM & Global)"
     },
     "languages": {
       "title": "Languages",
       "items": [
-        { "name": "Spanish", "level": "Native", "written": "Written and Spoken" },
-        { "name": "Portuguese", "level": "Advanced", "written": "Written and Spoken" },
-        { "name": "English", "level": "Advanced", "written": "Written and Spoken" },
-        { "name": "Italian", "level": "Advanced", "written": "Written and Spoken" },
-        { "name": "Russian", "level": "Advanced", "written": "Written and Spoken" }
+        {
+          "name": "Spanish",
+          "level": "Native",
+          "written": "Written and Spoken"
+        },
+        {
+          "name": "Portuguese",
+          "level": "Advanced",
+          "written": "Written and Spoken"
+        },
+        {
+          "name": "English",
+          "level": "Advanced",
+          "written": "Written and Spoken"
+        },
+        {
+          "name": "Italian",
+          "level": "Advanced",
+          "written": "Written and Spoken"
+        },
+        {
+          "name": "Russian",
+          "level": "Advanced",
+          "written": "Written and Spoken"
+        }
       ]
     },
     "education": {
@@ -138,28 +193,121 @@
           "title": "Production and Quality Engineering",
           "institution": "Simón Bolívar University",
           "period": "1995 - 1999",
-          "description": "University degree in engineering focused on operational research, quality management, production systems optimization and costs."
+          "description": "University degree in engineering focused on operational research, quality management, production systems optimization, and costs."
         },
         {
           "title": "Lean Manufacturing Certification",
           "institution": "Institute of Continuous Improvement, Caracas, Venezuela",
           "period": "2000",
-          "description": "Advanced specialization in VSM, continuous flow, Kaizen, 5S and waste elimination."
+          "description": "Advanced specialization in VSM, continuous flow, Kaizen, 5S, and waste elimination."
         },
         {
           "title": "Green Belt Six Sigma Certification",
           "institution": "Institute of Engineering and Technology, Caracas, Venezuela",
           "period": "1999",
-          "description": "Mastery of DMAIC methodology, statistical variability analysis and Statistical Process Control (SPC)."
+          "description": "Mastery of DMAIC methodology, statistical variability analysis, and Statistical Process Control (SPC)."
         },
         {
           "title": "Higher Technician in Quality Control",
           "institution": "Germán Celis Sauné Institute",
           "period": "1992 - 1993",
-          "description": "Specialized technical training in metrology, ISO standards, sampling and industrial inspection techniques."
+          "description": "Specialized technical training in metrology, ISO standards, sampling, and industrial inspection techniques."
         }
       ]
     },
-    "transcript": "Official Transcript issued on 22 July 2026"
+    "career": {
+      "title": "Professional Experience",
+      "roles": [
+        {
+          "period": "January 2024 – Present",
+          "title": "Quality and Process Coordinator",
+          "company": "Rototech",
+          "location": "São Leopoldo, RS, Brazil",
+          "responsibilities": [
+            "Coordinate comprehensive quality management activities and production process optimization.",
+            "Lead continuous improvement implementation on operational lines applying Lean Manufacturing and Six Sigma.",
+            "Ensure compliance with ISO 9001, ISO 14001, ISO 45001 quality standards and customer requirements.",
+            "Conduct internal and external audits, identifying non-conformities (NCRs) and driving 8D treatments."
+          ],
+          "achievements": [
+            "Achieved 1 successful recertification of ISO 9001:2015 Quality Management System (QMS).",
+            "Passed 1 QMS maintenance audit with zero critical non-conformities.",
+            "Strengthened plant quality and operational hygiene culture aligned with customer standards."
+          ]
+        },
+        {
+          "period": "2021 – 2023",
+          "title": "Quality Analyst & Manager",
+          "company": "Tapeçaria Palacio",
+          "location": "Canoas, RS, Brazil",
+          "responsibilities": [
+            "Development and implementation of quality management strategies on the production line.",
+            "Quality analysis of raw materials and inputs in close collaboration with engineering and production.",
+            "Design and supervision of quality control procedures for every production stage."
+          ],
+          "achievements": [
+            "15% reduction in production process defect rate through systematic flow control.",
+            "Design and implementation of a customer complaint tracking system yielding 30% reduction in complaints."
+          ]
+        },
+        {
+          "period": "2019 – 2021",
+          "title": "Quality & Production Manager",
+          "company": "D'classe Papeis",
+          "location": "Portão, RS, Brazil",
+          "responsibilities": [
+            "Comprehensive management of production and quality leading a multidisciplinary team of engineers and supervisors.",
+            "Implementation of Lean Manufacturing and Six Sigma methodologies to maximize efficiency and reduce costs."
+          ],
+          "achievements": [
+            "Implementation of an automated quality control system that improved precision and speed by 30%.",
+            "Leadership in Just-in-Time system deployment, reducing inventory costs by 25%."
+          ]
+        },
+        {
+          "period": "2005 – 2018",
+          "title": "Senior Purchasing Analyst & Commercial / Retail Management",
+          "company": "General Motors",
+          "location": "Brazil & LATAM",
+          "responsibilities": [
+            "Strategic and operational management of critical materials purchasing for automotive production.",
+            "Leadership in supply procurement negotiating with suppliers to ensure quality and JIT delivery."
+          ],
+          "achievements": [
+            "Supply chain optimization reducing procurement costs by 15% through strategic negotiation.",
+            "Supplier development program that improved incoming quality, reducing complaints by 20%."
+          ]
+        }
+      ]
+    },
+    "industrial_courses": [
+      "Lead Auditor Integrated Management | ISO 9001, ISO 14001 & ISO 45001 | RAC",
+      "V Specialization Program in Process Quality Management & ISO 9001 Internal Auditor",
+      "ISO 9001:2015 Standard Interpretation Course",
+      "Technician in Quality Control (ISO Standards)",
+      "Internal Auditing - Core Concepts",
+      "Management System Certification Process",
+      "Lean Manufacturing Basic & Advanced",
+      "IATF-16949:2016 - Internal Auditor Training",
+      "Green Belt Six Sigma",
+      "Just-in-Time (JIT)",
+      "QualityGB",
+      "Quality 1",
+      "Kanban & Production",
+      "Work Teams & Kaizen",
+      "Value Stream Mapping (VSM)",
+      "Quality Tools (Ishikawa, 5 Whys, Brainstorming, FMEA, PPAP, 8D, NCR)"
+    ],
+    "ui": {
+      "showing": "Showing {{count}} accredited credentials. Click on any item to view its scaled certificate model.",
+      "search_placeholder": "Search by code (ID) or title...",
+      "view_scale_model": "View Scaled Model",
+      "open": "Open",
+      "no_credentials": "No credentials found matching your search.",
+      "catalog_desc": "Full catalog of {{count}} accredited training activities, units, courses, and modules with official codes.",
+      "code_header": "Code / ID",
+      "title_header": "Training Activity Title",
+      "scale_cert_header": "Scaled Certificate"
+    }
   }
 }

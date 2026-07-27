@@ -38,7 +38,7 @@
     "config": "Configuração de Parâmetros",
     "results": "Consola de Avaliação & Resultados",
     "compliance": "Taxa de Conformidade",
-    "goal": "Objetivo",
+    "goal": "Meta",
     "roi": "Retorno Econômico SGC",
     "compliance_value": "98.6%",
     "goal_value": "98%",
@@ -108,27 +108,82 @@
     "export": "Exportar para PDF",
     "print": "Imprimir",
     "credly": "Credly",
+    "transcript": "Transcript Oficial emitido em",
+    "preview": "Visualização oficial de impressão (Formato A4 Executivo)",
+    "translate_label": "Idioma do Currículo:",
+    "summary_title": "Resumo Profissional",
+    "summary": "Engenheiro de Produção e Qualidade (Universidade Simón Bolívar), Economista, Auditor Líder em Sistemas Integrados de Gestão (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach com 30 anos de experiência internacional na indústria. Especialista em otimização de processos, gestão da qualidade, melhoria contínua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) e gestão de estoques JIT. Com trajetória comprovada em empresas como Rototech, Tapeçaria Palacio, D'classe Papeis e General Motors, liderando projetos com redução comprovada de 30% em reclamações de clientes, 25% em custos de estoque e aumento de 15% na capacidade produtiva.",
+    "impact_title": "Impacto e Resultados Operacionais Comprovados",
+    "accreditations_title": "Acreditações & Certificações de Qualidade",
+    "achievements_label": "★ Realizações Notáveis:",
+    "impact_metrics": [
+      {
+        "value": "30%",
+        "label": "Redução em reclamações de clientes",
+        "detail": "Sistema de rastreamento de queixas e ações corretivas"
+      },
+      {
+        "value": "15%",
+        "label": "Aumento na capacidade de produção",
+        "detail": "Otimização de linhas VSM, Kaizen e redistribuição"
+      },
+      {
+        "value": "25%",
+        "label": "Redução em custos de estoque",
+        "detail": "Implantação Just-in-Time (JIT) e fluxo enxuto"
+      },
+      {
+        "value": "20%",
+        "label": "Redução em índice de rejeição",
+        "detail": "Metodologia 8D, RNCs e controle estatístico"
+      },
+      {
+        "value": "$195k",
+        "label": "Economia estimada projetos TCC GM",
+        "detail": "Aplicação de ferramentas da qualidade em capacitores"
+      }
+    ],
     "tabs": {
       "cv": "Currículo Executivo (Modelo Oficial)",
-      "credentials": "Credenciais Credly (20)",
-      "activities": "Atividades & Cursos (188)",
+      "credentials": "Credenciais Credly",
+      "activities": "Atividades & Cursos",
       "profile": "Perfil & Estatísticas"
     },
-    "preview": "Visualização oficial de impressão (Formato A4 Executivo)",
     "contact": {
       "title": "Contato",
       "phone": "Telefone / WhatsApp",
       "email": "Email / Credly",
-      "location": "Localização"
+      "location": "Localização",
+      "location_value": "São Leopoldo, RS, Brasil (LATAM e Global)"
     },
     "languages": {
       "title": "Idiomas",
       "items": [
-        { "name": "Espanhol", "level": "Nativo", "written": "Escrito e Falado" },
-        { "name": "Português", "level": "Avançado", "written": "Escrito e Falado" },
-        { "name": "Inglês", "level": "Avançado", "written": "Escrito e Falado" },
-        { "name": "Italiano", "level": "Avançado", "written": "Escrito e Falado" },
-        { "name": "Russo", "level": "Avançado", "written": "Escrito e Falado" }
+        {
+          "name": "Espanhol",
+          "level": "Nativo",
+          "written": "Escrito e Falado"
+        },
+        {
+          "name": "Português",
+          "level": "Avançado",
+          "written": "Escrito e Falado"
+        },
+        {
+          "name": "Inglês",
+          "level": "Avançado",
+          "written": "Escrito e Falado"
+        },
+        {
+          "name": "Italiano",
+          "level": "Avançado",
+          "written": "Escrito e Falado"
+        },
+        {
+          "name": "Russo",
+          "level": "Avançado",
+          "written": "Escrito e Falado"
+        }
       ]
     },
     "education": {
@@ -138,10 +193,10 @@
           "title": "Engenharia de Produção e Qualidade",
           "institution": "Universidade Simón Bolívar",
           "period": "1995 - 1999",
-          "description": "Graduação em engenharia com foco em pesquisa operacional, gestão da qualidade, otimização de sistemas produtivos e custos."
+          "description": "Diploma universitário em engenharia focado em pesquisa operacional, gestão da qualidade, otimização de sistemas de produção e custos."
         },
         {
-          "title": "Certificação em Lean Manufacturing",
+          "title": "Certificação Lean Manufacturing",
           "institution": "Instituto de Melhoria Contínua, Caracas, Venezuela",
           "period": "2000",
           "description": "Especialização avançada em VSM, fluxo contínuo, Kaizen, 5S e eliminação de desperdícios."
@@ -150,7 +205,7 @@
           "title": "Certificação Green Belt Six Sigma",
           "institution": "Instituto de Engenharia e Tecnologia, Caracas, Venezuela",
           "period": "1999",
-          "description": "Domínio da metodologia DMAIC, análise estatística de variabilidade e Controle Estatístico de Processos (SPC)."
+          "description": "Domínio da metodologia DMAIC, análise estatística de variabilidade e Controle Estatístico de Processo (SPC)."
         },
         {
           "title": "Técnico Superior em Controle de Qualidade",
@@ -160,6 +215,99 @@
         }
       ]
     },
-    "transcript": "Transcript Oficial emitido em 22 de Julho de 2026"
+    "career": {
+      "title": "Experiência Profissional",
+      "roles": [
+        {
+          "period": "Janeiro de 2024 – Atual",
+          "title": "Coordenador de Qualidade e Processos",
+          "company": "Rototech",
+          "location": "São Leopoldo, RS, Brasil",
+          "responsibilities": [
+            "Coordenar as atividades integrais de gestão da qualidade e otimização dos processos produtivos.",
+            "Liderar a implementação de melhoria contínua nas linhas operacionais aplicando Lean Manufacturing e Six Sigma.",
+            "Garantir a conformidade com as normas de qualidade ISO 9001, ISO 14001, ISO 45001 e requisitos do cliente.",
+            "Realizar auditorias internas e externas, identificando não conformidades (RNCs) e impulsionando tratamentos 8D."
+          ],
+          "achievements": [
+            "Conquista de 1 recertificação bem-sucedida da norma ISO 9001:2015 do Sistema de Gestão da Qualidade (SGQ).",
+            "Conquista de 1 auditoria de manutenção do SGQ aprovada sem não conformidades críticas.",
+            "Fortalecimento da cultura de qualidade e higiene operacional na fábrica alinhada aos padrões dos clientes."
+          ]
+        },
+        {
+          "period": "2021 – 2023",
+          "title": "Analista e Gestor de Qualidade",
+          "company": "Tapeçaria Palacio",
+          "location": "Canoas, RS, Brasil",
+          "responsibilities": [
+            "Desenvolvimento e implementação de estratégias de gestão da qualidade na linha de produção.",
+            "Análise de qualidade de matérias-primas e insumos em estreita colaboração com engenharia e produção.",
+            "Design e supervisão de procedimentos de controle de qualidade para cada etapa produtiva."
+          ],
+          "achievements": [
+            "Redução de 15% no índice de defeitos do processo produtivo graças ao fluxo sistemático de controle.",
+            "Projeto e implementação de um sistema de rastreamento de reclamações de clientes com 30% de redução em queixas."
+          ]
+        },
+        {
+          "period": "2019 – 2021",
+          "title": "Gerente de Qualidade e Produção",
+          "company": "D'classe Papeis",
+          "location": "Portão, RS, Brasil",
+          "responsibilities": [
+            "Gestão integral da produção e qualidade liderando uma equipe multidisciplinar de engenheiros e supervisores.",
+            "Implementação das metodologias Lean Manufacturing e Six Sigma para maximizar a eficiência e reduzir custos."
+          ],
+          "achievements": [
+            "Implementação de um sistema automatizado de controle de qualidade que melhorou a precisão e velocidade em 30%.",
+            "Liderança na implantação de um sistema Just-in-Time, reduzindo custos de estoque em 25%."
+          ]
+        },
+        {
+          "period": "2005 – 2018",
+          "title": "Analista de Compras Sênior & Gestão Comercial / Retail",
+          "company": "General Motors",
+          "location": "Brasil & LATAM",
+          "responsibilities": [
+            "Gestão estratégica e operacional de compras de materiais e insumos críticos para produção automotiva.",
+            "Liderança na aquisição de suprimentos negociando com fornecedores para assegurar qualidade e prazos JIT."
+          ],
+          "achievements": [
+            "Otimização da cadeia de suprimentos reduzindo custos de aquisição em 15% através de negociação estratégica.",
+            "Programa de desenvolvimento de fornecedores que melhorou a qualidade recebida, reduzindo reclamações em 20%."
+          ]
+        }
+      ]
+    },
+    "industrial_courses": [
+      "Auditor Líder Gestão Integrada | ISO 9001, ISO 14001 e ISO 45001 | RAC",
+      "V Programa de Especialização em Gestão por Processos Qualidade & Formação de Auditor Interno ISO 9001",
+      "Curso de Interpretação da Norma ISO 9001:2015",
+      "Técnico em Controle de Qualidade (Normas ISO)",
+      "Auditoria Interna - Conceitos Principais",
+      "O Processo de Certificação de Sistemas de Gestão",
+      "Lean Manufacturing Básico & Avançado",
+      "IATF-16949:2016 - Formação de Auditor Interno",
+      "Green Belt Six Sigma",
+      "Just-in-Time (JIT)",
+      "QualityGB",
+      "Quality 1",
+      "Kanban & Produção",
+      "Equipes de Trabalho & Kaizen",
+      "Value Stream Mapping (VSM)",
+      "Ferramentas da Qualidade (Ishikawa, 5 Porquês, Brainstorming, FMEA, PPAP, 8D, RNC)"
+    ],
+    "ui": {
+      "showing": "Mostrando {{count}} credenciais acreditadas. Clique em qualquer item para ver o modelo de certificado em escala.",
+      "search_placeholder": "Buscar por código (ID) ou título...",
+      "view_scale_model": "Ver Modelo em Escala",
+      "open": "Abrir",
+      "no_credentials": "Nenhuma credencial encontrada para esta busca.",
+      "catalog_desc": "Catálogo completo de {{count}} atividades formativas, unidades, cursos e módulos acreditados por código oficial.",
+      "code_header": "Código / ID",
+      "title_header": "Título da Atividade Formativa",
+      "scale_cert_header": "Certificado em Escala"
+    }
   }
 }

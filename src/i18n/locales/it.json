@@ -33,7 +33,7 @@
     "badge": "Ingegneria Organizzativa",
     "title": "Mappa di Interazione dei Processi",
     "description": "Rappresentazione visiva dell'interazione dei processi del Sistema di Gestione della Qualità, inclusi input, output e punti di controllo operativi.",
-    "simulator": "Console di Simulazione Operativa (PHVA)",
+    "simulator": "Console di Simulazione Operativa (PDCA)",
     "status": "SYS_STATUS: SIMULATORE_READY",
     "config": "Configurazione Parametri",
     "results": "Console di Valutazione & Risultati",
@@ -97,7 +97,7 @@
     "viewCase": "Visualizza caso"
   },
   "footer": {
-    "agendar": "Prenota una Consulenza",
+    "agendar": "Prenota Consulenza",
     "contact": "Contatto",
     "rights": "Tutti i diritti riservati",
     "made": "Fatto con"
@@ -108,27 +108,82 @@
     "export": "Esporta in PDF",
     "print": "Stampa",
     "credly": "Credly",
+    "transcript": "Trascrizione Ufficiale emessa il",
+    "preview": "Anteprima di stampa ufficiale (Formato A4 Esecutivo)",
+    "translate_label": "Lingua del CV:",
+    "summary_title": "Riepilogo Professionale",
+    "summary": "Ingegnere di Produzione e Qualità (Università Simón Bolívar), Economista, Lead Auditor ISO in Sistemi di Gestione Integrati (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e Executive Coach IBM 2025 con 30 anni di esperienza industriale internazionale. Specialista in ottimizzazione dei processi, gestione della qualità, miglioramento continuo (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) e gestione dei magazzini JIT. Comprovata esperienza in Rototech, Tapeçaria Palacio, D'classe Papeis e General Motors, guidando progetti con una riduzione verificata del 30% nei reclami dei clienti, del 25% nei costi di magazzino e un aumento del 15% nella capacità produttiva.",
+    "impact_title": "Impatto Operativo e Risultati Comprovati",
+    "accreditations_title": "Accreditamenti & Certificazioni di Qualità",
+    "achievements_label": "★ Risultati Notabili:",
+    "impact_metrics": [
+      {
+        "value": "30%",
+        "label": "Riduzione reclami clienti",
+        "detail": "Sistema tracciamento reclami e azioni correttive"
+      },
+      {
+        "value": "15%",
+        "label": "Aumento capacità produttiva",
+        "detail": "Ottimizzazione linee VSM, Kaizen e bilanciamento"
+      },
+      {
+        "value": "25%",
+        "label": "Riduzione costi magazzino",
+        "detail": "Implementazione Just-In-Time (JIT) e flusso snello"
+      },
+      {
+        "value": "20%",
+        "label": "Riduzione tasso di scarto",
+        "detail": "Metodologia 8D, RNCs e controllo statistico"
+      },
+      {
+        "value": "$195k",
+        "label": "Risparmio stimato progetti GM",
+        "detail": "Applicazione strumenti di qualità su condensatori"
+      }
+    ],
     "tabs": {
       "cv": "Curriculum Esecutivo (Modello Ufficiale)",
-      "credentials": "Credenziali Credly (20)",
-      "activities": "Attività & Corsi (188)",
+      "credentials": "Credenziali Credly",
+      "activities": "Attività & Corsi",
       "profile": "Profilo & Statistiche"
     },
-    "preview": "Anteprima di stampa ufficiale (Formato A4 Esecutivo)",
     "contact": {
       "title": "Contatto",
       "phone": "Telefono / WhatsApp",
       "email": "Email / Credly",
-      "location": "Ubicazione"
+      "location": "Ubicazione",
+      "location_value": "São Leopoldo, RS, Brasile (LATAM e Globale)"
     },
     "languages": {
       "title": "Lingue",
       "items": [
-        { "name": "Spagnolo", "level": "Madrelingua", "written": "Scritto e Parlato" },
-        { "name": "Portoghese", "level": "Avanzato", "written": "Scritto e Parlato" },
-        { "name": "Inglese", "level": "Avanzato", "written": "Scritto e Parlato" },
-        { "name": "Italiano", "level": "Avanzato", "written": "Scritto e Parlato" },
-        { "name": "Russo", "level": "Avanzato", "written": "Scritto e Parlato" }
+        {
+          "name": "Spagnolo",
+          "level": "Madrelingua",
+          "written": "Scritto e Parlato"
+        },
+        {
+          "name": "Portoghese",
+          "level": "Avanzato",
+          "written": "Scritto e Parlato"
+        },
+        {
+          "name": "Inglese",
+          "level": "Avanzato",
+          "written": "Scritto e Parlato"
+        },
+        {
+          "name": "Italiano",
+          "level": "Avanzato",
+          "written": "Scritto e Parlato"
+        },
+        {
+          "name": "Russo",
+          "level": "Avanzato",
+          "written": "Scritto e Parlato"
+        }
       ]
     },
     "education": {
@@ -160,6 +215,99 @@
         }
       ]
     },
-    "transcript": "Trascrizione Ufficiale emessa il 22 Luglio 2026"
+    "career": {
+      "title": "Esperienza Professionale",
+      "roles": [
+        {
+          "period": "Gennaio 2024 – Attuale",
+          "title": "Coordinatore Qualità e Processi",
+          "company": "Rototech",
+          "location": "São Leopoldo, RS, Brasile",
+          "responsibilities": [
+            "Coordinare le attività integrali di gestione della qualità e ottimizzazione dei processi produttivi.",
+            "Guidare l'implementazione del miglioramento continuo nelle linee operative applicando Lean Manufacturing e Six Sigma.",
+            "Garantire la conformità alle norme ISO 9001, ISO 14001, ISO 45001 e ai requisiti dei clienti.",
+            "Eseguire audit interni ed esterni, trattando le non conformità (RNC) attraverso la metodologia 8D."
+          ],
+          "achievements": [
+            "Conseguimento di 1 ricertificazione con successo della norma ISO 9001:2015 del Sistema di Gestione della Qualità (SGQ).",
+            "Conseguimento di 1 audit di manutenzione del SGQ superato senza non conformità critiche.",
+            "Rafforzamento della cultura della qualità e dell'igiene operativa in fabbrica allineata agli standard dei clienti."
+          ]
+        },
+        {
+          "period": "2021 – 2023",
+          "title": "Analista e Manager Qualità",
+          "company": "Tapeçaria Palacio",
+          "location": "Canoas, RS, Brasile",
+          "responsibilities": [
+            "Sviluppo e attuazione di strategie di gestione della qualità nella linea di produzione.",
+            "Analisi della qualità di materie prime e materiali in collaborazione con ingegneria e produzione.",
+            "Progettazione e supervisione delle procedure di controllo qualità per ogni fase produttiva."
+          ],
+          "achievements": [
+            "Riduzione del 15% del tasso di difetti nei processi produttivi grazie al flusso sistematico di controllo.",
+            "Progettazione e implementazione del sistema di tracciamento dei reclami con riduzione del 30% delle lamentele."
+          ]
+        },
+        {
+          "period": "2019 – 2021",
+          "title": "Manager Qualità e Produzione",
+          "company": "D'classe Papeis",
+          "location": "Portão, RS, Brasile",
+          "responsibilities": [
+            "Gestione integrale della produzione e della qualità guidando un team multidisciplinare.",
+            "Implementazione delle metodologies Lean Manufacturing e Six Sigma per massimizzare l'efficienza e ridurre i costi."
+          ],
+          "achievements": [
+            "Implementazione di un sistema automatizzato di controllo qualità migliorando precisione e velocità del 30%.",
+            "Leadership nella distribuzione del sistema Just-In-Time, riducendo i costi di magazzino del 25%."
+          ]
+        },
+        {
+          "period": "2005 – 2018",
+          "title": "Analista Senior Acquisti & Gestione Commerciale / Retail",
+          "company": "General Motors",
+          "location": "Brasile & LATAM",
+          "responsibilities": [
+            "Gestione strategica e operativa degli acquisti di materiali critici per la produzione automobilistica.",
+            "Leadership negli approvvigionamenti negoziando con i fornitori per garantire qualità e consegne JIT."
+          ],
+          "achievements": [
+            "Ottimizzazione della catena di fornitura riducendo i costi di acquisto del 15% mediante negoziazioni strategiche.",
+            "Programma di sviluppo fornitori che ha migliorato la qualità in entrata, riducendo i reclami del 20%."
+          ]
+        }
+      ]
+    },
+    "industrial_courses": [
+      "Lead Auditor Gestione Integrata | ISO 9001, ISO 14001 e ISO 45001 | RAC",
+      "V Programma di Specializzazione in Gestione dei Processi Qualità & Formazione Auditor Interno ISO 9001",
+      "Corso di Interpretazione della Norma ISO 9001:2015",
+      "Tecnico in Controllo Qualità (Norme ISO)",
+      "Auditing Interno - Concetti Principali",
+      "Il Processo di Certificazione dei Sistemi di Gestione",
+      "Lean Manufacturing Base & Avanzato",
+      "IATF-16949:2016 - Formazione Auditor Interno",
+      "Green Belt Six Sigma",
+      "Just-in-Time (JIT)",
+      "QualityGB",
+      "Quality 1",
+      "Kanban & Produzione",
+      "Team di Lavoro & Kaizen",
+      "Value Stream Mapping (VSM)",
+      "Strumenti della Qualità (Ishikawa, 5 Perché, Brainstorming, FMEA, PPAP, 8D, RNC)"
+    ],
+    "ui": {
+      "showing": "Mostrando {{count}} credenziali accreditate. Fai clic su un elemento per visualizzare il modello di certificato in scala.",
+      "search_placeholder": "Cerca per codice (ID) o titolo...",
+      "view_scale_model": "Vedi Modello in Scala",
+      "open": "Apri",
+      "no_credentials": "Nessuna credenziale trovata per questa ricerca.",
+      "catalog_desc": "Catalogo completo di {{count}} attività formative, unità, corsi e moduli accreditati con codice ufficiale.",
+      "code_header": "Codice / ID",
+      "title_header": "Titolo dell'Attività Formativa",
+      "scale_cert_header": "Certificato in Scala"
+    }
   }
 }
