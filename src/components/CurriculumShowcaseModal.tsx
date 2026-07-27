@@ -58,77 +58,67 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
   const currentLang = (i18n.language || 'es').toLowerCase();
 
-  // Localized candidate info with fallback to Firestore curriculum settings
+  // Localized candidate info with fallback to Firestore/localStorage curriculum settings
   const candidateInfo = curriculumData.candidateInfo || CANDIDATE_INFO;
   const candidateName = candidateInfo.name || CANDIDATE_INFO.name;
   const candidateEmail = candidateInfo.email || CANDIDATE_INFO.email;
   const candidatePhone = candidateInfo.phone || CANDIDATE_INFO.phone;
-  const candidateLocation = t('curriculum.contact.location_value', candidateInfo.location || CANDIDATE_INFO.location);
-  const cvSummary = t('curriculum.summary', candidateInfo.summary || CANDIDATE_INFO.summary);
+  const candidateLocation = candidateInfo.location || CANDIDATE_INFO.location;
+  const cvSummary = candidateInfo.summary || CANDIDATE_INFO.summary;
+  const transcriptDate = candidateInfo.transcriptDate || CANDIDATE_INFO.transcriptDate;
+  const credlyProfile = candidateInfo.credlyProfile || CANDIDATE_INFO.credlyProfile;
+  const credlyId = candidateInfo.credlyId || CANDIDATE_INFO.credlyId;
+  const birthDate = candidateInfo.birthDate || CANDIDATE_INFO.birthDate;
   const summaryTitle = t('curriculum.summary_title', 'Resumen Profesional');
-  const transcriptText = t('curriculum.transcript', 'Transcript Oficial expedido el') + ' ' + (candidateInfo.transcriptDate || CANDIDATE_INFO.transcriptDate);
+  const transcriptText = t('curriculum.transcript', 'Transcript Oficial expedido el') + ' ' + transcriptDate;
 
-  // Localized career, education, languages, impact metrics, accreditations
+  // Career, education, languages, impact metrics, accreditations prioritized from curriculumData
   const rawCareer = t('curriculum.career.roles', { returnObjects: true });
-  const careerRoles = Array.isArray(rawCareer) && rawCareer.length > 0 && currentLang !== 'es'
-    ? rawCareer
-    : (curriculumData.careerRoles || CAREER_EXPERIENCE);
+  const careerRoles = (curriculumData.careerRoles && curriculumData.careerRoles.length > 0)
+    ? curriculumData.careerRoles
+    : (Array.isArray(rawCareer) && rawCareer.length > 0 && currentLang !== 'es' ? rawCareer : CAREER_EXPERIENCE);
 
   const rawEducation = t('curriculum.education.items', { returnObjects: true });
-  const educationItems = Array.isArray(rawEducation) && rawEducation.length > 0 && currentLang !== 'es'
-    ? rawEducation
-    : (curriculumData.educationItems || ACADEMIC_EDUCATION);
+  const educationItems = (curriculumData.educationItems && curriculumData.educationItems.length > 0)
+    ? curriculumData.educationItems
+    : (Array.isArray(rawEducation) && rawEducation.length > 0 && currentLang !== 'es' ? rawEducation : ACADEMIC_EDUCATION);
 
   const rawLanguages = t('curriculum.languages.items', { returnObjects: true });
-  const languagesList = Array.isArray(rawLanguages) && rawLanguages.length > 0 && currentLang !== 'es'
-    ? rawLanguages
-    : (curriculumData.languagesList || LANGUAGES_LIST);
+  const languagesList = (curriculumData.languagesList && curriculumData.languagesList.length > 0)
+    ? curriculumData.languagesList
+    : (Array.isArray(rawLanguages) && rawLanguages.length > 0 && currentLang !== 'es' ? rawLanguages : LANGUAGES_LIST);
 
   const rawImpactMetrics = t('curriculum.impact_metrics', { returnObjects: true });
-  const impactMetrics = Array.isArray(rawImpactMetrics) && rawImpactMetrics.length > 0 && currentLang !== 'es'
-    ? rawImpactMetrics
-    : (curriculumData.impactMetrics || IMPACT_METRICS);
+  const impactMetrics = (curriculumData.impactMetrics && curriculumData.impactMetrics.length > 0)
+    ? curriculumData.impactMetrics
+    : (Array.isArray(rawImpactMetrics) && rawImpactMetrics.length > 0 && currentLang !== 'es' ? rawImpactMetrics : IMPACT_METRICS);
 
   const rawAccreditations = t('curriculum.industrial_courses', { returnObjects: true });
-  const accreditationsList = Array.isArray(rawAccreditations) && rawAccreditations.length > 0 && currentLang !== 'es'
-    ? rawAccreditations
-    : (curriculumData.industrialCourses || INDUSTRIAL_COURSES);
+  const accreditationsList = (curriculumData.industrialCourses && curriculumData.industrialCourses.length > 0)
+    ? curriculumData.industrialCourses
+    : (Array.isArray(rawAccreditations) && rawAccreditations.length > 0 && currentLang !== 'es' ? rawAccreditations : INDUSTRIAL_COURSES);
 
   if (!isOpen) return null;
 
-  // Export to PDF function using cloned off-screen node with html2pdf.js
+  // Export to PDF function using html2pdf.js directly on rendered DOM node
   const handleExportPDF = async () => {
-    const element = document.getElementById('curriculum-cv-document');
-    if (!element) return;
-    
     setIsExporting(true);
-    let tempContainer: HTMLDivElement | null = null;
     try {
+      // Ensure cv_template tab is selected so #curriculum-cv-document is rendered
+      if (activeTab !== 'cv_template') {
+        setActiveTab('cv_template');
+        await new Promise((res) => setTimeout(res, 350));
+      }
+
+      const element = document.getElementById('curriculum-cv-document');
+      if (!element) {
+        throw new Error("Elemento de CV no encontrado en el DOM");
+      }
+
       const langCode = (i18n.language || 'es').toUpperCase();
 
-      // Clone element to an isolated off-screen body node to eliminate modal scroll/transform clipping
-      const clone = element.cloneNode(true) as HTMLElement;
-      clone.style.width = '820px';
-      clone.style.maxWidth = '820px';
-      clone.style.margin = '0';
-      clone.style.borderRadius = '0';
-      clone.style.boxShadow = 'none';
-
-      tempContainer = document.createElement('div');
-      tempContainer.style.position = 'absolute';
-      tempContainer.style.left = '-9999px';
-      tempContainer.style.top = '0';
-      tempContainer.style.width = '820px';
-      tempContainer.style.backgroundColor = '#ffffff';
-      tempContainer.style.zIndex = '999999';
-      tempContainer.appendChild(clone);
-      document.body.appendChild(tempContainer);
-
-      // Brief delay to ensure styles and images in DOM clone settle
-      await new Promise((res) => setTimeout(res, 200));
-
       const opt = {
-        margin: 0,
+        margin: [5, 5, 5, 5],
         filename: `Curriculum_Robert_Teran_${langCode}.pdf`,
         image: { type: 'jpeg' as const, quality: 0.98 },
         html2canvas: { 
@@ -136,20 +126,18 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
           useCORS: true, 
           allowTaint: true, 
           logging: false,
-          windowWidth: 820
+          scrollY: 0,
+          scrollX: 0
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      await html2pdf().set(opt as any).from(clone).save();
+      await html2pdf().set(opt as any).from(element).save();
     } catch (err) {
       console.warn("Error al exportar PDF con html2pdf, recurriendo a impresión de sistema:", err);
       window.print();
     } finally {
-      if (tempContainer && document.body.contains(tempContainer)) {
-        document.body.removeChild(tempContainer);
-      }
       setIsExporting(false);
     }
   };
@@ -224,7 +212,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                       <Sparkles className="w-3.5 h-3.5" /> {t('curriculum.title', 'Currículo Ejecutivo & Portal de Credenciales')}
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                      {CANDIDATE_INFO.name}
+                      {candidateName}
                     </h2>
                     <p className="text-xs text-gray-400 mt-0.5 font-mono">
                       {t('curriculum.subtitle', 'Coach Ejecutivo • Auditor Líder SGC IRCA • Ingeniero Economista')}
@@ -257,7 +245,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                   </button>
 
                   <a
-                    href={CANDIDATE_INFO.credlyProfile}
+                    href={credlyProfile}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-300 hover:text-amber-400 text-xs font-mono flex items-center gap-2 transition"
@@ -427,7 +415,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                             <div className="w-36 h-44 rounded-t-[72px] rounded-b-2xl overflow-hidden border-4 border-amber-500 bg-black shadow-2xl flex items-center justify-center">
                               <img
                                 src={profilePhotoUrl}
-                                alt={CANDIDATE_INFO.name}
+                                alt={candidateName}
                                 className="w-full h-full object-cover object-top"
                                 crossOrigin="anonymous"
                                 referrerPolicy="no-referrer"
@@ -793,7 +781,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                       <div className="w-28 h-28 rounded-full border-2 border-amber-500/40 p-1 bg-black shrink-0 overflow-hidden shadow-xl">
                         <img
                           src={profilePhotoUrl}
-                          alt={CANDIDATE_INFO.name}
+                          alt={candidateName}
                           className="w-full h-full rounded-full object-cover"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
@@ -803,15 +791,15 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
                       <div className="space-y-2 text-center sm:text-left">
                         <h3 className="text-2xl font-extrabold text-white">
-                          {CANDIDATE_INFO.name}
+                          {candidateName}
                         </h3>
                         <p className="text-xs text-amber-400 font-mono font-bold">
                           Ingeniero Economista • Auditor Líder SGC IRCA • Coach Estratégico
                         </p>
                         <div className="flex flex-wrap gap-2 pt-1 justify-center sm:justify-start text-[11px] font-mono text-gray-400">
-                          <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">F.N.: {CANDIDATE_INFO.birthDate}</span>
-                          <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">Email: {CANDIDATE_INFO.email}</span>
-                          <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">Pearson Credly ID: {CANDIDATE_INFO.credlyId}</span>
+                          <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">F.N.: {birthDate}</span>
+                          <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">Email: {candidateEmail}</span>
+                          <span className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">Pearson Credly ID: {credlyId}</span>
                         </div>
                       </div>
                     </div>
@@ -821,7 +809,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
                         <BookOpen className="w-4 h-4" /> Resumen Ejecutivo
                       </h4>
                       <p className="text-gray-300 text-sm leading-relaxed font-light">
-                        {CANDIDATE_INFO.summary}
+                        {cvSummary}
                       </p>
                     </div>
 
@@ -853,7 +841,7 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
             <div className="p-4 px-6 bg-[#0d0c13] border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-gray-400 shrink-0 print:hidden">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-amber-500" />
-                <span>Transcript Oficial Pearson Credly expedido el {CANDIDATE_INFO.transcriptDate}</span>
+                <span>Transcript Oficial Pearson Credly expedido el {transcriptDate}</span>
               </div>
               <div className="flex items-center gap-3">
                 <button
