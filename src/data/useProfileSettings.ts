@@ -25,32 +25,70 @@ const DEFAULT_PROFILE: ProfileSettings = {
 };
 
 export function useProfileSettings() {
-  const [profile, setProfile] = useState<ProfileSettings>(DEFAULT_PROFILE);
+  const [profile, setProfile] = useState<ProfileSettings>(() => {
+    try {
+      const saved = localStorage.getItem('coachiso_profile_settings');
+      if (saved) {
+        return { ...DEFAULT_PROFILE, ...JSON.parse(saved) };
+      }
+    } catch (e) {
+      console.warn("Error leyendo perfil de localStorage:", e);
+    }
+    return DEFAULT_PROFILE;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const handleSync = () => {
+      try {
+        const saved = localStorage.getItem('coachiso_profile_settings');
+        if (saved) {
+          setProfile({ ...DEFAULT_PROFILE, ...JSON.parse(saved) });
+        }
+      } catch (err) {
+        console.warn("Error sincronizando perfil local:", err);
+      }
+    };
+
+    window.addEventListener('profile-updated' as any, handleSync);
+    window.addEventListener('storage', handleSync);
+
     const unsub = onSnapshot(doc(db, 'settings', 'profile'), (snap) => {
       if (snap.exists()) {
-        setProfile(snap.data() as ProfileSettings);
+        const data = snap.data() as ProfileSettings;
+        const merged = { ...DEFAULT_PROFILE, ...data };
+        setProfile(merged);
+        try {
+          localStorage.setItem('coachiso_profile_settings', JSON.stringify(merged));
+        } catch (e) {}
       }
       setLoading(false);
     }, (error) => {
       setLoading(false);
       console.warn(
-        "👋 [Aviso de Configuración] Perfil de Firebase cargado en modo local/fallback (Falta configurar o desplegar las reglas de Firestore).\n" +
-        "Para corregir las lecturas de base de datos en producción, copia las reglas contenidas en '/firestore.rules' y pégalas en la pestaña 'Rules' de tu Firebase Console.",
+        "👋 [Aviso de Configuración] Perfil de Firebase cargado en modo local/fallback (Falta configurar o desplegar las reglas de Firestore).",
         error
       );
     });
 
-    return () => unsub();
+    return () => {
+      window.removeEventListener('profile-updated' as any, handleSync);
+      window.removeEventListener('storage', handleSync);
+      unsub();
+    };
   }, []);
 
   const updateProfile = async (newProfile: ProfileSettings) => {
+    setProfile(newProfile);
+    try {
+      localStorage.setItem('coachiso_profile_settings', JSON.stringify(newProfile));
+    } catch (e) {}
+    window.dispatchEvent(new CustomEvent('profile-updated', { detail: newProfile }));
+
     try {
       await setDoc(doc(db, 'settings', 'profile'), newProfile);
     } catch (error) {
-      handleFirestoreError(error, OperationType.WRITE, 'settings/profile');
+      console.warn("Error guardando perfil en Firestore (se mantuvo local):", error);
     }
   };
 

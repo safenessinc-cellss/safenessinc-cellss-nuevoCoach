@@ -54,6 +54,28 @@ export function useCurriculumSettings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const handleSync = () => {
+      try {
+        const saved = localStorage.getItem('coachiso_curriculum_settings');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setCurriculumData({
+            candidateInfo: { ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo, ...parsed.candidateInfo },
+            impactMetrics: parsed.impactMetrics || DEFAULT_CURRICULUM_SETTINGS.impactMetrics,
+            careerRoles: parsed.careerRoles || DEFAULT_CURRICULUM_SETTINGS.careerRoles,
+            educationItems: parsed.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
+            languagesList: parsed.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
+            industrialCourses: parsed.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses
+          });
+        }
+      } catch (err) {
+        console.warn("Error sincronizando currículo local:", err);
+      }
+    };
+
+    window.addEventListener('curriculum-updated' as any, handleSync);
+    window.addEventListener('storage', handleSync);
+
     const unsub = onSnapshot(doc(db, 'settings', 'curriculum'), (snap) => {
       if (snap.exists()) {
         const data = snap.data() as Partial<CurriculumSettings>;
@@ -78,7 +100,11 @@ export function useCurriculumSettings() {
       console.warn("Cargando currículo en modo fallback:", error);
     });
 
-    return () => unsub();
+    return () => {
+      window.removeEventListener('curriculum-updated' as any, handleSync);
+      window.removeEventListener('storage', handleSync);
+      unsub();
+    };
   }, []);
 
   const updateCurriculum = async (newSettings: CurriculumSettings) => {
@@ -89,6 +115,7 @@ export function useCurriculumSettings() {
     } catch (e) {
       console.warn("Error en localStorage al actualizar currículo:", e);
     }
+    window.dispatchEvent(new CustomEvent('curriculum-updated', { detail: newSettings }));
 
     try {
       await setDoc(doc(db, 'settings', 'curriculum'), newSettings);
