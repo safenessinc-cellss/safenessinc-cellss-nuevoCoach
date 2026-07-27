@@ -100,9 +100,10 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
   if (!isOpen) return null;
 
-  // Export to PDF function using html2pdf.js directly on rendered DOM node
+  // Export to PDF function using html2pdf.js with cloned DOM node
   const handleExportPDF = async () => {
     setIsExporting(true);
+    let tempContainer: HTMLDivElement | null = null;
     try {
       // Ensure cv_template tab is selected so #curriculum-cv-document is rendered
       if (activeTab !== 'cv_template') {
@@ -117,6 +118,26 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
 
       const langCode = (i18n.language || 'es').toUpperCase();
 
+      // Clone element to an isolated visible node on document body to avoid modal clipping/scroll issues
+      const clone = element.cloneNode(true) as HTMLElement;
+      clone.style.width = '820px';
+      clone.style.maxWidth = '820px';
+      clone.style.margin = '0';
+      clone.style.borderRadius = '0';
+      clone.style.boxShadow = 'none';
+
+      tempContainer = document.createElement('div');
+      tempContainer.style.position = 'fixed';
+      tempContainer.style.left = '0';
+      tempContainer.style.top = '0';
+      tempContainer.style.width = '820px';
+      tempContainer.style.backgroundColor = '#ffffff';
+      tempContainer.style.zIndex = '999999';
+      tempContainer.appendChild(clone);
+      document.body.appendChild(tempContainer);
+
+      await new Promise((res) => setTimeout(res, 200));
+
       const opt = {
         margin: [5, 5, 5, 5],
         filename: `Curriculum_Robert_Teran_${langCode}.pdf`,
@@ -127,17 +148,21 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
           allowTaint: true, 
           logging: false,
           scrollY: 0,
-          scrollX: 0
+          scrollX: 0,
+          windowWidth: 820
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      await html2pdf().set(opt as any).from(element).save();
+      await html2pdf().set(opt as any).from(clone).save();
     } catch (err) {
       console.warn("Error al exportar PDF con html2pdf, recurriendo a impresión de sistema:", err);
       window.print();
     } finally {
+      if (tempContainer && document.body.contains(tempContainer)) {
+        document.body.removeChild(tempContainer);
+      }
       setIsExporting(false);
     }
   };
