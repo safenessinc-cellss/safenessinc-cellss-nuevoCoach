@@ -945,3 +945,5 @@ export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumS
     </>
   );
 }
+
+export default React.memo(CurriculumShowcaseModal);

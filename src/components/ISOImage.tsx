@@ -9,6 +9,8 @@ interface ISOImageProps {
   className?: string;
 }
 
+export default React.memo(ISOImage);
+
 export default function ISOImage({ 
   id, 
   className = '' 
@@ -197,3 +199,5 @@ export default function ISOImage({
     </>
   );
 }
+
+export default React.memo(ISOImage);

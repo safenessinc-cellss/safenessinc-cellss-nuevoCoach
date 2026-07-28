@@ -892,3 +892,5 @@ export default function CoachingPillarsPanel({ initialPillar, onClose }: Coachin
     </div>
   );
 }
+
+export default React.memo(CoachingPillarsPanel);

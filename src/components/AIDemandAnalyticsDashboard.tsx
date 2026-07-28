@@ -57,7 +57,7 @@ const CATEGORIES_LIST = [
   'Agendamiento'
 ];
 
-export default function AIDemandAnalyticsDashboard() {
+function AIDemandAnalyticsDashboard() {
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d'>('30d');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas las Áreas');
   const [isSimulating, setIsSimulating] = useState(false);
@@ -770,3 +770,5 @@ export default function AIDemandAnalyticsDashboard() {
     </div>
   );
 }
+
+export default React.memo(AIDemandAnalyticsDashboard);

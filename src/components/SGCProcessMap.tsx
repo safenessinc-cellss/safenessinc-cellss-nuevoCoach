@@ -611,3 +611,5 @@ export default function SGCProcessMap() {
     </div>
   );
 }
+
+export default React.memo(SGCProcessMap);

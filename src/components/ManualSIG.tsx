@@ -47,11 +47,11 @@ export default function ManualSIG() {
   const [cloudSyncedAt, setCloudSyncedAt] = useState<string | null>(null);
   
   // States read from active sector
-  const currentSector = SECTORS.find(s => s.id === selectedSectorId) || SECTORS[0];
+  const currentSector = (SECTORS && SECTORS.length > 0) ? (SECTORS.find(s => s.id === selectedSectorId) || SECTORS[0]) : { id: 'auto', processes: [], commonNC: [] };
 
   // Set default process on sector change
   useEffect(() => {
-    if (currentSector.processes.length > 0) {
+    if (currentSector?.processes && currentSector.processes.length > 0) {
       setSelectedProcessId(currentSector.processes[0].id);
     }
   }, [selectedSectorId]);
@@ -74,7 +74,7 @@ export default function ManualSIG() {
 
   // Problem Solving (10.2) 8D Wizard States
   const [current8DStep, setCurrent8DStep] = useState<number>(1);
-  const activeNC = currentSector.commonNC[0];
+  const activeNC = currentSector?.commonNC?.[0] || { clause: '10.2', title: 'Desviación Operativa', issue: '', rootCause: '', correction: '', prevention: '' };
 
   // COQ Calculator State (PAF Model)
   const [customFinances, setCustomFinances] = useState({
@@ -318,7 +318,7 @@ export default function ManualSIG() {
     }
   };
 
-  const currentProcess = currentSector.processes.find(p => p.id === selectedProcessId) || currentSector.processes[0];
+  const currentProcess = currentSector?.processes?.find(p => p.id === selectedProcessId) || currentSector?.processes?.[0];
 
   // Audit checklist calculation
   const totalChecked = currentProcess ? currentProcess.checklist.filter(q => checklistScores[q.id] !== undefined).length : 0;
@@ -1432,7 +1432,7 @@ export default function ManualSIG() {
                     <h3 className="text-lg font-black text-white mt-1 truncate max-w-[400px]">Caso: {activeNC.title}</h3>
                   </div>
                   <span className="text-xs font-mono text-gray-500 bg-black/40 px-3 py-1 rounded-full border border-white/5">
-                    Cláusula {activeNC.clause.split(' ')[0]}
+                    Cláusula {activeNC?.clause ? activeNC.clause.split(' ')[0] : '10.2'}
                   </span>
                 </div>
 
@@ -3425,4 +3425,6 @@ export default function ManualSIG() {
     </div>
   );
 }
+
+export default React.memo(ManualSIG);
 

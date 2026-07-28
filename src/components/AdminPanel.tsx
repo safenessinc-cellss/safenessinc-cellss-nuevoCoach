@@ -72,7 +72,7 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   throw new Error(JSON.stringify(errInfo));
 }
 
-export default function AdminPanel() {
+function AdminPanel() {
   const navigate = useNavigate();
 
   // Authentication & Role State from central AuthContext
@@ -2343,6 +2343,9 @@ export default function AdminPanel() {
     </div>
   );
 }
+
+export default React.memo(AdminPanel);
+
 
 // Simple fallback placeholding icon for layout items
 function CabinetIconPlaceholder(props: any) {
