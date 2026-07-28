@@ -466,6 +466,7 @@ export default function App() {
         <AnimatePresence>
           {isLoading && (
             <motion.div
+              key="app-loading-skeleton"
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
@@ -542,6 +543,7 @@ export default function App() {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div 
+              key="mobile-nav-dropdown"
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -1827,6 +1829,7 @@ export default function App() {
       <AnimatePresence>
         {selectedService && (
           <motion.div
+            key={`selected-service-modal-${selectedService.id || 'detail'}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -3516,18 +3519,18 @@ export default function App() {
             </motion.div>
           </motion.div>
         )}
-
-        <UserProfileModal 
-          isOpen={isProfileModalOpen} 
-          onClose={() => setIsProfileModalOpen(false)} 
-          data={data}
-        />
-
-        <CurriculumShowcaseModal
-          isOpen={isCurriculumModalOpen}
-          onClose={() => setIsCurriculumModalOpen(false)}
-        />
       </AnimatePresence>
+
+      <UserProfileModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+        data={data}
+      />
+
+      <CurriculumShowcaseModal
+        isOpen={isCurriculumModalOpen}
+        onClose={() => setIsCurriculumModalOpen(false)}
+      />
       <ChatWidget />
       
       {/* Botón flotante de WhatsApp */}
