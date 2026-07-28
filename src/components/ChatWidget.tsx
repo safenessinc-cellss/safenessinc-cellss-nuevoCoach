@@ -17,7 +17,7 @@ const getAiClient = () => {
   return aiClient;
 };
 
-export default function ChatWidget() {
+function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user'|'model', text: string}[]>(() => {
     const saved = localStorage.getItem('chatHistory');

@@ -2346,7 +2346,6 @@ function AdminPanel() {
 
 export default React.memo(AdminPanel);
 
-
 // Simple fallback placeholding icon for layout items
 function CabinetIconPlaceholder(props: any) {
   return (
