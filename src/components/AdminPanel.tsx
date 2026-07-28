@@ -14,7 +14,7 @@ import {
   CheckCircle, XCircle, Trash2, Loader2, LogOut, ShieldAlert, 
   Search, Filter, GraduationCap, BookOpen, MapPin, Video, Users, 
   Settings, Layers, Plus, Edit2, Copy, ExternalLink, CalendarDays, 
-  ChevronLeft, ChevronRight, UploadCloud, Info, AlertTriangle, ShieldCheck
+  ChevronLeft, ChevronRight, UploadCloud, Info, AlertTriangle, ShieldCheck, Bot
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -26,6 +26,7 @@ import { Course, Book, Visit, Tutorial, UserProfile, UserRole } from '../types';
 import ImageRegistryManager from './ImageRegistryManager';
 import ProfileEditor from './ProfileEditor';
 import CurriculumEditor from './CurriculumEditor';
+import AIDemandAnalyticsDashboard from './AIDemandAnalyticsDashboard';
 
 // Operation Types for Audit and Errors
 enum OperationType {
@@ -78,7 +79,7 @@ export default function AdminPanel() {
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
   
   // Active Tab State
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum'>('dashboard');
 
   // Domain Collections States
   const [courses, setCourses] = useState<Course[]>([]);
@@ -861,6 +862,7 @@ export default function AdminPanel() {
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {[
             { id: 'dashboard', name: 'Dashboard', icon: Layers },
+            { id: 'ai_demand', name: 'Demanda & IA', icon: Bot },
             { id: 'courses', name: 'Cursos', icon: GraduationCap },
             { id: 'books', name: 'Libros y PDF', icon: BookOpen },
             { id: 'visits', name: 'Visitas Onsite', icon: MapPin },
@@ -935,6 +937,7 @@ export default function AdminPanel() {
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               {activeTab === 'dashboard' && 'Panel General y Analytics'}
+              {activeTab === 'ai_demand' && 'Análisis de Demanda & Actividad IA'}
               {activeTab === 'courses' && 'Gestión de Cursos'}
               {activeTab === 'books' && 'Librería Digital & PDFs'}
               {activeTab === 'visits' && 'Agenda de Visitas Presenciales'}
@@ -946,6 +949,7 @@ export default function AdminPanel() {
             </h2>
             <p className="text-sm text-gray-400">
               {activeTab === 'dashboard' && 'Rendimiento general y próximas actividades.'}
+              {activeTab === 'ai_demand' && 'Visualización en tiempo real con Recharts de consultas a la IA, servicios ISO más solicitados y sesiones agendadas.'}
               {activeTab === 'courses' && 'Administración de programas educativos presenciales y digitales.'}
               {activeTab === 'books' && 'Gestor de libros técnicos, descargables e indicadores.'}
               {activeTab === 'visits' && 'Planificación semanal de auditorías físicas en plantas de clientes.'}
@@ -1175,7 +1179,19 @@ export default function AdminPanel() {
 
                 </div>
 
+                {/* D. DEMANDA & IA ANALYTICS DASHBOARD */}
+                <div className="pt-6 border-t border-white/10">
+                  <AIDemandAnalyticsDashboard />
+                </div>
+
               </div>
+            )}
+
+            {/* =======================================================
+                T1.5: DEMANDA & IA ANALYTICS DEDICATED TAB
+                ======================================================= */}
+            {activeTab === 'ai_demand' && (
+              <AIDemandAnalyticsDashboard />
             )}
 
             {/* =======================================================
