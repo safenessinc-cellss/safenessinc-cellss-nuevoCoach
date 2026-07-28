@@ -14,7 +14,7 @@ import { collection, doc, setDoc, getDoc, addDoc, serverTimestamp, query, orderB
 import { useSearchParams } from 'react-router-dom';
 import SGCButtonCoachDetails from './SGCButtonCoachDetails';
 
-export default function ManualSIG() {
+function ManualSIG() {
   const { profile } = useProfileSettings();
   const [searchParams] = useSearchParams();
   const [selectedSectorId, setSelectedSectorId] = useState<string>('tech_software');

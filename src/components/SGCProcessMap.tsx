@@ -33,7 +33,7 @@ interface ProcessNode {
   textColor: string;
 }
 
-export default function SGCProcessMap() {
+function SGCProcessMap() {
   const [selectedNode, setSelectedNode] = useState<ProcessNode | null>(null);
   const [activeCycleTab, setActiveCycleTab] = useState<'all' | 'P' | 'H' | 'V' | 'A'>('all');
 

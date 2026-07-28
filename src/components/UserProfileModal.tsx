@@ -11,7 +11,7 @@ interface UserProfileModalProps {
   data: any;
 }
 
-export default function UserProfileModal({ isOpen, onClose, data }: UserProfileModalProps) {
+function UserProfileModal({ isOpen, onClose, data }: UserProfileModalProps) {
   const { t } = useTranslation();
   const { profile } = useProfileSettings();
   const [isCurriculumOpen, setIsCurriculumOpen] = useState(false);

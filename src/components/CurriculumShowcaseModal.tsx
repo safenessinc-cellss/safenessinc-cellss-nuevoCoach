@@ -42,7 +42,7 @@ interface CurriculumShowcaseModalProps {
   onClose: () => void;
 }
 
-export default function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
+function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('official_certificates');
   const [searchQuery, setSearchQuery] = useState('');

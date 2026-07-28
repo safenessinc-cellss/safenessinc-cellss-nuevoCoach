@@ -26,7 +26,7 @@ interface CoachingPillarsPanelProps {
   onClose: () => void;
 }
 
-export default function CoachingPillarsPanel({ initialPillar, onClose }: CoachingPillarsPanelProps) {
+function CoachingPillarsPanel({ initialPillar, onClose }: CoachingPillarsPanelProps) {
   const [activePillar, setActivePillar] = useState<'decision' | 'psicopedagogia' | 'cohesion'>(initialPillar);
 
   // Pillar 1: Decisiones Críticas States
