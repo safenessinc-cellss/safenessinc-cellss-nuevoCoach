@@ -68,3 +68,23 @@ export async function rewriteCurriculum(
 ): Promise<CurriculumRewriteOutput> {
   return apiRequest<CurriculumRewriteOutput>('rewrite-curriculum', { input, instructions: userInstructions });
 }
+
+export interface CurriculumMergePreview {
+  curriculum: import('../data/useCurriculumSettings').CurriculumSettings;
+  notes: string[];
+  conflicts: string[];
+}
+
+export async function mergeCurriculumDocument(
+  fileDataUrl: string,
+  mimeType: string,
+  fileName: string,
+  currentCurriculum: import('../data/useCurriculumSettings').CurriculumSettings,
+): Promise<CurriculumMergePreview> {
+  return apiRequest<CurriculumMergePreview>('merge-curriculum', {
+    fileDataUrl,
+    mimeType,
+    fileName,
+    currentCurriculum,
+  });
+}
