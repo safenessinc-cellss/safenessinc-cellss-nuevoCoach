@@ -1,15 +1,32 @@
 import { GoogleGenAI } from "@google/genai";
-import { cert, getApps, initializeApp } from "firebase-admin/app";
-import { getAuth } from "firebase-admin/auth";
 
-function getVerifiedAuth() {
+async function verifyFirebaseIdToken(token: string) {
   const serviceAccountText = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
   if (!serviceAccountText) throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON no está configurado.");
-  if (!getApps().length) {
-    const serviceAccount = JSON.parse(serviceAccountText);
-    initializeApp({ credential: cert(serviceAccount) });
+
+  let serviceAccount: { project_id?: string };
+  try {
+    serviceAccount = JSON.parse(serviceAccountText);
+  } catch {
+    throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON no es válido.");
   }
-  return getAuth();
+
+  const projectId = String(serviceAccount.project_id || "").trim();
+  if (!projectId) throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON no contiene project_id.");
+
+  // Use jose's ESM API directly; Firebase Admin's current jwks-rsa dependency
+  // can fail to load in Vercel's Node serverless runtime.
+  const { createRemoteJWKSet, jwtVerify } = await import("jose");
+  const jwks = createRemoteJWKSet(
+    new URL("https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com")
+  );
+  const { payload } = await jwtVerify(token, jwks, {
+    issuer: `https://securetoken.google.com/${projectId}`,
+    audience: projectId
+  });
+  if (typeof payload.sub !== "string" || !payload.sub) {
+    throw new Error("El token de Firebase no contiene un usuario válido.");
+  }
 }
 
 function cleanArray(value: unknown): any[] {
@@ -81,7 +98,15 @@ export default async function handler(req: any, res: any) {
   try {
     const authorization = String(req.headers?.authorization || "");
     if (!authorization.startsWith("Bearer ")) return res.status(401).json({ error: "Debes iniciar sesión para importar un currículo." });
-    await getVerifiedAuth().verifyIdToken(authorization.slice(7));
+    try {
+      await verifyFirebaseIdToken(authorization.slice(7));
+    } catch (authError) {
+      const authMessage = authError instanceof Error ? authError.message : "";
+      if (authMessage.includes("FIREBASE_SERVICE_ACCOUNT_JSON")) {
+        return res.status(503).json({ error: "El servicio de importación necesita una cuenta de servicio Firebase válida en el servidor." });
+      }
+      return res.status(401).json({ error: "La sesión de Firebase no es válida o ha caducado. Inicia sesión de nuevo." });
+    }
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) return res.status(503).json({ error: "La importación inteligente aún no está configurada en el servidor." });
