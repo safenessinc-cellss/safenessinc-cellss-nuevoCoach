@@ -20,24 +20,35 @@ function keyOf(value: any): string {
   return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
+function hasValue(value: unknown): boolean {
+  if (typeof value === "string") return value.trim().length > 0;
+  if (Array.isArray(value)) return value.length > 0;
+  return value !== null && value !== undefined;
+}
+
 function mergeList(base: any[], incoming: any[], keyFn: (item: any) => string): any[] {
   const result = new Map<string, any>();
   base.forEach((item) => {
     const key = keyFn(item);
-    if (key) result.set(key, item);
+    if (key && key.split("|").some((part) => part.trim())) result.set(key, item);
   });
   incoming.forEach((item) => {
     const key = keyFn(item);
-    if (!key) return;
+    if (!key || !key.split("|").some((part) => part.trim())) return;
     const previous = result.get(key);
     if (!previous) {
       result.set(key, item);
       return;
     }
-    const merged = { ...previous, ...item };
-    for (const field of ["responsibilities", "achievements", "skills"]) {
-      const values = [...(Array.isArray(previous[field]) ? previous[field] : []), ...(Array.isArray(item[field]) ? item[field] : [])];
-      if (values.length) merged[field] = Array.from(new Set(values.filter((value) => typeof value === "string" && value.trim())));
+
+    // Never let an older document silently overwrite a populated master-curriculum field.
+    const merged = { ...item, ...previous };
+    for (const [field, value] of Object.entries(item)) {
+      if (!hasValue(merged[field]) && hasValue(value)) merged[field] = value;
+      if (Array.isArray(value) && value.every((entry) => typeof entry === "string")) {
+        const priorValues = Array.isArray(previous[field]) ? previous[field] : [];
+        merged[field] = Array.from(new Set([...priorValues, ...value].filter((entry) => typeof entry === "string" && entry.trim())));
+      }
     }
     result.set(key, merged);
   });
@@ -45,9 +56,9 @@ function mergeList(base: any[], incoming: any[], keyFn: (item: any) => string): 
 }
 
 function mergeCurriculum(current: any, suggested: any) {
-  const candidateInfo = { ...(current.candidateInfo || {}), ...(suggested.candidateInfo || {}) };
-  for (const [key, value] of Object.entries(current.candidateInfo || {})) {
-    if (typeof candidateInfo[key] === "string" && !String(candidateInfo[key]).trim()) candidateInfo[key] = value;
+  const candidateInfo = { ...(suggested.candidateInfo || {}), ...(current.candidateInfo || {}) };
+  for (const [key, value] of Object.entries(suggested.candidateInfo || {})) {
+    if (!hasValue(candidateInfo[key]) && hasValue(value)) candidateInfo[key] = value;
   }
   const careerRoles = mergeList(cleanArray(current.careerRoles), cleanArray(suggested.careerRoles), (item) => keyOf(item.title) + "|" + keyOf(item.company));
   const educationItems = mergeList(cleanArray(current.educationItems), cleanArray(suggested.educationItems), (item) => keyOf(item.title) + "|" + keyOf(item.institution));
@@ -55,8 +66,8 @@ function mergeCurriculum(current: any, suggested: any) {
   const languagesList = mergeList(cleanArray(current.languagesList), cleanArray(suggested.languagesList), (item) => keyOf(item.name));
   const industrialCourses = mergeList(cleanArray(current.industrialCourses), cleanArray(suggested.industrialCourses), (item) => keyOf(item.title || item.name || item.course));
   return {
-    ...current,
     ...suggested,
+    ...current,
     candidateInfo,
     careerRoles,
     educationItems,
