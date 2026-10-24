@@ -70,6 +70,45 @@ export async function rewriteCurriculum(
   return apiRequest<CurriculumRewriteOutput>('rewrite-curriculum', { input, instructions: userInstructions });
 }
 
+export interface CurriculumTranslationEducationItem {
+  period: string;
+  title: string;
+  institution: string;
+  description?: string;
+  kind?: 'education' | 'course' | 'credential';
+}
+
+export interface CurriculumTranslationInput {
+  summary: string;
+  impactMetrics: Array<{ value: string; label: string; detail: string }>;
+  careerRoles: Array<{
+    period: string; title: string; company: string; location: string;
+    responsibilities: string[]; achievements?: string[];
+  }>;
+  educationItems: CurriculumTranslationEducationItem[];
+  additionalTexts: string[];
+}
+
+export interface CurriculumTranslationOutput {
+  summary: string;
+  impactMetrics: CurriculumTranslationInput['impactMetrics'];
+  careerRoles: CurriculumTranslationInput['careerRoles'];
+  educationItems: CurriculumTranslationEducationItem[];
+  additionalTexts: string[];
+}
+
+/** Translate all CV content on the server before allowing PDF generation. */
+export async function translateCurriculumForExport(
+  input: CurriculumTranslationInput,
+  targetLanguage: 'es' | 'en' | 'pt' | 'it',
+): Promise<CurriculumTranslationOutput> {
+  return apiRequest<CurriculumTranslationOutput>(
+    'translate-curriculum',
+    { input, targetLanguage },
+    false,
+  );
+}
+
 export interface CurriculumMergePreview {
   curriculum: import('../data/useCurriculumSettings').CurriculumSettings;
   notes: string[];
