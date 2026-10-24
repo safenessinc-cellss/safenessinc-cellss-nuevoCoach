@@ -14,7 +14,7 @@ import {
   CheckCircle, XCircle, Trash2, Loader2, LogOut, ShieldAlert, 
   Search, Filter, GraduationCap, BookOpen, MapPin, Video, Users, 
   Settings, Layers, Plus, Edit2, Copy, ExternalLink, CalendarDays, 
-  ChevronLeft, ChevronRight, UploadCloud, Info, AlertTriangle, ShieldCheck, Bot, Palette
+  ChevronLeft, ChevronRight, UploadCloud, Info, AlertTriangle, ShieldCheck, Bot, Palette, Sparkles
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -28,6 +28,7 @@ import ThemeEditor from './ThemeEditor';
 import ProfileEditor from './ProfileEditor';
 import CurriculumEditor from './CurriculumEditor';
 import AIDemandAnalyticsDashboard from './AIDemandAnalyticsDashboard';
+import CertificateAIImporter from './CertificateAIImporter';
 
 // Operation Types for Audit and Errors
 enum OperationType {
@@ -80,7 +81,7 @@ function AdminPanel() {
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
   
   // Active Tab State
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'ai_curriculum' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
 
   // Domain Collections States
   const [courses, setCourses] = useState<Course[]>([]);
@@ -100,12 +101,7 @@ function AdminPanel() {
     consultations: true
   });
 
-  // Pin & Account Bypass Simulation Mode
-  const [isSimulationMode, setIsSimulationMode] = useState(false);
-  const [simulatedRole, setSimulatedRole] = useState<UserRole | null>(null);
-
   const ADMIN_EMAIL = 'safeness.c.a@gmail.com';
-  const MOCK_2FA_PIN = '550088';
 
   // --- Search and Filters States ---
   const [searchTerm, setSearchTerm] = useState('');
@@ -165,16 +161,13 @@ function AdminPanel() {
   const user = currentUser;
   const currentUserRole: UserRole = currentUser?.role || 'viewer';
   const isAdmin = currentUser?.isAdmin ?? false;
-  const is2FAVerified = true;
-
-  // Compute permissions
-  const activeRole = isSimulationMode && simulatedRole ? simulatedRole : currentUserRole;
-  const canEdit = activeRole === 'admin' || activeRole === 'editor';
-  const hasAdminRights = activeRole === 'admin';
+  const canEdit = currentUser?.status === 'active' && (isAdmin || currentUserRole === 'editor' || currentUserRole === 'supervisor');
+  const hasAdminRights = currentUser?.status === 'active' && isAdmin;
+  const activeRole = currentUserRole;
 
   // Real-time queries for all entities
   useEffect(() => {
-    if (!user && !isSimulationMode) return;
+    if (!user) return;
 
     // 1. Courses Subscription
     const unsubCourses = onSnapshot(collection(db, 'courses'), (snap) => {
@@ -244,13 +237,11 @@ function AdminPanel() {
       unsubUsers();
       unsubConsultations();
     };
-  }, [user, isSimulationMode]);
+  }, [user]);
 
 
 
   const handleLogoutClick = async () => {
-    setIsSimulationMode(false);
-    setSimulatedRole(null);
     performContextLogout();
     navigate('/login');
   };
@@ -852,11 +843,6 @@ function AdminPanel() {
             }`}>{activeRole}</span>
           </div>
 
-          {isSimulationMode && (
-            <div className="text-[10px] text-yellow-500/80 bg-yellow-500/5 p-1.5 rounded border border-yellow-500/10 font-mono">
-              🚧 Modo simulación local activo
-            </div>
-          )}
         </div>
 
         {/* Sidebar Nav Items */}
@@ -864,6 +850,7 @@ function AdminPanel() {
           {[
             { id: 'dashboard', name: 'Dashboard', icon: Layers },
             { id: 'ai_demand', name: 'Demanda & IA', icon: Bot },
+            { id: 'ai_curriculum', name: 'IA Currículo', icon: Sparkles },
             { id: 'courses', name: 'Cursos', icon: GraduationCap },
             { id: 'books', name: 'Libros y PDF', icon: BookOpen },
             { id: 'visits', name: 'Visitas Onsite', icon: MapPin },
@@ -940,6 +927,7 @@ function AdminPanel() {
             <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               {activeTab === 'dashboard' && 'Panel General y Analytics'}
               {activeTab === 'ai_demand' && 'Análisis de Demanda & Actividad IA'}
+              {activeTab === 'ai_curriculum' && 'Importación asistida de certificados'}
               {activeTab === 'courses' && 'Gestión de Cursos'}
               {activeTab === 'books' && 'Librería Digital & PDFs'}
               {activeTab === 'visits' && 'Agenda de Visitas Presenciales'}
@@ -953,6 +941,7 @@ function AdminPanel() {
             <p className="text-sm text-gray-400">
               {activeTab === 'dashboard' && 'Rendimiento general y próximas actividades.'}
               {activeTab === 'ai_demand' && 'Visualización en tiempo real con Recharts de consultas a la IA, servicios ISO más solicitados y sesiones agendadas.'}
+              {activeTab === 'ai_curriculum' && 'Extrae datos de imágenes, revisa cada campo y guarda credenciales sin marcarlas como verificadas.'}
               {activeTab === 'courses' && 'Administración de programas educativos presenciales y digitales.'}
               {activeTab === 'books' && 'Gestor de libros técnicos, descargables e indicadores.'}
               {activeTab === 'visits' && 'Planificación semanal de auditorías físicas en plantas de clientes.'}
@@ -1793,6 +1782,8 @@ function AdminPanel() {
                 <ThemeEditor />
               </div>
             )}
+
+            {activeTab === 'ai_curriculum' && <CertificateAIImporter />}
 
             {activeTab === 'profile' && (
               <ProfileEditor />

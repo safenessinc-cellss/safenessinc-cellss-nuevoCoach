@@ -117,12 +117,7 @@ export function useCurriculumSettings() {
     }
     window.dispatchEvent(new CustomEvent('curriculum-updated', { detail: newSettings }));
 
-    try {
-      await setDoc(doc(db, 'settings', 'curriculum'), newSettings);
-    } catch (error) {
-      console.warn("Error al sincronizar con Firestore, cambios retenidos localmente:", error);
-      // We do not throw so admin save button finishes successfully locally
-    }
+    await setDoc(doc(db, 'settings', 'curriculum'), newSettings);
   };
 
   return { curriculumData, updateCurriculum, loading };

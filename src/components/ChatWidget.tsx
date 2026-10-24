@@ -1,21 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 import { motion, AnimatePresence } from 'motion/react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
-
-let aiClient: GoogleGenAI | null = null;
-const getAiClient = () => {
-  if (!aiClient && process.env.GEMINI_API_KEY) {
-    try {
-      aiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    } catch (e) {
-      console.warn("Failed to initialize Gemini Client", e);
-    }
-  }
-  return aiClient;
-};
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,89 +20,10 @@ function ChatWidget() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatRef = useRef<any>(null);
 
   useEffect(() => {
     localStorage.setItem('chatHistory', JSON.stringify(messages));
   }, [messages]);
-
-  useEffect(() => {
-    const ai = getAiClient();
-    if (!ai) return;
-
-    chatRef.current = ai.chats.create({
-      model: 'gemini-3-flash-preview',
-      config: {
-        systemInstruction: `Eres el asistente virtual de Robert Terán, Ingeniero, Economista y Especialista en Sistemas de Gestión Integral con más de 30 años de experiencia.
-        Tu objetivo es responder preguntas sobre sus servicios y animar a los usuarios a agendar una consulta. Sé profesional, conciso y amable. 
-        
-        PERFIL DE ROBERT TERÁN:
-        - Ingeniero, Economista y Especialista en Sistemas de Gestión Integral corporativa.
-        - Especialista en la Optimización de Procesos, estructuración empresarial, finanzas y sostenibilidad organizativa.
-        - Combina el análisis estratégico financiero y del capital humano con estudios avanzados en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional.
-        - Experto en metodologías de eficiencia (Lean, Six Sigma Green Belt, BPMN), transformación digital aplicada y control normativo internacional.
-        - Ofrece una visión integral orientada a resultados tangibles de rentabilidad y procesos de excelencia operativa ("Sincronización del equipo humano con el rendimiento económico").
-        
-        Conoces las siguientes certificaciones y estándares:
-        - ISO 9001:2015 (Gestión de Calidad)
-        - ISO 14001:2015 (Gestión Ambiental)
-        - ISO 45001:2018 (Seguridad y Salud en el Trabajo)
-        - ISO 27001:2022 (Seguridad de la Información)
-        - ISO 22000 (Seguridad Alimentaria)
-        - ISO/IEC 42001:2023 (Inteligencia Artificial aplicada)
-        - CIA, CISA, CPA, CRMA.
-
-        Sobre Estructuración Empresarial y Procesos, Robert se especializa en:
-        - Estructuración Organizacional (organigramas, roles, OKRs, perfiles)
-        - Mapeo y Optimización de Procesos (As-Is/To-Be, BPMN, Lean)
-        - Estandarización SGI (SOPs, manuales de procesos, KPIs, tableros de control)
-        - Gestión de Riesgos y Mejora Continua (PDCA, auditorías preventivas, control financiero)
-
-        Si el usuario quiere agendar una consulta, indícale que puede hacerlo directamente en la página de agendamiento: /agendar. Puedes usar formato Markdown: [Agendar Consulta](/agendar).`,
-      }
-    });
-
-    // Load history into the chat session if it exists
-    if (messages.length > 1) {
-      const history = messages.slice(1).map(msg => ({
-        role: msg.role,
-        parts: [{ text: msg.text }]
-      }));
-      
-      chatRef.current = ai.chats.create({
-        model: 'gemini-3-flash-preview',
-        history: history,
-        config: {
-          systemInstruction: `Eres el asistente virtual de Robert Terán, Ingeniero, Economista y Especialista en Sistemas de Gestión Integral con más de 30 años de experiencia.
-          Tu objetivo es responder preguntas sobre sus servicios y animar a los usuarios a agendar una consulta. Sé profesional, conciso y amable. 
-          
-          PERFIL DE ROBERT TERÁN:
-          - Ingeniero, Economista y Especialista en Sistemas de Gestión Integral corporativa.
-          - Especialista en la Optimización de Procesos, estructuración empresarial, finanzas y sostenibilidad organizativa.
-          - Combina el análisis estratégico financiero y del capital humano con estudios avanzados en Psicopedagogía, Bienestar Laboral e Inteligencia Emocional Organizacional.
-          - Experto en metodologías de eficiencia (Lean, Six Sigma Green Belt, BPMN) y transformación digital aplicada.
-          - Ofrece una visión integral orientada a resultados de excelencia operativa y rentabilidad ("Sincronización del equipo humano con el rendimiento económico").
-          
-          Conoces las siguientes certificaciones y estándares:
-          - ISO 9001:2015 (Gestión de Calidad)
-          - ISO 14001:2015 (Gestión Ambiental)
-          - ISO 45001:2018 (Seguridad y Salud en el Trabajo)
-          - ISO 27001:2022 (Seguridad de la Información)
-          - ISO 22000 (Seguridad Alimentaria)
-          - ISO/IEC 42001:2023 (Inteligencia Artificial aplicada)
-          - CIA, CISA, CPA, CRMA.
-
-          Sobre Estructuración Empresarial y Procesos, Robert se especializa en:
-          - Estructuración Organizacional (organigramas, roles, OKRs, perfiles)
-          - Mapeo y Optimización de Procesos (As-Is/To-Be, BPMN, Lean)
-          - Estandarización SGI (SOPs, manuales de procesos, KPIs, tableros de control)
-          - Gestión de Riesgos y Mejora Continua (PDCA, auditorías preventivas, control financiero)
-
-          Si el usuario quiere agendar una consulta, indícale que puede hacerlo directamente en la página de agendamiento: /agendar. Puedes usar formato Markdown: [Agendar Consulta](/agendar).`,
-        }
-      });
-    }
-  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -128,7 +34,7 @@ function ChatWidget() {
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim() || !chatRef.current) return;
+    if (!input.trim() || isLoading) return;
     
     const userMsg = input.trim();
     setInput('');
@@ -136,35 +42,24 @@ function ChatWidget() {
     setIsLoading(true);
 
     try {
-      const response = await chatRef.current.sendMessage({ message: userMsg });
-      const replyText = response.text || '';
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMsg,
+          history: messages.slice(1).map(message => ({ role: message.role, text: message.text })),
+        }),
+      });
+      const payload = await response.json().catch(() => ({})) as { text?: string; error?: string };
+      if (!response.ok) throw new Error(payload.error || 'No se pudo contactar al asistente.');
+      const replyText = payload.text || 'No pude generar una respuesta. Inténtalo de nuevo.';
       setMessages(prev => [...prev, { role: 'model', text: replyText }]);
 
-      // Log AI interaction to Firestore
-      try {
-        let category = 'Consulta General';
-        const lowerMsg = userMsg.toLowerCase();
-        if (lowerMsg.includes('9001') || lowerMsg.includes('calidad')) category = 'ISO 9001';
-        else if (lowerMsg.includes('27001') || lowerMsg.includes('seguridad')) category = 'ISO 27001';
-        else if (lowerMsg.includes('14001') || lowerMsg.includes('45001') || lowerMsg.includes('sgi')) category = 'Auditorías SGI';
-        else if (lowerMsg.includes('coaching') || lowerMsg.includes('liderazgo') || lowerMsg.includes('ibm')) category = 'Coaching IBM';
-        else if (lowerMsg.includes('agendar') || lowerMsg.includes('cita') || lowerMsg.includes('reserva')) category = 'Agendamiento';
-        else if (lowerMsg.includes('proceso') || lowerMsg.includes('lean') || lowerMsg.includes('six sigma')) category = 'Optimización Procesos';
 
-        await addDoc(collection(db, 'ai_activity_logs'), {
-          userPrompt: userMsg,
-          aiResponseSnippet: replyText.slice(0, 150),
-          category,
-          timestamp: serverTimestamp(),
-          dateStr: new Date().toISOString().split('T')[0],
-          source: 'Widget Asistente Virtual'
-        });
-      } catch (logErr) {
-        console.warn("Log de actividad IA no persistido:", logErr);
-      }
     } catch (error) {
-      console.error(error);
-      setMessages(prev => [...prev, { role: 'model', text: 'Lo siento, hubo un error al procesar tu mensaje.' }]);
+      console.error('Error en el asistente:', error);
+      const errorText = error instanceof Error ? error.message : 'Lo siento, hubo un error al procesar tu mensaje.';
+      setMessages(prev => [...prev, { role: 'model', text: errorText }]);
     } finally {
       setIsLoading(false);
     }

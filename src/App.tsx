@@ -7,6 +7,7 @@ import dataES from './data/es.json';
 import dataEN from './data/en.json';
 import dataPT from './data/pt.json';
 import dataIT from './data/it.json';
+import { mergeLocaleData } from './data/mergeLocaleData';
 import ChatWidget from './components/ChatWidget';
 import ISOImage from './components/ISOImage';
 import UserProfileModal from './components/UserProfileModal';
@@ -156,7 +157,7 @@ const clientPhotos: Record<string, string> = {
 
 export default function App() {
   const { t, i18n } = useTranslation();
-  const data = allData[i18n.language as keyof typeof allData] || dataES;
+  const data = mergeLocaleData(dataES, allData[i18n.language as keyof typeof allData] || dataES);
   const { profile, loading: profileLoading } = useProfileSettings();
 
   const [bgImage, setBgImage] = useState('');

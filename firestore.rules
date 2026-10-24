@@ -16,7 +16,7 @@ service cloud.firestore {
       return isAdmin() || (active() && role() in ['editor', 'supervisor']);
     }
     function isViewer() {
-      return active() && role() in ['superadmin','admin','editor','supervisor','colaborador','tlmk','viewer'];
+      return isSuperAdmin() || (active() && role() in ['superadmin','admin','editor','supervisor','colaborador','tlmk','viewer']);
     }
 
     match /users/{userId} {
@@ -33,19 +33,35 @@ service cloud.firestore {
     match /books/{id} {
       allow read: if true;
       allow create, delete: if isEditor();
-      allow update: if isEditor() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['downloadsCount']);
+      allow update: if isEditor()
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['downloadsCount'])
+            && request.resource.data.downloadsCount is int
+            && resource.data.downloadsCount is int
+            && request.resource.data.downloadsCount == resource.data.downloadsCount + 1);
     }
     match /visits/{id} { allow read: if isViewer(); allow write: if isEditor(); }
     match /tutorials/{id} { allow read: if isViewer(); allow write: if isEditor(); }
     match /consultations/{id} {
       allow read: if signedIn() && (resource.data.uid == request.auth.uid || isViewer());
-      allow create: if signedIn();
-      allow update: if signedIn() && (resource.data.uid == request.auth.uid || isEditor());
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.status == 'pending';
+      allow update: if isEditor()
+        || (signedIn() && resource.data.uid == request.auth.uid
+            && request.resource.data.uid == resource.data.uid
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'email', 'company', 'date', 'topic']));
       allow delete: if isAdmin();
     }
-    match /audit_logs/{id} { allow read: if isViewer(); allow create: if signedIn(); }
-    match /mail/{id} { allow read: if isViewer(); allow create: if signedIn(); }
-    match /2fa_sessions/{id} { allow read, write: if signedIn(); }
+    match /certificates/{id} {
+      allow read: if true;
+      allow create, update, delete: if isEditor();
+    }
+    match /audit_logs/{id} { allow read: if isViewer(); allow create: if isEditor(); }
+    match /ai_activity_logs/{id} { allow read: if isViewer(); allow write: if false; }
+    // Email queue is written only by trusted server code.
+    match /mail/{id} { allow read: if isViewer(); allow write: if false; }
+    // No client-side access: a secure server-side MFA flow has not been implemented.
+    match /2fa_sessions/{id} { allow read, write: if false; }
     match /image_registry/{id} { allow read: if true; allow write: if isEditor(); }
     match /settings/{id} { allow read: if true; allow write: if isEditor(); }
 
