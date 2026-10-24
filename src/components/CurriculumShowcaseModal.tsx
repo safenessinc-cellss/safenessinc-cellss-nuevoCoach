@@ -53,7 +53,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
-  const { certificates: importedCertificates } = useCertificates();
+  const { certificates: importedCertificates, loading: certificatesLoading } = useCertificates();
   const profilePhotoUrl = profile.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
 
   // Selected certificate for scaled modal viewer
@@ -295,7 +295,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                   {/* Export PDF Button */}
                   <button
                     onClick={handleExportPDF}
-                    disabled={isExporting}
+                    disabled={isExporting || certificatesLoading}
                     className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
                   >
                     <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
@@ -998,7 +998,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                   className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-5 py-2 rounded-xl transition flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
                 >
                   <Download className="w-4 h-4" />
-                  <span>{isExporting ? 'Exportando...' : 'Descargar CV (PDF)'}</span>
+                  <span>{certificatesLoading ? 'Cargando credenciales...' : isExporting ? 'Exportando...' : 'Descargar CV (PDF)'}</span>
                 </button>
                 <button
                   onClick={onClose}
