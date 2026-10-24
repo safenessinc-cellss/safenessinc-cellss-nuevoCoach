@@ -1726,16 +1726,16 @@ export default function App() {
               onClick={() => setSelectedCoachingPillar(prev => prev === 'decision' ? null : 'decision')}
               className={`p-8 rounded-3xl border backdrop-blur-md transition-all duration-300 text-left relative focus:outline-none cursor-pointer group ${
                 selectedCoachingPillar === 'decision'
-                  ? 'bg-blue-950/20 border-blue-500 shadow-xl shadow-blue-500/10'
-                  : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.04]'
+                  ? 'bg-blue-100 border-blue-500 shadow-xl shadow-blue-500/10'
+                  : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-100'
               }`}
             >
               <span className="text-3xl mb-4 block">🎯</span>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">Decisiones Críticas</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-700 transition-colors">Decisiones Críticas</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 Mapeo de riesgos + coaching bajo presión para que líderes y equipos actúen con claridad en momentos de alta incertidumbre laboral.
               </p>
-              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-blue-400 mt-auto flex items-center gap-1">
+              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-blue-700 mt-auto flex items-center gap-1">
                 <span>[ {selectedCoachingPillar === 'decision' ? 'CERRAR SIMULADOR' : 'ABRIR SIMULADOR Y DIAGRAMA'} ]</span>
                 <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
               </div>
@@ -1745,16 +1745,16 @@ export default function App() {
               onClick={() => setSelectedCoachingPillar(prev => prev === 'psicopedagogia' ? null : 'psicopedagogia')}
               className={`p-8 rounded-3xl border backdrop-blur-md transition-all duration-300 text-left relative focus:outline-none cursor-pointer group ${
                 selectedCoachingPillar === 'psicopedagogia'
-                  ? 'bg-amber-950/20 border-amber-500 shadow-xl shadow-amber-500/10'
-                  : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.04]'
+                  ? 'bg-amber-100 border-amber-500 shadow-xl shadow-amber-500/10'
+                  : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-100'
               }`}
             >
               <span className="text-3xl mb-4 block">🧠</span>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">Psicopedagogía Empresarial</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-700 transition-colors">Psicopedagogía Empresarial</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 Aprendizaje adaptativo, gestión del estrés y comunicación asertiva. Transformo de manera didáctica la forma en que tu equipo aprende y colabora.
               </p>
-              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-amber-400 mt-auto flex items-center gap-1">
+              <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-amber-700 mt-auto flex items-center gap-1">
                 <span>[ {selectedCoachingPillar === 'psicopedagogia' ? 'CERRAR SIMULADOR' : 'ABRIR SIMULADOR Y DIAGRAMA'} ]</span>
                 <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
               </div>
@@ -1765,12 +1765,12 @@ export default function App() {
               className={`p-8 rounded-3xl border backdrop-blur-md transition-all duration-300 text-left relative focus:outline-none cursor-pointer group ${
                 selectedCoachingPillar === 'cohesion'
                   ? 'bg-red-950/20 border-red-500 shadow-xl shadow-red-500/10'
-                  : 'bg-white/[0.02] border-white/5 hover:border-white/20 hover:bg-white/[0.04]'
+                  : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-100'
               }`}
             >
               <span className="text-3xl mb-4 block">🤝</span>
               <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors">Cohesión de Equipos</h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 De grupos disfuncionales a equipos de alto rendimiento. Alineación de OKRs estratégicos, resolución asertiva de conflictos y confianza operativa.
               </p>
               <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-red-500 mt-auto flex items-center gap-1">
@@ -1811,33 +1811,33 @@ export default function App() {
             <div className="grid md:grid-cols-2 gap-8">
               {/* Dimensión Técnica */}
               <div className="space-y-4 bg-blue-950/20 p-6 rounded-2xl border border-blue-500/10">
-                <h4 className="text-lg font-bold text-blue-400 flex items-center gap-2 border-b border-blue-500/20 pb-3">
+                <h4 className="text-lg font-bold text-blue-700 flex items-center gap-2 border-b border-blue-500/20 pb-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
                   Dimensión Técnica (Ingeniería de Procesos)
                 </h4>
                 <ul className="space-y-3">
                   <li className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-blue-400 font-bold mr-1">•</span>
+                    <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Auditoría Líder ISO:</strong> Certificación internacional multicriterio (9001, 14001, 27001, 45001, 22000, 42001).</span>
                   </li>
                   <li className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-blue-400 font-bold mr-1">•</span>
+                    <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Mapeo de Procesos:</strong> Diagramación avanzada con flujos lógicos bajo el estándar BPMN.</span>
                   </li>
                   <li className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-blue-400 font-bold mr-1">•</span>
+                    <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Análisis Crítico:</strong> Diagnóstico riguroso y toma de decisiones basada en datos cualitativos y cuantitativos.</span>
                   </li>
                   <li className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-blue-400 font-bold mr-1">•</span>
+                    <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Optimización Lean & Six Sigma:</strong> Reducción de desperdicios operativos y aseguramiento del valor del servicio.</span>
                   </li>
                   <li className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-blue-400 font-bold mr-1">•</span>
+                    <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Gestión de Riesgos Corporativos:</strong> Aseguramiento sistémico de la continuidad de negocio y planes de mitigación.</span>
                   </li>
                   <li className="text-sm text-gray-300 flex items-start gap-2">
-                    <span className="text-blue-400 font-bold mr-1">•</span>
+                    <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Implementación de OKRs y KPIs:</strong> Establecimiento de objetivos y controles con rendimiento medible.</span>
                   </li>
                 </ul>
@@ -1879,7 +1879,7 @@ export default function App() {
             </div>
             
             {/* Formación Adicional Sub-panel */}
-            <div className="mt-8 pt-6 border-t border-white/5 bg-white/[0.01] p-4 rounded-xl text-xs text-gray-400 leading-relaxed text-center">
+            <div className="mt-8 pt-6 border-t border-slate-200 bg-white/[0.01] p-4 rounded-xl text-xs text-slate-600 leading-relaxed text-center">
               🎓 Robert Terán es <strong>Ingeniero e Economista</strong> con estudios y especializaciones en <strong>Psicopedagogía</strong>, <strong>Bienestar Laboral</strong> e <strong>Inteligencia Emocional Organizacional</strong>, lo que refuerza su visión integral orientada a resultados de excelencia.
             </div>
           </div>
@@ -1904,7 +1904,7 @@ export default function App() {
                     }
                     setSelectedSpecialty(specialty);
                   }}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121212] hover:bg-red-950/20 text-gray-300 hover:text-white border border-white/5 hover:border-red-500/35 transition-all duration-300 cursor-pointer active:scale-95 flex items-center gap-1.5 focus:outline-none"
+                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121212] hover:bg-red-950/20 text-gray-300 hover:text-white border border-slate-200 hover:border-red-500/35 transition-all duration-300 cursor-pointer active:scale-95 flex items-center gap-1.5 focus:outline-none"
                 >
                   <span className="text-red-500 text-xs">✨</span> {specialty}
                 </button>
