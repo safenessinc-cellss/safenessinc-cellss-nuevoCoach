@@ -44,7 +44,8 @@ export default function CertificateAIImporter() {
     }
   };
 
-  const edit = (field: keyof ExtractedCertificate, value: string) => {
+  type EditableField = 'title' | 'issuer' | 'code' | 'issuedDate' | 'verificationUrl' | 'description';
+  const edit = (field: EditableField, value: string) => {
     setDraft(previous => previous ? { ...previous, [field]: value } : previous);
   };
 
