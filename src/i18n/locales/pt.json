@@ -331,5 +331,30 @@
     "credentialsTitle": "Credenciais e aprendizagem contínua",
     "credentialsText": "O portal reúne o currículo detalhado, as credenciais verificáveis e a formação organizada por áreas profissionais, evitando duplicar aqui o inventário completo.",
     "cta": "Ver currículo e credenciais"
+  },
+  "humanBehavior": {
+    "badge": "Desenvolvimento organizacional",
+    "title": "Comportamento Humano Organizacional",
+    "subtitle": "Psicopedagogia empresarial, desenvolvimento de talentos e liderança adaptativa integrados à experiência industrial, à auditoria de sistemas de gestão e ao coaching executivo.",
+    "intro": "Os sistemas de gestão são realmente adotados quando as pessoas compreendem a mudança e têm ferramentas para aplicá-la. Esta área complementa a experiência industrial e de auditoria com foco na aprendizagem, no comportamento e na dinâmica das equipes.",
+    "pillarsTitle": "Áreas de atuação",
+    "items": [
+      {
+        "title": "Diagnóstico e adoção da mudança",
+        "text": "Identificação das necessidades de aprendizagem, resistências e recursos da equipe para apoiar a implementação de sistemas de gestão, a transformação digital e as mudanças organizacionais."
+      },
+      {
+        "title": "Formação e desenvolvimento de talentos",
+        "text": "Programas de formação corporativa e planos individuais adaptados às necessidades, competências e formas de aprendizagem de cada colaborador."
+      },
+      {
+        "title": "Equipes e liderança adaptativa",
+        "text": "Coaching executivo, inteligência emocional, comunicação, gestão de conflitos e composição de equipes multidisciplinares conforme os objetivos do projeto."
+      }
+    ],
+    "methodTitle": "Abordagem de trabalho",
+    "methodText": "A psicopedagogia empresarial é utilizada como referência para compreender como a equipe aprende. Modelos de perfis comportamentais e os biótipos de Sheldon são considerados apenas perspectivas complementares de exploração, não diagnósticos clínicos nem critérios únicos para selecionar ou classificar pessoas.",
+    "outcomeTitle": "Objetivo",
+    "outcomeText": "Facilitar a adoção de mudanças, fortalecer a colaboração e conectar o desenvolvimento das pessoas aos objetivos operacionais e de qualidade."
   }
 }
