@@ -13,6 +13,14 @@ import {
   INDUSTRIAL_COURSES 
 } from './robertTeranCurriculumData';
 
+export interface CurriculumPresentationAnalysis {
+  executiveSummary: string;
+  shortCvHeadline: string;
+  shortCvFocusAreas: string[];
+  professionalAreas: Array<{ area: string; summary: string; strengths: string[]; featuredCredentials: string[]; featuredCourses: string[] }>;
+  recommendations: string[];
+}
+
 export interface CurriculumSettings {
   candidateInfo: CandidateInfo;
   impactMetrics: Array<{ value: string; label: string; detail: string }>;
@@ -21,6 +29,7 @@ export interface CurriculumSettings {
   languagesList: Array<{ name: string; level: string; written: string }>;
   industrialCourses: any[];
   appearance: { backgroundColor: string; sidebarColor: string; accentColor: string; textColor: string };
+  professionalAnalysis?: CurriculumPresentationAnalysis;
 }
 
 export const DEFAULT_CURRICULUM_SETTINGS: CurriculumSettings = {
@@ -46,6 +55,7 @@ export function useCurriculumSettings() {
           educationItems: parsed.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: parsed.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
           industrialCourses: parsed.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
+          professionalAnalysis: parsed.professionalAnalysis || undefined,
           appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(parsed.appearance || {}), backgroundColor: parsed.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (parsed.appearance?.backgroundColor || '#FFFFFF') }
         };
       }
@@ -89,6 +99,7 @@ export function useCurriculumSettings() {
           educationItems: data.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: data.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
           industrialCourses: data.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
+          professionalAnalysis: data.professionalAnalysis || undefined,
           appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(data.appearance || {}), backgroundColor: data.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (data.appearance?.backgroundColor || '#FFFFFF') }
         };
         setCurriculumData(merged);
