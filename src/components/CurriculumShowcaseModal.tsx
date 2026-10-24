@@ -67,7 +67,22 @@ function normalizeActivityKey(title: string): string {
 function mergeLearningActivities(base: LearningActivity[], imported: LearningActivity[]): LearningActivity[] {
   const merged = new Map<string, LearningActivity>();
   base.forEach((activity) => merged.set(normalizeActivityKey(activity.title), activity));
-  imported.forEach((activity) => { const key = normalizeActivityKey(activity.title); if (key) merged.set(key, activity); });
+  imported.forEach((activity) => {
+    const key = normalizeActivityKey(activity.title);
+    if (!key) return;
+    const previous = merged.get(key);
+    merged.set(key, previous ? {
+      ...previous,
+      ...activity,
+      issuer: activity.issuer || previous.issuer,
+      issuerLogoKey: activity.issuerLogoKey || previous.issuerLogoKey,
+      category: activity.category || previous.category,
+      completedDate: activity.completedDate || previous.completedDate,
+      durationMinutes: activity.durationMinutes || previous.durationMinutes,
+      deliveryType: activity.deliveryType || previous.deliveryType,
+      activityKind: activity.activityKind || previous.activityKind,
+    } : activity);
+  });
   return Array.from(merged.values()).sort((a, b) => (a.category || 'Otros recursos formativos').localeCompare(b.category || 'Otros recursos formativos') || a.title.localeCompare(b.title));
 }
 function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certificates' }: CurriculumShowcaseModalProps) {
@@ -108,9 +123,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       return {
         code: String(item.code || `IMPORTED-${index}-${title}`),
         title,
-        issuer: issuer || 'Fuente no especificada',
+        issuer: issuer || undefined,
         issuerLogoKey,
-        category: String(item.category || item.categoryLabel || item.description || 'Formación importada'),
+        category: String(item.category || item.categoryLabel || '').trim() || undefined,
         completedDate,
         durationMinutes: Number(item.durationMinutes || 0) || undefined,
         deliveryType: item.deliveryType,
@@ -576,7 +591,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                       
                       {/* Top-Left Geometric Amber Vector SVG Cutout */}
                       <svg className="absolute top-0 left-0 w-24 h-24 pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-                        <polygon points="0,0 100,0 0,100" fill="#f59e0b" />
+                        <polygon points="0,0 100,0 0,100" fill="#FBBC05" />
                       </svg>
 
                       <div className="relative z-10 space-y-6">
@@ -616,16 +631,16 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           <div className="relative pl-4 space-y-3 border-l-2 border-blue-500 ml-2 text-[11px]">
                             {/* Phone */}
                             <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#174ea6]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.phone', 'Teléfono / WhatsApp')}</span>
                               <span className="font-semibold text-white block">{candidatePhone}</span>
                             </div>
 
                             {/* Email & Web */}
                             <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#174ea6]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.email', 'Email / Credly')}</span>
-                              <a href={`mailto:${candidateEmail}`} className="font-medium text-blue-600 hover:underline block break-all text-[10.5px]">
+                              <a href={`mailto:${candidateEmail}`} className="font-medium text-blue-200 hover:underline block break-all text-[10.5px]">
                                 {candidateEmail}
                               </a>
                               <span className="text-gray-300 text-[9.5px] block break-all">credly.com/users/deuwy-medina</span>
@@ -633,7 +648,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
                             {/* Location */}
                             <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#174ea6]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.location', 'Ubicación')}</span>
                               <span className="font-medium text-white block">{candidateLocation}</span>
                             </div>
@@ -654,10 +669,10 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           <div className="relative pl-4 space-y-2 border-l-2 border-blue-500 ml-2 text-[10.5px]">
                             {(Array.isArray(languagesList) ? languagesList : []).map((lang: any, idx: number) => (
                               <div key={`lang-${idx}`} className="relative space-y-0.5">
-                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
+                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#174ea6]" />
                                 <div className="flex justify-between items-center text-white font-bold">
                                   <span>{lang.name}</span>
-                                  <span className="text-[9px] text-blue-600 font-mono">{lang.level}</span>
+                                  <span className="text-[9px] text-blue-200 font-mono">{lang.level}</span>
                                 </div>
                                 <span className="text-gray-400 text-[9px] block">{lang.written}</span>
                               </div>
@@ -679,9 +694,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           <div className="relative pl-4 space-y-3 border-l-2 border-blue-500 ml-2 text-[11px]">
                             {(Array.isArray(educationItems) ? educationItems : []).map((edu: any, idx: number) => (
                               <div key={`edu-${idx}`} className="relative space-y-0.5">
-                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
+                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#174ea6]" />
                                 <span className="font-bold text-white uppercase block leading-tight">{edu.title}</span>
-                                <span className="text-blue-600 text-[10px] font-semibold block">{edu.institution} ({edu.period})</span>
+                                <span className="text-blue-200 text-[10px] font-semibold block">{edu.institution} ({edu.period})</span>
                                 {edu.description && <span className="text-gray-400 text-[9px] block leading-tight">{edu.description}</span>}
                               </div>
                             ))}
