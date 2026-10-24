@@ -16,3 +16,6 @@ dist/
 node_modules/
 scripts/migrate-users.mjs
 serviceAccountKey.json
+
+# Local Firebase Functions secrets
+functions/.secret.local
