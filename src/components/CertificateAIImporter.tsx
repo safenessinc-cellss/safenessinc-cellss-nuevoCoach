@@ -122,7 +122,7 @@ export default function CertificateAIImporter() {
         <input className="sr-only" type="file" accept="image/jpeg,image/png,image/webp" disabled={busy || saving} onChange={handleFile} />
       </label>
 
-      {fileName && <p className="text-xs text-gray-500">Archivo: {fileName}</p>}
+      {fileName && <div className="flex items-center gap-3 text-xs text-gray-500"><span>Archivo: {fileName}</span>{certificatePreview && <img src={certificatePreview} alt="Vista previa comprimida del certificado" className="h-16 w-24 rounded-lg border border-white/10 object-contain bg-white" />}</div>}
 
       {draft && (
         <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
