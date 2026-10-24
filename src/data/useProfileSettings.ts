@@ -13,6 +13,20 @@ export interface ProfileSettings {
   logoUrl?: string;
 }
 
+const removeUnwantedProfileLabel = (value: unknown): string =>
+  String(value ?? '')
+    .replace(/\s*\[\s*TERAPEUTA\s+CERTIFICADO\s*\]\s*/gi, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+
+const sanitizeProfile = (profile: ProfileSettings): ProfileSettings => ({
+  ...profile,
+  title: removeUnwantedProfileLabel(profile.title),
+  coachTitle: removeUnwantedProfileLabel(profile.coachTitle),
+  bio: removeUnwantedProfileLabel(profile.bio),
+  quote: removeUnwantedProfileLabel(profile.quote),
+});
+
 const DEFAULT_PROFILE: ProfileSettings = {
   name: "Robert Terán",
   title: "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
@@ -29,7 +43,7 @@ export function useProfileSettings() {
     try {
       const saved = localStorage.getItem('coachiso_profile_settings');
       if (saved) {
-        return { ...DEFAULT_PROFILE, ...JSON.parse(saved) };
+        return sanitizeProfile({ ...DEFAULT_PROFILE, ...JSON.parse(saved) });
       }
     } catch (e) {
       console.warn("Error leyendo perfil de localStorage:", e);
@@ -43,7 +57,7 @@ export function useProfileSettings() {
       try {
         const saved = localStorage.getItem('coachiso_profile_settings');
         if (saved) {
-          setProfile({ ...DEFAULT_PROFILE, ...JSON.parse(saved) });
+          setProfile(sanitizeProfile({ ...DEFAULT_PROFILE, ...JSON.parse(saved) }));
         }
       } catch (err) {
         console.warn("Error sincronizando perfil local:", err);
@@ -56,7 +70,7 @@ export function useProfileSettings() {
     const unsub = onSnapshot(doc(db, 'settings', 'profile'), (snap) => {
       if (snap.exists()) {
         const data = snap.data() as ProfileSettings;
-        const merged = { ...DEFAULT_PROFILE, ...data };
+        const merged = sanitizeProfile({ ...DEFAULT_PROFILE, ...data });
         setProfile(merged);
         try {
           localStorage.setItem('coachiso_profile_settings', JSON.stringify(merged));
@@ -79,13 +93,14 @@ export function useProfileSettings() {
   }, []);
 
   const updateProfile = async (newProfile: ProfileSettings) => {
-    setProfile(newProfile);
+    const cleanProfile = sanitizeProfile(newProfile);
+    setProfile(cleanProfile);
     try {
-      localStorage.setItem('coachiso_profile_settings', JSON.stringify(newProfile));
+      localStorage.setItem('coachiso_profile_settings', JSON.stringify(cleanProfile));
     } catch (e) {}
-    window.dispatchEvent(new CustomEvent('profile-updated', { detail: newProfile }));
+    window.dispatchEvent(new CustomEvent('profile-updated', { detail: cleanProfile }));
 
-    await setDoc(doc(db, 'settings', 'profile'), newProfile);
+    await setDoc(doc(db, 'settings', 'profile'), cleanProfile);
   };
 
   return { profile, updateProfile, loading };
