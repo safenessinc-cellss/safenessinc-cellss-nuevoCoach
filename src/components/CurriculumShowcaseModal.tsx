@@ -750,7 +750,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                                   <Award className="w-3 h-3" />
                                 </span>
                                 <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                                  Certificados Verificados
+                                  Certificados y credenciales
                                 </h2>
                               </div>
                               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pl-7">
@@ -774,6 +774,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                                     <div className="min-w-0 flex-1">
                                       <p className="text-[9.5px] font-bold text-gray-900 leading-tight line-clamp-2">{cert.title}</p>
                                       <p className="text-[8px] text-amber-700 font-mono uppercase">{cert.issuer}</p>
+                                      {cert.verified === false && <p className="text-[7px] text-red-700 font-semibold">Pendiente de verificación oficial</p>}
                                     </div>
                                   </div>
                                 ))}
