@@ -37,6 +37,40 @@ async function compressCertificateImage(dataUrl: string): Promise<string> {
   return compressed;
 }
 
+
+async function createCertificateThumbnail(dataUrl: string): Promise<string> {
+  const image = new Image();
+  const imageLoaded = new Promise<void>((resolve, reject) => {
+    image.onload = () => resolve();
+    image.onerror = () => reject(new Error('No se pudo preparar la miniatura del certificado.'));
+  });
+  image.src = dataUrl;
+  await imageLoaded;
+
+  const maxDimension = 360;
+  const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('El navegador no pudo crear la miniatura del certificado.');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  let quality = 0.58;
+  let thumbnail = canvas.toDataURL('image/jpeg', quality);
+  const byteLength = (value: string) => Math.ceil((value.split(',')[1]?.length || 0) * 3 / 4);
+  while (byteLength(thumbnail) > 40_000 && quality > 0.28) {
+    quality -= 0.08;
+    thumbnail = canvas.toDataURL('image/jpeg', quality);
+  }
+  if (byteLength(thumbnail) > 45_000) {
+    throw new Error('No se pudo reducir la miniatura del certificado. Prueba con una foto más pequeña.');
+  }
+  return thumbnail;
+}
+
 export default function CertificateAIImporter() {
   const { addCertificate } = useCertificates();
   const [fileName, setFileName] = useState('');
@@ -73,7 +107,9 @@ export default function CertificateAIImporter() {
       // Compress before sending to the API (avoids the request-body limit) and keep a small preview for the PDF.
       const compressedDataUrl = await compressCertificateImage(dataUrl);
       const result = await analyzeCertificateImage(compressedDataUrl, 'image/jpeg');
-      setCertificatePreview(compressedDataUrl);
+      // Keep only a tiny preview in Firestore; the full-resolution photo is not persisted.
+      const thumbnailDataUrl = await createCertificateThumbnail(compressedDataUrl);
+      setCertificatePreview(thumbnailDataUrl);
       setDraft({ ...result, publicProfileUrl: result.publicProfileUrl || 'https://www.coach-iso.eu/' });
       setNotice({ type: 'success', text: 'Extracción terminada. Revisa y corrige los datos antes de guardar.' });
     } catch (error) {
