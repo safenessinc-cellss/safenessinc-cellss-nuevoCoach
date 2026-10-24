@@ -19,3 +19,6 @@ serviceAccountKey.json
 
 # Local Firebase Functions secrets
 functions/.secret.local
+
+# Compiled Firebase Functions output
+functions/lib/
