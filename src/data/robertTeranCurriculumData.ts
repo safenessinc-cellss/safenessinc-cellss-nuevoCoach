@@ -37,6 +37,8 @@ export interface OfficialCertificate {
   badgeType: string;
   verificationUrl: string;
   featured?: boolean;
+  imageUrl?: string;
+  imageRegistryId?: string;
 }
 
 export interface LearningActivity {
@@ -224,6 +226,7 @@ export const OFFICIAL_CERTIFICATES: OfficialCertificate[] = [
     description: "Demuestra una comprensión fundamental de los conceptos, objetivos y prácticas de ciberseguridad. Incluye grupos de ciberamenazas, tipos de ataques, ingeniería social, estudios de casos, estrategias generales de seguridad, criptografía y enfoques comunes que las organizaciones toman para prevenir, detectar y responder a ciberataques.",
     badgeType: "Credencial Digital de Especialista",
     verificationUrl: "https://www.credly.com/users/deuwy-medina",
+    imageUrl: "/certificados/cybersec-fundamentals.png",
     featured: true
   },
   {
@@ -233,6 +236,7 @@ export const OFFICIAL_CERTIFICATES: OfficialCertificate[] = [
     issuedDate: "22 July 2025",
     category: "ai_data",
     categoryLabel: "IA & Datos",
+    imageUrl: "/certificados/data-fundamentals.png",
     description: "Demuestra conocimientos sobre conceptos de analítica de datos, metodologías y aplicaciones de ciencia de datos, así como las herramientas y lenguajes de programación utilizados en el ecosistema de datos. Comprensión conceptual para limpiar, refinar y visualizar datos utilizando IBM Watson Studio.",
     badgeType: "Credencial Digital de Especialista",
     verificationUrl: "https://www.credly.com/users/deuwy-medina",

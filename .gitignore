@@ -1,8 +1,18 @@
-node_modules/
-build/
-dist/
-coverage/
-.DS_Store
-*.log
-.env*
+
 !.env.example
+# Backups locales
+# Firebase CLI local
+# Secretos (por si acaso)
+*.bak
+*.bak.theme
+*.log
+.DS_Store
+.env*
+.env.local
+.firebase/
+build/
+coverage/
+dist/
+node_modules/
+scripts/migrate-users.mjs
+serviceAccountKey.json

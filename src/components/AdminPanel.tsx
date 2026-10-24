@@ -14,7 +14,7 @@ import {
   CheckCircle, XCircle, Trash2, Loader2, LogOut, ShieldAlert, 
   Search, Filter, GraduationCap, BookOpen, MapPin, Video, Users, 
   Settings, Layers, Plus, Edit2, Copy, ExternalLink, CalendarDays, 
-  ChevronLeft, ChevronRight, UploadCloud, Info, AlertTriangle, ShieldCheck, Bot
+  ChevronLeft, ChevronRight, UploadCloud, Info, AlertTriangle, ShieldCheck, Bot, Palette
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -24,6 +24,7 @@ import {
 } from 'recharts';
 import { Course, Book, Visit, Tutorial, UserProfile, UserRole } from '../types';
 import ImageRegistryManager from './ImageRegistryManager';
+import ThemeEditor from './ThemeEditor';
 import ProfileEditor from './ProfileEditor';
 import CurriculumEditor from './CurriculumEditor';
 import AIDemandAnalyticsDashboard from './AIDemandAnalyticsDashboard';
@@ -79,7 +80,7 @@ function AdminPanel() {
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
   
   // Active Tab State
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
 
   // Domain Collections States
   const [courses, setCourses] = useState<Course[]>([]);
@@ -163,7 +164,7 @@ function AdminPanel() {
   // Derive role properties
   const user = currentUser;
   const currentUserRole: UserRole = currentUser?.role || 'viewer';
-  const isAdmin = currentUser?.role === 'admin';
+  const isAdmin = currentUser?.isAdmin ?? false;
   const is2FAVerified = true;
 
   // Compute permissions
@@ -870,6 +871,7 @@ function AdminPanel() {
             { id: 'users', name: 'Gestión Usuarios', icon: Users },
             { id: 'registry', name: 'Activos ISO', icon: CabinetIconPlaceholder },
             { id: 'curriculum', name: 'Gestor Currículo', icon: FileText },
+            { id: 'theme', name: 'Apariencia', icon: Palette },
             { id: 'profile', name: 'Perfil Público', icon: Settings }
           ].map((item, idx) => {
             const Icon = item.icon as any;
@@ -945,6 +947,7 @@ function AdminPanel() {
               {activeTab === 'users' && 'Colaboradores y Permisos'}
               {activeTab === 'registry' && 'Gestor de Activos ISO'}
               {activeTab === 'curriculum' && 'Gestión y Corrección de Currículo'}
+              {activeTab === 'theme' && 'Apariencia y Colores'}
               {activeTab === 'profile' && 'Configuración del Consultor'}
             </h2>
             <p className="text-sm text-gray-400">
@@ -957,6 +960,7 @@ function AdminPanel() {
               {activeTab === 'users' && 'Control de accesos y roles (Admin, Editor y Viewer).'}
               {activeTab === 'registry' && 'Subidas y organización integrada de diagramas de cumplimiento.'}
               {activeTab === 'curriculum' && 'Modifica datos ejecutivos, trayectoria, métricas y formación del CV.'}
+              {activeTab === 'theme' && 'Personaliza paleta corporativa, modo oscuro y claridad visual del dashboard.'}
               {activeTab === 'profile' && 'Modificar información pública, logo y testimonios.'}
             </p>
           </div>
@@ -1743,8 +1747,14 @@ function AdminPanel() {
                             <td className="p-4 text-gray-400">{usr.email}</td>
                             <td className="p-4">
                               <span className={`text-[10px] font-mono uppercase font-bold px-2 py-0.5 rounded border ${
+                                usr.role === 'superadmin' ? 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20' :
                                 usr.role === 'admin' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                                usr.role === 'supervisor' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
                                 usr.role === 'editor' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                                usr.role === 'colaborador' ? 'bg-teal-500/10 text-teal-400 border-teal-500/20' :
+                                usr.role === 'tlmk' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' :
+                                usr.role === 'cliente' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+                                usr.role === 'pending' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
                                 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                               }`}>{usr.role}</span>
                             </td>
@@ -1778,6 +1788,12 @@ function AdminPanel() {
             {/* =======================================================
                 T8: PUBLIC PROFILE EDITOR TAB
                 ======================================================= */}
+            {activeTab === 'theme' && (
+              <div className="animate-fadeIn">
+                <ThemeEditor />
+              </div>
+            )}
+
             {activeTab === 'profile' && (
               <ProfileEditor />
             )}

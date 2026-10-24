@@ -114,71 +114,90 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
 
   if (!isOpen) return null;
 
-  // Export to PDF function using html2pdf.js with cloned DOM node
+  // Export to PDF robusto (espera fuentes + imágenes, CORS-safe, pagebreak CSS)
   const handleExportPDF = async () => {
     setIsExporting(true);
     let tempContainer: HTMLDivElement | null = null;
     try {
-      // Ensure cv_template tab is selected so #curriculum-cv-document is rendered
       if (activeTab !== 'cv_template') {
         setActiveTab('cv_template');
-        await new Promise((res) => setTimeout(res, 350));
+        await new Promise((r) => setTimeout(r, 450));
+      }
+
+      if (typeof (window as any).html2pdf === 'undefined') {
+        throw new Error('html2pdf.js no está cargado (revisa el <script> CDN en index.html)');
       }
 
       const element = document.getElementById('curriculum-cv-document');
-      if (!element) {
-        throw new Error("Elemento de CV no encontrado en el DOM");
-      }
+      if (!element) throw new Error('Elemento #curriculum-cv-document no encontrado');
 
-      const langCode = (i18n.language || 'es').toUpperCase();
-      const modeName = cvMode === 'synthesis' ? 'Sintesis' : 'Completo';
+      // 1. Esperar fuentes
+      try { await (document as any).fonts?.ready; } catch {}
 
-      // Clone element to an isolated visible node on document body
+      // 2. Clonar y limpiar
       const clone = element.cloneNode(true) as HTMLElement;
-      clone.style.width = '800px';
-      clone.style.maxWidth = '800px';
+      clone.style.width = '820px';
+      clone.style.maxWidth = '820px';
       clone.style.margin = '0 auto';
       clone.style.borderRadius = '0';
       clone.style.boxShadow = 'none';
+      clone.style.background = '#ffffff';
 
       tempContainer = document.createElement('div');
       tempContainer.style.position = 'fixed';
       tempContainer.style.left = '0';
       tempContainer.style.top = '0';
-      tempContainer.style.width = '800px';
+      tempContainer.style.width = '820px';
       tempContainer.style.backgroundColor = '#ffffff';
       tempContainer.style.zIndex = '999999';
       tempContainer.style.overflow = 'visible';
+      tempContainer.style.opacity = '0';
+      tempContainer.style.pointerEvents = 'none';
       tempContainer.appendChild(clone);
       document.body.appendChild(tempContainer);
 
-      await new Promise((res) => setTimeout(res, 300));
+      // 3. Esperar a que TODAS las imágenes del clon carguen (con timeout)
+      const imgs = Array.from(clone.querySelectorAll('img'));
+      await Promise.all(imgs.map((img) => {
+        const el = img as HTMLImageElement;
+        if (el.complete && el.naturalWidth > 0) return Promise.resolve();
+        return new Promise<void>((resolve) => {
+          const done = () => resolve();
+          el.addEventListener('load', done, { once: true });
+          el.addEventListener('error', done, { once: true });
+          setTimeout(done, 4000);
+        });
+      }));
+
+      // 4. Dejar respirar al layout
+      await new Promise((r) => setTimeout(r, 350));
+
+      const langCode = (i18n.language || 'es').toUpperCase();
+      const modeName = cvMode === 'synthesis' ? 'Sintesis' : 'Completo';
 
       const opt = {
-        margin: [5, 5, 5, 5],
+        margin: [10, 10, 10, 10],
         filename: `Curriculum_Robert_Teran_${modeName}_${langCode}.pdf`,
-        image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: { 
-          scale: 2, 
-          useCORS: true, 
-          allowTaint: true, 
+        image: { type: 'jpeg' as const, quality: 0.96 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
           logging: false,
-          scrollY: 0,
           scrollX: 0,
-          windowWidth: 800
+          scrollY: 0,
+          windowWidth: 820,
+          backgroundColor: '#ffffff',
+          removeContainer: true,
         },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const, compress: true },
+        pagebreak: { mode: ['css', 'legacy'], avoid: ['img', '.impact-metric', '.career-role', '.certificate-card'] },
       };
 
-      if (typeof window !== 'undefined' && (window as any).html2pdf) {
-        await (window as any).html2pdf().set(opt).from(clone).save();
-      } else {
-        window.print();
-      }
+      await (window as any).html2pdf().set(opt).from(clone).save();
     } catch (err) {
-      console.warn("Error al exportar PDF con html2pdf, recurriendo a impresión de sistema:", err);
-      window.print();
+      console.error('Error al exportar PDF:', err);
+      alert('No se pudo generar el PDF: ' + (err instanceof Error ? err.message : String(err)));
     } finally {
       if (tempContainer && document.body.contains(tempContainer)) {
         document.body.removeChild(tempContainer);
@@ -713,10 +732,48 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
 
                       </div>
 
-                      {/* Bottom Right Geometric Amber Vector SVG Cutout */}
-                      <svg className="absolute bottom-0 right-0 w-24 h-24 pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-                        <polygon points="100,100 0,100 100,0" fill="#f59e0b" />
-                      </svg>
+                      {/* MINIATURAS DE CERTIFICADOS REALES */}
+                        {(() => {
+                          const withImg = (Array.isArray(OFFICIAL_CERTIFICATES) ? OFFICIAL_CERTIFICATES : [])
+                            .filter((c: any) => c.imageUrl);
+                          const visible = cvMode === 'synthesis'
+                            ? withImg.filter((c: any) => c.featured).slice(0, 6)
+                            : withImg;
+                          if (visible.length === 0) return null;
+                          return (
+                            <div className="space-y-3">
+                              <div className="flex items-center gap-2">
+                                <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                                  <Award className="w-3 h-3" />
+                                </span>
+                                <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
+                                  Certificados Verificados
+                                </h2>
+                              </div>
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pl-7">
+                                {visible.map((cert: any, idx: number) => (
+                                  <div key={`cv-cert-${cert.code || idx}-${idx}`} className="certificate-card flex items-start gap-2 p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <img
+                                      src={cert.imageUrl}
+                                      alt={cert.title}
+                                      className="certificate-thumb shrink-0"
+                                      crossOrigin="anonymous"
+                                      referrerPolicy="no-referrer"
+                                      loading="eager"
+                                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                    />
+                                    <div className="min-w-0 flex-1">
+                                      <p className="text-[9.5px] font-bold text-gray-900 leading-tight line-clamp-2">{cert.title}</p>
+                                      <p className="text-[8px] text-amber-700 font-mono uppercase">{cert.issuer}</p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
+
+                      {anchor}
 
                     </div>
 
@@ -742,6 +799,19 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                       >
                         {cert.featured && (
                           <div className="absolute top-0 right-0 w-2 h-full bg-amber-500" />
+                        )}
+
+                        {cert.imageUrl && (
+                          <div className="mb-3 flex justify-center bg-white/5 rounded-xl p-2 h-24">
+                            <img
+                              src={cert.imageUrl}
+                              alt={cert.title}
+                              className="max-h-full max-w-full object-contain"
+                              crossOrigin="anonymous"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2'; }}
+                            />
+                          </div>
                         )}
 
                         <div>

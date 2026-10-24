@@ -1,97 +1,54 @@
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    
-    // ===============================================================
-    // Roles Helpers
-    // ===============================================================
-    function isAuthenticated() {
-      return request.auth != null;
+  match /databases/{db}/documents {
+    function signedIn() { return request.auth != null; }
+    function userPath() { return /databases/$(db)/documents/users/$(request.auth.uid); }
+    function existsUser() { return signedIn() && exists(userPath()); }
+    function role() { return existsUser() ? get(userPath()).data.get('role', 'pending') : 'pending'; }
+    function status() { return existsUser() ? get(userPath()).data.get('status', 'pending') : 'pending'; }
+    function active() { return signedIn() && status() == 'active'; }
+
+    function isSuperAdmin() {
+      return signedIn() && request.auth.token.email == 'safeness.c.a@gmail.com';
     }
-    
-    function isAdmin() {
-      return isAuthenticated() && (
-        request.auth.token.email == 'safeness.c.a@gmail.com' ||
-        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
-      );
-    }
-    
+    function isAdmin() { return isSuperAdmin() || (active() && role() == 'admin'); }
     function isEditor() {
-      return isAdmin() || (
-        isAuthenticated() && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'editor'
-      );
+      return isAdmin() || (active() && role() in ['editor', 'supervisor']);
     }
-    
     function isViewer() {
-      return isEditor() || (
-        isAuthenticated() && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'viewer'
-      );
+      return active() && role() in ['superadmin','admin','editor','supervisor','colaborador','tlmk','viewer'];
     }
 
-    // ===============================================================
-    // Collection Definitions
-    // ===============================================================
-    
     match /users/{userId} {
-      allow read: if isAuthenticated() && (request.auth.uid == userId || isViewer());
-      allow write: if isAdmin() || request.auth.token.email == 'safeness.c.a@gmail.com';
+      allow read: if signedIn() && (request.auth.uid == userId || isSuperAdmin());
+      allow create: if isSuperAdmin()
+                    || (signedIn() && request.auth.uid == userId
+                        && request.resource.data.role == 'pending'
+                        && request.resource.data.status == 'pending');
+      allow update: if isSuperAdmin();
+      allow delete: if false;
     }
 
-    match /consultations/{consultationId} {
-      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isViewer());
-      allow create: if isAuthenticated();
-      allow update: if isAuthenticated() && (resource.data.uid == request.auth.uid || isEditor());
-      allow delete: if isAdmin();
-    }
-
-    match /courses/{courseId} {
-      allow read: if true;
-      allow write: if isEditor();
-    }
-
-    match /books/{bookId} {
+    match /courses/{id} { allow read: if true; allow write: if isEditor(); }
+    match /books/{id} {
       allow read: if true;
       allow create, delete: if isEditor();
-      allow update: if isEditor() || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['downloadsCount']));
+      allow update: if isEditor() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['downloadsCount']);
     }
+    match /visits/{id} { allow read: if isViewer(); allow write: if isEditor(); }
+    match /tutorials/{id} { allow read: if isViewer(); allow write: if isEditor(); }
+    match /consultations/{id} {
+      allow read: if signedIn() && (resource.data.uid == request.auth.uid || isViewer());
+      allow create: if signedIn();
+      allow update: if signedIn() && (resource.data.uid == request.auth.uid || isEditor());
+      allow delete: if isAdmin();
+    }
+    match /audit_logs/{id} { allow read: if isViewer(); allow create: if signedIn(); }
+    match /mail/{id} { allow read: if isViewer(); allow create: if signedIn(); }
+    match /2fa_sessions/{id} { allow read, write: if signedIn(); }
+    match /image_registry/{id} { allow read: if true; allow write: if isEditor(); }
+    match /settings/{id} { allow read: if true; allow write: if isEditor(); }
 
-    match /visits/{visitId} {
-      allow read: if isViewer();
-      allow write: if isEditor();
-    }
-
-    match /tutorials/{tutorialId} {
-      allow read: if isViewer();
-      allow write: if isEditor();
-    }
-
-    match /audit_logs/{logId} {
-      allow read: if isViewer();
-      allow create: if isAuthenticated();
-    }
-
-    match /mail/{mailId} {
-      allow read: if isViewer();
-      allow create: if isAuthenticated();
-    }
-    
-    match /2fa_sessions/{sessionId} {
-      allow read, write: if isAuthenticated();
-    }
-    
-    match /image_registry/{imageId} {
-      allow read: if true;
-      allow write: if isEditor();
-    }
-
-    match /settings/{settingId} {
-      allow read: if true;
-      allow write: if isEditor();
-    }
+    match /{document=**} { allow read, write: if false; }
   }
 }
