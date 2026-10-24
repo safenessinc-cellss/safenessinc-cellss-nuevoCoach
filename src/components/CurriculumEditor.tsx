@@ -25,7 +25,11 @@ import type { CurriculumMergePreview } from '../ai/geminiClient';
 
 export default function CurriculumEditor() {
   const { curriculumData, updateCurriculum, loading } = useCurriculumSettings();
-  const [formData, setFormData] = useState<CurriculumSettings>(curriculumData);
+  const [formData, setFormData] = useState<CurriculumSettings>(() => ({
+    ...DEFAULT_CURRICULUM_SETTINGS,
+    ...curriculumData,
+    appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(curriculumData.appearance || {}), backgroundColor: '#FFFFFF' }
+  }));
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<'info' | 'metrics' | 'experience' | 'education' | 'training' | 'appearance' | 'languages'>('info');
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -38,7 +42,11 @@ export default function CurriculumEditor() {
 
   useEffect(() => {
     if (curriculumData) {
-      setFormData(curriculumData);
+      setFormData({
+        ...DEFAULT_CURRICULUM_SETTINGS,
+        ...curriculumData,
+        appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(curriculumData.appearance || {}), backgroundColor: curriculumData.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (curriculumData.appearance?.backgroundColor || '#FFFFFF') }
+      });
     }
   }, [curriculumData]);
 
@@ -853,16 +861,30 @@ export default function CurriculumEditor() {
                           ...prev,
                           appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937', ...(prev.appearance || {}), [field]: e.target.value }
                         }))}
-                        className="h-9 w-12 cursor-pointer rounded border border-white/20 bg-transparent"
+                        className="h-10 w-14 cursor-pointer rounded-lg border border-gray-300 bg-white p-1"
+                        style={{ colorScheme: 'light' }}
                         aria-label={label}
                       />
-                      <span className="font-mono text-[10px] uppercase">{formData.appearance?.[field] || fallback}</span>
+                      <input
+                        type="text"
+                        value={formData.appearance?.[field] || fallback}
+                        maxLength={7}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (/^#[0-9A-Fa-f]{6}$/.test(value)) setFormData(prev => ({
+                            ...prev,
+                            appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(prev.appearance || {}), [field]: value.toUpperCase() }
+                          }));
+                        }}
+                        className="w-24 rounded-md border border-white/20 bg-white px-2 py-2 font-mono text-[10px] uppercase text-gray-900"
+                        aria-label={`Código hexadecimal: ${label}`}
+                      />
                     </span>
                   </label>
                 ))}
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Google corporativo</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Google corporativo (fondo blanco)</button>
                 <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Safeness teal</button>
                 <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Azul ejecutivo</button>
               </div>
