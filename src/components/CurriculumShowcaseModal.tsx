@@ -69,6 +69,33 @@ function getIssuerLogoUrl(issuer?: string, logoKey?: string): string | undefined
   return detectedKey ? ISSUER_LOGO_URLS[detectedKey] : undefined;
 }
 
+const PROFESSIONAL_AREA_ORDER = [
+  'Ciberseguridad',
+  'IA y Ciencia de Datos',
+  'Cloud y Computación',
+  'Calidad, Procesos e ISO',
+  'Gestión Ágil y Proyectos',
+  'Liderazgo, Coaching y Soft Skills',
+  'Design Thinking y UX',
+  'Marketing y Ventas',
+  'Desarrollo Web',
+  'Otras áreas profesionales'
+];
+
+function getProfessionalArea(value: { category?: string; categoryLabel?: string; title?: string; issuer?: string }): string {
+  const text = [value.category, value.categoryLabel, value.title, value.issuer].filter(Boolean).join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  if (/cyber|ciberseg|security|seguridad|threat|amenaza|cryptograph|phishing|soc /.test(text)) return 'Ciberseguridad';
+  if (/artificial intelligence|\bai\b|inteligencia artificial|data science|ciencia de datos|data fundamentals|machine learning|watson|analitica|analytics/.test(text)) return 'IA y Ciencia de Datos';
+  if (/cloud|computing|aws|azure|google cloud|network|redes|linux|infrastructure/.test(text)) return 'Cloud y Computación';
+  if (/iso ?9001|iso ?14001|iso ?45001|quality|calidad|lean|six sigma|manufactur|process|proceso|audit|auditor|continuous improvement|mejora continua|supply chain|inventory|inventario/.test(text)) return 'Calidad, Procesos e ISO';
+  if (/agile|scrum|project|proyecto|kanban|pmi|management|gestión de proyectos|product owner/.test(text)) return 'Gestión Ágil y Proyectos';
+  if (/leadership|liderazgo|coach|coaching|communication|comunicacion|personality|soft skill|emotional intelligence|customer engagement|negotiat/.test(text)) return 'Liderazgo, Coaching y Soft Skills';
+  if (/design thinking|ux|user experience|figma|usability|diseño/.test(text)) return 'Design Thinking y UX';
+  if (/marketing|sales|venta|customer|cliente|crm|digital campaign/.test(text)) return 'Marketing y Ventas';
+  if (/web development|desarrollo web|javascript|typescript|html|css|react|programming|programacion|coding/.test(text)) return 'Desarrollo Web';
+  return 'Otras áreas profesionales';
+}
+
 function normalizeActivityKey(title: string): string {
   return title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\|\s*[^|]+$/, '').replace(/\s+l\s+openclassrooms?$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
@@ -120,7 +147,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
-  const cvAppearance = { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937', ...(curriculumData.appearance || {}) };
+  const cvAppearance = { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937', ...(curriculumData.appearance || {}), backgroundColor: curriculumData.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (curriculumData.appearance?.backgroundColor || '#FFFFFF') };
   const { certificates: importedCertificates, loading: certificatesLoading } = useCertificates();
   const savedCurriculumActivities: LearningActivity[] = (Array.isArray(curriculumData.industrialCourses) ? curriculumData.industrialCourses : [])
     .map((item: any, index: number) => {
@@ -201,10 +228,6 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
     ? (Array.isArray(careerRoles) ? careerRoles.slice(0, 2) : [])
     : (Array.isArray(careerRoles) ? careerRoles : []);
 
-  const displayedAccreditations = cvMode === 'synthesis'
-    ? (Array.isArray(accreditationsList) ? accreditationsList.slice(0, 5) : [])
-    : (Array.isArray(accreditationsList) ? accreditationsList : []);
-
   if (!isOpen) return null;
 
   // Export to PDF robusto (espera fuentes + imágenes, CORS-safe, pagebreak CSS)
@@ -235,7 +258,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       clone.style.margin = '0 auto';
       clone.style.borderRadius = '0';
       clone.style.boxShadow = 'none';
-      clone.style.background = '#ffffff';
+      clone.style.background = cvAppearance.backgroundColor;
 
       tempContainer = document.createElement('div');
       tempContainer.style.position = 'fixed';
@@ -326,6 +349,13 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       ] as [string, OfficialCertificate]),
     ).values(),
   );
+  const professionalAreaGroups = PROFESSIONAL_AREA_ORDER.map((area) => {
+    const credentials = allOfficialCertificates.filter((cert) => getProfessionalArea({ category: cert.category, categoryLabel: cert.categoryLabel, title: cert.title, issuer: cert.issuer }) === area);
+    const activities = learningActivities.filter((activity) => getProfessionalArea(activity) === area);
+    return { area, credentials, activities };
+  }).filter((group) => group.credentials.length > 0 || group.activities.length > 0);
+  const credlyHostedCount = allOfficialCertificates.filter((cert) => /credly\.com/i.test(cert.verificationUrl || '') || /credly\.com/i.test(cert.publicProfileUrl || '')).length;
+  const ibmCredentialCount = allOfficialCertificates.filter((cert) => /ibm|skillsbuild/i.test(cert.issuer || '')).length;
   const filteredOfficial = allOfficialCertificates.filter(cert => {
     const matchesSearch = cert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           cert.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -819,26 +849,39 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           </div>
                         </div>
 
-                        {/* CURSOS Y CERTIFICACIONES DESTACADAS */}
+                        {/* ESPECIALIDADES PROFESIONALES AGRUPADAS */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                            <span className="w-5 h-5 rounded-full flex items-center justify-center font-extrabold text-[10px] shrink-0" style={{ backgroundColor: cvAppearance.accentColor, color: '#111827' }}>
                               <Award className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                              {t('curriculum.accreditations_title', 'Acreditaciones & Certificaciones de Calidad')}
+                              {cvMode === 'synthesis' ? 'Áreas de especialización y credenciales' : 'Credenciales por área profesional'}
                             </h2>
                           </div>
-
-                          <div className="flex flex-wrap gap-1.5 pl-7">
-                            {displayedAccreditations.map((course: any, idx: number) => (
-                              <span key={`ind-course-${idx}`} className="text-[9.5px] font-mono font-medium px-2.5 py-1 bg-gray-100 border border-gray-200 text-gray-800 rounded-md">
-                                ✓ {course}
-                              </span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pl-7">
+                            {professionalAreaGroups.map((group) => (
+                              <div key={group.area} className="rounded-lg border border-gray-200 bg-white p-2.5 break-inside-avoid">
+                                <h3 className="text-[10px] font-extrabold text-gray-900">{group.area}</h3>
+                                <p className="mt-1 text-[9px] leading-snug text-gray-700">
+                                  {group.credentials.length > 0 && <><strong>{group.credentials.length}</strong> credencial{group.credentials.length === 1 ? '' : 'es'} verificable{group.credentials.length === 1 ? '' : 's'}</>}
+                                  {group.credentials.length > 0 && group.activities.length > 0 && ' · '}
+                                  {group.activities.length > 0 && <><strong>{group.activities.length}</strong> curso{group.activities.length === 1 ? '' : 's'}/actividad{group.activities.length === 1 ? '' : 'es'}</>}
+                                </p>
+                                {cvMode === 'full' && group.credentials.length > 0 && (
+                                  <p className="mt-1 text-[8px] leading-snug text-gray-600">
+                                    {group.credentials.slice(0, 4).map((cert) => cert.title).join(' · ')}{group.credentials.length > 4 ? ' · y más' : ''}
+                                  </p>
+                                )}
+                              </div>
                             ))}
                           </div>
+                          {cvMode === 'synthesis' && (
+                            <p className="pl-7 text-[8.5px] text-gray-600">
+                              {credlyHostedCount} credenciales vinculadas al perfil Credly{ibmCredentialCount > 0 ? ` · ${ibmCredentialCount} emitidas por IBM SkillsBuild` : ''}.
+                            </p>
+                          )}
                         </div>
-
                       </div>
 
                       {/* MINIATURAS DE CERTIFICADOS REALES */}
@@ -895,15 +938,26 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                               <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">Historial completo de formación y actividades</h2>
                             </div>
                             <p className="pl-7 text-[8.5px] text-gray-600">{learningActivities.length} registros únicos consolidados. Los cursos, módulos, vídeos, artículos y planes se distinguen de las credenciales oficiales; la inclusión en este historial no acredita por sí misma una certificación.</p>
-                            <div className="pl-7 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
-                              {learningActivities.map((activity, idx) => (
-                                <div key={`cv-training-${activity.code || idx}-${idx}`} className="border-b border-gray-200 py-1 text-[8px] leading-tight flex justify-between gap-2">
-                                  <div className="min-w-0 flex-1">
-                                    <p className="font-bold text-gray-900">{activity.title}</p>
-                                    <p className="text-gray-600">{activity.issuer || 'Fuente no especificada'} · {activity.category || 'Otros recursos formativos'}</p>
-                                  </div>
-                                  <span className="text-gray-500 whitespace-nowrap">{activity.completedDate || ''}</span>
-                                </div>
+                            <div className="pl-7 space-y-4">
+                              {professionalAreaGroups.map((group) => (
+                                <section key={`training-area-${group.area}`} className="break-inside-avoid">
+                                  <h3 className="border-b border-gray-300 pb-1 text-[10px] font-extrabold uppercase tracking-wide text-gray-800">
+                                    {group.area} <span className="font-medium normal-case text-gray-500">({group.activities.length} cursos/actividades · {group.credentials.length} credenciales)</span>
+                                  </h3>
+                                  {group.activities.length > 0 ? (
+                                    <div className="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                                      {group.activities.map((activity, idx) => (
+                                        <div key={`cv-training-${group.area}-${activity.code || idx}-${idx}`} className="border-b border-gray-200 py-1 text-[8px] leading-tight flex justify-between gap-2">
+                                          <div className="min-w-0 flex-1">
+                                            <p className="font-bold text-gray-900">{activity.title}</p>
+                                            <p className="text-gray-600">{activity.issuer || 'Fuente no especificada'} · {activity.category || group.area}</p>
+                                          </div>
+                                          <span className="text-gray-500 whitespace-nowrap">{activity.completedDate || ''}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : <p className="mt-1 text-[8px] text-gray-500">Sin actividades formativas detalladas en esta área.</p>}
+                                </section>
                               ))}
                             </div>
                           </div>
