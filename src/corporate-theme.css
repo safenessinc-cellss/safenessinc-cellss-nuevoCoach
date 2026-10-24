@@ -1,0 +1,145 @@
+/* Coach ISO — corporate light theme
+   White surfaces, charcoal typography, subtle borders and restrained blue accents. */
+:root {
+  color-scheme: light;
+  --theme-bg-base: #ffffff;
+  --theme-bg-surface: #ffffff;
+  --theme-bg-panel: #f8f9fa;
+  --theme-bg-section: #f8f9fa;
+  --theme-accent: #1a73e8;
+  --theme-accent-2: #188038;
+  --theme-accent-3: #a142f4;
+  --theme-text: #202124;
+  --theme-text-muted: #5f6368;
+  --theme-border: #dadce0;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #202124 !important;
+}
+
+body {
+  font-family: Inter, Arial, sans-serif;
+}
+
+/* Replace the previous dark/neon surfaces across every route. */
+.glass,
+.futuristic-card,
+[class*="bg-[#03050C"],
+[class*="bg-[#050505"],
+[class*="bg-[#050814"],
+[class*="bg-[#0a0a0a"],
+[class*="bg-[#090D1A"],
+[class*="bg-[#0A1628"],
+[class*="bg-[#0F1F35"],
+[class*="bg-[#152238"],
+[class*="bg-slate-950"],
+[class*="bg-slate-900"],
+[class*="bg-gray-950"],
+[class*="bg-gray-900"],
+[class*="bg-zinc-950"],
+[class*="bg-zinc-900"],
+[class*="bg-neutral-950"],
+[class*="bg-neutral-900"] {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #202124 !important;
+  border-color: #dadce0 !important;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.08) !important;
+  backdrop-filter: none !important;
+}
+
+/* Ensure text that was designed for dark backgrounds remains readable. */
+.text-white,
+.text-slate-50,
+.text-slate-100,
+.text-slate-200,
+.text-gray-100,
+.text-gray-200,
+.text-zinc-100,
+.text-zinc-200,
+.text-neutral-100,
+.text-neutral-200,
+[class*="text-[#E2E8F0"],
+[class*="text-[#F1F5F9"],
+[class*="text-[#ECFEFF"],
+[class*="text-[#94A3B8"],
+[class*="text-[#64748B"] {
+  color: #202124 !important;
+}
+
+.text-gray-300,
+.text-gray-400,
+.text-slate-300,
+.text-slate-400,
+.text-zinc-300,
+.text-zinc-400 {
+  color: #5f6368 !important;
+}
+
+/* Calm, consistent controls and data-entry surfaces. */
+input,
+textarea,
+select {
+  color: #202124;
+  background-color: #ffffff;
+  border-color: #dadce0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #80868b;
+}
+
+table {
+  border-color: #dadce0;
+}
+
+hr {
+  border-color: #dadce0;
+}
+
+/* Keep the accent restrained and accessible instead of neon. */
+.text-\[\#00F0FF\],
+.text-\[\#FF007A\] {
+  color: #1a73e8 !important;
+}
+
+.bg-\[\#00F0FF\],
+.bg-\[\#FF007A\] {
+  background-color: #1a73e8 !important;
+  color: #ffffff !important;
+}
+
+.border-\[\#00F0FF\],
+.border-\[\#FF007A\] {
+  border-color: #1a73e8 !important;
+}
+
+.futuristic-card::before {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* White text remains white on intentional blue primary actions and user messages. */
+.bg-blue-600.text-white,
+.bg-blue-700.text-white,
+button.bg-blue-600,
+button.bg-blue-700 {
+  color: #ffffff !important;
+}
