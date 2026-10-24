@@ -21,6 +21,7 @@ export default function PublicCurriculumPage() {
     <main className="min-h-screen bg-[#06050a]">
       <CurriculumShowcaseModal
         isOpen
+        initialTab="cv_template"
         onClose={() => navigate('/')}
       />
     </main>
