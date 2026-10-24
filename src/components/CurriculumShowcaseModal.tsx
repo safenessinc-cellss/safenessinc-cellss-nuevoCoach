@@ -395,12 +395,12 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative z-10 w-full max-w-6xl bg-[#09080e] border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94vh] print:max-h-none print:bg-white print:border-none print:shadow-none print:rounded-none"
+            className="relative z-10 w-full max-w-6xl bg-white border border-gray-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[94vh] print:max-h-none print:bg-white print:border-none print:shadow-none print:rounded-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Banner */}
-            <div className="bg-gradient-to-r from-red-950/40 via-amber-950/30 to-black p-4 sm:p-6 border-b border-white/10 relative overflow-hidden shrink-0 print:hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 blur-3xl rounded-full pointer-events-none" />
+            <div className="bg-gradient-to-r from-blue-50 via-white to-green-50 p-4 sm:p-6 border-b border-gray-200 relative overflow-hidden shrink-0 print:hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 blur-3xl rounded-full pointer-events-none" />
 
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
                 <div className="flex items-center gap-4">
@@ -441,7 +441,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   {/* Print Button */}
                   <button
                     onClick={handlePrint}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 hover:text-white rounded-xl text-xs font-mono flex items-center gap-2 transition cursor-pointer"
+                    className="p-2.5 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 hover:text-blue-700 rounded-xl text-xs font-mono flex items-center gap-2 transition cursor-pointer"
                     title={t('curriculum.print', 'Imprimir')}
                   >
                     <Printer className="w-4 h-4 text-amber-400" />
@@ -452,7 +452,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                     href={credlyProfile}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-300 hover:text-amber-400 text-xs font-mono flex items-center gap-2 transition"
+                    className="p-2.5 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl text-gray-700 hover:text-blue-700 text-xs font-mono flex items-center gap-2 transition"
                   >
                     <span>Credly</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -460,7 +460,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
                   <button
                     onClick={onClose}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-xl transition border border-white/10 cursor-pointer"
+                    className="p-2.5 bg-white hover:bg-gray-50 text-gray-600 hover:text-blue-700 rounded-xl transition border border-gray-200 cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -468,13 +468,13 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
               </div>
 
               {/* Navigation Tabs */}
-              <div className="flex flex-wrap gap-2 mt-4 border-t border-white/10 pt-3">
+              <div className="flex flex-wrap gap-2 mt-4 border-t border-gray-200 pt-3">
                 <button
                   onClick={() => setActiveTab('official_certificates')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                     activeTab === 'official_certificates'
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-700'
                   }`}
                 >
                   <Award className="w-4 h-4" />
@@ -485,8 +485,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   onClick={() => setActiveTab('all_activities')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                     activeTab === 'all_activities'
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-700'
                   }`}
                 >
                   <Layers className="w-4 h-4" />
@@ -497,8 +497,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   onClick={() => setActiveTab('cv_template')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                     activeTab === 'cv_template'
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-700'
                   }`}
                 >
                   <FileText className="w-4 h-4" />
@@ -509,8 +509,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   onClick={() => setActiveTab('bio')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
                     activeTab === 'bio'
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-700'
                   }`}
                 >
                   <User className="w-4 h-4" />
@@ -521,7 +521,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
             {/* Filter & Search Bar (Only shown for lists) */}
             {(activeTab === 'official_certificates' || activeTab === 'all_activities') && (
-              <div className="p-4 px-6 bg-[#0f0e16] border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between items-center shrink-0 print:hidden">
+              <div className="p-4 px-6 bg-white border-b border-gray-200 flex flex-col sm:flex-row gap-4 justify-between items-center shrink-0 print:hidden">
                 {/* Search Input */}
                 <div className="relative w-full sm:w-80">
                   <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -530,7 +530,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Buscar por código (ID) o título..."
-                    className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 font-mono"
+                    className="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-4 py-2 text-xs text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 font-mono"
                   />
                   {searchQuery && (
                     <button
@@ -549,7 +549,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-gray-300 focus:outline-none focus:border-amber-500 font-mono"
+                      className="bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 font-mono"
                     >
                       {categories.map((c, idx) => (
                         <option key={`curr-cat-${c.id || idx}-${idx}`} value={c.id}>
@@ -563,26 +563,26 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
             )}
 
             {/* Scrollable Content Body */}
-            <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#06050a] print:bg-white print:p-0">
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-gray-50 print:bg-white print:p-0">
               
               {/* TAB 0: EXECUTIVE CV TEMPLATE MATCHING THE DESIGN IN THE IMAGE */}
               {activeTab === 'cv_template' && (
                 <div className="flex flex-col items-center">
                   
                   {/* Floating Actions Bar with Mode Selector & Language Switcher */}
-                  <div className="w-full max-w-[820px] mb-4 flex flex-col md:flex-row justify-between items-center gap-3 text-xs font-mono text-gray-400 bg-[#12101a] p-3 sm:p-4 rounded-2xl border border-white/10 print:hidden shadow-xl">
+                  <div className="w-full max-w-[820px] mb-4 flex flex-col md:flex-row justify-between items-center gap-3 text-xs font-mono text-gray-600 bg-white p-3 sm:p-4 rounded-2xl border border-gray-200 print:hidden shadow-sm">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-amber-400 font-bold flex items-center gap-1.5">
+                      <span className="text-blue-700 font-bold flex items-center gap-1.5">
                         <FileText className="w-4 h-4" />
                         <span>{t('curriculum.mode_label', 'Formato de Exportación:')}</span>
                       </span>
-                      <div className="inline-flex rounded-xl bg-black/60 p-1 border border-white/10">
+                      <div className="inline-flex rounded-xl bg-gray-100 p-1 border border-gray-200">
                         <button
                           onClick={() => setCvMode('synthesis')}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                             cvMode === 'synthesis'
-                              ? 'bg-amber-500 text-black shadow-md'
-                              : 'text-gray-400 hover:text-white'
+                              ? 'bg-blue-600 text-white shadow-sm'
+                              : 'text-gray-600 hover:text-blue-700'
                           }`}
                         >
                           <FileText className="w-3.5 h-3.5" />
@@ -592,8 +592,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           onClick={() => setCvMode('full')}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                             cvMode === 'full'
-                              ? 'bg-amber-500 text-black shadow-md'
-                              : 'text-gray-400 hover:text-white'
+                              ? 'bg-blue-600 text-white shadow-sm'
+                              : 'text-gray-600 hover:text-blue-700'
                           }`}
                         >
                           <BookOpen className="w-3.5 h-3.5" />
@@ -608,14 +608,14 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                       <button
                         onClick={handleExportPDF}
                         disabled={isExporting}
-                        className="px-3.5 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-md disabled:opacity-50"
+                        className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-sm disabled:opacity-50"
                       >
                         <Download className={`w-3.5 h-3.5 ${isExporting ? 'animate-bounce' : ''}`} />
                         <span>{isExporting ? 'Generando...' : t('curriculum.export', 'Exportar PDF')}</span>
                       </button>
                       <button
                         onClick={handlePrint}
-                        className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
+                        className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
                       >
                         <Printer className="w-3.5 h-3.5 text-amber-400" />
                         <span>{t('curriculum.print', 'Imprimir')}</span>
