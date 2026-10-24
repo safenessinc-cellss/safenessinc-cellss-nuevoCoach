@@ -29,6 +29,7 @@ import ProfileEditor from './ProfileEditor';
 import CurriculumEditor from './CurriculumEditor';
 import AIDemandAnalyticsDashboard from './AIDemandAnalyticsDashboard';
 import CertificateAIImporter from './CertificateAIImporter';
+import AdminAssistantChat from './AdminAssistantChat';
 
 // Operation Types for Audit and Errors
 enum OperationType {
@@ -81,7 +82,7 @@ function AdminPanel() {
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
   
   // Active Tab State
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'ai_curriculum' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'ai_curriculum' | 'ai_assistant' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
 
   // Domain Collections States
   const [courses, setCourses] = useState<Course[]>([]);
@@ -851,6 +852,7 @@ function AdminPanel() {
             { id: 'dashboard', name: 'Dashboard', icon: Layers },
             { id: 'ai_demand', name: 'Demanda & IA', icon: Bot },
             { id: 'ai_curriculum', name: 'IA Currículo', icon: Sparkles },
+            { id: 'ai_assistant', name: 'Asistente Admin', icon: Bot },
             { id: 'courses', name: 'Cursos', icon: GraduationCap },
             { id: 'books', name: 'Libros y PDF', icon: BookOpen },
             { id: 'visits', name: 'Visitas Onsite', icon: MapPin },
@@ -928,6 +930,7 @@ function AdminPanel() {
               {activeTab === 'dashboard' && 'Panel General y Analytics'}
               {activeTab === 'ai_demand' && 'Análisis de Demanda & Actividad IA'}
               {activeTab === 'ai_curriculum' && 'Importación asistida de certificados'}
+              {activeTab === 'ai_assistant' && 'Asistente de Administración'}
               {activeTab === 'courses' && 'Gestión de Cursos'}
               {activeTab === 'books' && 'Librería Digital & PDFs'}
               {activeTab === 'visits' && 'Agenda de Visitas Presenciales'}
@@ -942,6 +945,7 @@ function AdminPanel() {
               {activeTab === 'dashboard' && 'Rendimiento general y próximas actividades.'}
               {activeTab === 'ai_demand' && 'Visualización en tiempo real con Recharts de consultas a la IA, servicios ISO más solicitados y sesiones agendadas.'}
               {activeTab === 'ai_curriculum' && 'Extrae datos de imágenes, revisa cada campo y guarda credenciales sin marcarlas como verificadas.'}
+              {activeTab === 'ai_assistant' && 'Conversa con el asistente interno para analizar tareas y preparar operaciones del panel.'}
               {activeTab === 'courses' && 'Administración de programas educativos presenciales y digitales.'}
               {activeTab === 'books' && 'Gestor de libros técnicos, descargables e indicadores.'}
               {activeTab === 'visits' && 'Planificación semanal de auditorías físicas en plantas de clientes.'}
@@ -998,6 +1002,8 @@ function AdminPanel() {
             transition={{ duration: 0.15 }}
           >
             
+            {activeTab === 'ai_assistant' && <AdminAssistantChat />}
+
             {/* =======================================================
                 T1: DASHBOARD GENERAL
                 ======================================================= */}
