@@ -105,6 +105,40 @@ app.post(['/chat', '/api/chat'], async (req: Request, res: Response) => {
   }
 });
 
+
+app.post(['/admin-assistant', '/api/admin-assistant'], requireStaff, async (req: AuthedRequest, res: Response) => {
+  const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
+  const history = Array.isArray(req.body?.history) ? req.body.history : [];
+  if (!message || message.length > 4000) {
+    res.status(400).json({ error: 'El mensaje debe contener entre 1 y 4000 caracteres.' });
+    return;
+  }
+
+  const safeHistory = history.slice(-12).flatMap((item: unknown) => {
+    if (!item || typeof item !== 'object') return [];
+    const entry = item as { role?: unknown; text?: unknown };
+    if ((entry.role !== 'user' && entry.role !== 'model') || typeof entry.text !== 'string') return [];
+    return [{ role: entry.role, parts: [{ text: entry.text.slice(0, 4000) }] }];
+  });
+
+  try {
+    const ai = new GoogleGenAI({ apiKey: geminiApiKey.value() });
+    const response = await ai.models.generateContent({
+      model: 'gemini-flash-latest',
+      contents: [...safeHistory, { role: 'user', parts: [{ text: message }] }],
+      config: {
+        systemInstruction: `Eres el asistente interno de administración de Coach ISO. Ayudas al personal autorizado a comprender el panel, planificar tareas, analizar problemas y preparar cambios de manera profesional. El usuario autenticado es ${req.authEmail || 'personal autorizado'}. No afirmes que has cambiado datos, ejecutado comandos, publicado software ni realizado acciones externas: este endpoint solo permite conversar. No solicites ni reveles secretos, contraseñas o claves API. Para operaciones que cambien datos, explica qué acción haría falta y que deberá implementarse con permisos explícitos, registro de auditoría y confirmación. Si falta información del sistema, dilo claramente y no inventes cifras, registros ni estados.`,
+        temperature: 0.25,
+        maxOutputTokens: 900,
+      },
+    });
+    res.json({ text: response.text || 'No pude generar una respuesta. Inténtalo de nuevo.' });
+  } catch (error) {
+    console.error('Admin assistant failed', error instanceof Error ? error.message : error);
+    res.status(502).json({ error: 'El asistente administrativo no está disponible temporalmente.' });
+  }
+});
+
 const categories = ['cybersecurity', 'ai_data', 'design_thinking', 'cloud', 'project_agile', 'marketing', 'professional_skills', 'web_dev'] as const;
 const categoryLabels: Record<typeof categories[number], string> = {
   cybersecurity: 'Ciberseguridad', ai_data: 'IA & Datos', design_thinking: 'Design Thinking & UX',
