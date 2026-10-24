@@ -112,25 +112,7 @@ export default function SchedulingPage() {
         createdAt: serverTimestamp()
       });
 
-      // Simular notificación por email a ambos: admin y cliente
-      try {
-        await addDoc(collection(db, 'mail'), {
-          to: formData.email,
-          message: {
-            subject: 'Confirmación de solicitud de consultoría',
-            html: `<p>Hola ${formData.name},</p><p>Hemos recibido tu solicitud para el ${formData.date} a las ${formData.time}. Pronto validaremos la disponibilidad.</p>`
-          }
-        });
-        await addDoc(collection(db, 'mail'), {
-          to: 'safeness.c.a@gmail.com', // Admin email
-          message: {
-            subject: 'Nueva solicitud de consultoría',
-            html: `<p>Tienes una nueva solicitud de consultoría de ${formData.name} (${formData.email}) para el ${formData.date}.</p>`
-          }
-        });
-      } catch (emailErr) {
-        console.error("Error scheduling email", emailErr);
-      }
+      // Las notificaciones se envían desde una función de confianza al crear la solicitud.
       
       setStatus('success');
     } catch (error: any) {
