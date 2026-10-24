@@ -40,8 +40,7 @@ function mergeList(base: any[], incoming: any[], keyFn: (item: any) => string): 
       result.set(key, item);
       return;
     }
-
-    // Never let an older document silently overwrite a populated master-curriculum field.
+    // Preserve populated master-curriculum fields and combine unique text-array details.
     const merged = { ...item, ...previous };
     for (const [field, value] of Object.entries(item)) {
       if (!hasValue(merged[field]) && hasValue(value)) merged[field] = value;
