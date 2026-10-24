@@ -738,10 +738,9 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
 
                       {/* MINIATURAS DE CERTIFICADOS REALES */}
                         {(() => {
-                          const withImg = (Array.isArray(allOfficialCertificates) ? allOfficialCertificates : [])
-                            .filter((c: any) => c.imageUrl || c.imageDataUrl);
+                          const withImg = Array.isArray(allOfficialCertificates) ? allOfficialCertificates : [];
                           const visible = cvMode === 'synthesis'
-                            ? withImg.filter((c: any) => c.featured).slice(0, 6)
+                            ? withImg.filter((c: any) => c.featured || c.imageDataUrl).slice(0, 6)
                             : withImg;
                           if (visible.length === 0) return null;
                           return (
@@ -757,15 +756,21 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pl-7">
                                 {visible.map((cert: any, idx: number) => (
                                   <div key={`cv-cert-${cert.code || idx}-${idx}`} className="certificate-card flex items-start gap-2 p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
-                                    <img
-                                      src={cert.imageDataUrl || cert.imageUrl}
-                                      alt={cert.title}
-                                      className="certificate-thumb shrink-0"
-                                      crossOrigin="anonymous"
-                                      referrerPolicy="no-referrer"
-                                      loading="eager"
-                                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                                    />
+                                    {(cert.imageDataUrl || cert.imageUrl) ? (
+                                      <img
+                                        src={cert.imageDataUrl || cert.imageUrl}
+                                        alt={cert.title}
+                                        className="certificate-thumb shrink-0"
+                                        crossOrigin="anonymous"
+                                        referrerPolicy="no-referrer"
+                                        loading="eager"
+                                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                      />
+                                    ) : (
+                                      <div className="certificate-thumb shrink-0 flex items-center justify-center rounded bg-white border border-gray-200 text-[9px] font-black text-blue-700">
+                                        {String(cert.issuer || 'CERT').toLowerCase().includes('ibm') ? 'IBM' : String(cert.issuer || 'CERT').slice(0, 4).toUpperCase()}
+                                      </div>
+                                    )}
                                     <div className="min-w-0 flex-1">
                                       <p className="text-[9.5px] font-bold text-gray-900 leading-tight line-clamp-2">{cert.title}</p>
                                       <p className="text-[8px] text-amber-700 font-mono uppercase">{cert.issuer}</p>
