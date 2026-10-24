@@ -115,7 +115,13 @@ export default function CurriculumEditor() {
         careerRoles: formData.careerRoles,
         educationItems: formData.educationItems,
         languagesList: formData.languagesList,
-        industrialCourses: formData.industrialCourses,
+        industrialCourses: formData.industrialCourses.map((course: any) => ({
+          title: String(course?.title || course?.name || course?.course || ''),
+          code: String(course?.code || ''),
+          issuer: String(course?.issuer || course?.institution || course?.provider || ''),
+          category: String(course?.category || course?.categoryLabel || ''),
+          completedDate: String(course?.completedDate || course?.date || ''),
+        })).filter((course: any) => course.title),
       };
       const certificates = OFFICIAL_CERTIFICATES.map(({ title, issuer, category, categoryLabel, description, issuedDate }) => ({ title, issuer, category, categoryLabel, description, issuedDate }));
       setAnalysisPreview(await analyzeCurriculumPresentation(safeCurriculum, certificates));
