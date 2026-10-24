@@ -38,6 +38,9 @@ export interface OfficialCertificate {
   verificationUrl: string;
   featured?: boolean;
   imageUrl?: string;
+  imageDataUrl?: string;
+  publicProfileUrl?: string;
+  verified?: boolean;
   imageRegistryId?: string;
 }
 
