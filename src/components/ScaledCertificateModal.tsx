@@ -282,15 +282,15 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
                 {/* Verification QR / Link */}
                 <div className="text-right space-y-1">
                   <span className={`text-[10px] uppercase font-mono block ${theme === 'luxury_dark' ? 'text-gray-500' : 'text-slate-500'}`}>
-                    Verificación Credly
+                    {officialCert?.verificationUrl ? 'Enlace de la credencial' : officialCert?.publicProfileUrl ? 'Ficha pública Coach ISO' : 'Perfil Credly'}
                   </span>
                   <a
-                    href={CANDIDATE_INFO.credlyProfile}
+                    href={officialCert?.verificationUrl || officialCert?.publicProfileUrl || CANDIDATE_INFO.credlyProfile}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-xs font-bold text-amber-500 hover:underline font-mono"
                   >
-                    <span>credly.com/users</span>
+                    <span>{officialCert?.verificationUrl ? 'Abrir enlace' : officialCert?.publicProfileUrl ? 'coach-iso.eu' : 'credly.com/users'}</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>

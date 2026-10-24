@@ -41,19 +41,20 @@ import ScaledCertificateModal from './ScaledCertificateModal';
 interface CurriculumShowcaseModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialTab?: 'cv_template' | 'official_certificates' | 'all_activities' | 'bio';
 }
 
-function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
+function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certificates' }: CurriculumShowcaseModalProps) {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('official_certificates');
+  const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
-  const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('synthesis');
+  const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('full');
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
-  const { certificates: importedCertificates } = useCertificates();
+  const { certificates: importedCertificates, loading: certificatesLoading } = useCertificates();
   const profilePhotoUrl = profile.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
 
   // Selected certificate for scaled modal viewer
@@ -126,8 +127,9 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
         await new Promise((r) => setTimeout(r, 450));
       }
 
-      if (typeof (window as any).html2pdf === 'undefined') {
-        throw new Error('html2pdf.js no está cargado (revisa el <script> CDN en index.html)');
+      const html2pdfFactory = (window as any).html2pdf || html2pdf;
+      if (typeof html2pdfFactory !== 'function') {
+        throw new Error('No se pudo inicializar el generador de PDF. Recarga la página e inténtalo de nuevo.');
       }
 
       const element = document.getElementById('curriculum-cv-document');
@@ -196,7 +198,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
         pagebreak: { mode: ['css', 'legacy'], avoid: ['img', '.impact-metric', '.career-role', '.certificate-card'] },
       };
 
-      await (window as any).html2pdf().set(opt).from(clone).save();
+      await html2pdfFactory().set(opt).from(clone).save();
     } catch (err) {
       console.error('Error al exportar PDF:', err);
       alert('No se pudo generar el PDF: ' + (err instanceof Error ? err.message : String(err)));
@@ -226,7 +228,14 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
   ];
 
   // Filtered Official Certificates
-  const allOfficialCertificates: OfficialCertificate[] = [...importedCertificates, ...OFFICIAL_CERTIFICATES];
+  const allOfficialCertificates: OfficialCertificate[] = Array.from(
+    new Map<string, OfficialCertificate>(
+      [...OFFICIAL_CERTIFICATES, ...importedCertificates].map((cert) => [
+        (cert.code?.trim().toLowerCase() || `${cert.issuer}|${cert.title}`.toLowerCase()),
+        cert,
+      ] as [string, OfficialCertificate]),
+    ).values(),
+  );
   const filteredOfficial = allOfficialCertificates.filter(cert => {
     const matchesSearch = cert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           cert.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -294,7 +303,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                   {/* Export PDF Button */}
                   <button
                     onClick={handleExportPDF}
-                    disabled={isExporting}
+                    disabled={isExporting || certificatesLoading}
                     className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
                   >
                     <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
@@ -737,10 +746,9 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
 
                       {/* MINIATURAS DE CERTIFICADOS REALES */}
                         {(() => {
-                          const withImg = (Array.isArray(OFFICIAL_CERTIFICATES) ? OFFICIAL_CERTIFICATES : [])
-                            .filter((c: any) => c.imageUrl);
+                          const withImg = Array.isArray(allOfficialCertificates) ? allOfficialCertificates : [];
                           const visible = cvMode === 'synthesis'
-                            ? withImg.filter((c: any) => c.featured).slice(0, 6)
+                            ? withImg.filter((c: any) => c.featured || c.imageDataUrl).slice(0, 6)
                             : withImg;
                           if (visible.length === 0) return null;
                           return (
@@ -750,24 +758,31 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                                   <Award className="w-3 h-3" />
                                 </span>
                                 <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
-                                  Certificados Verificados
+                                  Certificados y credenciales
                                 </h2>
                               </div>
                               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pl-7">
                                 {visible.map((cert: any, idx: number) => (
                                   <div key={`cv-cert-${cert.code || idx}-${idx}`} className="certificate-card flex items-start gap-2 p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
-                                    <img
-                                      src={cert.imageUrl}
-                                      alt={cert.title}
-                                      className="certificate-thumb shrink-0"
-                                      crossOrigin="anonymous"
-                                      referrerPolicy="no-referrer"
-                                      loading="eager"
-                                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                                    />
+                                    {(cert.imageDataUrl || cert.imageUrl) ? (
+                                      <img
+                                        src={cert.imageDataUrl || cert.imageUrl}
+                                        alt={cert.title}
+                                        className="certificate-thumb shrink-0"
+                                        crossOrigin="anonymous"
+                                        referrerPolicy="no-referrer"
+                                        loading="eager"
+                                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                      />
+                                    ) : (
+                                      <div className="certificate-thumb shrink-0 flex items-center justify-center rounded bg-white border border-gray-200 text-[9px] font-black text-blue-700">
+                                        {String(cert.issuer || 'CERT').toLowerCase().includes('ibm') ? 'IBM' : String(cert.issuer || 'CERT').slice(0, 4).toUpperCase()}
+                                      </div>
+                                    )}
                                     <div className="min-w-0 flex-1">
                                       <p className="text-[9.5px] font-bold text-gray-900 leading-tight line-clamp-2">{cert.title}</p>
                                       <p className="text-[8px] text-amber-700 font-mono uppercase">{cert.issuer}</p>
+                                      {cert.verified === false && <p className="text-[7px] text-red-700 font-semibold">Pendiente de verificación oficial</p>}
                                     </div>
                                   </div>
                                 ))}
@@ -802,10 +817,10 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                           <div className="absolute top-0 right-0 w-2 h-full bg-amber-500" />
                         )}
 
-                        {cert.imageUrl && (
+                        {(cert.imageDataUrl || cert.imageUrl) && (
                           <div className="mb-3 flex justify-center bg-white/5 rounded-xl p-2 h-24">
                             <img
-                              src={cert.imageUrl}
+                              src={cert.imageDataUrl || cert.imageUrl}
                               alt={cert.title}
                               className="max-h-full max-w-full object-contain"
                               crossOrigin="anonymous"
@@ -991,7 +1006,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                   className="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-5 py-2 rounded-xl transition flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
                 >
                   <Download className="w-4 h-4" />
-                  <span>{isExporting ? 'Exportando...' : 'Descargar CV (PDF)'}</span>
+                  <span>{certificatesLoading ? 'Cargando credenciales...' : isExporting ? 'Exportando...' : 'Descargar CV (PDF)'}</span>
                 </button>
                 <button
                   onClick={onClose}

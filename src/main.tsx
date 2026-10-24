@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import SchedulingPage from './pages/SchedulingPage';
+import PublicCurriculumPage from './pages/PublicCurriculumPage';
 import AdminPanel from './components/AdminPanel';
 import ClauseViewer from './components/ClauseViewer';
 import LoginPage from './pages/LoginPage';
@@ -22,6 +23,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<App />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/agendar" element={<SchedulingPage />} />
+            <Route path="/curriculo" element={<PublicCurriculumPage />} />
+            <Route path="/resume" element={<PublicCurriculumPage />} />
             <Route path="/admin" element={
               <ProtectedRoute allowedRoles={['superadmin', 'admin']}>
                 <AdminPanel />
