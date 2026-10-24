@@ -49,7 +49,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
-  const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('synthesis');
+  const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('full');
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
@@ -126,8 +126,9 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
         await new Promise((r) => setTimeout(r, 450));
       }
 
-      if (typeof (window as any).html2pdf === 'undefined') {
-        throw new Error('html2pdf.js no está cargado (revisa el <script> CDN en index.html)');
+      const html2pdfFactory = (window as any).html2pdf || html2pdf;
+      if (typeof html2pdfFactory !== 'function') {
+        throw new Error('No se pudo inicializar el generador de PDF. Recarga la página e inténtalo de nuevo.');
       }
 
       const element = document.getElementById('curriculum-cv-document');
@@ -196,7 +197,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
         pagebreak: { mode: ['css', 'legacy'], avoid: ['img', '.impact-metric', '.career-role', '.certificate-card'] },
       };
 
-      await (window as any).html2pdf().set(opt).from(clone).save();
+      await html2pdfFactory().set(opt).from(clone).save();
     } catch (err) {
       console.error('Error al exportar PDF:', err);
       alert('No se pudo generar el PDF: ' + (err instanceof Error ? err.message : String(err)));
@@ -737,8 +738,8 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
 
                       {/* MINIATURAS DE CERTIFICADOS REALES */}
                         {(() => {
-                          const withImg = (Array.isArray(OFFICIAL_CERTIFICATES) ? OFFICIAL_CERTIFICATES : [])
-                            .filter((c: any) => c.imageUrl);
+                          const withImg = (Array.isArray(allOfficialCertificates) ? allOfficialCertificates : [])
+                            .filter((c: any) => c.imageUrl || c.imageDataUrl);
                           const visible = cvMode === 'synthesis'
                             ? withImg.filter((c: any) => c.featured).slice(0, 6)
                             : withImg;
@@ -757,7 +758,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                                 {visible.map((cert: any, idx: number) => (
                                   <div key={`cv-cert-${cert.code || idx}-${idx}`} className="certificate-card flex items-start gap-2 p-1.5 bg-gray-50 border border-gray-200 rounded-lg">
                                     <img
-                                      src={cert.imageUrl}
+                                      src={cert.imageDataUrl || cert.imageUrl}
                                       alt={cert.title}
                                       className="certificate-thumb shrink-0"
                                       crossOrigin="anonymous"
@@ -802,10 +803,10 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                           <div className="absolute top-0 right-0 w-2 h-full bg-amber-500" />
                         )}
 
-                        {cert.imageUrl && (
+                        {(cert.imageDataUrl || cert.imageUrl) && (
                           <div className="mb-3 flex justify-center bg-white/5 rounded-xl p-2 h-24">
                             <img
-                              src={cert.imageUrl}
+                              src={cert.imageDataUrl || cert.imageUrl}
                               alt={cert.title}
                               className="max-h-full max-w-full object-contain"
                               crossOrigin="anonymous"
