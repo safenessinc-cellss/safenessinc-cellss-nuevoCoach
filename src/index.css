@@ -307,13 +307,13 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
 .public-site .text-\[\#00F0FF\],
 .public-site .text-red-500 { color: #1a73e8 !important; }
 .public-site .text-\[\#FF007A\] { color: #ea4335 !important; }
-.public-site [class*="bg-[#00F0FF]"],
+.public-site [class~="bg-[#00F0FF]"],
 .public-site .bg-red-600 {
   background-color: #1a73e8 !important;
 }
 .public-site .bg-red-700,
 .public-site .hover\:bg-red-700:hover { background-color: #1558b0 !important; }
-.public-site [class*="bg-[#FF007A]"] { background-color: #ea4335 !important; }
+.public-site [class~="bg-[#FF007A]"] { background-color: #ea4335 !important; }
 .public-site [class*="from-[#00F0FF]"][class*="to-[#FF007A]"] {
   background-image: linear-gradient(90deg, #1a73e8, #4285f4) !important;
 }
