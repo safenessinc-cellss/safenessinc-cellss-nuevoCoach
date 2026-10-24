@@ -167,7 +167,83 @@ export const CAREER_EXPERIENCE: CareerRole[] = [
       "TCC Aplicación de Herramientas de la Calidad en producción de capacitores con ganancias estimadas de $195,000.00 USD.",
       "Análisis y proyectos de mejora en pruebas finales, con aumento de 7 puntos en piezas aprobadas al primer intento."
     ]
-  }
+  },
+
+  {
+    period: "2016 – Actualidad",
+    title: "Desarrollador Web Full Stack",
+    company: "SAFENESS.INC · Consultoría Independiente",
+    location: "Brasil · LATAM · Global",
+    responsibilities: [
+      "Desarrollo de sitios y aplicaciones web modernas con React, TypeScript, Vite y Tailwind CSS, con despliegue en Firebase Hosting y Vercel.",
+      "Diseño de interfaces responsivas mobile-first con atención a accesibilidad, rendimiento y SEO técnico.",
+      "Integración de APIs REST y servicios serverless, autenticación OAuth y Firebase Auth, y bases de datos Firestore y PostgreSQL.",
+      "Implementación de CMS y paneles administrativos con roles y permisos, además de optimización mediante lazy loading, code splitting, compresión y caché.",
+      "Automatización de despliegues mediante Git, GitHub Actions y flujos CI/CD.",
+      "Mantenimiento del portal público coach-iso.eu y su dashboard privado, con gestión curricular, certificados, agendamiento y funciones de IA."
+    ],
+    achievements: [
+      "Desarrollo del ecosistema web Coach ISO: portal público y dashboard privado con temas personalizables y gestión de currículos, certificados, cursos, libros, visitas y tutorías.",
+      "Integración de Google Gemini para analizar imágenes de certificados y apoyar la reescritura y mejora de currículos.",
+      "Implementación de autenticación basada en roles, reglas de seguridad de Firestore y protección de rutas."
+    ]
+  },
+  {
+    period: "2013 – Actualidad",
+    title: "Desarrollador de Aplicaciones Móviles (Android · iOS)",
+    company: "SAFENESS.INC",
+    location: "Manaus · Brasil · LATAM",
+    responsibilities: [
+      "Diseño, desarrollo y publicación de aplicaciones Android orientadas a utilidades del sistema, seguridad y edición multimedia.",
+      "Desarrollo de aplicaciones para los ecosistemas Android e iOS, con integración de APIs nativas, permisos, notificaciones push y almacenamiento local o remoto.",
+      "Diseño de arquitectura modular con foco en seguridad y rendimiento, aplicación de patrones MVC/MVVM y pruebas de calidad antes de cada lanzamiento.",
+      "Gestión del ciclo de publicación: preparación de recursos gráficos, firma digital, cumplimiento de políticas de Google Play, versionado y actualizaciones.",
+      "Desarrollo de utilidades orientadas a la seguridad y privacidad, priorizando el procesamiento local de datos sensibles.",
+      "Mantenimiento evolutivo de aplicaciones publicadas, seguimiento de estabilidad, corrección de errores y mejora de experiencia de usuario."
+    ],
+    achievements: [
+      "Catálogo de cinco aplicaciones publicadas o desarrolladas bajo la marca SAFENESS.INC: SAFENESS.INC, LUZ AZUL MANAUS, ABRACES, blz messengers y paparazzi editor fotos.",
+      "Experiencia en aplicaciones de utilidades, herramientas locales, edición de fotografías y mensajería móvil.",
+      "Enfoque en soluciones móviles para necesidades locales de Manaus, Brasil y LATAM."
+    ]
+  },
+  {
+    period: "2005 – 2008",
+    title: "Desarrollador Pionero en Symbian OS (Aplicación “ME”)",
+    company: "Independiente",
+    location: "Madrid, España",
+    responsibilities: [
+      "Desarrollo de la aplicación “ME” para Symbian OS con C++ nativo y APIs de Nokia Series 60.",
+      "Diseño de interfaz y experiencia de usuario adaptadas a las limitaciones de pantalla y hardware de los dispositivos de la época.",
+      "Implementación de funciones de mensajería móvil, sincronización de contactos y persistencia local de datos.",
+      "Optimización del rendimiento y uso de memoria en dispositivos con CPU y recursos limitados.",
+      "Distribución y soporte de la aplicación para usuarios de dispositivos Nokia y Sony Ericsson en LATAM."
+    ],
+    achievements: [
+      "Aplicación “ME” lanzada en 2005, antes de la aparición de WhatsApp en 2009, con un concepto de mensajería móvil contextualizada por contacto.",
+      "Experiencia práctica en C++ nativo y APIs Series 60, desde los fundamentos del desarrollo móvil.",
+      "Diseño de producto orientado a la identidad personal y a las necesidades de comunicación del usuario móvil."
+    ]
+  },
+  {
+    period: "1995 – Actualidad",
+    title: "Desarrollador de Software de Gestión Empresarial",
+    company: "SAFENESS.INC · Consultoría Independiente",
+    location: "Venezuela · Brasil · LATAM & Global",
+    responsibilities: [
+      "Diseño y desarrollo de sistemas de gestión empresarial, ERP ligero, CRM y soluciones digitales para Sistemas de Gestión de la Calidad.",
+      "Digitalización de procesos ISO 9001, ISO 14001, ISO 45001 e IATF 16949: control documental, no conformidades, acciones correctivas 8D y auditorías internas.",
+      "Modelado de datos para inventarios JIT, control de proveedores, trazabilidad de producto e indicadores operativos.",
+      "Automatización de reportes y dashboards analíticos a partir de fuentes operativas.",
+      "Implementación de flujos de aprobación multinivel y auditoría de cambios para trazabilidad.",
+      "Capacitación de usuarios y soporte posterior a la implementación, incluida la integración con hojas de cálculo, sistemas heredados y APIs."
+    ],
+    achievements: [
+      "Desarrollo del dashboard Coach ISO para gestionar currículos, certificados, cursos, libros, visitas y tutorías con apoyo de IA.",
+      "Digitalización de procesos de control de calidad y trazabilidad de acciones correctivas.",
+      "Experiencia combinada en procesos industriales y desarrollo de software para traducir requisitos operativos y normativos en herramientas digitales."
+    ]
+  },
 ];
 
 export const ACADEMIC_EDUCATION: EducationItem[] = [
