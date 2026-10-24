@@ -20,8 +20,9 @@ import {
 import { useCurriculumSettings, CurriculumSettings, DEFAULT_CURRICULUM_SETTINGS } from '../data/useCurriculumSettings';
 import CurriculumShowcaseModal from './CurriculumShowcaseModal';
 import LanguageSelector from './LanguageSelector';
-import { mergeCurriculumDocument } from '../ai/geminiClient';
+import { analyzeCurriculumPresentation, mergeCurriculumDocument } from '../ai/geminiClient';
 import type { CurriculumMergePreview } from '../ai/geminiClient';
+import { OFFICIAL_CERTIFICATES } from '../data/robertTeranCurriculumData';
 
 export default function CurriculumEditor() {
   const { curriculumData, updateCurriculum, loading } = useCurriculumSettings();
@@ -39,6 +40,9 @@ export default function CurriculumEditor() {
   const [importNotice, setImportNotice] = useState('');
   const [importPreview, setImportPreview] = useState<CurriculumMergePreview | null>(null);
   const [importFileName, setImportFileName] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState('');
+  const [analysisPreview, setAnalysisPreview] = useState<import('../data/useCurriculumSettings').CurriculumPresentationAnalysis | null>(null);
 
   useEffect(() => {
     if (curriculumData) {
@@ -98,6 +102,39 @@ export default function CurriculumEditor() {
     setImportNotice('Fusión aplicada al editor. Revisa los datos y pulsa “Guardar Cambios” para conservarlos.');
     setSaveSuccess(false);
     setActiveTab('training');
+  };
+
+  const handleAnalyzePresentation = async () => {
+    setIsAnalyzing(true);
+    setAnalysisError('');
+    setAnalysisPreview(null);
+    try {
+      const safeCurriculum = {
+        candidateInfo: { name: formData.candidateInfo.name, summary: formData.candidateInfo.summary },
+        impactMetrics: formData.impactMetrics,
+        careerRoles: formData.careerRoles,
+        educationItems: formData.educationItems,
+        languagesList: formData.languagesList,
+        industrialCourses: formData.industrialCourses,
+      };
+      const certificates = OFFICIAL_CERTIFICATES.map(({ title, issuer, category, categoryLabel, description, issuedDate }) => ({ title, issuer, category, categoryLabel, description, issuedDate }));
+      setAnalysisPreview(await analyzeCurriculumPresentation(safeCurriculum, certificates));
+    } catch (error) {
+      setAnalysisError(error instanceof Error ? error.message : 'No se pudo analizar el currículo.');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handleApplyPresentationAnalysis = () => {
+    if (!analysisPreview) return;
+    setFormData(prev => ({
+      ...prev,
+      candidateInfo: { ...prev.candidateInfo, summary: analysisPreview.executiveSummary || prev.candidateInfo.summary },
+      professionalAnalysis: analysisPreview,
+    }));
+    setImportNotice('Análisis aplicado al editor. Guarda los cambios para conservar el resumen y las recomendaciones de presentación.');
+    setAnalysisError('');
   };
 
   const handleInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -888,6 +925,34 @@ export default function CurriculumEditor() {
                 <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Safeness teal</button>
                 <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Azul ejecutivo</button>
               </div>
+            </div>
+            <div className="rounded-2xl border border-sky-400/25 bg-sky-400/5 p-5">
+              <h3 className="flex items-center gap-2 text-sm font-bold text-white"><Sparkles className="h-4 w-4 text-sky-300" />Análisis integral y mejora con IA</h3>
+              <p className="mt-1 text-xs leading-relaxed text-gray-400">La IA revisa el perfil, la trayectoria, los logros, las credenciales IBM/Credly y la formación para proponer una síntesis ejecutiva y agrupaciones profesionales. No inventa títulos ni certificaciones; revisa el resultado antes de aplicarlo.</p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button type="button" onClick={handleAnalyzePresentation} disabled={isAnalyzing} className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2.5 text-xs font-extrabold text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-60">
+                  {isAnalyzing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                  {isAnalyzing ? 'Analizando todo el currículo…' : 'Analizar y mejorar con IA'}
+                </button>
+                {analysisPreview && <button type="button" onClick={handleApplyPresentationAnalysis} className="rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-400/20">Aplicar análisis al currículo</button>}
+              </div>
+              {analysisError && <p role="alert" className="mt-3 rounded-lg border border-red-500/25 bg-red-500/10 p-3 text-xs text-red-300">{analysisError}</p>}
+              {analysisPreview && (
+                <div className="mt-4 space-y-4 rounded-xl border border-white/10 bg-slate-950/60 p-4">
+                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Titular ejecutivo sugerido</p><p className="mt-1 text-sm font-bold text-white">{analysisPreview.shortCvHeadline}</p></div>
+                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Resumen ejecutivo propuesto</p><p className="mt-1 text-xs leading-relaxed text-gray-200">{analysisPreview.executiveSummary}</p></div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {analysisPreview.professionalAreas.map((area) => (
+                      <div key={area.area} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+                        <p className="text-xs font-bold text-white">{area.area}</p><p className="mt-1 text-[11px] leading-relaxed text-gray-300">{area.summary}</p>
+                        {area.strengths.length > 0 && <p className="mt-2 text-[10px] text-gray-400">Competencias: {area.strengths.slice(0, 4).join(' · ')}</p>}
+                        {area.featuredCredentials.length > 0 && <p className="mt-1 text-[10px] text-sky-200">Credenciales: {area.featuredCredentials.slice(0, 3).join(' · ')}</p>}
+                      </div>
+                    ))}
+                  </div>
+                  {analysisPreview.recommendations.length > 0 && <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Recomendaciones de presentación</p><ul className="mt-2 list-disc space-y-1 pl-5 text-[11px] text-gray-300">{analysisPreview.recommendations.map((item, index) => <li key={index}>{item}</li>)}</ul></div>}
+                </div>
+              )}
             </div>
             <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
               <h3 className="text-sm font-bold text-white">Idioma y traducción</h3>
