@@ -15,7 +15,7 @@ export interface HttpAppOptions {
 export function createHttpApp({ db, auth, getGeminiApiKey }: HttpAppOptions) {
 const app = express();
 app.use(cors({ origin: true, methods: ['POST', 'OPTIONS'], allowedHeaders: ['Content-Type', 'Authorization'] }));
-app.use(express.json({ limit: '8mb' }));
+app.use(express.json({ limit: '4mb' }));
 
 const CHAT_SYSTEM_PROMPT = `Eres el asistente virtual de Robert Terán, ingeniero, economista y especialista en sistemas de gestión integral. Responde en el idioma del usuario, de forma profesional, clara y prudente. Ayuda con servicios de auditoría ISO, calidad, optimización de procesos, coaching y agendamiento. Para agendar, indica que la persona puede visitar /agendar. No inventes certificaciones, precios, disponibilidad ni resultados que no estén en el contexto.`;
 
@@ -149,8 +149,8 @@ const categoryLabels: Record<typeof categories[number], string> = {
 app.post(['/analyze-certificate', '/api/analyze-certificate'], requireStaff, async (req: AuthedRequest, res: Response) => {
   const image = typeof req.body?.image === 'string' ? req.body.image : '';
   const mimeType = typeof req.body?.mimeType === 'string' ? req.body.mimeType : 'image/jpeg';
-  if (!image || image.length > 7_000_000 || !/^image\/(jpeg|png|webp)$/.test(mimeType)) {
-    res.status(400).json({ error: 'Imagen no válida. Usa JPEG, PNG o WebP de menos de 5 MB.' });
+  if (!image || image.length > 4_000_000 || !/^image\/(jpeg|png|webp)$/.test(mimeType)) {
+    res.status(400).json({ error: 'Imagen no válida. Usa JPEG, PNG o WebP de tamaño reducido (máximo aproximado de 3 MB antes de codificar).' });
     return;
   }
   const base64 = image.includes(',') ? image.split(',')[1] : image;
