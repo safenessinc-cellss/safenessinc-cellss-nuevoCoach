@@ -331,5 +331,30 @@
     "credentialsTitle": "Credenziali e apprendimento continuo",
     "credentialsText": "Il portale raccoglie il curriculum dettagliato, le credenziali verificabili e la formazione organizzata per area professionale, evitando di duplicare qui l’intero elenco.",
     "cta": "Consulta curriculum e credenziali"
+  },
+  "humanBehavior": {
+    "badge": "Sviluppo organizzativo",
+    "title": "Comportamento umano organizzativo",
+    "subtitle": "Psicopedagogia aziendale, sviluppo dei talenti e leadership adattiva integrati con l’esperienza industriale, l’audit dei sistemi di gestione e l’executive coaching.",
+    "intro": "I sistemi di gestione vengono adottati concretamente quando le persone comprendono il cambiamento e dispongono degli strumenti per applicarlo. Quest’area integra l’esperienza industriale e di audit con un approccio centrato sull’apprendimento, sul comportamento e sulle dinamiche di gruppo.",
+    "pillarsTitle": "Aree di intervento",
+    "items": [
+      {
+        "title": "Diagnosi e adozione del cambiamento",
+        "text": "Individuazione delle esigenze formative, delle resistenze e delle risorse del team per supportare l’implementazione dei sistemi di gestione, la trasformazione digitale e il cambiamento organizzativo."
+      },
+      {
+        "title": "Formazione e sviluppo dei talenti",
+        "text": "Programmi di formazione aziendale e piani individuali adattati alle esigenze, alle competenze e alle modalità di apprendimento di ogni collaboratore."
+      },
+      {
+        "title": "Team e leadership adattiva",
+        "text": "Executive coaching, intelligenza emotiva, comunicazione, gestione dei conflitti e composizione di team multidisciplinari in linea con gli obiettivi del progetto."
+      }
+    ],
+    "methodTitle": "Approccio di lavoro",
+    "methodText": "La psicopedagogia aziendale viene utilizzata come quadro di riferimento per comprendere come apprende il team. I modelli dei profili comportamentali e i somatotipi di Sheldon sono considerati soltanto prospettive esplorative complementari, non diagnosi cliniche né criteri unici per selezionare o classificare le persone.",
+    "outcomeTitle": "Obiettivo",
+    "outcomeText": "Favorire l’adozione del cambiamento, rafforzare la collaborazione e collegare lo sviluppo delle persone agli obiettivi operativi e di qualità."
   }
 }
