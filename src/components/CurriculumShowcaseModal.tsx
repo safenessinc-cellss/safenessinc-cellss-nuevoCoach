@@ -410,19 +410,19 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative z-10">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-red-600 p-0.5 shadow-lg shrink-0">
-                    <div className="w-full h-full bg-black rounded-[14px] flex items-center justify-center text-amber-400">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-green-500 p-0.5 shadow-sm shrink-0">
+                    <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-blue-700">
                       <GraduationCap className="w-7 h-7" />
                     </div>
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest font-black flex items-center gap-1">
+                    <span className="text-[10px] font-mono text-blue-700 uppercase tracking-widest font-black flex items-center gap-1">
                       <Sparkles className="w-3.5 h-3.5" /> {t('curriculum.title', 'Currículo Ejecutivo & Portal de Credenciales')}
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                    <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
                       {candidateName}
                     </h2>
-                    <p className="text-xs text-gray-400 mt-0.5 font-mono">
+                    <p className="text-xs text-gray-600 mt-0.5 font-mono">
                       {currentLang === 'es' && curriculumData.professionalAnalysis?.shortCvHeadline
                         ? curriculumData.professionalAnalysis.shortCvHeadline
                         : t('curriculum.subtitle', 'Coach Ejecutivo • Auditor Líder SGC IRCA • Ingeniero Economista')}
@@ -438,7 +438,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   <button
                     onClick={handleExportPDF}
                     disabled={isExporting || certificatesLoading}
-                    className="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs rounded-xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
+                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-xs rounded-xl shadow-sm flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
                   >
                     <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
                     <span>{isExporting ? 'Generando PDF...' : t('curriculum.export', 'Exportar a PDF')}</span>
