@@ -341,7 +341,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                   }`}
                 >
                   <Award className="w-4 h-4" />
-                  <span>{t('curriculum.tabs.credentials', 'Certificados & Credenciales')} ({OFFICIAL_CERTIFICATES.length})</span>
+                  <span>{t('curriculum.tabs.credentials', 'Certificados & Credenciales')} ({allOfficialCertificates.length})</span>
                 </button>
 
                 <button
