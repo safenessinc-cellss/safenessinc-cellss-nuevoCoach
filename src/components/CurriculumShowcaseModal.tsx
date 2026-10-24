@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useProfileSettings } from '../data/useProfileSettings';
 import { useCurriculumSettings } from '../data/useCurriculumSettings';
+import { useCertificates } from '../data/useCertificates';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import { 
@@ -52,6 +53,7 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
+  const { certificates: importedCertificates } = useCertificates();
   const profilePhotoUrl = profile.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
 
   // Selected certificate for scaled modal viewer
@@ -224,7 +226,8 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
   ];
 
   // Filtered Official Certificates
-  const filteredOfficial = OFFICIAL_CERTIFICATES.filter(cert => {
+  const allOfficialCertificates: OfficialCertificate[] = [...importedCertificates, ...OFFICIAL_CERTIFICATES];
+  const filteredOfficial = allOfficialCertificates.filter(cert => {
     const matchesSearch = cert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           cert.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           cert.issuer.toLowerCase().includes(searchQuery.toLowerCase());
@@ -772,8 +775,6 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
                             </div>
                           );
                         })()}
-
-                      {anchor}
 
                     </div>
 
