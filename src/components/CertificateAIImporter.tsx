@@ -6,11 +6,12 @@ import { useCertificates } from '../data/useCertificates';
 
 async function compressCertificateImage(dataUrl: string): Promise<string> {
   const image = new Image();
-  image.src = dataUrl;
-  await new Promise<void>((resolve, reject) => {
+  const imageLoaded = new Promise<void>((resolve, reject) => {
     image.onload = () => resolve();
     image.onerror = () => reject(new Error('No se pudo procesar la imagen del certificado.'));
   });
+  image.src = dataUrl;
+  await imageLoaded;
 
   const maxDimension = 1200;
   const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
@@ -111,7 +112,7 @@ export default function CertificateAIImporter() {
     <section className="mx-auto max-w-4xl space-y-6">
       <header>
         <h2 className="flex items-center gap-2 text-xl font-extrabold text-white"><Sparkles className="h-5 w-5 text-amber-400" /> Importador de certificados con IA</h2>
-        <p className="mt-2 text-sm text-gray-400">Carga una imagen legible, revisa los campos extraídos y confirma antes de guardarla. La IA no verifica la autenticidad del documento.</p>
+        <p className="mt-2 text-sm text-gray-400">Carga una imagen legible. La IA extrae los datos, guarda una miniatura comprimida para el PDF y deja la credencial pendiente de verificación oficial.</p>
       </header>
 
       <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/20 bg-white/[0.02] p-8 text-center transition hover:border-amber-400/50">
