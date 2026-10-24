@@ -190,11 +190,11 @@ export const CAREER_EXPERIENCE: CareerRole[] = [
   },
   {
     period: "2013 – Actualidad",
-    title: "Desarrollador de Aplicaciones Móviles (Android · iOS)",
+    title: "Desarrollador de Aplicaciones Móviles (Android · iOS, proyectos personales)",
     company: "SAFENESS.INC",
     location: "Manaus · Brasil · LATAM",
     responsibilities: [
-      "Diseño, desarrollo y publicación de aplicaciones Android orientadas a utilidades del sistema, seguridad y edición multimedia.",
+      "Desarrollo independiente realizado en tiempo libre: diseño, desarrollo y publicación de aplicaciones Android orientadas a utilidades del sistema, seguridad y edición multimedia.",
       "Desarrollo de aplicaciones para los ecosistemas Android e iOS, con integración de APIs nativas, permisos, notificaciones push y almacenamiento local o remoto.",
       "Diseño de arquitectura modular con foco en seguridad y rendimiento, aplicación de patrones MVC/MVVM y pruebas de calidad antes de cada lanzamiento.",
       "Gestión del ciclo de publicación: preparación de recursos gráficos, firma digital, cumplimiento de políticas de Google Play, versionado y actualizaciones.",
@@ -202,7 +202,7 @@ export const CAREER_EXPERIENCE: CareerRole[] = [
       "Mantenimiento evolutivo de aplicaciones publicadas, seguimiento de estabilidad, corrección de errores y mejora de experiencia de usuario."
     ],
     achievements: [
-      "Catálogo de cinco aplicaciones publicadas o desarrolladas bajo la marca SAFENESS.INC: SAFENESS.INC, LUZ AZUL MANAUS, ABRACES, blz messengers y paparazzi editor fotos.",
+      "Catálogo de cinco aplicaciones publicadas en Google Play Store bajo la marca SAFENESS.INC: SAFENESS.INC, LUZ AZUL MANAUS, ABRACES, blz messengers y paparazzi editor fotos.",
       "Experiencia en aplicaciones de utilidades, herramientas locales, edición de fotografías y mensajería móvil.",
       "Enfoque en soluciones móviles para necesidades locales de Manaus, Brasil y LATAM."
     ]
