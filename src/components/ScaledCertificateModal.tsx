@@ -37,15 +37,16 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
   if (!isOpen || !certificate) return null;
 
   // Determine metadata
-  const isOfficial = 'issuer' in certificate;
+  const isOfficial = 'verificationUrl' in certificate && 'categoryLabel' in certificate;
   const officialCert = isOfficial ? (certificate as OfficialCertificate) : null;
+  const learningActivity = isOfficial ? null : (certificate as LearningActivity);
 
   const code = certificate.code;
   const title = certificate.title;
-  const issuer = officialCert ? officialCert.issuer : 'IBM SkillsBuild / Credly Accredited';
-  const issuedDate = officialCert ? officialCert.issuedDate : '2025 - 2026';
-  const description = officialCert ? officialCert.description : 'Actividad formativa acreditada en la matriz de competencias de Robert Terán Medina.';
-  const categoryLabel = officialCert ? officialCert.categoryLabel : 'Capacitación Especializada';
+  const issuer = officialCert ? officialCert.issuer : (learningActivity?.issuer || 'Fuente no especificada');
+  const issuedDate = officialCert ? officialCert.issuedDate : (learningActivity?.completedDate ? new Date(`${learningActivity.completedDate}T00:00:00`).toLocaleDateString() : 'Fecha no indicada');
+  const description = officialCert ? officialCert.description : `Registro de formación continua. Tipo: ${learningActivity?.activityKind || learningActivity?.deliveryType || 'actividad formativa'}. Este registro no constituye por sí solo una certificación oficial.`;
+  const categoryLabel = officialCert ? officialCert.categoryLabel : (learningActivity?.category || 'Formación continua');
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(code);
@@ -197,7 +198,7 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
                   </div>
                   <div>
                     <span className="text-[10px] font-mono tracking-widest uppercase font-extrabold text-amber-500 block">
-                      Pearson Credly • Official Transcript
+                      {officialCert ? 'Credencial registrada' : 'Historial de formación'}
                     </span>
                     <h4 className="text-lg font-black tracking-wider uppercase">
                       {issuer}
@@ -209,7 +210,7 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
                   <span className={`text-[9px] px-2.5 py-1 rounded-full font-bold uppercase border block mb-1 ${
                     theme === 'luxury_dark' ? 'bg-amber-500/15 text-amber-300 border-amber-500/30' : 'bg-amber-800/10 text-amber-900 border-amber-800/30'
                   }`}>
-                    Acreditado Oficial
+                    {officialCert ? (officialCert.verified === false ? 'Pendiente de verificación' : 'Credencial registrada') : 'Actividad formativa'}
                   </span>
                   <span className="text-[10px] text-gray-400 block">
                     ID: {code}
@@ -220,7 +221,7 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
               {/* Certificate Main Title */}
               <div className="text-center space-y-4 my-8">
                 <p className="text-xs font-mono uppercase tracking-[0.3em] text-amber-500 font-bold">
-                  Certificado Oficial de Acreditación Digital
+                  {officialCert ? 'Credencial / certificado' : 'Actividad formativa'}
                 </p>
                 <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight uppercase font-serif">
                   {title}
@@ -231,13 +232,13 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
               {/* Recipient Section */}
               <div className="text-center my-8 space-y-2">
                 <p className={`text-xs uppercase font-mono tracking-widest ${theme === 'luxury_dark' ? 'text-gray-400' : 'text-slate-600'}`}>
-                  Otorgado solemnemente a:
+                  Registro asociado a:
                 </p>
                 <h2 className="text-2xl sm:text-3xl font-black text-amber-400 tracking-tight underline decoration-amber-500/40 decoration-2 underline-offset-8">
                   {CANDIDATE_INFO.name}
                 </h2>
                 <p className={`text-[11px] font-mono ${theme === 'luxury_dark' ? 'text-gray-400' : 'text-slate-600'}`}>
-                  Credly ID: <strong className="text-amber-500">{CANDIDATE_INFO.credlyId}</strong> • F.N. {CANDIDATE_INFO.birthDate}
+                  Perfil profesional: <strong className="text-amber-500">{CANDIDATE_INFO.name}</strong>
                 </p>
               </div>
 
@@ -274,32 +275,32 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
                     theme === 'luxury_dark' ? 'border-amber-500 bg-amber-500/10 text-amber-400' : 'border-amber-800 bg-amber-800/10 text-amber-900'
                   }`}>
                     <BadgeCheck className="w-8 h-8 animate-pulse" />
-                    <span className="text-[7px] font-mono uppercase font-black tracking-tighter mt-0.5">VERIFIED</span>
-                    <span className="text-[6px] font-mono">CREDLY IBM</span>
+                    <span className="text-[7px] font-mono uppercase font-black tracking-tighter mt-0.5">{officialCert ? 'REGISTRO' : 'FORMACIÓN'}</span>
+                    <span className="text-[6px] font-mono">{officialCert ? 'EMISOR' : 'NO VERIFICADO'}</span>
                   </div>
                 </div>
 
                 {/* Verification QR / Link */}
                 <div className="text-right space-y-1">
-                  <span className={`text-[10px] uppercase font-mono block ${theme === 'luxury_dark' ? 'text-gray-500' : 'text-slate-500'}`}>
-                    {officialCert?.verificationUrl ? 'Enlace de la credencial' : officialCert?.publicProfileUrl ? 'Ficha pública Coach ISO' : 'Perfil Credly'}
-                  </span>
-                  <a
-                    href={officialCert?.verificationUrl || officialCert?.publicProfileUrl || CANDIDATE_INFO.credlyProfile}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs font-bold text-amber-500 hover:underline font-mono"
-                  >
-                    <span>{officialCert?.verificationUrl ? 'Abrir enlace' : officialCert?.publicProfileUrl ? 'coach-iso.eu' : 'credly.com/users'}</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
+                  {officialCert && (officialCert.verificationUrl || officialCert.publicProfileUrl) ? (
+                    <>
+                      <span className={`text-[10px] uppercase font-mono block ${theme === 'luxury_dark' ? 'text-gray-500' : 'text-slate-500'}`}>
+                        {officialCert.verificationUrl ? 'Enlace de la credencial' : 'Ficha pública Coach ISO'}
+                      </span>
+                      <a href={officialCert.verificationUrl || officialCert.publicProfileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-amber-500 hover:underline font-mono">
+                        <span>Abrir enlace</span><ExternalLink className="w-3 h-3" />
+                      </a>
+                    </>
+                  ) : (
+                    <><span className={`text-[10px] uppercase font-mono block ${theme === 'luxury_dark' ? 'text-gray-500' : 'text-slate-500'}`}>Institución / fuente</span><span className="text-xs font-bold text-amber-500">{issuer}</span></>
+                  )}
                 </div>
               </div>
 
               {/* Watermark Transcript footer */}
               <div className="mt-8 pt-4 border-t border-white/5 flex justify-between items-center text-[9px] font-mono text-gray-500">
-                <span>Pearson Credly Official Transcript • Issued for Deuwy Robert Teran Medina</span>
-                <span>UUID: {CANDIDATE_INFO.credlyId}</span>
+                <span>{officialCert ? 'Ficha de credencial' : 'Ficha de actividad formativa'} • {CANDIDATE_INFO.name}</span>
+                <span>{officialCert ? 'Datos de credencial' : 'Registro formativo'}</span>
               </div>
             </div>
 
@@ -309,7 +310,7 @@ export default function ScaledCertificateModal({ isOpen, onClose, certificate }:
           <div className="bg-[#121118] border-t border-white/10 p-4 px-6 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0 text-xs">
             <div className="flex items-center gap-2 text-gray-400">
               <ShieldCheck className="w-4 h-4 text-amber-500" />
-              <span>Acreditación verificable en la red oficial de Credly / IBM SkillsBuild</span>
+              <span>{officialCert ? 'Consulte el enlace de la credencial para comprobar los datos con el emisor.' : 'La actividad registrada no equivale a una certificación oficial.'}</span>
             </div>
 
             <div className="flex items-center gap-3">
