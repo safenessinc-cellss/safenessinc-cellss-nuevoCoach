@@ -1,11 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://us-central1-coach-iso-f6877.cloudfunctions.net/api/:path*"
+      "source": "/api/:path((?!translate-curriculum$).*)",
+      "destination": "https://us-central1-coach-iso-f6877.cloudfunctions.net/api/:path"
     },
     {
-      "source": "/(.*)",
+      "source": "/:path((?!api/translate-curriculum$).*)",
       "destination": "/index.html"
     }
   ]
