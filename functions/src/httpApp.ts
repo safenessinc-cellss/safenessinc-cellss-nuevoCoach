@@ -239,10 +239,10 @@ app.post(['/translate-curriculum', '/api/translate-curriculum'], async (req: Req
     'Return valid JSON only, with keys: summary, impactMetrics, careerRoles, educationItems, additionalTexts.',
     'TRANSLATION ONLY. Do not rewrite, summarize, embellish, remove, add, infer, or invent information.',
     'Preserve the exact number, order, and structure of every array and nested list.',
-    'Preserve all numbers, percentages, currency values, dates, periods, URLs, email addresses, product names, company names, locations, institution names, acronyms, standards (ISO, IRCA, IATF, JIT, VSM, KPI, 8D, RNC, etc.) and codes exactly.',
-    'For careerRoles, translate title, responsibilities, and achievements. Keep period, company, and location unchanged.',
+    'Preserve all numeric values, percentages, currency values, URLs, email addresses, product names, company names, locations, institution names, acronyms, standards (ISO, IRCA, IATF, JIT, VSM, KPI, 8D, RNC, etc.) and codes exactly. Localize month names and words meaning current/present in date ranges, without changing the date or its numeric components.',
+    'For careerRoles, translate title, period wording, responsibilities, and achievements. Keep company and location unchanged.',
     'For impactMetrics, translate label and detail; keep value unchanged.',
-    'For educationItems, translate title and description for kinds "education" and "course"; keep institution and period unchanged. For kind "credential", preserve the title exactly as the official credential name and keep institution and period unchanged. Keep the kind field unchanged.',
+    'For educationItems, translate title and description for kinds "education" and "course"; translate month names in period only when present, without changing the date. Keep institution unchanged. For kind "credential", preserve the title exactly as the official credential name and keep institution unchanged. Keep the kind field unchanged.',
     'Translate each additionalTexts item independently and return the same number of items in the same order. If text is already in the target language, keep it natural and correct.',
     'Do not return markdown or explanations.',
     'INPUT JSON:',
@@ -270,7 +270,7 @@ app.post(['/translate-curriculum', '/api/translate-curriculum'], async (req: Req
         detail: typeof translatedMetrics[index]?.detail === 'string' ? translatedMetrics[index].detail : '',
       })),
       careerRoles: roles.map((item: any, index: number) => ({
-        period: String(item.period ?? ''),
+        period: typeof translatedRoles[index]?.period === 'string' ? translatedRoles[index].period : '',
         title: typeof translatedRoles[index]?.title === 'string' ? translatedRoles[index].title : '',
         company: String(item.company ?? ''),
         location: String(item.location ?? ''),
@@ -280,7 +280,7 @@ app.post(['/translate-curriculum', '/api/translate-curriculum'], async (req: Req
           typeof translatedRoles[index]?.achievements?.[j] === 'string' ? translatedRoles[index].achievements[j] : ''),
       })),
       educationItems: education.map((item: any, index: number) => ({
-        period: String(item.period ?? ''),
+        period: typeof translatedEducation[index]?.period === 'string' ? translatedEducation[index].period : '',
         title: item.kind === 'credential'
           ? String(item.title ?? '')
           : (typeof translatedEducation[index]?.title === 'string' ? translatedEducation[index].title : ''),
