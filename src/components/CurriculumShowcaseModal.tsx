@@ -190,7 +190,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   const candidateEmail = candidateInfo.email || CANDIDATE_INFO.email;
   const candidatePhone = candidateInfo.phone || CANDIDATE_INFO.phone;
   const candidateLocation = currentLang !== 'es' ? t('curriculum.contact.location_value', candidateInfo.location || CANDIDATE_INFO.location) : (candidateInfo.location || CANDIDATE_INFO.location);
-  const cvSummary = currentLang !== 'es' ? t('curriculum.summary') : (candidateInfo.summary || t('curriculum.summary'));
+  const cvSummary = candidateInfo.summary || t('curriculum.summary');
   const transcriptDate = candidateInfo.transcriptDate || CANDIDATE_INFO.transcriptDate;
   const credlyProfile = candidateInfo.credlyProfile || CANDIDATE_INFO.credlyProfile;
   const credlyId = candidateInfo.credlyId || CANDIDATE_INFO.credlyId;
@@ -246,10 +246,12 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
     setIsExporting(true);
     let tempContainer: HTMLDivElement | null = null;
     try {
-      if (activeTab !== 'cv_template') {
-        setActiveTab('cv_template');
-        await new Promise((r) => setTimeout(r, 450));
-      }
+      // PDF exports must always contain the complete curriculum, regardless of the
+      // synthesis/full selector currently visible in the interface.
+      const needsRender = activeTab !== 'cv_template' || cvMode !== 'full';
+      if (cvMode !== 'full') setCvMode('full');
+      if (activeTab !== 'cv_template') setActiveTab('cv_template');
+      if (needsRender) await new Promise((r) => setTimeout(r, 500));
 
       const html2pdfFactory = (window as any).html2pdf || html2pdf;
       if (typeof html2pdfFactory !== 'function') {
@@ -772,10 +774,10 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* Header Banner - Grey Box with Bold Name & Amber Accent */}
                         <div className="bg-gray-100 p-5 rounded-r-2xl border-l-8 border-blue-500 shadow-sm">
                           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-gray-900 leading-tight">
-                            DEUWY ROBERT <span className="text-blue-600">TERÁN MEDINA</span>
+                            {candidateName}
                           </h1>
                           <p className="text-[10.5px] font-black uppercase text-gray-600 tracking-wider mt-1.5">
-                            {t('curriculum.subtitle', 'INGENIERO DE PRODUCCIÓN Y CALIDAD • ECONOMISTA • AUDITOR LÍDER SIG ISO • IBM 2025 COACH')}
+                            {curriculumData.professionalAnalysis?.shortCvHeadline || t('curriculum.subtitle', 'INGENIERO DE PRODUCCIÓN Y CALIDAD • ECONOMISTA • AUDITOR LÍDER SIG ISO • IBM 2025 COACH')}
                           </p>
                         </div>
 
@@ -843,7 +845,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                                   {role.company} | {role.location}
                                 </p>
                                 <ul className="list-disc list-inside text-[10.5px] text-gray-600 space-y-0.5 pt-0.5">
-                                  {(role.responsibilities || []).slice(0, cvMode === 'synthesis' ? 3 : 6).map((resp: string, rIdx: number) => (
+                                  {(cvMode === 'synthesis' ? (role.responsibilities || []).slice(0, 3) : (role.responsibilities || [])).map((resp: string, rIdx: number) => (
                                     <li key={`resp-${idx}-${rIdx}`} className="leading-tight">{resp}</li>
                                   ))}
                                 </ul>
@@ -851,7 +853,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                                   <div className="mt-1.5 p-2 bg-gray-50 border border-gray-200 rounded-lg text-[10px] text-gray-700">
                                     <span className="font-bold text-amber-700 block mb-0.5">{t('curriculum.achievements_label', '★ Logros Notables:')}</span>
                                     <ul className="list-square list-inside space-y-0.5">
-                                      {(role.achievements || []).slice(0, cvMode === 'synthesis' ? 2 : 5).map((ach: string, aIdx: number) => (
+                                      {(cvMode === 'synthesis' ? (role.achievements || []).slice(0, 2) : (role.achievements || [])).map((ach: string, aIdx: number) => (
                                         <li key={`ach-${idx}-${aIdx}`} className="text-[9.5px]">{ach}</li>
                                       ))}
                                     </ul>
@@ -947,7 +949,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           );
                         })()}
 
-                        {cvMode === 'full' && trainingCatalogLoaded && (
+                        {cvMode === 'full' && (
                           <div className="mt-5 space-y-2 page-break-before">
                             <div className="flex items-center gap-2">
                               <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0"><Layers className="w-3 h-3" /></span>
