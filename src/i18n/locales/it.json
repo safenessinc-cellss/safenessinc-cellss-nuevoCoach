@@ -8,15 +8,16 @@
     "contacto": "Contatto"
   },
   "hero": {
-    "badge": "Ingegnere, Economista e Specialista in Sistemi di Gestione Integrata | Ottimizzazione dei Processi",
-    "title": "Ottimizzando processi e guidando team umani",
-    "titleHighlight": "con oltre 30 anni di esperienza.",
-    "description": "“Integro la precisione tecnica dell'ingegneria con l'analisi economica strategica e i sistemi di gestione integrata. Ottimizziamo processi, uniamo team e snelliamo le decisioni critiche per la vostra redditività.”"
+    "badge": "Ingegneria, qualità e leadership | Trasformazione dei processi",
+    "title": "Trasformare l’esperienza in",
+    "titleHighlight": "risultati operativi migliori.",
+    "description": "Ingegnere di Produzione e Qualità, Economista, Lead Auditor dei Sistemi di Gestione e IBM Executive Coach 2025. Oltre 30 anni di esperienza internazionale nel miglioramento continuo, nella leadership e nell’ottimizzazione dei processi."
   },
   "about": {
-    "badge": "Profilo Professionale",
-    "title": "Oltre 30 Anni di Eccellenza",
-    "description": "Specialista in Sistemi di Gestione ISO con oltre 30 anni di esperienza in audit e consulenza strategica. Lead Auditor certificato IBM 2025 e Business Coach, integra competenze tecniche con studi in Psicopedagogia, Benessere Lavorativo e Intelligenza Emotiva Organizzativa."
+    "badge": "Profilo professionale",
+    "title": "Esperienza industriale e visione strategica",
+    "description": "Unisco ingegneria, analisi economica e sistemi di gestione per aiutare le organizzazioni a migliorare la qualità, controllare i rischi e prendere decisioni basate sui dati. Il mio percorso comprende esperienze in contesti industriali e di servizi, tra cui General Motors, Aister SL, Aproinca Group e Rototech. Lavoro con miglioramento continuo, Lean Manufacturing, Six Sigma, analisi delle cause alla radice, metodi 8D e sistemi di gestione ISO. Completo queste competenze con formazione continua in coaching, intelligenza artificiale, cybersecurity, dati e cloud.",
+    "quote": "Il miglioramento sostenibile non significa soltanto superare un audit: significa costruire processi chiari, team coinvolti e una cultura della qualità che duri nel tempo."
   },
   "services": {
     "badge": "I Miei Servizi",
@@ -312,5 +313,23 @@
       "title_header": "Titolo dell'Attività Formativa",
       "scale_cert_header": "Certificato in Scala"
     }
+  },
+  "impact": {
+    "title": "Risultati che guidano il miglioramento",
+    "subtitle": "Indicatori riportati in progetti ed esperienze professionali; i risultati dipendono dal contesto e dall’ambito di ogni iniziativa.",
+    "kpi1": "Reclami dei clienti",
+    "kpi2": "Costi di magazzino",
+    "kpi3": "Indice di scarto",
+    "kpi4": "Capacità produttiva",
+    "pillarsTitle": "Tre aree di contributo",
+    "pillar1Title": "Sistemi di gestione e audit",
+    "pillar1Text": "Strutturazione, audit e miglioramento dei sistemi di gestione, con attenzione a ISO 9001, ISO 14001, ISO 45001 e IATF 16949.",
+    "pillar2Title": "Eccellenza operativa",
+    "pillar2Text": "Analisi dei processi, cause alla radice, azioni correttive e miglioramento continuo per ridurre sprechi, rischi e variabilità.",
+    "pillar3Title": "Leadership ed evoluzione digitale",
+    "pillar3Text": "Executive coaching e sviluppo dei team, affiancati da apprendimento continuo in IA, cybersecurity, analisi dei dati e cloud.",
+    "credentialsTitle": "Credenziali e apprendimento continuo",
+    "credentialsText": "Consulta le credenziali verificabili e le attività formative organizzate per area professionale nel portale del curriculum.",
+    "cta": "Esplora curriculum e credenziali"
   }
 }
