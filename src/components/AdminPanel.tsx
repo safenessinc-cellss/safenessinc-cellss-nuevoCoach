@@ -1068,8 +1068,8 @@ function AdminPanel() {
                       <h4 className="text-base font-bold tracking-tight text-white mb-1">Tendencia de Visitas Onsite</h4>
                       <p className="text-xs text-gray-400">Total auditorías físicas programadas por mes en este semestre.</p>
                     </div>
-                    <div className="h-[240px]">
-                      <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                    <div className="h-[240px] w-full min-w-0">
+                      <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={180}>
                         <AreaChart data={visitsChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                           <defs>
                             <linearGradient id="visitasGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1093,11 +1093,11 @@ function AdminPanel() {
                       <h4 className="text-base font-bold tracking-tight text-white mb-1">Top Libros más Descargados</h4>
                       <p className="text-xs text-gray-400">Recursos de Auditoría ISO con mayor número de interacciones.</p>
                     </div>
-                    <div className="h-[240px]">
+                    <div className="h-[240px] w-full min-w-0">
                       {downloadsChartData.length === 0 ? (
                         <div className="h-full flex items-center justify-center text-gray-500 font-mono text-xs">Carga libros técnicos para visualizar descargas.</div>
                       ) : (
-                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                        <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={180}>
                           <BarChart data={downloadsChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#222" />
                             <XAxis dataKey="name" stroke="#555" fontSize={10} tickLine={false} />
