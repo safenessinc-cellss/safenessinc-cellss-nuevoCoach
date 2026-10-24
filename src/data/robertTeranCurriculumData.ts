@@ -7,7 +7,7 @@ export interface CandidateInfo {
   credlyProfile: string;
   credlyId: string;
   transcriptDate: string;
-  summary: "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva. Mi carrera como desarrollador es consecuencia de mi experiencia industrial: desde Symbian y aplicaciones móviles hasta plataformas web con IA, creo herramientas que traducen la complejidad de los procesos y las normas en soluciones digitales usables."
+  summary: string;
 }
 
 export interface CareerRole {
@@ -65,7 +65,7 @@ export const CANDIDATE_INFO: CandidateInfo = {
   credlyProfile: "https://www.credly.com/users/deuwy-medina",
   credlyId: "198445cf-bf48-4c32-aaee-d0e81b149fd2",
   transcriptDate: "22 July 2026",
-  summary: "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en empresas como Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva."
+  summary: "Deuwy Robert Terán Medina es Ingeniero de Producción y Calidad, Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, ISO 14001, ISO 45001 RAC/IRCA e IATF 16949) e IBM 2025 Executive Coach, con 30 años de experiencia internacional en la industria. Es especialista en optimización de procesos, gestión de la calidad, mejora continua (Lean Manufacturing, Green Belt Six Sigma, 8D y RNC) y gestión de inventarios JIT. Ha liderado proyectos con resultados reportados de 30% menos reclamos de clientes, 25% menos costos de inventario y 15% más capacidad productiva, con trayectoria en General Motors, Aister SL, Aproinca Group y Rototech.\n\nComplementa su experiencia industrial con el desarrollo de software para Android, iOS, Symbian y web full stack, incluidas cinco aplicaciones publicadas en Google Play Store bajo SAFENESS.INC y herramientas digitales para sistemas de gestión de la calidad. Integra además la especialidad en comportamiento humano organizacional, Psicopedagogía Empresarial y la Teoría de los Biotipos de Sheldon para apoyar el diagnóstico del talento, la composición estratégica de equipos y el liderazgo adaptativo.\n\nEn 2025 completó 22 credenciales oficiales y más de 500 actividades formativas en inteligencia artificial, ciberseguridad, cloud computing y computación cuántica. Su perfil conecta excelencia operativa, transformación digital y factor humano para impulsar el desarrollo organizacional."
 };
 
 export const IMPACT_METRICS = [
