@@ -676,7 +676,7 @@ export default function App() {
               <h3 className="text-lg font-bold text-white">{t('impact.credentialsTitle')}</h3>
               <p className="mt-2 text-sm leading-relaxed text-gray-400">{t('impact.credentialsText')}</p>
             </div>
-            <button onClick={() => setIsCurriculumOpen(true)} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700">
+            <button onClick={() => setIsCurriculumModalOpen(true)} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700">
               {t('impact.cta')} <ArrowRight className="h-4 w-4" />
             </button>
           </div>
