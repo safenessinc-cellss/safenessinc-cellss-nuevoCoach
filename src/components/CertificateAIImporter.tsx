@@ -3,9 +3,43 @@ import { AlertCircle, CheckCircle2, FileImage, Loader2, Save, Sparkles, Upload, 
 import { analyzeCertificateImage, type ExtractedCertificate } from '../ai/geminiClient';
 import { useCertificates } from '../data/useCertificates';
 
+
+async function compressCertificateImage(dataUrl: string): Promise<string> {
+  const image = new Image();
+  image.src = dataUrl;
+  await new Promise<void>((resolve, reject) => {
+    image.onload = () => resolve();
+    image.onerror = () => reject(new Error('No se pudo procesar la imagen del certificado.'));
+  });
+
+  const maxDimension = 1200;
+  const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('El navegador no pudo preparar la miniatura del certificado.');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  let quality = 0.78;
+  let compressed = canvas.toDataURL('image/jpeg', quality);
+  const byteLength = (value: string) => Math.ceil((value.split(',')[1]?.length || 0) * 3 / 4);
+  while (byteLength(compressed) > 260_000 && quality > 0.38) {
+    quality -= 0.1;
+    compressed = canvas.toDataURL('image/jpeg', quality);
+  }
+  if (byteLength(compressed) > 300_000) {
+    throw new Error('La imagen no se pudo reducir lo suficiente. Prueba con una foto más pequeña.');
+  }
+  return compressed;
+}
+
 export default function CertificateAIImporter() {
   const { addCertificate } = useCertificates();
   const [fileName, setFileName] = useState('');
+  const [certificatePreview, setCertificatePreview] = useState<string>('');
   const [draft, setDraft] = useState<ExtractedCertificate | null>(null);
   const [busy, setBusy] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -25,6 +59,7 @@ export default function CertificateAIImporter() {
     }
     setBusy(true);
     setDraft(null);
+    setCertificatePreview('');
     setNotice(null);
     setFileName(file.name);
     try {
@@ -34,8 +69,11 @@ export default function CertificateAIImporter() {
         reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
         reader.readAsDataURL(file);
       });
-      const result = await analyzeCertificateImage(dataUrl, file.type);
-      setDraft(result);
+      // Compress before sending to the API (avoids the request-body limit) and keep a small preview for the PDF.
+      const compressedDataUrl = await compressCertificateImage(dataUrl);
+      const result = await analyzeCertificateImage(compressedDataUrl, 'image/jpeg');
+      setCertificatePreview(compressedDataUrl);
+      setDraft({ ...result, publicProfileUrl: result.publicProfileUrl || 'https://www.coach-iso.eu/' });
       setNotice({ type: 'success', text: 'Extracción terminada. Revisa y corrige los datos antes de guardar.' });
     } catch (error) {
       setNotice({ type: 'error', text: error instanceof Error ? error.message : 'No se pudo analizar el certificado.' });
@@ -44,7 +82,7 @@ export default function CertificateAIImporter() {
     }
   };
 
-  type EditableField = 'title' | 'issuer' | 'code' | 'issuedDate' | 'verificationUrl' | 'description';
+  type EditableField = 'title' | 'issuer' | 'code' | 'issuedDate' | 'verificationUrl' | 'publicProfileUrl' | 'description';
   const edit = (field: EditableField, value: string) => {
     setDraft(previous => previous ? { ...previous, [field]: value } : previous);
   };
@@ -57,10 +95,11 @@ export default function CertificateAIImporter() {
     setSaving(true);
     setNotice(null);
     try {
-      await addCertificate({ ...draft, title: draft.title.trim(), issuer: draft.issuer.trim(), verified: false });
+      await addCertificate({ ...draft, title: draft.title.trim(), issuer: draft.issuer.trim(), publicProfileUrl: draft.publicProfileUrl?.trim() || 'https://www.coach-iso.eu/', imageDataUrl: certificatePreview, verified: false });
       setNotice({ type: 'success', text: 'Credencial guardada. Queda marcada como no verificada hasta comprobarla en el emisor.' });
       setDraft(null);
       setFileName('');
+      setCertificatePreview('');
     } catch (error) {
       setNotice({ type: 'error', text: error instanceof Error ? error.message : 'No se pudo guardar la credencial.' });
     } finally {
@@ -88,14 +127,15 @@ export default function CertificateAIImporter() {
         <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
           <div className="flex items-center justify-between gap-3">
             <h3 className="font-bold text-white">Revisar datos extraídos</h3>
-            <button type="button" onClick={() => { setDraft(null); setFileName(''); }} className="rounded-lg p-2 text-gray-400 hover:bg-white/5 hover:text-white" aria-label="Descartar borrador"><X className="h-4 w-4" /></button>
+            <button type="button" onClick={() => { setDraft(null); setFileName(''); setCertificatePreview(''); }} className="rounded-lg p-2 text-gray-400 hover:bg-white/5 hover:text-white" aria-label="Descartar borrador"><X className="h-4 w-4" /></button>
           </div>
           {([
             ['title', 'Título'],
             ['issuer', 'Emisor'],
             ['code', 'Código'],
             ['issuedDate', 'Fecha de emisión'],
-            ['verificationUrl', 'URL de verificación'],
+            ['verificationUrl', 'URL oficial de verificación'],
+            ['publicProfileUrl', 'Página pública del perfil (por defecto coach-iso.eu)'],
           ] as const).map(([field, label]) => (
             <label key={field} className="block space-y-1">
               <span className="text-xs font-medium text-gray-400">{label}</span>
