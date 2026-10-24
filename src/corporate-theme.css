@@ -33,6 +33,7 @@ body {
 [class*="bg-[#03050C"],
 [class*="bg-[#050505"],
 [class*="bg-[#050814"],
+[class*="bg-[#0a0a0a"],
 [class*="bg-[#090D1A"],
 [class*="bg-[#0A1628"],
 [class*="bg-[#0F1F35"],
@@ -133,4 +134,12 @@ hr {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* White text remains white on intentional blue primary actions and user messages. */
+.bg-blue-600.text-white,
+.bg-blue-700.text-white,
+button.bg-blue-600,
+button.bg-blue-700 {
+  color: #ffffff !important;
 }
