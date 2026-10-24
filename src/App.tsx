@@ -53,6 +53,44 @@ const experienceMetricLabels: Record<string, string> = {
   it: 'Anni di esperienza',
 };
 
+const skillRatingLabels: Record<string, Record<string, string>> = {
+  'ISO Gestión de Calidad': { es: '98% Calidad', en: '98% Quality', pt: '98% Qualidade', it: '98% Qualità' },
+  'Estructuras de Empresas': { es: '95% Estructura', en: '95% Structure', pt: '95% Estrutura', it: '95% Struttura' },
+  'Mapeo de Procesos': { es: '97% Diagramas BPMN', en: '97% BPMN diagrams', pt: '97% Diagramas BPMN', it: '97% Diagrammi BPMN' },
+  'Análisis Crítico': { es: '100% Diagnóstico', en: '100% Diagnostics', pt: '100% Diagnóstico', it: '100% Diagnostica' },
+  'Análisis de Gestión': { es: '94% Indicadores KPI', en: '94% KPI analytics', pt: '94% Indicadores KPI', it: '94% Analisi KPI' },
+  'Análisis de Riesgo': { es: '96% Mitigación', en: '96% Mitigation', pt: '96% Mitigação', it: '96% Mitigazione' },
+  'Análisis de Mercado': { es: '92% Retail', en: '92% Retail', pt: '92% Varejo', it: '92% Retail' },
+  'Emprendimiento & Startup': { es: '93% Crecimiento', en: '93% Growth', pt: '93% Crescimento', it: '93% Crescita' },
+  'IBM 2025 Coach': { es: '100% Coach IBM', en: '100% IBM Coach', pt: '100% Coach IBM', it: '100% Coach IBM' },
+  'Auditor Leader': { es: '99% Auditor Líder IRCA', en: '99% IRCA Lead Auditor', pt: '99% Auditor Líder IRCA', it: '99% Lead Auditor IRCA' },
+};
+
+const consoleHeadingLabels: Record<string, string> = {
+  es: '[CONSOLA DE ESTADO DE SISTEMAS // ROBERT_TERAN.EXE]',
+  en: '[SYSTEM STATUS CONSOLE // ROBERT_TERAN.EXE]',
+  pt: '[CONSOLE DE STATUS DOS SISTEMAS // ROBERT_TERAN.EXE]',
+  it: '[CONSOLE DI STATO DEI SISTEMI // ROBERT_TERAN.EXE]',
+};
+const interactiveProgramLabels: Record<string, string> = {
+  es: 'Visualizar programas y normas interactivas',
+  en: 'View interactive programs and standards',
+  pt: 'Ver programas e normas interativas',
+  it: 'Visualizza programmi e norme interattive',
+};
+const systemStatusLabels: Record<string, string> = {
+  es: 'ESTADO DEL SISTEMA: CONFORME',
+  en: 'SYSTEM STATUS: COMPLIANT',
+  pt: 'STATUS DO SISTEMA: CONFORME',
+  it: 'STATO DEL SISTEMA: CONFORME',
+};
+const viewCoverageLabels: Record<string, string> = {
+  es: '{viewCoverageLabels[(i18n.language || "es").slice(0, 2)] || viewCoverageLabels.es}',
+  en: '[VIEW COVERAGE]',
+  pt: '[VER COBERTURA]',
+  it: '[VEDI COPERTURA]',
+};
+
 const corporateBackgrounds = [
   'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920', // Modern Office
   'https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=1920', // Team Meeting
@@ -773,7 +811,7 @@ export default function App() {
                 {/* Painel de Comando Digital de Habilidades (Status Console) */}
                 <h4 className="text-xs uppercase tracking-widest font-mono text-[#00F0FF] mb-3 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-[#00F0FF] rounded-full animate-ping"></span>
-                  <span>[CONSOLE DE STATUS DE SISTEMAS // ROBERT_TERAN.EXE]</span>
+                  <span>{consoleHeadingLabels[(i18n.language || "es").slice(0, 2)] || consoleHeadingLabels.es}</span>
                 </h4>
 
                 {/* Badges Grid */}
@@ -842,7 +880,7 @@ export default function App() {
                         <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
                           isFuchsiaSkill ? 'bg-[#FF007A]/15 text-[#FF007A]' : 'bg-[#00F0FF]/15 text-[#00F0FF]'
                         }`}>
-                          {detail.rating}
+                          {skillRatingLabels[canonicalLabel]?.[currentLang] || detail.rating}
                         </span>
                       </div>
 
@@ -859,13 +897,13 @@ export default function App() {
                               : 'text-[#00F0FF] hover:text-white bg-[#00F0FF]/10 border-[#00F0FF]/30 hover:bg-[#00F0FF]/25'
                           }`}
                         >
-                          <span>[Visualizar Programa e Normas Interactivas // {displayLabel.toUpperCase()}]</span>
+                          <span>{interactiveProgramLabels[currentLang] || interactiveProgramLabels.es} // {displayLabel.toUpperCase()}</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
 
                       <div className="flex justify-between items-center text-[10px] text-[#64748B] pt-1">
-                        <span>SYSTEM STATUS: COMPLIANT</span>
+                        <span>{systemStatusLabels[currentLang] || systemStatusLabels.es}</span>
                         <span className="animate-pulse">{detail.systemLog}</span>
                       </div>
                     </motion.div>
