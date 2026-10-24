@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
-  collection, onSnapshot, query, orderBy, limit, addDoc, serverTimestamp 
+  collection, onSnapshot, query, orderBy, limit 
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { motion } from 'motion/react';
@@ -68,6 +68,7 @@ function AIDemandAnalyticsDashboard() {
   const [visits, setVisits] = useState<any[]>([]);
   const [consultations, setConsultations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [logsAccessDenied, setLogsAccessDenied] = useState(false);
 
   // Subscribe to Firebase real-time listeners
   useEffect(() => {
@@ -82,9 +83,16 @@ function AIDemandAnalyticsDashboard() {
       unsubLogs = onSnapshot(logsQ, (snap) => {
         const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }) as AIActivityLog);
         setAiLogs(data);
+        setLogsAccessDenied(false);
         setLoading(false);
       }, (err) => {
-        console.warn("Error cargando logs de IA Firestore, usando dataset analítico:", err);
+        const errorCode = (err as { code?: string })?.code;
+        if (errorCode === 'permission-denied') {
+          setLogsAccessDenied(true);
+          setAiLogs([]);
+        } else {
+          console.warn('No se pudieron cargar los registros de IA:', err);
+        }
         setLoading(false);
       });
 
@@ -294,14 +302,16 @@ function AIDemandAnalyticsDashboard() {
 
       const randomSample = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
 
-      await addDoc(collection(db, 'ai_activity_logs'), {
+      // La simulación es solo local: las reglas de Firestore reservan la escritura
+      // de ai_activity_logs al backend de confianza.
+      setAiLogs(previous => [{
+        id: `local-test-${Date.now()}`,
         userPrompt: randomSample.prompt,
-        aiResponseSnippet: 'El sistema de inteligencia artificial analizó la consulta con los manuales técnicos de Robert Terán...',
+        aiResponseSnippet: 'Evento de prueba local para comprobar la visualización del dashboard.',
         category: randomSample.cat,
-        timestamp: serverTimestamp(),
         dateStr: new Date().toISOString().split('T')[0],
-        source: 'Simulación Panel Control'
-      });
+        source: 'Simulación local'
+      }, ...previous]);
     } catch (e) {
       console.warn("Simulación ejecutada localmente:", e);
     } finally {
@@ -325,9 +335,9 @@ function AIDemandAnalyticsDashboard() {
               <BarChart3 className="w-5 h-5" />
             </span>
             <h2 className="text-xl font-black text-white tracking-tight">Dashboard de Demanda & Asistente IA</h2>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 font-bold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              Sincronizado Firestore
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-bold flex items-center gap-1 ${logsAccessDenied ? "bg-amber-500/10 text-amber-300 border-amber-500/20" : "bg-green-500/10 text-green-400 border-green-500/20"}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${logsAccessDenied ? "bg-amber-400" : "bg-green-400 animate-pulse"}`} />
+              {logsAccessDenied ? "Logs reales sin permiso · datos de demostración" : "Sincronizado Firestore"}
             </span>
           </div>
           <p className="text-xs text-gray-400">
@@ -479,7 +489,7 @@ function AIDemandAnalyticsDashboard() {
       </div>
 
       {/* MAIN ANALYTICS RECHARTS GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-w-0">
         
         {/* CHART 1: DEMAND EVOLUTION AREA CHART (2 COLUMNS) */}
         <div className="lg:col-span-2 bg-[#12101a] p-6 rounded-2xl border border-white/10 space-y-4 shadow-xl">
@@ -504,8 +514,8 @@ function AIDemandAnalyticsDashboard() {
           </div>
 
           {/* Recharts Area Chart */}
-          <div className="h-[280px] w-full pt-2">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <div className="h-[280px] w-full min-w-0 min-h-[280px] pt-2">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={180}>
               <AreaChart data={demandOverTimeData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="aiGrad" x1="0" y1="0" x2="0" y2="1">
@@ -564,7 +574,7 @@ function AIDemandAnalyticsDashboard() {
             </p>
           </div>
 
-          <div className="h-[200px] w-full my-auto">
+          <div className="h-[200px] w-full min-w-0 min-h-[200px] my-auto">
             <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <PieChart>
                 <Pie
@@ -608,7 +618,7 @@ function AIDemandAnalyticsDashboard() {
       </div>
 
       {/* SECONDARY RECHARTS ROW: DEMAND BY ISO STANDARD & HOURLY PEAK */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-w-0">
         
         {/* CHART 3: DEMAND BY CATEGORY (BAR CHART) */}
         <div className="bg-[#12101a] p-6 rounded-2xl border border-white/10 space-y-4 shadow-xl">
@@ -622,7 +632,7 @@ function AIDemandAnalyticsDashboard() {
             </p>
           </div>
 
-          <div className="h-[250px] w-full pt-2">
+          <div className="h-[250px] w-full min-w-0 min-h-[250px] pt-2">
             <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <BarChart data={categoryDemandData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#262338" />
