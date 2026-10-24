@@ -261,7 +261,7 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
   color: #202124 !important;
   isolation: isolate;
 }
-.public-site > .fixed.inset-0:first-child { display: none !important; }
+.public-site > .fixed.inset-0 { display: none !important; }
 .public-site .glass,
 .public-site .futuristic-card {
   background: rgba(255,255,255,.96) !important;
