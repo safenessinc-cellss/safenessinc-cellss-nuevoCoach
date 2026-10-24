@@ -631,6 +631,56 @@ export default function App() {
         </div>
       </section>
 
+
+      {/* VALUE PROPOSITION: REPORTED IMPACT AND THREE CORE PILLARS */}
+      <section id="impacto" className="relative z-10 border-y border-white/10 bg-[#080D18] py-20">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="mx-auto max-w-3xl text-center mb-12">
+            <span className="inline-block rounded-full border border-[#00F0FF]/25 bg-[#00F0FF]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#00F0FF]">{t('impact.title')}</span>
+            <p className="mt-4 text-sm leading-relaxed text-gray-400">{t('impact.subtitle')}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {[
+              { value: '−30%', label: t('impact.kpi1') },
+              { value: '−25%', label: t('impact.kpi2') },
+              { value: '−20%', label: t('impact.kpi3') },
+              { value: '+15%', label: t('impact.kpi4') }
+            ].map((item) => (
+              <div key={item.label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-5 text-center">
+                <div className="text-3xl font-black tracking-tight text-white md:text-4xl">{item.value}</div>
+                <p className="mt-2 text-sm text-gray-400">{item.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-16">
+            <h3 className="mb-8 text-center text-2xl font-bold text-white md:text-3xl">{t('impact.pillarsTitle')}</h3>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {[
+                { icon: ShieldCheck, title: t('impact.pillar1Title'), body: t('impact.pillar1Text') },
+                { icon: Workflow, title: t('impact.pillar2Title'), body: t('impact.pillar2Text') },
+                { icon: Users, title: t('impact.pillar3Title'), body: t('impact.pillar3Text') }
+              ].map((item) => {
+                const Icon = item.icon;
+                return <article key={item.title} className="rounded-2xl border border-white/10 bg-[#0B1220] p-6 transition-colors hover:border-[#00F0FF]/30">
+                  <Icon className="mb-4 h-7 w-7 text-[#00F0FF]" />
+                  <h4 className="mb-3 text-lg font-bold text-white">{item.title}</h4>
+                  <p className="text-sm leading-relaxed text-gray-400">{item.body}</p>
+                </article>;
+              })}
+            </div>
+          </div>
+          <div className="mt-12 flex flex-col items-center justify-between gap-5 rounded-2xl border border-white/10 bg-white/[0.035] p-6 md:flex-row">
+            <div className="max-w-2xl">
+              <h3 className="text-lg font-bold text-white">{t('impact.credentialsTitle')}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-400">{t('impact.credentialsText')}</p>
+            </div>
+            <button onClick={() => setIsCurriculumOpen(true)} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700">
+              {t('impact.cta')} <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* PERFIL Y TRAYECTORIA */}
       <section id="about" className="py-24 relative z-10 bg-black/40 backdrop-blur-md border-t border-white/5">
         <div className="container mx-auto max-w-6xl px-4">
@@ -675,19 +725,19 @@ export default function App() {
                   {t('about.badge')}
                 </span>
                 <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight leading-tight">
-                  Más de <span className="text-red-600">{profile.experienceYears} años</span> de Excelencia
+                  {t('about.title')}
                 </h2>
                 <div className="w-20 h-1 bg-red-600 mb-8"></div>
                 
                 <p className="text-gray-300 text-lg font-light leading-relaxed mb-8">
-                  {profile.bio}
+                  {t('about.description')}
                 </p>
                 
                 {/* Specific Highlight */}
                 <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-8 relative overflow-hidden group">
                   <Quote className="absolute -top-2 -right-2 w-24 h-24 text-white/5 group-hover:text-red-500/10 transition-colors" />
                   <p className="text-gray-400 italic text-lg relative z-10 leading-relaxed">
-                    "{profile.quote}"
+                    {t('about.quote')}
                   </p>
                 </div>
 
