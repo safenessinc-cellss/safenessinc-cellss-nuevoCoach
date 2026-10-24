@@ -331,5 +331,30 @@
     "credentialsTitle": "Credenciales y aprendizaje continuo",
     "credentialsText": "El portal reúne el currículo detallado, las credenciales verificables y la formación agrupada por áreas profesionales, evitando duplicar aquí el inventario completo.",
     "cta": "Ver currículo y credenciales"
+  },
+  "humanBehavior": {
+    "badge": "Desarrollo organizacional",
+    "title": "Comportamiento Humano Organizacional",
+    "subtitle": "Psicopedagogía empresarial, desarrollo de talento y liderazgo adaptativo integrados con la experiencia industrial, la auditoría de sistemas de gestión y el coaching ejecutivo.",
+    "intro": "Los sistemas de gestión se adoptan de verdad cuando las personas comprenden el cambio y cuentan con herramientas para aplicarlo. Esta línea complementa la experiencia industrial y de auditoría con un enfoque centrado en el aprendizaje, la conducta y la dinámica de los equipos.",
+    "pillarsTitle": "Áreas de intervención",
+    "items": [
+      {
+        "title": "Diagnóstico y adopción del cambio",
+        "text": "Identificación de necesidades de aprendizaje, resistencias y recursos del equipo para acompañar implementaciones de sistemas de gestión, transformación digital y cambios organizacionales."
+      },
+      {
+        "title": "Formación y desarrollo de talento",
+        "text": "Programas de formación corporativa y planes individuales adaptados a las necesidades, competencias y formas de aprendizaje de cada colaborador."
+      },
+      {
+        "title": "Equipos y liderazgo adaptativo",
+        "text": "Coaching ejecutivo, inteligencia emocional, comunicación, gestión de conflictos y composición de equipos multidisciplinarios según los objetivos del proyecto."
+      }
+    ],
+    "methodTitle": "Enfoque de trabajo",
+    "methodText": "La psicopedagogía empresarial se utiliza como marco para comprender cómo aprende el equipo. Los modelos de perfiles conductuales y los biotipos de Sheldon se consideran únicamente perspectivas complementarias de exploración, no diagnósticos clínicos ni criterios únicos para seleccionar o clasificar personas.",
+    "outcomeTitle": "Objetivo",
+    "outcomeText": "Facilitar la adopción de cambios, fortalecer la colaboración y conectar el desarrollo de las personas con los objetivos operativos y de calidad."
   }
 }
