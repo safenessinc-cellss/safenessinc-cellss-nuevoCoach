@@ -26,6 +26,33 @@ const allData = {
   it: dataIT
 };
 
+const canonicalBadgeLabels = [
+  'ISO Gestión de Calidad',
+  'Estructuras de Empresas',
+  'Mapeo de Procesos',
+  'Análisis Crítico',
+  'Análisis de Gestión',
+  'Análisis de Riesgo',
+  'Análisis de Mercado',
+  'Emprendimiento & Startup',
+  'IBM 2025 Coach',
+  'Auditor Leader',
+];
+
+const badgeLabelsByLanguage: Record<string, string[]> = {
+  es: ['Gestión de la Calidad ISO', 'Estructuras Empresariales', 'Mapeo de Procesos', 'Análisis Crítico', 'Análisis de Gestión', 'Análisis de Riesgos', 'Análisis de Mercado', 'Emprendimiento y Startups', 'Coach IBM 2025', 'Auditor Líder'],
+  en: ['ISO Quality Management', 'Corporate Structures', 'Process Mapping', 'Critical Analysis', 'Management Analysis', 'Risk Analysis', 'Market Analysis', 'Entrepreneurship & Startups', 'IBM 2025 Coach', 'Lead Auditor'],
+  pt: ['Gestão da Qualidade ISO', 'Estruturas Empresariais', 'Mapeamento de Processos', 'Análise Crítica', 'Análise de Gestão', 'Análise de Riscos', 'Análise de Mercado', 'Empreendedorismo e Startups', 'Coach IBM 2025', 'Auditor Líder'],
+  it: ['Gestione della Qualità ISO', 'Strutture Aziendali', 'Mappatura dei Processi', 'Analisi Critica', 'Analisi Gestionale', 'Analisi dei Rischi', 'Analisi di Mercato', 'Imprenditorialità e Startup', 'Coach IBM 2025', 'Lead Auditor'],
+};
+
+const experienceMetricLabels: Record<string, string> = {
+  es: 'Años de experiencia',
+  en: 'Years of experience',
+  pt: 'Anos de experiência',
+  it: 'Anni di esperienza',
+};
+
 const corporateBackgrounds = [
   'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920', // Modern Office
   'https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=1920', // Team Meeting
@@ -100,7 +127,7 @@ const skillDetails: Record<string, { rating: string; info: Record<string, string
       es: "Estudio profundo de tendencias de consumo masivo, modelos de comercialización en retail internacional, comportamiento de competidores y elasticidad comercial.",
       en: "In-depth study of mass consumer trends, international retail commercialization models, competitor behavior, and pricing elasticity.",
       pt: "Estudo aprofundado das tendências de consumo de massa, modelos de comercialização no varejo internacional, comportamento dos concorrentes e elasticidade.",
-      it: "Studio approfondito delle tendenze dei consumi di massa, modelli di commercializzazione nel retail internazionale, comportamento dei concorrenti ed elasticità energetica."
+      it: "Studio approfondito delle tendenze dei consumi di massa, modelli di commercializzazione nel retail internazionale, comportamento dei concorrenti ed elasticità dei prezzi."
     },
     systemLog: "RETAIL_INDEX_LOADED // SR_EXEC"
   },
@@ -754,7 +781,10 @@ export default function App() {
                   {(data?.about?.badges || []).map((badge, idx) => {
                     const Icon = iconMap[badge.icon] || CheckCircle2;
                     const isActive = activeSkillIdx === idx;
-                    const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(badge.label);
+                    const languageCode = (i18n.language || 'es').slice(0, 2);
+                    const canonicalLabel = canonicalBadgeLabels[idx] || badge.label;
+                    const displayLabel = badgeLabelsByLanguage[languageCode]?.[idx] || badge.label;
+                    const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(canonicalLabel);
                     
                     return (
                       <button 
@@ -770,7 +800,7 @@ export default function App() {
                         }`}
                       >
                         <Icon className={`w-4 h-4 transition-colors ${isActive ? (isFuchsiaSkill ? 'text-[#FF007A]' : 'text-[#00F0FF]') : 'text-gray-400'}`} />
-                        <span>{badge.label}</span>
+                        <span>{displayLabel}</span>
                       </button>
                     )
                   })}
@@ -780,14 +810,16 @@ export default function App() {
                 {(() => {
                   const activeBadge = data.about.badges[activeSkillIdx];
                   if (!activeBadge) return null;
-                  const detail = skillDetails[activeBadge.label] || { 
-                    rating: "95% Óptimo", 
+                  const currentLang = (i18n.language || "es").slice(0, 2);
+                  const canonicalLabel = canonicalBadgeLabels[activeSkillIdx] || activeBadge.label;
+                  const displayLabel = badgeLabelsByLanguage[currentLang]?.[activeSkillIdx] || activeBadge.label;
+                  const detail = skillDetails[canonicalLabel] || {
+                    rating: "95% Óptimo",
                     info: { es: "Excelente capacidad analítica y resolución sistémica." },
-                    systemLog: "GENERIC_PERFORMANCE_LOADER // 2026_INDEX" 
+                    systemLog: "GENERIC_PERFORMANCE_LOADER // 2026_INDEX"
                   };
-                  const currentLang = i18n.language || "es";
                   const resolvedInfo = (detail?.info && detail.info[currentLang]) || (detail?.info && detail.info["es"]) || (detail?.info ? Object.values(detail.info)[0] : "Información no disponible");
-                  const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(activeBadge.label);
+                  const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(canonicalLabel);
 
                   return (
                     <motion.div 
@@ -805,7 +837,7 @@ export default function App() {
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3 mb-3 border-white/5">
                         <div className="flex items-center gap-2">
                           <span className={`w-1.5 h-1.5 rounded-full ${isFuchsiaSkill ? 'bg-[#FF007A]' : 'bg-[#00F0FF]'}`}></span>
-                          <span className="text-white font-bold text-sm tracking-tight">{activeBadge.label}</span>
+                          <span className="text-white font-bold text-sm tracking-tight">{displayLabel}</span>
                         </div>
                         <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
                           isFuchsiaSkill ? 'bg-[#FF007A]/15 text-[#FF007A]' : 'bg-[#00F0FF]/15 text-[#00F0FF]'
@@ -820,14 +852,14 @@ export default function App() {
 
                       <div className="mb-4">
                         <Link 
-                          to={`/normas?tab=${badgeToTabMap[activeBadge.label] || 'gestionycalidad'}`} 
+                          to={`/normas?tab=${badgeToTabMap[canonicalLabel] || 'gestionycalidad'}`} 
                           className={`inline-flex items-center gap-2 text-xs border rounded-xl px-4 py-2 transition duration-300 font-bold font-sans ${
                             isFuchsiaSkill 
                               ? 'text-[#FF007A] hover:text-white bg-[#FF007A]/10 border-[#FF007A]/30 hover:bg-[#FF007A]/20' 
                               : 'text-[#00F0FF] hover:text-white bg-[#00F0FF]/10 border-[#00F0FF]/30 hover:bg-[#00F0FF]/25'
                           }`}
                         >
-                          <span>[Visualizar Programa e Normas Interactivas // {activeBadge.label.toUpperCase()}]</span>
+                          <span>[Visualizar Programa e Normas Interactivas // {displayLabel.toUpperCase()}]</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
@@ -1174,7 +1206,7 @@ export default function App() {
                 {data.metrics.yearsExperience}
               </span>
               <span className="text-[9px] uppercase tracking-widest text-[#FF007A] font-mono font-bold mt-1">
-                {data.metrics.label}
+                {experienceMetricLabels[(i18n.language || 'es').slice(0, 2)] || data.metrics.label}
               </span>
               
               <div className="mt-3 text-[9px] font-mono text-[#FF007A] opacity-0 group-hover:opacity-100 transition-opacity uppercase z-20">
