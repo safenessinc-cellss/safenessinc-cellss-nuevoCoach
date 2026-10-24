@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ShieldCheck, Users, Globe, Linkedin, Mail, Award, Network, Workflow, FileCheck, Activity, CheckCircle2, Menu, X, Brain, BarChart3, ShieldAlert, LineChart, Rocket, ClipboardCheck, Briefcase, Map, Quote, ArrowRight, Image as ImageIcon, Layers, Play, Sliders, RotateCcw, Terminal, Check, HelpCircle, CheckSquare, TrendingUp, AlertTriangle, GraduationCap, Download } from 'lucide-react';
+import { ShieldCheck, Users, Globe, Linkedin, Mail, Award, Network, Workflow, FileCheck, Activity, CheckCircle2, Menu, X, Brain, BarChart3, ShieldAlert, LineChart, Rocket, ClipboardCheck, Briefcase, Map, Quote, ArrowRight, Image as ImageIcon, Layers, Play, Sliders, RotateCcw, Terminal, Check, HelpCircle, CheckSquare, TrendingUp, AlertTriangle, GraduationCap, Download, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import dataES from './data/es.json';
@@ -1652,15 +1652,71 @@ export default function App() {
         </div>
       </section>
 
+      {/* SECCIÓN: CREDENCIALES, APRENDIZAJE Y DESARROLLO DE SOFTWARE */}
+      <section id="credenciais-aprendizagem" className="py-20 relative z-10 bg-white border-t border-slate-200">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="text-center mb-12">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-200 bg-blue-50 text-blue-800 text-xs font-bold mb-5 tracking-wide uppercase">
+              <Award className="w-4 h-4" />
+              {i18n.language.startsWith('pt') ? 'Credenciais e aprendizagem contínua' : i18n.language.startsWith('it') ? 'Credenziali e apprendimento continuo' : i18n.language.startsWith('en') ? 'Credentials & continuous learning' : 'Credenciales y aprendizaje continuo'}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight text-slate-900">
+              {i18n.language.startsWith('pt') ? 'Uma trajetória de aprendizagem verificável' : i18n.language.startsWith('it') ? 'Un percorso di apprendimento verificabile' : i18n.language.startsWith('en') ? 'A verifiable learning journey' : 'Una trayectoria de aprendizaje verificable'}
+            </h2>
+            <p className="text-slate-600 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
+              {i18n.language.startsWith('pt')
+                ? 'O portal reúne o currículo detalhado, as credenciais verificáveis e a formação organizada por áreas profissionais, sem duplicar aqui o inventário completo. Abra o portal para consultar certificados, cursos e atividades registados na base de dados.'
+                : i18n.language.startsWith('it')
+                  ? 'Il portale riunisce il CV dettagliato, le credenziali verificabili e la formazione organizzata per aree professionali. Apri il portale per consultare certificati, corsi e attività presenti nel database.'
+                  : i18n.language.startsWith('en')
+                    ? 'The portal brings together the detailed CV, verifiable credentials, and training organized by professional area. Open it to browse certificates, courses, and learning activities stored in the database.'
+                    : 'El portal reúne el CV detallado, las credenciales verificables y la formación organizada por áreas profesionales. Abre el portal para consultar certificados, cursos y actividades registrados en la base de datos.'}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-3"><ShieldCheck className="w-6 h-6 text-blue-700" /><h3 className="font-bold text-slate-900">{i18n.language.startsWith('pt') ? 'Credenciais verificáveis' : i18n.language.startsWith('en') ? 'Verifiable credentials' : 'Credenciales verificables'}</h3></div>
+              <p className="text-sm leading-relaxed text-slate-600">IBM SkillsBuild, Credly e outras entidades emissoras, com links de verificação quando disponíveis.</p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-3"><GraduationCap className="w-6 h-6 text-blue-700" /><h3 className="font-bold text-slate-900">{i18n.language.startsWith('pt') ? 'Formação por áreas' : i18n.language.startsWith('en') ? 'Learning by professional area' : 'Formación por áreas'}</h3></div>
+              <p className="text-sm leading-relaxed text-slate-600">Cibersegurança, IA e dados, cloud, qualidade e ISO, gestão ágil, liderança e desenvolvimento web.</p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+              <div className="flex items-center gap-3 mb-3"><Rocket className="w-6 h-6 text-blue-700" /><h3 className="font-bold text-slate-900">{i18n.language.startsWith('pt') ? 'Desenvolvimento de software' : i18n.language.startsWith('en') ? 'Software development' : 'Desarrollo de software'}</h3></div>
+              <p className="text-sm leading-relaxed text-slate-600">Experiência com Android, iOS, Symbian e aplicações web full stack; cinco aplicações publicadas no Google Play e ferramentas digitais para gestão da qualidade.</p>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-6 md:p-8 mb-8">
+            <h3 className="text-xl font-extrabold text-slate-900 mb-4">{i18n.language.startsWith('pt') ? 'Destaques e resultados desenvolvidos' : i18n.language.startsWith('en') ? 'Selected achievements' : 'Logros y resultados destacados'}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { value: '5', label: i18n.language.startsWith('pt') ? 'aplicações no Google Play' : i18n.language.startsWith('en') ? 'Google Play apps' : 'apps en Google Play' },
+                { value: '30%', label: i18n.language.startsWith('pt') ? 'menos reclamações de clientes' : i18n.language.startsWith('en') ? 'fewer customer complaints' : 'menos reclamos de clientes' },
+                { value: '25%', label: i18n.language.startsWith('pt') ? 'redução de custos de inventário' : i18n.language.startsWith('en') ? 'lower inventory costs' : 'menos coste de inventario' },
+                { value: '15%', label: i18n.language.startsWith('pt') ? 'mais capacidade produtiva' : i18n.language.startsWith('en') ? 'higher production capacity' : 'más capacidad productiva' }
+              ].map((item) => <div key={item.value + item.label} className="rounded-xl bg-white border border-blue-100 p-4"><div className="text-2xl font-black text-blue-800">{item.value}</div><div className="text-sm font-medium text-slate-700 mt-1">{item.label}</div></div>)}
+            </div>
+          </div>
+          <div className="text-center">
+            <button onClick={() => setIsCurriculumModalOpen(true)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 hover:bg-blue-800 px-7 py-3.5 text-sm font-bold text-white shadow-md transition focus:outline-none focus:ring-4 focus:ring-blue-200">
+              <BookOpen className="w-5 h-5" />
+              {i18n.language.startsWith('pt') ? 'Ver currículo e credenciais' : i18n.language.startsWith('en') ? 'View CV & credentials' : 'Ver currículo y credenciales'}
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* SECCIÓN: MÁS ALLÁ DE LA NORMA */}
-      <section className="py-24 relative z-10 bg-gradient-to-b from-black/80 to-[#070913] border-t border-white/5">
+      <section id="comportamiento-humano" className="py-24 relative z-10 bg-slate-50 border-t border-slate-200">
         <div className="container mx-auto max-w-6xl px-4">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold mb-6 tracking-[0.2em] uppercase">
+            <span className="inline-block px-4 py-2 rounded-full border border-blue-200 bg-blue-50 text-blue-800 text-xs font-bold mb-6 tracking-[0.12em] uppercase">
               Más Allá de la Certificación: Coaching Estratégico & Psicopedagogía
             </span>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-white">El Factor Humano Detrás de las Normas</h2>
-            <p className="text-gray-400 max-w-3xl mx-auto text-lg font-light leading-relaxed">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-slate-900">El Factor Humano Detrás de las Normas</h2>
+            <p className="text-slate-600 max-w-3xl mx-auto text-lg font-normal leading-relaxed">
               No basta con tener procesos estandarizados. Necesitas equipos cohesionados que tomen decisiones críticas con agilidad e inteligencia emocional.
             </p>
           </div>
