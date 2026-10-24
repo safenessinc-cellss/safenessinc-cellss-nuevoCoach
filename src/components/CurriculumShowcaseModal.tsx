@@ -297,12 +297,12 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     }
     if (translated.impactMetrics.some((item) => !isText(item.label) || !isText(item.detail)) ||
         translated.careerRoles.some((role, index) =>
-          !isText(role.title) ||
+          !isText(role.title) || (Boolean(sourceRoles[index].period) && !isText(role.period)) ||
           !Array.isArray(role.responsibilities) || role.responsibilities.length !== sourceRoles[index].responsibilities.length ||
           role.responsibilities.some((text) => !isText(text)) ||
           !Array.isArray(role.achievements) || role.achievements.length !== (sourceRoles[index].achievements || []).length ||
           role.achievements.some((text) => !isText(text))) ||
-        translated.educationItems.some((item) => !isText(item.title) || !isText(item.description)) ||
+        translated.educationItems.some((item, index) => !isText(item.title) || (Boolean(inputEducation[index]?.description) && !isText(item.description))) ||
         translated.additionalTexts.some((text) => !isText(text))) {
       throw new Error('La traducción no pasó la validación de contenido. No se generó el PDF.');
     }
