@@ -57,8 +57,17 @@ const ISSUER_LOGO_URLS: Record<string, string> = {
   comptia: 'https://cdn.simpleicons.org/comptia/C8202F',
   khanacademy: 'https://cdn.simpleicons.org/khanacademy/14BF96',
   w3schools: 'https://cdn.simpleicons.org/w3schools/04AA6D',
-  forbes: 'https://cdn.simpleicons.org/forbes/000000'
+  forbes: 'https://cdn.simpleicons.org/forbes/000000',
+  credly: 'https://cdn.simpleicons.org/credly/FF6B00'
 };
+
+function getIssuerLogoUrl(issuer?: string, logoKey?: string): string | undefined {
+  const normalized = (issuer || '').toLowerCase();
+  const detectedKey = logoKey || Object.keys(ISSUER_LOGO_URLS).find((key) => normalized.includes(key));
+  if (normalized.includes('skillsbuild') || normalized.includes('international business machines') || normalized.includes('ibm')) return ISSUER_LOGO_URLS.ibm;
+  if (normalized.includes('credly')) return ISSUER_LOGO_URLS.credly;
+  return detectedKey ? ISSUER_LOGO_URLS[detectedKey] : undefined;
+}
 
 function normalizeActivityKey(title: string): string {
   return title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\|\s*[^|]+$/, '').replace(/\s+l\s+openclassrooms?$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -111,6 +120,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
+  const cvAppearance = { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937', ...(curriculumData.appearance || {}) };
   const { certificates: importedCertificates, loading: certificatesLoading } = useCertificates();
   const savedCurriculumActivities: LearningActivity[] = (Array.isArray(curriculumData.industrialCourses) ? curriculumData.industrialCourses : [])
     .map((item: any, index: number) => {
@@ -118,8 +128,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       if (!title) return null;
       const issuer = String(item.issuer || item.institution || item.provider || item.source || '').trim();
       const rawDate = String(item.completedDate || item.date || '').trim();
-      const completedDate = /^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate) ? rawDate : undefined;
-      const issuerLogoKey = item.issuerLogoKey || Object.keys(ISSUER_LOGO_URLS).find(key => issuer.toLowerCase().includes(key));
+      const completedDate = /^\d{4}-\d{2}-\d{2}$/.test(rawDate) ? rawDate : undefined;
+      const issuerLogoKey = item.issuerLogoKey || Object.keys(ISSUER_LOGO_URLS).find(key => issuer.toLowerCase().includes(key)) || (issuer.toLowerCase().includes('skillsbuild') || issuer.toLowerCase().includes('ibm') ? 'ibm' : undefined);
       return {
         code: String(item.code || `IMPORTED-${index}-${title}`),
         title,
@@ -578,20 +588,21 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   {/* A4 Executive Resume Canvas */}
                   <div
                     id="curriculum-cv-document"
-                    className="w-full max-w-[820px] bg-white text-gray-900 shadow-2xl rounded-xl overflow-hidden flex flex-col md:flex-row min-h-[1050px] relative font-sans text-xs border border-gray-200 print:shadow-none print:border-none print:m-0 print:w-full print:max-w-none"
+                    style={{ backgroundColor: cvAppearance.backgroundColor, color: cvAppearance.textColor }}
+                    className="w-full max-w-[820px] text-gray-900 shadow-2xl rounded-xl overflow-hidden flex flex-col md:flex-row min-h-[1050px] relative font-sans text-xs border border-gray-200 print:shadow-none print:border-none print:m-0 print:w-full print:max-w-none"
                   >
                     <div className="flex h-1.5 w-full absolute top-0 left-0 z-20">
-                      <span className="w-1/4 bg-[#4285F4]" />
+                      <span className="w-1/4" style={{ backgroundColor: cvAppearance.accentColor }} />
                       <span className="w-1/4 bg-[#EA4335]" />
                       <span className="w-1/4 bg-[#FBBC05]" />
                       <span className="w-1/4 bg-[#34A853]" />
                     </div>
                     {/* LEFT SIDEBAR COLUMN - GOOGLE BLUE */}
-                    <div className="w-full md:w-[290px] bg-[#174ea6] text-gray-200 p-6 flex flex-col justify-between relative shrink-0">
+                    <div className="w-full md:w-[290px] text-gray-200 p-6 flex flex-col justify-between relative shrink-0" style={{ backgroundColor: cvAppearance.sidebarColor }}>
                       
                       {/* Top-Left Geometric Amber Vector SVG Cutout */}
                       <svg className="absolute top-0 left-0 w-24 h-24 pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-                        <polygon points="0,0 100,0 0,100" fill="#FBBC05" />
+                        <polygon points="0,0 100,0 0,100" fill={cvAppearance.accentColor} />
                       </svg>
 
                       <div className="relative z-10 space-y-6">
@@ -599,7 +610,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* Coach Profile Photo Container in Arched Oval Frame */}
                         <div className="flex flex-col items-center pt-2">
                           <div className="relative">
-                            <div className="w-36 h-44 rounded-t-[72px] rounded-b-2xl overflow-hidden border-4 border-blue-500 bg-black shadow-2xl flex items-center justify-center">
+                            <div className="w-36 h-44 rounded-t-[72px] rounded-b-2xl overflow-hidden border-4 bg-black shadow-2xl flex items-center justify-center" style={{ borderColor: cvAppearance.accentColor }}>
                               <img
                                 src={profilePhotoUrl}
                                 alt={candidateName}
@@ -611,7 +622,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                                 }}
                               />
                             </div>
-                            <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-blue-500 text-black text-[9.5px] font-black uppercase px-3 py-0.5 rounded-full shadow-lg font-mono whitespace-nowrap">
+                            <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 text-black text-[9.5px] font-black uppercase px-3 py-0.5 rounded-full shadow-lg font-mono whitespace-nowrap" style={{ backgroundColor: cvAppearance.accentColor }}>
                               Coach Terán
                             </span>
                           </div>
@@ -924,8 +935,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           <div className="absolute top-0 right-0 w-2 h-full bg-amber-500" />
                         )}
 
-                        {(cert.imageDataUrl || cert.imageUrl) && (
-                          <div className="mb-3 flex justify-center bg-white/5 rounded-xl p-2 h-24">
+                        <div className="mb-3 flex justify-center items-center bg-white/5 rounded-xl p-2 h-24">
+                          {(cert.imageDataUrl || cert.imageUrl) ? (
                             <img
                               src={cert.imageDataUrl || cert.imageUrl}
                               alt={cert.title}
@@ -934,8 +945,18 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                               referrerPolicy="no-referrer"
                               onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.2'; }}
                             />
-                          </div>
-                        )}
+                          ) : getIssuerLogoUrl(cert.issuer) ? (
+                            <img
+                              src={getIssuerLogoUrl(cert.issuer)}
+                              alt={`Logotipo de ${cert.issuer}`}
+                              className="max-h-12 max-w-[120px] object-contain rounded bg-white p-2"
+                              loading="lazy"
+                              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          ) : (
+                            <div className="rounded-xl border border-white/10 px-4 py-2 text-xs font-bold text-gray-300">{cert.issuer}</div>
+                          )}
+                        </div>
 
                         <div>
                           {/* Code & Issuer */}
@@ -1005,7 +1026,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         </thead>
                         <tbody className="divide-y divide-white/5 text-xs">
                           {(Array.isArray(filteredActivities) ? filteredActivities : []).map((act, idx) => {
-                            const logoUrl = act.issuerLogoKey ? ISSUER_LOGO_URLS[act.issuerLogoKey] : undefined;
+                            const logoUrl = getIssuerLogoUrl(act.issuer, act.issuerLogoKey);
                             const duration = Number(act.durationMinutes || 0);
                             const durationLabel = duration >= 60 ? `${Math.floor(duration / 60)} h ${duration % 60 ? `${duration % 60} min` : ''}`.trim() : duration > 0 ? `${duration} min` : '—';
                             return (
