@@ -24,6 +24,7 @@ import { useCurriculumSettings } from '../data/useCurriculumSettings';
 import { useCertificates } from '../data/useCertificates';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
+import { rewriteCurriculum } from '../ai/geminiClient';
 import { 
   CANDIDATE_INFO, 
   OFFICIAL_CERTIFICATES, 
@@ -126,6 +127,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
+  const [exportLanguage, setExportLanguage] = useState((i18n.language || 'es').slice(0, 2));
   const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('full');
   const [catalogActivities, setCatalogActivities] = useState<LearningActivity[]>(ALL_LEARNING_ACTIVITIES);
   const [trainingCatalogLoaded, setTrainingCatalogLoaded] = useState(false);
@@ -241,11 +243,42 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
   if (!isOpen) return null;
 
-  // Export to PDF robusto (espera fuentes + imágenes, CORS-safe, pagebreak CSS)
+  // Translate professional content for export without overwriting saved curriculum data.
+  const translateCurriculumForExport = async (targetLanguage: string) => {
+    const languageNames: Record<string, string> = { es: 'Spanish', en: 'English', pt: 'Portuguese', it: 'Italian' };
+    const sourceRoles = careerRoles.map((role: any) => ({
+      period: String(role.period || ''), title: String(role.title || ''), company: String(role.company || ''),
+      location: String(role.location || ''), responsibilities: Array.isArray(role.responsibilities) ? role.responsibilities.map(String) : [],
+      achievements: Array.isArray(role.achievements) ? role.achievements.map(String) : [],
+    }));
+    const courseItems = learningActivities.map((course: any) => ({ period: String(course.completedDate || ''), title: String(course.title || ''), institution: String(course.issuer || ''), description: String(course.category || course.activityKind || '') }));
+    const certItems = allOfficialCertificates.map((cert: any) => ({ period: String(cert.issuedDate || ''), title: String(cert.title || ''), institution: String(cert.issuer || ''), description: String(cert.categoryLabel || cert.category || '') }));
+    const sourceEducation = educationItems.map((edu: any) => ({ period: String(edu.period || ''), title: String(edu.title || ''), institution: String(edu.institution || ''), description: String(edu.description || '') }));
+    const inputEducation = [...sourceEducation, ...courseItems, ...certItems];
+    const translated = await rewriteCurriculum({
+      summary: String(cvSummary || ''),
+      impactMetrics: impactMetrics.map((metric: any) => ({ value: String(metric.value || ''), label: String(metric.label || ''), detail: String(metric.detail || '') })),
+      careerRoles: sourceRoles, educationItems: inputEducation,
+      certificateTitles: allOfficialCertificates.map((cert: any) => String(cert.title || '')),
+    }, 'Translate the curriculum faithfully into ' + (languageNames[targetLanguage] || 'Spanish') + '. TRANSLATION ONLY: do not rewrite, summarize, improve, remove, add or invent facts. Preserve every number, date, proper name, company name, credential title, acronym and URL exactly. Preserve the exact number and order of metrics, jobs, responsibilities, achievements and educationItems. Translate only human-readable descriptive text, category labels and role/education descriptions. Return every item, even if some text is already in the target language.');
+    const replacements = new Map<string, string>();
+    const add = (source: unknown, target: unknown) => { const a = String(source ?? '').trim(); const b = String(target ?? '').trim(); if (a && b && a !== b) replacements.set(a, b); };
+    add(cvSummary, translated.summary);
+    impactMetrics.forEach((item: any, i: number) => { const out = translated.impactMetrics?.[i]; if (out) { add(item.label, out.label); add(item.detail, out.detail); } });
+    sourceRoles.forEach((role, i) => { const out = translated.careerRoles?.[i]; if (!out) return; add(role.title, out.title); add(role.company, out.company); add(role.location, out.location); role.responsibilities.forEach((value, j) => add(value, out.responsibilities?.[j])); role.achievements?.forEach((value, j) => add(value, out.achievements?.[j])); });
+    inputEducation.forEach((item, i) => { const out = translated.educationItems?.[i]; if (out) { add(item.title, out.title); add(item.institution, out.institution); add(item.description, out.description); } });
+    return replacements;
+  };
+
+  // Export the full curriculum: translate, update labels, generate and download PDF.
   const handleExportPDF = async () => {
     setIsExporting(true);
+    const previousLanguage = (i18n.language || 'es').slice(0, 2);
     let tempContainer: HTMLDivElement | null = null;
     try {
+      const replacements = await translateCurriculumForExport(exportLanguage);
+      if (previousLanguage !== exportLanguage) await i18n.changeLanguage(exportLanguage);
+
       // PDF exports must always contain the complete curriculum, regardless of the
       // synthesis/full selector currently visible in the interface.
       const needsRender = activeTab !== 'cv_template' || cvMode !== 'full';
@@ -264,8 +297,16 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       // 1. Esperar fuentes
       try { await (document as any).fonts?.ready; } catch {}
 
-      // 2. Clonar y limpiar
+      // 2. Clone the document and translate matching content text nodes.
       const clone = element.cloneNode(true) as HTMLElement;
+      const walker = document.createTreeWalker(clone, NodeFilter.SHOW_TEXT);
+      let textNode: Node | null;
+      while ((textNode = walker.nextNode())) {
+        const original = textNode.textContent || '';
+        const trimmed = original.trim();
+        const translatedText = replacements.get(trimmed);
+        if (translatedText) textNode.textContent = original.replace(trimmed, translatedText);
+      }
       clone.style.width = '820px';
       clone.style.maxWidth = '820px';
       clone.style.margin = '0 auto';
@@ -302,8 +343,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       // 4. Dejar respirar al layout
       await new Promise((r) => setTimeout(r, 350));
 
-      const langCode = (i18n.language || 'es').toUpperCase();
-      const modeName = cvMode === 'synthesis' ? 'Sintesis' : 'Completo';
+      const langCode = exportLanguage.toUpperCase();
+      const modeName = 'Completo';
 
       const opt = {
         margin: [10, 10, 10, 10],
@@ -332,6 +373,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       if (tempContainer && document.body.contains(tempContainer)) {
         document.body.removeChild(tempContainer);
       }
+      if ((i18n.language || 'es').slice(0, 2) !== previousLanguage) await i18n.changeLanguage(previousLanguage);
       setIsExporting(false);
     }
   };
@@ -432,7 +474,13 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  {/* Language Selector */}
+                  {/* Select the PDF language before translation and download. */}
+                  <label className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-700">
+                    <span>Idioma del PDF</span>
+                    <select value={exportLanguage} onChange={(event) => setExportLanguage(event.target.value)} disabled={isExporting} className="bg-transparent font-bold outline-none cursor-pointer">
+                      <option value="es">🇪🇸 Español</option><option value="en">🇬🇧 English</option><option value="pt">🇧🇷 Português</option><option value="it">🇮🇹 Italiano</option>
+                    </select>
+                  </label>
                   <LanguageSelector variant="buttons" className="shrink-0" />
 
                   {/* Export PDF Button */}
