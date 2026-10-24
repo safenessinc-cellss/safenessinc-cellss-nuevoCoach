@@ -8,15 +8,16 @@
     "contacto": "Contact"
   },
   "hero": {
-    "badge": "Engineer, Economist and Integrated Management Systems Specialist | Process Optimization",
-    "title": "Optimizing processes and leading human teams",
-    "titleHighlight": "with over 30 years of experience.",
-    "description": "“I integrate the technical precision of engineering with strategic economic analysis and integrated management systems. We optimize processes, unite teams and streamline critical decisions for your profitability.”"
+    "badge": "Engineering, quality and leadership | Process transformation",
+    "title": "Turning experience into",
+    "titleHighlight": "stronger operational results.",
+    "description": "Production and Quality Engineer, Economist, Management Systems Lead Auditor, and IBM 2025 Executive Coach. More than 30 years of international experience in continuous improvement, leadership, and process optimization."
   },
   "about": {
-    "badge": "Professional Profile",
-    "title": "Over 30 Years of Excellence",
-    "description": "ISO Management Systems Specialist with over 30 years of experience in auditing and strategic consulting. IBM 2025 Certified Lead Auditor and Business Coach, complementing technical expertise with studies in Psychopedagogy, Workplace Wellbeing, and Organizational Emotional Intelligence."
+    "badge": "Professional profile",
+    "title": "Industrial experience with strategic vision",
+    "description": "I bring together engineering, economic analysis, and management systems to help organizations improve quality, control risk, and make data-informed decisions. My career includes experience across industrial and service environments, including General Motors, Aister SL, Aproinca Group, and Rototech. My work draws on continuous improvement, Lean Manufacturing, Six Sigma, root-cause analysis, 8D methods, and ISO management systems. I complement this foundation with ongoing learning in coaching, artificial intelligence, cybersecurity, data, and cloud technologies.",
+    "quote": "Sustainable improvement is about more than passing an audit: it means building clear processes, committed teams, and a quality culture that lasts."
   },
   "services": {
     "badge": "My Services",
@@ -312,5 +313,23 @@
       "title_header": "Training Activity Title",
       "scale_cert_header": "Scaled Certificate"
     }
+  },
+  "impact": {
+    "title": "Results that guide improvement",
+    "subtitle": "Reported indicators from projects and professional experience; outcomes depend on each initiative’s context and scope.",
+    "kpi1": "Customer complaints",
+    "kpi2": "Inventory costs",
+    "kpi3": "Rejection rate",
+    "kpi4": "Production capacity",
+    "pillarsTitle": "Three areas of contribution",
+    "pillar1Title": "Management systems and auditing",
+    "pillar1Text": "Design, auditing, and improvement of management systems, with a focus on ISO 9001, ISO 14001, ISO 45001, and IATF 16949.",
+    "pillar2Title": "Operational excellence",
+    "pillar2Text": "Process analysis, root-cause investigation, corrective action, and continuous improvement to reduce waste, risk, and variation.",
+    "pillar3Title": "Leadership and digital evolution",
+    "pillar3Text": "Executive coaching and team development, complemented by continuous learning in AI, cybersecurity, data analytics, and cloud.",
+    "credentialsTitle": "Credentials and continuous learning",
+    "credentialsText": "Explore verifiable credentials and learning activities organized by professional area in the curriculum portal.",
+    "cta": "Explore résumé and credentials"
   }
 }
