@@ -66,17 +66,31 @@ function sortEducationItems(items: EducationItem[]): EducationItem[] {
     periodStartYear(b.period) - periodStartYear(a.period)
   );
 }
+/** Remove undefined values before writing to Firestore; Firestore rejects them even in optional fields. */
+function removeUndefined<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => item === undefined ? null : removeUndefined(item)) as T;
+  }
+  if (value && typeof value === 'object' && !(value instanceof Date)) {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .filter(([, item]) => item !== undefined)
+        .map(([key, item]) => [key, removeUndefined(item)])
+    ) as T;
+  }
+  return value;
+}
+
 function normalizeSettings(input: Partial<CurriculumSettings> | null | undefined): CurriculumSettings {
   const parsed = input || {};
   const appearance = { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(parsed.appearance || {}) };
-  return {
+  const normalized: CurriculumSettings = {
     candidateInfo: { ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo, ...(parsed.candidateInfo || {}) },
     impactMetrics: Array.isArray(parsed.impactMetrics) ? parsed.impactMetrics : DEFAULT_CURRICULUM_SETTINGS.impactMetrics,
     careerRoles: sortCareerRoles(Array.isArray(parsed.careerRoles) ? parsed.careerRoles : DEFAULT_CURRICULUM_SETTINGS.careerRoles),
     educationItems: sortEducationItems(Array.isArray(parsed.educationItems) ? parsed.educationItems : DEFAULT_CURRICULUM_SETTINGS.educationItems),
     languagesList: Array.isArray(parsed.languagesList) ? parsed.languagesList : DEFAULT_CURRICULUM_SETTINGS.languagesList,
     industrialCourses: Array.isArray(parsed.industrialCourses) ? parsed.industrialCourses : DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
-    professionalAnalysis: parsed.professionalAnalysis || undefined,
     appearance: {
       ...appearance,
       backgroundColor: appearance.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (appearance.backgroundColor || '#FFFFFF'),
@@ -85,6 +99,10 @@ function normalizeSettings(input: Partial<CurriculumSettings> | null | undefined
       textColor: appearance.textColor || '#1F2937'
     }
   };
+  if (parsed.professionalAnalysis !== undefined && parsed.professionalAnalysis !== null) {
+    normalized.professionalAnalysis = parsed.professionalAnalysis;
+  }
+  return removeUndefined(normalized);
 }
 
 export function useCurriculumSettings() {
@@ -146,7 +164,8 @@ export function useCurriculumSettings() {
       console.warn('Error en localStorage al actualizar currículo:', e);
     }
     window.dispatchEvent(new CustomEvent('curriculum-updated', { detail: normalized }));
-    await setDoc(doc(db, 'settings', 'curriculum'), normalized);
+    // Clean the payload defensively: optional analysis and nested editor fields may be undefined.
+    await setDoc(doc(db, 'settings', 'curriculum'), removeUndefined(normalized));
   };
 
   return { curriculumData, updateCurriculum, loading };
