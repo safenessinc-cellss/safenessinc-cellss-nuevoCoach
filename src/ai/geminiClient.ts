@@ -1,4 +1,5 @@
 import { auth } from '../firebase';
+import type { CurriculumPresentationAnalysis } from '../data/useCurriculumSettings';
 
 export type CertificateCategory =
   | 'cybersecurity' | 'ai_data' | 'design_thinking' | 'cloud'
@@ -87,4 +88,11 @@ export async function mergeCurriculumDocument(
     fileName,
     currentCurriculum,
   });
+}
+
+export async function analyzeCurriculumPresentation(
+  currentCurriculum: unknown,
+  officialCertificates: Array<{ title: string; issuer: string; category: string; categoryLabel: string; description: string; issuedDate: string }>,
+): Promise<CurriculumPresentationAnalysis> {
+  return apiRequest<CurriculumPresentationAnalysis>('analyze-curriculum', { currentCurriculum, officialCertificates });
 }
