@@ -199,31 +199,37 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   const summaryTitle = t('curriculum.summary_title', 'Resumen Profesional');
   const transcriptText = t('curriculum.transcript', 'Transcript Oficial expedido el') + ' ' + transcriptDate;
 
-  // Career, education, languages, impact metrics, accreditations prioritized from i18n when translated
-  const rawCareer = t('curriculum.career.roles', { returnObjects: true });
-  const careerRoles = (currentLang !== 'es' && Array.isArray(rawCareer) && rawCareer.length > 0)
-    ? rawCareer
-    : ((curriculumData.careerRoles && curriculumData.careerRoles.length > 0) ? curriculumData.careerRoles : CAREER_EXPERIENCE);
+  // The preview must use the exact saved curriculum data in every language.
+  // Translate interface labels, but never replace edited experience/education with static i18n samples.
+  const sortByPeriod = (items: any[]) => [...items].sort((a, b) => {
+    const year = (period: unknown, isEnd: boolean) => {
+      const value = String(period || '');
+      if (isEnd && /actualidad|presente|present|current|atualmente/i.test(value)) return 9999;
+      const years = value.match(/(?:19|20)\\d{2}/g)?.map(Number) || [];
+      return years.length ? (isEnd ? Math.max(...years) : Math.min(...years)) : 0;
+    };
+    return year(b.period, true) - year(a.period, true) || year(b.period, false) - year(a.period, false);
+  });
 
-  const rawEducation = t('curriculum.education.items', { returnObjects: true });
-  const educationItems = (currentLang !== 'es' && Array.isArray(rawEducation) && rawEducation.length > 0)
-    ? rawEducation
-    : ((curriculumData.educationItems && curriculumData.educationItems.length > 0) ? curriculumData.educationItems : ACADEMIC_EDUCATION);
-
-  const rawLanguages = t('curriculum.languages.items', { returnObjects: true });
-  const languagesList = (currentLang !== 'es' && Array.isArray(rawLanguages) && rawLanguages.length > 0)
-    ? rawLanguages
-    : ((curriculumData.languagesList && curriculumData.languagesList.length > 0) ? curriculumData.languagesList : LANGUAGES_LIST);
-
-  const rawImpactMetrics = t('curriculum.impact_metrics', { returnObjects: true });
-  const impactMetrics = (currentLang !== 'es' && Array.isArray(rawImpactMetrics) && rawImpactMetrics.length > 0)
-    ? rawImpactMetrics
-    : ((curriculumData.impactMetrics && curriculumData.impactMetrics.length > 0) ? curriculumData.impactMetrics : IMPACT_METRICS);
-
-  const rawAccreditations = t('curriculum.industrial_courses', { returnObjects: true });
-  const accreditationsList = (currentLang !== 'es' && Array.isArray(rawAccreditations) && rawAccreditations.length > 0)
-    ? rawAccreditations
-    : ((curriculumData.industrialCourses && curriculumData.industrialCourses.length > 0) ? curriculumData.industrialCourses : INDUSTRIAL_COURSES);
+  const careerRoles = sortByPeriod(
+    Array.isArray(curriculumData.careerRoles) && curriculumData.careerRoles.length > 0
+      ? curriculumData.careerRoles
+      : CAREER_EXPERIENCE
+  );
+  const educationItems = sortByPeriod(
+    Array.isArray(curriculumData.educationItems) && curriculumData.educationItems.length > 0
+      ? curriculumData.educationItems
+      : ACADEMIC_EDUCATION
+  );
+  const languagesList = Array.isArray(curriculumData.languagesList) && curriculumData.languagesList.length > 0
+    ? curriculumData.languagesList
+    : LANGUAGES_LIST;
+  const impactMetrics = Array.isArray(curriculumData.impactMetrics) && curriculumData.impactMetrics.length > 0
+    ? curriculumData.impactMetrics
+    : IMPACT_METRICS;
+  const accreditationsList = Array.isArray(curriculumData.industrialCourses) && curriculumData.industrialCourses.length > 0
+    ? curriculumData.industrialCourses
+    : INDUSTRIAL_COURSES;
 
   // Slicing for Synthesis vs Full CV
   const displayedMetrics = cvMode === 'synthesis'
