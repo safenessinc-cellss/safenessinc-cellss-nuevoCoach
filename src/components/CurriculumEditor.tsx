@@ -20,7 +20,7 @@ import {
 import { useCurriculumSettings, CurriculumSettings, DEFAULT_CURRICULUM_SETTINGS } from '../data/useCurriculumSettings';
 import CurriculumShowcaseModal from './CurriculumShowcaseModal';
 import LanguageSelector from './LanguageSelector';
-import { analyzeCurriculumPresentation, mergeCurriculumDocument } from '../ai/geminiClient';
+import { analyzeCurriculumPresentation, mergeCurriculumDocument, rewriteCurriculum } from '../ai/geminiClient';
 import type { CurriculumMergePreview } from '../ai/geminiClient';
 import { OFFICIAL_CERTIFICATES } from '../data/robertTeranCurriculumData';
 
@@ -43,6 +43,10 @@ export default function CurriculumEditor() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisError, setAnalysisError] = useState('');
   const [analysisPreview, setAnalysisPreview] = useState<import('../data/useCurriculumSettings').CurriculumPresentationAnalysis | null>(null);
+  const [isImprovingSummary, setIsImprovingSummary] = useState(false);
+  const [summaryAiError, setSummaryAiError] = useState('');
+  const [summaryAiDraft, setSummaryAiDraft] = useState('');
+  const [summaryAiInstructions, setSummaryAiInstructions] = useState('Melhore a clareza, o impacto executivo e a leitura para recrutadores. Mantenha o idioma português, os dados verificáveis e os números originais. Não invente certificações, empresas ou resultados.');
 
   useEffect(() => {
     if (curriculumData) {
@@ -152,6 +156,40 @@ export default function CurriculumEditor() {
         [name]: value
       }
     }));
+  };
+
+  const handleImproveProfessionalSummary = async () => {
+    setIsImprovingSummary(true);
+    setSummaryAiError('');
+    setSummaryAiDraft('');
+    try {
+      const result = await rewriteCurriculum({
+        summary: String(formData.candidateInfo.summary || ''),
+        impactMetrics: formData.impactMetrics,
+        careerRoles: formData.careerRoles,
+        educationItems: formData.educationItems,
+        certificateTitles: OFFICIAL_CERTIFICATES.map(certificate => certificate.title),
+      }, summaryAiInstructions);
+      const suggestion = String(result?.summary || '').trim();
+      if (!suggestion) throw new Error('A IA não devolveu uma proposta de resumo. Tente novamente.');
+      setSummaryAiDraft(suggestion);
+    } catch (error) {
+      setSummaryAiError(error instanceof Error ? error.message : 'Não foi possível melhorar o resumo com IA.');
+    } finally {
+      setIsImprovingSummary(false);
+    }
+  };
+
+  const applyProfessionalSummary = () => {
+    if (!summaryAiDraft.trim()) return;
+    setFormData(prev => ({
+      ...prev,
+      candidateInfo: { ...prev.candidateInfo, summary: summaryAiDraft.trim() },
+    }));
+    setSummaryAiDraft('');
+    setSummaryAiError('');
+    setImportNotice('Resumo profissional atualizado no editor. Clique em “Guardar Alterações” para publicá-lo.');
+    setSaveSuccess(false);
   };
 
   // --- Metrics Handlers ---
@@ -581,15 +619,51 @@ export default function CurriculumEditor() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Resumen Profesional (CV Summary)</label>
+            <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-4 md:p-5 space-y-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-sky-300 mb-1">Resumo Profissional</label>
+                  <p className="text-xs leading-relaxed text-gray-400">Edite o texto ou peça à IA uma versão mais executiva. A sugestão só será aplicada quando você confirmar.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleImproveProfessionalSummary}
+                  disabled={isImprovingSummary}
+                  className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl border border-sky-400/30 bg-sky-400/10 px-4 py-2.5 text-xs font-bold text-sky-200 transition hover:bg-sky-400/20 disabled:opacity-50"
+                >
+                  {isImprovingSummary ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                  {isImprovingSummary ? 'Analisando com IA…' : 'Melhorar com IA'}
+                </button>
+              </div>
               <textarea
                 name="summary"
+                aria-label="Resumo Profissional"
                 value={formData.candidateInfo.summary}
                 onChange={handleInfoChange}
-                rows={5}
-                className="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-xs text-white focus:outline-none focus:border-amber-500 font-sans leading-relaxed"
+                rows={6}
+                className="w-full rounded-xl border border-white/10 bg-black/30 p-4 text-sm leading-relaxed text-white focus:border-sky-400 focus:outline-none"
               />
+              <label className="block space-y-1.5">
+                <span className="text-xs font-semibold text-gray-300">Orientações para a IA (opcional)</span>
+                <textarea
+                  value={summaryAiInstructions}
+                  onChange={event => setSummaryAiInstructions(event.target.value)}
+                  rows={2}
+                  className="w-full rounded-xl border border-white/10 bg-black/20 p-3 text-xs leading-relaxed text-gray-200 focus:border-sky-400 focus:outline-none"
+                  placeholder="Ex.: destacar auditoria ISO, liderança industrial e resultados mensuráveis."
+                />
+              </label>
+              {summaryAiError && <p role="alert" className="rounded-xl border border-red-400/20 bg-red-400/5 p-3 text-xs text-red-300">{summaryAiError}</p>}
+              {summaryAiDraft && (
+                <div className="space-y-3 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-4">
+                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-300"><Sparkles className="h-4 w-4" /> Proposta da IA — revise antes de aplicar</div>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-100">{summaryAiDraft}</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={applyProfessionalSummary} className="rounded-lg bg-emerald-400 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-300">Aplicar proposta</button>
+                    <button type="button" onClick={() => setSummaryAiDraft('')} className="rounded-lg border border-white/15 px-4 py-2 text-xs font-semibold text-gray-200 hover:bg-white/5">Descartar</button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
