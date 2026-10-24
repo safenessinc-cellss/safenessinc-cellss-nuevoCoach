@@ -143,3 +143,140 @@ button.bg-blue-600,
 button.bg-blue-700 {
   color: #ffffff !important;
 }
+
+/* Admin dashboard: accessible light theme with predictable contrast. */
+.admin-panel {
+  --admin-bg: #ffffff;
+  --admin-surface: #f8fafd;
+  --admin-panel: #f1f5f9;
+  --admin-text: #202124;
+  --admin-muted: #5f6368;
+  --admin-border: #dfe3e8;
+  background: var(--admin-bg) !important;
+  color: var(--admin-text) !important;
+  color-scheme: light;
+}
+.admin-panel aside,
+.admin-panel header,
+.admin-panel main,
+.admin-panel section,
+.admin-panel article,
+.admin-panel [class*="bg-[#050505"],
+.admin-panel [class*="bg-[#0a0a0a"],
+.admin-panel [class*="bg-[#090D1A"],
+.admin-panel [class*="bg-[#03050C"],
+.admin-panel [class*="bg-black/"],
+.admin-panel [class*="bg-white/"] {
+  background-color: var(--admin-surface) !important;
+  background-image: none !important;
+  border-color: var(--admin-border) !important;
+  color: var(--admin-text);
+}
+.admin-panel .text-white,
+.admin-panel .text-gray-100,
+.admin-panel .text-gray-200,
+.admin-panel .text-slate-100,
+.admin-panel .text-slate-200,
+.admin-panel .text-zinc-100,
+.admin-panel .text-zinc-200 {
+  color: var(--admin-text) !important;
+}
+.admin-panel .text-gray-300,
+.admin-panel .text-gray-400,
+.admin-panel .text-gray-500,
+.admin-panel .text-slate-300,
+.admin-panel .text-slate-400,
+.admin-panel .text-slate-500,
+.admin-panel .text-zinc-300,
+.admin-panel .text-zinc-400 {
+  color: var(--admin-muted) !important;
+}
+.admin-panel .text-blue-300,
+.admin-panel .text-blue-400,
+.admin-panel .text-cyan-300,
+.admin-panel .text-cyan-400,
+.admin-panel .text-teal-300,
+.admin-panel .text-teal-400 {
+  color: #1558b0 !important;
+}
+.admin-panel .text-red-300,
+.admin-panel .text-red-400,
+.admin-panel .text-rose-300,
+.admin-panel .text-rose-400 {
+  color: #b42318 !important;
+}
+.admin-panel .text-green-300,
+.admin-panel .text-green-400,
+.admin-panel .text-emerald-300,
+.admin-panel .text-emerald-400 {
+  color: #137333 !important;
+}
+.admin-panel .text-yellow-300,
+.admin-panel .text-yellow-400,
+.admin-panel .text-amber-300,
+.admin-panel .text-amber-400 {
+  color: #8a4b08 !important;
+}
+.admin-panel [class*="bg-blue-500/"],
+.admin-panel [class*="bg-blue-600/"],
+.admin-panel [class*="bg-cyan-500/"],
+.admin-panel [class*="bg-teal-500/"],
+.admin-panel [class*="bg-emerald-500/"],
+.admin-panel [class*="bg-green-500/"],
+.admin-panel [class*="bg-red-500/"],
+.admin-panel [class*="bg-rose-500/"],
+.admin-panel [class*="bg-yellow-500/"],
+.admin-panel [class*="bg-amber-500/"] {
+  border-color: var(--admin-border) !important;
+}
+.admin-panel button.bg-blue-500,
+.admin-panel button.bg-blue-600,
+.admin-panel button.bg-blue-700,
+.admin-panel a.bg-blue-500,
+.admin-panel a.bg-blue-600,
+.admin-panel a.bg-blue-700,
+.admin-panel button.bg-red-500,
+.admin-panel button.bg-red-600,
+.admin-panel button.bg-red-700,
+.admin-panel button.bg-emerald-600,
+.admin-panel button.bg-green-600,
+.admin-panel button.bg-teal-600,
+.admin-panel button.bg-indigo-600,
+.admin-panel button[class*="bg-gradient-to-r"],
+.admin-panel a[class*="bg-gradient-to-r"] {
+  color: #ffffff !important;
+}
+.admin-panel button[class*="bg-white/"],
+.admin-panel a[class*="bg-white/"] {
+  color: var(--admin-text) !important;
+}
+.admin-panel input,
+.admin-panel textarea,
+.admin-panel select {
+  background-color: #ffffff !important;
+  color: #202124 !important;
+  border-color: #c7cdd4 !important;
+}
+.admin-panel input::placeholder,
+.admin-panel textarea::placeholder {
+  color: #6b7280 !important;
+  opacity: 1;
+}
+.admin-panel table,
+.admin-panel th,
+.admin-panel td {
+  border-color: var(--admin-border) !important;
+}
+.admin-panel .shadow-xl,
+.admin-panel .shadow-2xl {
+  box-shadow: 0 2px 8px rgba(32, 33, 36, 0.08) !important;
+}
+.admin-panel button:focus-visible,
+.admin-panel a:focus-visible,
+.admin-panel input:focus-visible,
+.admin-panel select:focus-visible,
+.admin-panel textarea:focus-visible {
+  outline: 3px solid #8ab4f8 !important;
+  outline-offset: 2px;
+}
+
