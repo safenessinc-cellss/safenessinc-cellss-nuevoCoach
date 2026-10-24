@@ -20,6 +20,7 @@ export interface CurriculumSettings {
   educationItems: EducationItem[];
   languagesList: Array<{ name: string; level: string; written: string }>;
   industrialCourses: any[];
+  appearance: { backgroundColor: string; sidebarColor: string; accentColor: string; textColor: string };
 }
 
 export const DEFAULT_CURRICULUM_SETTINGS: CurriculumSettings = {
@@ -28,7 +29,8 @@ export const DEFAULT_CURRICULUM_SETTINGS: CurriculumSettings = {
   careerRoles: CAREER_EXPERIENCE,
   educationItems: ACADEMIC_EDUCATION,
   languagesList: LANGUAGES_LIST,
-  industrialCourses: INDUSTRIAL_COURSES
+  industrialCourses: INDUSTRIAL_COURSES,
+  appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' }
 };
 
 export function useCurriculumSettings() {
@@ -43,7 +45,8 @@ export function useCurriculumSettings() {
           careerRoles: parsed.careerRoles || DEFAULT_CURRICULUM_SETTINGS.careerRoles,
           educationItems: parsed.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: parsed.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
-          industrialCourses: parsed.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses
+          industrialCourses: parsed.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
+          appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(parsed.appearance || {}) }
         };
       }
     } catch (e) {
@@ -85,7 +88,8 @@ export function useCurriculumSettings() {
           careerRoles: data.careerRoles || DEFAULT_CURRICULUM_SETTINGS.careerRoles,
           educationItems: data.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: data.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
-          industrialCourses: data.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses
+          industrialCourses: data.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
+          appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(data.appearance || {}) }
         };
         setCurriculumData(merged);
         try {
