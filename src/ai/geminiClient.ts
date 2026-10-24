@@ -14,6 +14,10 @@ export interface ExtractedCertificate {
   description: string;
   badgeType: string;
   verificationUrl: string;
+  /** Public Coach ISO profile URL; not an issuer verification URL. */
+  publicProfileUrl?: string;
+  /** Small, compressed certificate preview kept below Firestore's document size limit. */
+  imageDataUrl?: string;
   confidence: number;
   verified?: boolean;
 }
