@@ -60,6 +60,15 @@ function sortCareerRoles(items: CareerRole[]): CareerRole[] {
     periodStartYear(b.period) - periodStartYear(a.period)
   );
 }
+
+/** Preserve saved edits while adding newly introduced default career entries to existing profiles. */
+function mergeCareerRoles(savedRoles: CareerRole[] | undefined): CareerRole[] {
+  const roles = new Map<string, CareerRole>();
+  const keyOf = (role: CareerRole) => `${role.title.trim().toLowerCase()}|${role.company.trim().toLowerCase()}`;
+  DEFAULT_CURRICULUM_SETTINGS.careerRoles.forEach((role) => roles.set(keyOf(role), role));
+  (savedRoles || []).forEach((role) => roles.set(keyOf(role), role));
+  return sortCareerRoles(Array.from(roles.values()));
+}
 function sortEducationItems(items: EducationItem[]): EducationItem[] {
   return [...items].sort((a, b) =>
     periodEndYear(b.period) - periodEndYear(a.period) ||
@@ -87,7 +96,7 @@ function normalizeSettings(input: Partial<CurriculumSettings> | null | undefined
   const normalized: CurriculumSettings = {
     candidateInfo: { ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo, ...(parsed.candidateInfo || {}) },
     impactMetrics: Array.isArray(parsed.impactMetrics) ? parsed.impactMetrics : DEFAULT_CURRICULUM_SETTINGS.impactMetrics,
-    careerRoles: sortCareerRoles(Array.isArray(parsed.careerRoles) ? parsed.careerRoles : DEFAULT_CURRICULUM_SETTINGS.careerRoles),
+    careerRoles: mergeCareerRoles(Array.isArray(parsed.careerRoles) ? parsed.careerRoles : undefined),
     educationItems: sortEducationItems(Array.isArray(parsed.educationItems) ? parsed.educationItems : DEFAULT_CURRICULUM_SETTINGS.educationItems),
     languagesList: Array.isArray(parsed.languagesList) ? parsed.languagesList : DEFAULT_CURRICULUM_SETTINGS.languagesList,
     industrialCourses: Array.isArray(parsed.industrialCourses) ? parsed.industrialCourses : DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
