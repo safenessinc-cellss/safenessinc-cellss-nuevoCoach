@@ -445,7 +445,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative overflow-x-hidden min-h-screen text-gray-200 font-sans selection:bg-[#00F0FF]/30">
+    <div className="public-site relative overflow-x-hidden min-h-screen text-gray-900 font-sans selection:bg-blue-100">
       
       {/* GLOBAL CORPORATE BACKGROUND */}
       <div 
