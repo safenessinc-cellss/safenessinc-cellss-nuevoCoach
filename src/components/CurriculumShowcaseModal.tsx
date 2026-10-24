@@ -77,12 +77,18 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   const [isExporting, setIsExporting] = useState(false);
   const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('full');
   const [learningActivities, setLearningActivities] = useState<LearningActivity[]>(ALL_LEARNING_ACTIVITIES);
+  const [trainingCatalogLoaded, setTrainingCatalogLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     fetch('/curriculum-training.json', { cache: 'no-cache' })
       .then((response) => response.ok ? response.json() : [])
-      .then((payload: unknown) => { if (!cancelled && Array.isArray(payload)) setLearningActivities(mergeLearningActivities(ALL_LEARNING_ACTIVITIES, payload as LearningActivity[])); })
+      .then((payload: unknown) => {
+        if (!cancelled && Array.isArray(payload) && payload.length > 0) {
+          setLearningActivities(mergeLearningActivities(ALL_LEARNING_ACTIVITIES, payload as LearningActivity[]));
+          setTrainingCatalogLoaded(true);
+        }
+      })
       .catch(() => { if (!cancelled) setLearningActivities(ALL_LEARNING_ACTIVITIES); });
     return () => { cancelled = true; };
   }, []);
@@ -825,6 +831,27 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                             </div>
                           );
                         })()}
+
+                        {cvMode === 'full' && trainingCatalogLoaded && (
+                          <div className="mt-5 space-y-2 page-break-before">
+                            <div className="flex items-center gap-2">
+                              <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0"><Layers className="w-3 h-3" /></span>
+                              <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">Historial completo de formación y actividades</h2>
+                            </div>
+                            <p className="pl-7 text-[8.5px] text-gray-600">{learningActivities.length} registros únicos consolidados. Los cursos, módulos, vídeos, artículos y planes se distinguen de las credenciales oficiales; la inclusión en este historial no acredita por sí misma una certificación.</p>
+                            <div className="pl-7 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                              {learningActivities.map((activity, idx) => (
+                                <div key={`cv-training-${activity.code || idx}-${idx}`} className="border-b border-gray-200 py-1 text-[8px] leading-tight flex justify-between gap-2">
+                                  <div className="min-w-0 flex-1">
+                                    <p className="font-bold text-gray-900">{activity.title}</p>
+                                    <p className="text-gray-600">{activity.issuer || 'Fuente no especificada'} · {activity.category || 'Otros recursos formativos'}</p>
+                                  </div>
+                                  <span className="text-gray-500 whitespace-nowrap">{activity.completedDate || ''}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
                     </div>
 
