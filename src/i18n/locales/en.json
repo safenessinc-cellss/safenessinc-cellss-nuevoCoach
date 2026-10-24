@@ -8,16 +8,16 @@
     "contacto": "Contact"
   },
   "hero": {
-    "badge": "Engineering, quality and leadership | Process transformation",
-    "title": "Turning experience into",
-    "titleHighlight": "stronger operational results.",
-    "description": "Production and Quality Engineer, Economist, Management Systems Lead Auditor, and IBM 2025 Executive Coach. More than 30 years of international experience in continuous improvement, leadership, and process optimization."
+    "badge": "Operational excellence · Management systems · Leadership",
+    "title": "Engineering and leadership for",
+    "titleHighlight": "better outcomes.",
+    "description": "More than 30 years connecting quality, efficiency, and team development to improve processes, manage risk, and support business decisions."
   },
   "about": {
-    "badge": "Professional profile",
-    "title": "Industrial experience with strategic vision",
-    "description": "I bring together engineering, economic analysis, and management systems to help organizations improve quality, control risk, and make data-informed decisions. My career includes experience across industrial and service environments, including General Motors, Aister SL, Aproinca Group, and Rototech. My work draws on continuous improvement, Lean Manufacturing, Six Sigma, root-cause analysis, 8D methods, and ISO management systems. I complement this foundation with ongoing learning in coaching, artificial intelligence, cybersecurity, data, and cloud technologies.",
-    "quote": "Sustainable improvement is about more than passing an audit: it means building clear processes, committed teams, and a quality culture that lasts."
+    "badge": "Experience and approach",
+    "title": "Industrial experience with an integrated perspective",
+    "description": "My career spans industrial and service environments, including experience with General Motors, Aister SL, Aproinca Group, and Rototech. I combine root-cause analysis, 8D methods, Lean Manufacturing, Six Sigma, and performance indicators to turn operational problems into sustainable improvements. Detailed evidence of credentials and training is consolidated in the curriculum portal.",
+    "quote": "Sustainable improvement happens when processes are clear, data informs decisions, and people take part in solving problems."
   },
   "services": {
     "badge": "My Services",
@@ -316,7 +316,7 @@
   },
   "impact": {
     "title": "Results that guide improvement",
-    "subtitle": "Reported indicators from projects and professional experience; outcomes depend on each initiative’s context and scope.",
+    "subtitle": "Reported indicators from projects and professional experience. They reflect outcomes in specific contexts and are not guarantees of future results.",
     "kpi1": "Customer complaints",
     "kpi2": "Inventory costs",
     "kpi3": "Rejection rate",
@@ -329,7 +329,7 @@
     "pillar3Title": "Leadership and digital evolution",
     "pillar3Text": "Executive coaching and team development, complemented by continuous learning in AI, cybersecurity, data analytics, and cloud.",
     "credentialsTitle": "Credentials and continuous learning",
-    "credentialsText": "Explore verifiable credentials and learning activities organized by professional area in the curriculum portal.",
-    "cta": "Explore résumé and credentials"
+    "credentialsText": "The portal brings together the detailed résumé, verifiable credentials, and learning grouped by professional area, avoiding a duplicated full inventory on this page.",
+    "cta": "View résumé and credentials"
   }
 }
