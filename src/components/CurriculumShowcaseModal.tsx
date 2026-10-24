@@ -227,7 +227,14 @@ function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalPro
   ];
 
   // Filtered Official Certificates
-  const allOfficialCertificates: OfficialCertificate[] = [...importedCertificates, ...OFFICIAL_CERTIFICATES];
+  const allOfficialCertificates: OfficialCertificate[] = Array.from(
+    new Map<string, OfficialCertificate>(
+      [...OFFICIAL_CERTIFICATES, ...importedCertificates].map((cert) => [
+        (cert.code?.trim().toLowerCase() || `${cert.issuer}|${cert.title}`.toLowerCase()),
+        cert,
+      ] as [string, OfficialCertificate]),
+    ).values(),
+  );
   const filteredOfficial = allOfficialCertificates.filter(cert => {
     const matchesSearch = cert.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           cert.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
