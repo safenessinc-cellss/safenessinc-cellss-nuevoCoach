@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import { useCurriculumSettings, CurriculumSettings, DEFAULT_CURRICULUM_SETTINGS } from '../data/useCurriculumSettings';
 import CurriculumShowcaseModal from './CurriculumShowcaseModal';
+import { mergeCurriculumDocument } from '../ai/geminiClient';
+import type { CurriculumMergePreview } from '../ai/geminiClient';
 
 export default function CurriculumEditor() {
   const { curriculumData, updateCurriculum, loading } = useCurriculumSettings();
@@ -26,12 +28,67 @@ export default function CurriculumEditor() {
   const [activeTab, setActiveTab] = useState<'info' | 'metrics' | 'experience' | 'education' | 'languages'>('info');
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+  const [importError, setImportError] = useState('');
+  const [importNotice, setImportNotice] = useState('');
+  const [importPreview, setImportPreview] = useState<CurriculumMergePreview | null>(null);
+  const [importFileName, setImportFileName] = useState('');
 
   useEffect(() => {
     if (curriculumData) {
       setFormData(curriculumData);
     }
   }, [curriculumData]);
+
+  const handleCurriculumFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    if (!file) return;
+    setImportError('');
+    setImportNotice('');
+    setImportPreview(null);
+    const lowerName = file.name.toLowerCase();
+    const mimeType = file.type || (lowerName.endsWith('.md') ? 'text/markdown' : lowerName.endsWith('.txt') ? 'text/plain' : '');
+    const supported = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp', 'text/plain', 'text/markdown'];
+    if (!supported.includes(mimeType)) {
+      setImportError('Formato no admitido. Sube un PDF, JPG, PNG, WEBP, TXT o Markdown.');
+      input.value = '';
+      return;
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      setImportError('El archivo supera el límite de 3 MB. Reduce el tamaño y vuelve a intentarlo.');
+      input.value = '';
+      return;
+    }
+
+    setIsImporting(true);
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('No se pudo leer el archivo.'));
+        reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+        reader.readAsDataURL(file);
+      });
+      const preview = await mergeCurriculumDocument(dataUrl, mimeType, file.name, formData);
+      setImportFileName(file.name);
+      setImportPreview(preview);
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'No se pudo analizar el documento.');
+    } finally {
+      setIsImporting(false);
+      input.value = '';
+    }
+  };
+
+  const applyCurriculumMerge = () => {
+    if (!importPreview) return;
+    setFormData(importPreview.curriculum);
+    setImportPreview(null);
+    setImportError('');
+    setImportNotice('Fusión aplicada al editor. Revisa los datos y pulsa “Guardar Cambios” para conservarlos.');
+    setSaveSuccess(false);
+    setActiveTab('experience');
+  };
 
   const handleInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -245,6 +302,66 @@ export default function CurriculumEditor() {
             </button>
           </div>
         </div>
+
+        {/* Importación y fusión asistida de currículos antiguos */}
+        <section className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-500/5 p-4 md:p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                Fusionar un currículo o historial antiguo
+              </h3>
+              <p className="mt-1 max-w-2xl text-xs leading-relaxed text-gray-400">
+                La IA compara el documento con el currículo actual, recupera datos únicos y prepara una fusión sin duplicados para que la revises antes de guardarla.
+              </p>
+            </div>
+            <label className={`inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border border-amber-400/30 bg-amber-500/15 px-4 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/25 ${isImporting ? 'pointer-events-none opacity-60' : ''}`}>
+              {isImporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
+              {isImporting ? 'Analizando documento…' : 'Subir currículo antiguo'}
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.webp,.txt,.md,application/pdf,image/jpeg,image/png,image/webp,text/plain,text/markdown"
+                className="hidden"
+                disabled={isImporting}
+                onChange={handleCurriculumFile}
+              />
+            </label>
+          </div>
+
+          <p className="mt-3 text-[10px] text-gray-500">Admite PDF, imágenes, TXT y Markdown (máximo 3 MB). No publica ni guarda cambios automáticamente.</p>
+
+          {importError && <p role="alert" className="mt-3 rounded-lg border border-red-500/25 bg-red-500/10 p-3 text-xs text-red-300">{importError}</p>}
+          {importNotice && <p role="status" className="mt-3 rounded-lg border border-emerald-500/25 bg-emerald-500/10 p-3 text-xs text-emerald-300">{importNotice}</p>}
+
+          {importPreview && (
+            <div className="mt-4 space-y-3 rounded-xl border border-white/10 bg-black/20 p-4">
+              <div>
+                <p className="text-xs font-bold text-white">Fusión preparada: {importFileName}</p>
+                <p className="mt-1 text-[11px] text-gray-400">No se ha guardado todavía. Revisa las notas y las posibles contradicciones antes de aplicarla.</p>
+              </div>
+              {importPreview.notes.length > 0 && (
+                <div>
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">Información recuperada</p>
+                  <ul className="list-disc space-y-1 pl-5 text-xs text-gray-300">
+                    {importPreview.notes.map((note, index) => <li key={index}>{note}</li>)}
+                  </ul>
+                </div>
+              )}
+              {importPreview.conflicts.length > 0 && (
+                <div>
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-300">Revisar antes de guardar</p>
+                  <ul className="list-disc space-y-1 pl-5 text-xs text-gray-300">
+                    {importPreview.conflicts.map((conflict, index) => <li key={index}>{conflict}</li>)}
+                  </ul>
+                </div>
+              )}
+              <div className="flex flex-wrap gap-2 pt-1">
+                <button type="button" onClick={applyCurriculumMerge} className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-extrabold text-black transition hover:bg-amber-400">Aplicar fusión al editor</button>
+                <button type="button" onClick={() => setImportPreview(null)} className="rounded-lg border border-white/15 px-4 py-2 text-xs font-bold text-gray-300 transition hover:bg-white/5">Descartar</button>
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Section Tabs */}
         <div className="flex flex-wrap gap-2 mb-6 border-b border-white/5 pb-4">

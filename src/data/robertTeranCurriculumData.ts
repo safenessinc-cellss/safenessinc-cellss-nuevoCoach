@@ -48,6 +48,12 @@ export interface LearningActivity {
   code: string;
   title: string;
   category?: string;
+  issuer?: string;
+  issuerLogoKey?: string;
+  completedDate?: string;
+  durationMinutes?: number;
+  deliveryType?: string;
+  activityKind?: string;
 }
 
 export const CANDIDATE_INFO: CandidateInfo = {
