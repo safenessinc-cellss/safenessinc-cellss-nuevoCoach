@@ -14,10 +14,12 @@ import {
   Loader2, 
   Eye, 
   CheckCircle,
-  Briefcase
+  Briefcase,
+  Palette
 } from 'lucide-react';
 import { useCurriculumSettings, CurriculumSettings, DEFAULT_CURRICULUM_SETTINGS } from '../data/useCurriculumSettings';
 import CurriculumShowcaseModal from './CurriculumShowcaseModal';
+import LanguageSelector from './LanguageSelector';
 import { mergeCurriculumDocument } from '../ai/geminiClient';
 import type { CurriculumMergePreview } from '../ai/geminiClient';
 
@@ -25,7 +27,7 @@ export default function CurriculumEditor() {
   const { curriculumData, updateCurriculum, loading } = useCurriculumSettings();
   const [formData, setFormData] = useState<CurriculumSettings>(curriculumData);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'info' | 'metrics' | 'experience' | 'education' | 'training' | 'languages'>('info');
+  const [activeTab, setActiveTab] = useState<'info' | 'metrics' | 'experience' | 'education' | 'training' | 'appearance' | 'languages'>('info');
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -432,6 +434,19 @@ export default function CurriculumEditor() {
 
           <button
             type="button"
+            onClick={() => setActiveTab('appearance')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+              activeTab === 'appearance'
+                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            }`}
+          >
+            <Palette className="w-4 h-4" />
+            <span>Apariencia e idioma</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setActiveTab('languages')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'languages'
@@ -812,6 +827,51 @@ export default function CurriculumEditor() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* APARIENCIA DEL CURRÍCULO */}
+        {activeTab === 'appearance' && (
+          <div className="space-y-6">
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
+              <h3 className="text-sm font-bold text-white">Diseño del currículo ejecutivo</h3>
+              <p className="mt-1 text-xs text-gray-400">Estos colores se aplican al documento del currículo y a su exportación PDF. Guarda los cambios para conservarlos.</p>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {([
+                  ['backgroundColor', 'Fondo del currículo', '#FFFFFF'],
+                  ['sidebarColor', 'Fondo de la columna lateral', '#174EA6'],
+                  ['accentColor', 'Color principal / acento', '#4285F4'],
+                  ['textColor', 'Color del texto', '#1F2937'],
+                ] as const).map(([field, label, fallback]) => (
+                  <label key={field} className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs text-gray-300">
+                    <span>{label}</span>
+                    <span className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={formData.appearance?.[field] || fallback}
+                        onChange={(e) => setFormData(prev => ({
+                          ...prev,
+                          appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937', ...(prev.appearance || {}), [field]: e.target.value }
+                        }))}
+                        className="h-9 w-12 cursor-pointer rounded border border-white/20 bg-transparent"
+                        aria-label={label}
+                      />
+                      <span className="font-mono text-[10px] uppercase">{formData.appearance?.[field] || fallback}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Google corporativo</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Safeness teal</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Azul ejecutivo</button>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
+              <h3 className="text-sm font-bold text-white">Idioma y traducción</h3>
+              <p className="mt-1 text-xs text-gray-400">Cambia el idioma de visualización del portal. Las traducciones disponibles se aplican automáticamente a los textos traducidos.</p>
+              <div className="mt-4"><LanguageSelector variant="buttons" /></div>
+            </div>
           </div>
         )}
 
