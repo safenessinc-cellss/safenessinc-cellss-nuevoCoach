@@ -863,6 +863,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                             {professionalAreaGroups.map((group) => (
                               <div key={group.area} className="rounded-lg border border-gray-200 bg-white p-2.5 break-inside-avoid">
                                 <h3 className="text-[10px] font-extrabold text-gray-900">{group.area}</h3>
+                                {curriculumData.professionalAnalysis?.professionalAreas?.find((item) => item.area.toLowerCase() === group.area.toLowerCase())?.summary && (
+                                  <p className="mt-1 text-[9px] leading-snug text-gray-700">{curriculumData.professionalAnalysis.professionalAreas.find((item) => item.area.toLowerCase() === group.area.toLowerCase())?.summary}</p>
+                                )}
                                 <p className="mt-1 text-[9px] leading-snug text-gray-700">
                                   {group.credentials.length > 0 && <><strong>{group.credentials.length}</strong> credencial{group.credentials.length === 1 ? '' : 'es'} verificable{group.credentials.length === 1 ? '' : 's'}</>}
                                   {group.credentials.length > 0 && group.activities.length > 0 && ' · '}
