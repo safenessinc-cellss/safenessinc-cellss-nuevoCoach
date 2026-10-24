@@ -3,7 +3,7 @@
 # Backups locales
 # Firebase CLI local
 # Secretos (por si acaso)
-*.bak
+*.bak*
 *.bak.theme
 *.log
 .DS_Store
