@@ -77,7 +77,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
   const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('full');
-  const [learningActivities, setLearningActivities] = useState<LearningActivity[]>(ALL_LEARNING_ACTIVITIES);
+  const [catalogActivities, setCatalogActivities] = useState<LearningActivity[]>(ALL_LEARNING_ACTIVITIES);
   const [trainingCatalogLoaded, setTrainingCatalogLoaded] = useState(false);
 
   useEffect(() => {
@@ -86,17 +86,40 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
       .then((response) => response.ok ? response.json() : [])
       .then((payload: unknown) => {
         if (!cancelled && Array.isArray(payload) && payload.length > 0) {
-          setLearningActivities(mergeLearningActivities(ALL_LEARNING_ACTIVITIES, payload as LearningActivity[]));
+          setCatalogActivities(mergeLearningActivities(ALL_LEARNING_ACTIVITIES, payload as LearningActivity[]));
           setTrainingCatalogLoaded(true);
         }
       })
-      .catch(() => { if (!cancelled) setLearningActivities(ALL_LEARNING_ACTIVITIES); });
+      .catch(() => { if (!cancelled) setCatalogActivities(ALL_LEARNING_ACTIVITIES); });
     return () => { cancelled = true; };
   }, []);
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
   const { certificates: importedCertificates, loading: certificatesLoading } = useCertificates();
+  const savedCurriculumActivities: LearningActivity[] = (Array.isArray(curriculumData.industrialCourses) ? curriculumData.industrialCourses : [])
+    .map((item: any, index: number) => {
+      const title = String(item.title || item.name || item.course || '').trim();
+      if (!title) return null;
+      const issuer = String(item.issuer || item.institution || item.provider || item.source || '').trim();
+      const rawDate = String(item.completedDate || item.date || '').trim();
+      const completedDate = /^\\d{4}-\\d{2}-\\d{2}$/.test(rawDate) ? rawDate : undefined;
+      const issuerLogoKey = item.issuerLogoKey || Object.keys(ISSUER_LOGO_URLS).find(key => issuer.toLowerCase().includes(key));
+      return {
+        code: String(item.code || `IMPORTED-${index}-${title}`),
+        title,
+        issuer: issuer || 'Fuente no especificada',
+        issuerLogoKey,
+        category: String(item.category || item.categoryLabel || item.description || 'Formación importada'),
+        completedDate,
+        durationMinutes: Number(item.durationMinutes || 0) || undefined,
+        deliveryType: item.deliveryType,
+        activityKind: item.activityKind || 'Formación importada',
+      } as LearningActivity;
+    })
+    .filter((item): item is LearningActivity => item !== null);
+  const learningActivities = mergeLearningActivities(catalogActivities, savedCurriculumActivities);
+
   const profilePhotoUrl = profile.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400";
 
   // Selected certificate for scaled modal viewer
@@ -542,8 +565,14 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                     id="curriculum-cv-document"
                     className="w-full max-w-[820px] bg-white text-gray-900 shadow-2xl rounded-xl overflow-hidden flex flex-col md:flex-row min-h-[1050px] relative font-sans text-xs border border-gray-200 print:shadow-none print:border-none print:m-0 print:w-full print:max-w-none"
                   >
-                    {/* LEFT SIDEBAR COLUMN - DARK CHARCOAL */}
-                    <div className="w-full md:w-[290px] bg-[#1a1d20] text-gray-200 p-6 flex flex-col justify-between relative shrink-0">
+                    <div className="flex h-1.5 w-full absolute top-0 left-0 z-20">
+                      <span className="w-1/4 bg-[#4285F4]" />
+                      <span className="w-1/4 bg-[#EA4335]" />
+                      <span className="w-1/4 bg-[#FBBC05]" />
+                      <span className="w-1/4 bg-[#34A853]" />
+                    </div>
+                    {/* LEFT SIDEBAR COLUMN - GOOGLE BLUE */}
+                    <div className="w-full md:w-[290px] bg-[#174ea6] text-gray-200 p-6 flex flex-col justify-between relative shrink-0">
                       
                       {/* Top-Left Geometric Amber Vector SVG Cutout */}
                       <svg className="absolute top-0 left-0 w-24 h-24 pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -555,7 +584,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* Coach Profile Photo Container in Arched Oval Frame */}
                         <div className="flex flex-col items-center pt-2">
                           <div className="relative">
-                            <div className="w-36 h-44 rounded-t-[72px] rounded-b-2xl overflow-hidden border-4 border-amber-500 bg-black shadow-2xl flex items-center justify-center">
+                            <div className="w-36 h-44 rounded-t-[72px] rounded-b-2xl overflow-hidden border-4 border-blue-500 bg-black shadow-2xl flex items-center justify-center">
                               <img
                                 src={profilePhotoUrl}
                                 alt={candidateName}
@@ -567,7 +596,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                                 }}
                               />
                             </div>
-                            <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-amber-500 text-black text-[9.5px] font-black uppercase px-3 py-0.5 rounded-full shadow-lg font-mono whitespace-nowrap">
+                            <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-blue-500 text-black text-[9.5px] font-black uppercase px-3 py-0.5 rounded-full shadow-lg font-mono whitespace-nowrap">
                               Coach Terán
                             </span>
                           </div>
@@ -575,8 +604,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
                         {/* CONTACT ME / CONTACTO */}
                         <div className="space-y-3 pt-2">
-                          <div className="flex items-center gap-2 border-b border-amber-500/40 pb-1.5">
-                            <span className="p-1 rounded-full bg-amber-500 text-black shrink-0">
+                          <div className="flex items-center gap-2 border-b border-blue-500/40 pb-1.5">
+                            <span className="p-1 rounded-full bg-blue-500 text-black shrink-0">
                               <User className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
@@ -584,19 +613,19 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                             </h3>
                           </div>
 
-                          <div className="relative pl-4 space-y-3 border-l-2 border-amber-500 ml-2 text-[11px]">
+                          <div className="relative pl-4 space-y-3 border-l-2 border-blue-500 ml-2 text-[11px]">
                             {/* Phone */}
                             <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.phone', 'Teléfono / WhatsApp')}</span>
                               <span className="font-semibold text-white block">{candidatePhone}</span>
                             </div>
 
                             {/* Email & Web */}
                             <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.email', 'Email / Credly')}</span>
-                              <a href={`mailto:${candidateEmail}`} className="font-medium text-amber-400 hover:underline block break-all text-[10.5px]">
+                              <a href={`mailto:${candidateEmail}`} className="font-medium text-blue-600 hover:underline block break-all text-[10.5px]">
                                 {candidateEmail}
                               </a>
                               <span className="text-gray-300 text-[9.5px] block break-all">credly.com/users/deuwy-medina</span>
@@ -604,7 +633,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
                             {/* Location */}
                             <div className="relative space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
                               <span className="text-gray-400 text-[9.5px] uppercase font-mono block font-bold">{t('curriculum.contact.location', 'Ubicación')}</span>
                               <span className="font-medium text-white block">{candidateLocation}</span>
                             </div>
@@ -613,8 +642,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
                         {/* IDIOMAS */}
                         <div className="space-y-3">
-                          <div className="flex items-center gap-2 border-b border-amber-500/40 pb-1.5">
-                            <span className="p-1 rounded-full bg-amber-500 text-black shrink-0">
+                          <div className="flex items-center gap-2 border-b border-blue-500/40 pb-1.5">
+                            <span className="p-1 rounded-full bg-blue-500 text-black shrink-0">
                               <BookOpen className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
@@ -622,13 +651,13 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                             </h3>
                           </div>
 
-                          <div className="relative pl-4 space-y-2 border-l-2 border-amber-500 ml-2 text-[10.5px]">
+                          <div className="relative pl-4 space-y-2 border-l-2 border-blue-500 ml-2 text-[10.5px]">
                             {(Array.isArray(languagesList) ? languagesList : []).map((lang: any, idx: number) => (
                               <div key={`lang-${idx}`} className="relative space-y-0.5">
-                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
                                 <div className="flex justify-between items-center text-white font-bold">
                                   <span>{lang.name}</span>
-                                  <span className="text-[9px] text-amber-400 font-mono">{lang.level}</span>
+                                  <span className="text-[9px] text-blue-600 font-mono">{lang.level}</span>
                                 </div>
                                 <span className="text-gray-400 text-[9px] block">{lang.written}</span>
                               </div>
@@ -638,8 +667,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
 
                         {/* EDUCACIÓN Y FORMACIÓN */}
                         <div className="space-y-3">
-                          <div className="flex items-center gap-2 border-b border-amber-500/40 pb-1.5">
-                            <span className="p-1 rounded-full bg-amber-500 text-black shrink-0">
+                          <div className="flex items-center gap-2 border-b border-blue-500/40 pb-1.5">
+                            <span className="p-1 rounded-full bg-blue-500 text-black shrink-0">
                               <GraduationCap className="w-3.5 h-3.5" />
                             </span>
                             <h3 className="font-extrabold uppercase text-xs tracking-wider text-white">
@@ -647,12 +676,12 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                             </h3>
                           </div>
 
-                          <div className="relative pl-4 space-y-3 border-l-2 border-amber-500 ml-2 text-[11px]">
+                          <div className="relative pl-4 space-y-3 border-l-2 border-blue-500 ml-2 text-[11px]">
                             {(Array.isArray(educationItems) ? educationItems : []).map((edu: any, idx: number) => (
                               <div key={`edu-${idx}`} className="relative space-y-0.5">
-                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-[#1a1d20]" />
+                                <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-[#1a1d20]" />
                                 <span className="font-bold text-white uppercase block leading-tight">{edu.title}</span>
-                                <span className="text-amber-400 text-[10px] font-semibold block">{edu.institution} ({edu.period})</span>
+                                <span className="text-blue-600 text-[10px] font-semibold block">{edu.institution} ({edu.period})</span>
                                 {edu.description && <span className="text-gray-400 text-[9px] block leading-tight">{edu.description}</span>}
                               </div>
                             ))}
@@ -672,9 +701,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                       <div className="space-y-6">
                         
                         {/* Header Banner - Grey Box with Bold Name & Amber Accent */}
-                        <div className="bg-gray-100 p-5 rounded-r-2xl border-l-8 border-amber-500 shadow-sm">
+                        <div className="bg-gray-100 p-5 rounded-r-2xl border-l-8 border-blue-500 shadow-sm">
                           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-gray-900 leading-tight">
-                            DEUWY ROBERT <span className="text-amber-500">TERÁN MEDINA</span>
+                            DEUWY ROBERT <span className="text-blue-600">TERÁN MEDINA</span>
                           </h1>
                           <p className="text-[10.5px] font-black uppercase text-gray-600 tracking-wider mt-1.5">
                             {t('curriculum.subtitle', 'INGENIERO DE PRODUCCIÓN Y CALIDAD • ECONOMISTA • AUDITOR LÍDER SIG ISO • IBM 2025 COACH')}
@@ -684,7 +713,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* SOBRE MÍ / ABOUT ME */}
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                            <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
                               <User className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
@@ -699,7 +728,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* IMPACTO Y RESULTADOS QUANTITATIVOS */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                            <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
                               <Sparkles className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
@@ -721,7 +750,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* EXPERIENCIA LABORAL / JOB EXPERIENCE */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                            <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
                               <Building className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
@@ -729,10 +758,10 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                             </h2>
                           </div>
 
-                          <div className="relative pl-7 space-y-4 border-l-2 border-amber-500 ml-2.5">
+                          <div className="relative pl-7 space-y-4 border-l-2 border-blue-500 ml-2.5">
                             {displayedRoles.map((role: any, idx: number) => (
                               <div key={`career-role-${idx}`} className="relative space-y-1">
-                                <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-amber-500 border-2 border-white shadow" />
+                                <div className="absolute -left-[33px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-white shadow" />
                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
                                   <h3 className="font-extrabold uppercase text-xs text-gray-900">
                                     {role.title}
@@ -767,7 +796,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {/* CURSOS Y CERTIFICACIONES DESTACADAS */}
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                            <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
                               <Award className="w-3 h-3" />
                             </span>
                             <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
@@ -796,7 +825,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                           return (
                             <div className="space-y-3">
                               <div className="flex items-center gap-2">
-                                <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
+                                <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0">
                                   <Award className="w-3 h-3" />
                                 </span>
                                 <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">
@@ -836,7 +865,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                         {cvMode === 'full' && trainingCatalogLoaded && (
                           <div className="mt-5 space-y-2 page-break-before">
                             <div className="flex items-center gap-2">
-                              <span className="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0"><Layers className="w-3 h-3" /></span>
+                              <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0"><Layers className="w-3 h-3" /></span>
                               <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">Historial completo de formación y actividades</h2>
                             </div>
                             <p className="pl-7 text-[8.5px] text-gray-600">{learningActivities.length} registros únicos consolidados. Los cursos, módulos, vídeos, artículos y planes se distinguen de las credenciales oficiales; la inclusión en este historial no acredita por sí misma una certificación.</p>
