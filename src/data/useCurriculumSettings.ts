@@ -46,7 +46,7 @@ export function useCurriculumSettings() {
           educationItems: parsed.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: parsed.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
           industrialCourses: parsed.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
-          appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(parsed.appearance || {}) }
+          appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(parsed.appearance || {}), backgroundColor: parsed.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (parsed.appearance?.backgroundColor || '#FFFFFF') }
         };
       }
     } catch (e) {
@@ -89,7 +89,7 @@ export function useCurriculumSettings() {
           educationItems: data.educationItems || DEFAULT_CURRICULUM_SETTINGS.educationItems,
           languagesList: data.languagesList || DEFAULT_CURRICULUM_SETTINGS.languagesList,
           industrialCourses: data.industrialCourses || DEFAULT_CURRICULUM_SETTINGS.industrialCourses,
-          appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(data.appearance || {}) }
+          appearance: { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(data.appearance || {}), backgroundColor: data.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (data.appearance?.backgroundColor || '#FFFFFF') }
         };
         setCurriculumData(merged);
         try {
