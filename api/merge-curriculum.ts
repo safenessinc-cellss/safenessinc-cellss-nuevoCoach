@@ -147,11 +147,29 @@ export default async function handler(req: any, res: any) {
       contents = [{ role: "user", parts: [{ text: prompt }, { inlineData: { mimeType: detectedMime, data: base64 } }] }];
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
-      contents,
-      config: { responseMimeType: "application/json" }
-    });
+    let response: any;
+    let modelError: unknown;
+    // Keep a stable fallback in case a model is not enabled for this API key/project.
+    for (const model of ["gemini-3.8-flash", "gemini-3.6-flash"]) {
+      try {
+        response = await ai.models.generateContent({
+          model,
+          contents,
+          config: { responseMimeType: "application/json" }
+        });
+        modelError = undefined;
+        break;
+      } catch (error) {
+        modelError = error;
+        const status = Number((error as any)?.status || (error as any)?.error?.code || 0);
+        const message = error instanceof Error ? error.message : String(error || "");
+        // Retry another supported model only for model/endpoint availability errors.
+        if (status !== 404 && !/model .*not found|model .*no longer available|not supported for generatecontent/i.test(message)) {
+          throw error;
+        }
+      }
+    }
+    if (modelError || !response) throw modelError || new Error("Gemini no devolvió una respuesta.");
     const outputText = response.text || "";
     let parsed: any;
     try {
@@ -168,9 +186,21 @@ export default async function handler(req: any, res: any) {
       conflicts: Array.isArray(parsed.conflicts) ? parsed.conflicts.filter((item: unknown) => typeof item === "string").slice(0, 20) : []
     });
   } catch (error) {
-    console.error("Error fusionando currículo", error);
-    const message = error instanceof Error ? error.message : "Error interno.";
-    if (message.includes("FIREBASE_SERVICE_ACCOUNT_JSON")) return res.status(503).json({ error: "El servicio de importación necesita configurar Firebase Admin en el servidor." });
-    return res.status(500).json({ error: "No se pudo fusionar el currículo. Comprueba la configuración del servidor e inténtalo de nuevo." });
+    const rawMessage = error instanceof Error ? error.message : String(error || "Error interno.");
+    const status = Number((error as any)?.status || (error as any)?.error?.code || 0);
+    console.error("Error fusionando currículo", { status, message: rawMessage });
+    if (rawMessage.includes("FIREBASE_SERVICE_ACCOUNT_JSON")) return res.status(503).json({ error: "El servicio de importación necesita una cuenta de servicio Firebase válida en el servidor." });
+    if (status === 400 || status === 401 || status === 403) {
+      return res.status(502).json({ error: "Google Gemini rechazó la solicitud o la clave no tiene acceso al modelo. Revisa GEMINI_API_KEY y el acceso a Gemini API en Google AI Studio." });
+    }
+    if (status === 404) {
+      return res.status(502).json({ error: "El modelo de Gemini no está disponible para esta clave. Se intentaron los modelos gemini-3.8-flash y gemini-3.6-flash." });
+    }
+    if (status === 429) {
+      return res.status(503).json({ error: "Se alcanzó el límite temporal de solicitudes de Gemini. Espera un momento y vuelve a intentarlo." });
+    }
+    // Return a clipped diagnostic to help identify provider errors without exposing credentials.
+    const safeMessage = rawMessage.replace(/AIza[0-9A-Za-z_-]{20,}/g, "[clave oculta]").slice(0, 240);
+    return res.status(502).json({ error: `No se pudo completar la fusión con Gemini${status ? ` (HTTP ${status})` : ""}: ${safeMessage}` });
   }
 }
