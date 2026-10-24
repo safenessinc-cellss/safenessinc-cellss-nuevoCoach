@@ -814,7 +814,7 @@ function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white flex flex-col md:flex-row font-sans selection:bg-red-500/30">
+    <div className="admin-panel min-h-screen bg-white text-slate-900 flex flex-col md:flex-row font-sans selection:bg-blue-100">
       
       {/* 1. SIDEBAR NAVIGATION */}
       <aside className="w-full md:w-64 bg-[#0a0a0a] border-r border-white/5 flex flex-col shrink-0">
