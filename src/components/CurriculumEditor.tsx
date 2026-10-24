@@ -25,7 +25,7 @@ export default function CurriculumEditor() {
   const { curriculumData, updateCurriculum, loading } = useCurriculumSettings();
   const [formData, setFormData] = useState<CurriculumSettings>(curriculumData);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<'info' | 'metrics' | 'experience' | 'education' | 'languages'>('info');
+  const [activeTab, setActiveTab] = useState<'info' | 'metrics' | 'experience' | 'education' | 'training' | 'languages'>('info');
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -87,7 +87,7 @@ export default function CurriculumEditor() {
     setImportError('');
     setImportNotice('Fusión aplicada al editor. Revisa los datos y pulsa “Guardar Cambios” para conservarlos.');
     setSaveSuccess(false);
-    setActiveTab('experience');
+    setActiveTab('training');
   };
 
   const handleInfoChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -415,6 +415,19 @@ export default function CurriculumEditor() {
           >
             <GraduationCap className="w-4 h-4" />
             <span>Educación ({formData.educationItems.length})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('training')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+              activeTab === 'training'
+                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Formación y cursos ({formData.industrialCourses.length})</span>
           </button>
 
           <button
@@ -752,6 +765,53 @@ export default function CurriculumEditor() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* TAB: FORMACIÓN Y CURSOS IMPORTADOS */}
+        {activeTab === 'training' && (
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-extrabold text-white">Formación consolidada</h3>
+                <p className="mt-1 text-xs text-gray-400">Los cursos importados quedan guardados aquí y se muestran en el historial formativo y en el CV completo. Las actividades no se presentan automáticamente como certificaciones oficiales.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFormData(prev => ({ ...prev, industrialCourses: [...prev.industrialCourses, { title: 'Nueva formación', institution: '', period: '', description: '' }] }))}
+                className="shrink-0 rounded-xl bg-blue-500 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-600 transition"
+              >
+                <Plus className="inline w-4 h-4 mr-1" /> Agregar formación
+              </button>
+            </div>
+            {formData.industrialCourses.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-white/15 p-8 text-center text-xs text-gray-400">Todavía no hay formaciones importadas en este currículo.</div>
+            ) : (
+              <div className="space-y-3">
+                {formData.industrialCourses.map((course: any, idx: number) => (
+                  <div key={`training-${idx}`} className="grid grid-cols-1 md:grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-black/30 p-4">
+                    <div className="md:col-span-2 flex items-start justify-between gap-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-blue-300">Registro {idx + 1}</span>
+                      <button type="button" onClick={() => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.filter((_: any, i: number) => i !== idx) }))} className="text-red-400 hover:text-red-300" aria-label={`Eliminar formación ${idx + 1}`}>
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <label className="block text-[10px] font-bold text-gray-400">Título de la formación
+                      <input value={course.title || course.name || course.course || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, title: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    </label>
+                    <label className="block text-[10px] font-bold text-gray-400">Institución / emisor
+                      <input value={course.institution || course.issuer || course.provider || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, institution: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    </label>
+                    <label className="block text-[10px] font-bold text-gray-400">Fecha / periodo
+                      <input value={course.period || course.completedDate || course.date || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, period: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    </label>
+                    <label className="block text-[10px] font-bold text-gray-400">Categoría / descripción
+                      <input value={course.description || course.category || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, description: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    </label>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
