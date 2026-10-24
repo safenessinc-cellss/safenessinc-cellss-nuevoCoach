@@ -266,6 +266,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     const inputEducation = [...sourceEducation, ...courseItems, ...certItems];
     const additionalTexts = Array.from(new Set([
       ...PROFESSIONAL_AREA_ORDER,
+      ...languagesList.flatMap((language: any) => [
+        String(language.name || ''), String(language.level || ''), String(language.written || ''),
+      ]),
       String(curriculumData.professionalAnalysis?.shortCvHeadline || ''),
       'Certificados y credenciales',
       'Historial completo de formación y actividades',
