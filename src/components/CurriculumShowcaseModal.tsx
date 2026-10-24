@@ -147,7 +147,13 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
-  const cvAppearance = { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937', ...(curriculumData.appearance || {}), backgroundColor: curriculumData.appearance?.backgroundColor?.toUpperCase() === '#000000' ? '#FFFFFF' : (curriculumData.appearance?.backgroundColor || '#FFFFFF') };
+  const savedAppearance = curriculumData.appearance || {};
+  const cvAppearance = {
+    backgroundColor: savedAppearance.backgroundColor && savedAppearance.backgroundColor.toUpperCase() !== '#000000' ? savedAppearance.backgroundColor : '#FFFFFF',
+    sidebarColor: savedAppearance.sidebarColor || '#174EA6',
+    accentColor: savedAppearance.accentColor || '#4285F4',
+    textColor: savedAppearance.textColor || '#1F2937',
+  };
   const { certificates: importedCertificates, loading: certificatesLoading } = useCertificates();
   const savedCurriculumActivities: LearningActivity[] = (Array.isArray(curriculumData.industrialCourses) ? curriculumData.industrialCourses : [])
     .map((item: any, index: number) => {
