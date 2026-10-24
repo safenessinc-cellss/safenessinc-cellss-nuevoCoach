@@ -36,12 +36,12 @@ export const THEME_PRESETS: Record<ThemeId, ThemePreset> = {
   'corporate-light': {
     id: 'corporate-light',
     name: 'Corporate Light',
-    description: 'Blanco limpio + teal + dorado. Formal y legible.',
+    description: 'Blanco limpio, texto grafito y acentos corporativos de alto contraste.',
     mode: 'light',
     tokens: {
-      bgBase: '#F7FAFC', bgSurface: '#FFFFFF', bgPanel: '#F1F5F9', bgSection: '#EEF4F8',
-      accent: '#0EA5A4', accent2: '#B8860B', accent3: '#6366F1',
-      text: '#0F172A', textMuted: '#64748B', border: '#E2E8F0',
+      bgBase: '#FFFFFF', bgSurface: '#FFFFFF', bgPanel: '#F8F9FA', bgSection: '#F8F9FA',
+      accent: '#1A73E8', accent2: '#188038', accent3: '#A142F4',
+      text: '#202124', textMuted: '#5F6368', border: '#DADCE0',
     },
   },
   midnight: {
@@ -68,7 +68,7 @@ export const THEME_PRESETS: Record<ThemeId, ThemePreset> = {
   },
 };
 
-export const DEFAULT_THEME: ThemeId = 'corporate-dark';
+export const DEFAULT_THEME: ThemeId = 'corporate-light';
 
 export function applyTheme(preset: ThemePreset) {
   const root = document.documentElement;
