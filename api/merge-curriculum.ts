@@ -30,7 +30,16 @@ function mergeList(base: any[], incoming: any[], keyFn: (item: any) => string): 
     const key = keyFn(item);
     if (!key) return;
     const previous = result.get(key);
-    result.set(key, previous ? { ...previous, ...item } : item);
+    if (!previous) {
+      result.set(key, item);
+      return;
+    }
+    const merged = { ...previous, ...item };
+    for (const field of ["responsibilities", "achievements", "skills"]) {
+      const values = [...(Array.isArray(previous[field]) ? previous[field] : []), ...(Array.isArray(item[field]) ? item[field] : [])];
+      if (values.length) merged[field] = Array.from(new Set(values.filter((value) => typeof value === "string" && value.trim())));
+    }
+    result.set(key, merged);
   });
   return Array.from(result.values());
 }
