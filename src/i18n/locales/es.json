@@ -8,16 +8,16 @@
     "contacto": "Contacto"
   },
   "hero": {
-    "badge": "Ingeniería, calidad y liderazgo | Transformación de procesos",
-    "title": "Convertimos la experiencia en",
-    "titleHighlight": "mejores resultados operativos.",
-    "description": "Ingeniero de Producción y Calidad, Economista, Auditor Líder de Sistemas de Gestión y Coach Ejecutivo IBM 2025. Más de 30 años de trayectoria internacional en mejora continua, liderazgo y optimización de procesos."
+    "badge": "Excelencia operacional · Sistemas de gestión · Liderazgo",
+    "title": "Ingeniería y liderazgo para impulsar",
+    "titleHighlight": "mejores resultados.",
+    "description": "Más de 30 años conectando calidad, eficiencia y desarrollo de equipos para mejorar procesos, gestionar riesgos y apoyar decisiones empresariales."
   },
   "about": {
-    "badge": "Perfil profesional",
-    "title": "Experiencia industrial con visión estratégica",
-    "description": "Integro ingeniería, análisis económico y sistemas de gestión para ayudar a las organizaciones a mejorar la calidad, controlar riesgos y tomar decisiones con datos. Mi trayectoria incluye experiencias en entornos industriales y de servicios, entre ellos General Motors, Aister SL, Aproinca Group y Rototech. Trabajo con mejora continua, Lean Manufacturing, Six Sigma, análisis de causa raíz, metodologías 8D y sistemas de gestión ISO. Complemento esta base con formación continua en coaching, inteligencia artificial, ciberseguridad, datos y nube.",
-    "quote": "La mejora sostenible no consiste solo en superar una auditoría: consiste en construir procesos claros, equipos comprometidos y una cultura de calidad que se mantenga en el tiempo."
+    "badge": "Trayectoria y enfoque",
+    "title": "Experiencia industrial con visión integral",
+    "description": "Mi trayectoria incluye entornos industriales y de servicios, con experiencias en General Motors, Aister SL, Aproinca Group y Rototech. Combino análisis de causa raíz, metodologías 8D, Lean Manufacturing, Six Sigma y gestión por indicadores para convertir los problemas operativos en mejoras sostenibles. La evidencia detallada de credenciales y formación se reúne en el portal de currículo.",
+    "quote": "La mejora sostenible ocurre cuando los procesos son claros, los datos orientan las decisiones y las personas participan en la solución."
   },
   "services": {
     "badge": "Mis Servicios",
@@ -316,7 +316,7 @@
   },
   "impact": {
     "title": "Resultados que orientan la mejora",
-    "subtitle": "Indicadores reportados en proyectos y experiencias profesionales; los resultados dependen del contexto y del alcance de cada iniciativa.",
+    "subtitle": "Indicadores reportados en proyectos y experiencias profesionales. Son referencias de resultados alcanzados en contextos específicos, no garantías de resultados futuros.",
     "kpi1": "Reclamaciones de clientes",
     "kpi2": "Costes de inventario",
     "kpi3": "Índice de rechazo",
@@ -329,7 +329,7 @@
     "pillar3Title": "Liderazgo y evolución digital",
     "pillar3Text": "Coaching ejecutivo y desarrollo de equipos, junto con aprendizaje continuo en IA, ciberseguridad, análisis de datos y nube.",
     "credentialsTitle": "Credenciales y aprendizaje continuo",
-    "credentialsText": "Consulta las credenciales verificables y las actividades formativas organizadas por área en el portal de currículo.",
-    "cta": "Explorar currículo y credenciales"
+    "credentialsText": "El portal reúne el currículo detallado, las credenciales verificables y la formación agrupada por áreas profesionales, evitando duplicar aquí el inventario completo.",
+    "cta": "Ver currículo y credenciales"
   }
 }
