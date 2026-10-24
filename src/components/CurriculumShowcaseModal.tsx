@@ -24,7 +24,7 @@ import { useCurriculumSettings } from '../data/useCurriculumSettings';
 import { useCertificates } from '../data/useCertificates';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
-import { rewriteCurriculum } from '../ai/geminiClient';
+import { translateCurriculumForExport } from '../ai/geminiClient';
 import { 
   CANDIDATE_INFO, 
   OFFICIAL_CERTIFICATES, 
@@ -243,30 +243,96 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
 
   if (!isOpen) return null;
 
-  // Translate professional content for export without overwriting saved curriculum data.
-  const translateCurriculumForExport = async (targetLanguage: string) => {
-    const languageNames: Record<string, string> = { es: 'Spanish', en: 'English', pt: 'Portuguese', it: 'Italian' };
+  // Translate the complete CV content for the selected export language.
+  // The API returns a structured translation; export is blocked unless every section is present.
+  const translateCurriculumForExportAndValidate = async (targetLanguage: string) => {
     const sourceRoles = careerRoles.map((role: any) => ({
       period: String(role.period || ''), title: String(role.title || ''), company: String(role.company || ''),
       location: String(role.location || ''), responsibilities: Array.isArray(role.responsibilities) ? role.responsibilities.map(String) : [],
       achievements: Array.isArray(role.achievements) ? role.achievements.map(String) : [],
     }));
-    const courseItems = learningActivities.map((course: any) => ({ period: String(course.completedDate || ''), title: String(course.title || ''), institution: String(course.issuer || ''), description: String(course.category || course.activityKind || '') }));
-    const certItems = allOfficialCertificates.map((cert: any) => ({ period: String(cert.issuedDate || ''), title: String(cert.title || ''), institution: String(cert.issuer || ''), description: String(cert.categoryLabel || cert.category || '') }));
-    const sourceEducation = educationItems.map((edu: any) => ({ period: String(edu.period || ''), title: String(edu.title || ''), institution: String(edu.institution || ''), description: String(edu.description || '') }));
+    const courseItems = learningActivities.map((course: any) => ({
+      period: String(course.completedDate || ''), title: String(course.title || ''), institution: String(course.issuer || ''),
+      description: String(course.category || course.activityKind || ''), kind: 'course' as const,
+    }));
+    const certItems = allOfficialCertificates.map((cert: any) => ({
+      period: String(cert.issuedDate || ''), title: String(cert.title || ''), institution: String(cert.issuer || ''),
+      description: String(cert.categoryLabel || cert.category || ''), kind: 'credential' as const,
+    }));
+    const sourceEducation = educationItems.map((edu: any) => ({
+      period: String(edu.period || ''), title: String(edu.title || ''), institution: String(edu.institution || ''),
+      description: String(edu.description || ''), kind: 'education' as const,
+    }));
     const inputEducation = [...sourceEducation, ...courseItems, ...certItems];
-    const translated = await rewriteCurriculum({
+    const additionalTexts = Array.from(new Set([
+      ...PROFESSIONAL_AREA_ORDER,
+      String(curriculumData.professionalAnalysis?.shortCvHeadline || ''),
+      'Certificados y credenciales',
+      'Historial completo de formación y actividades',
+      'registros únicos consolidados. Los cursos, módulos, vídeos, artículos y planes se distinguen de las credenciales oficiales; la inclusión en este historial no acredita por sí misma una certificación.',
+      'cursos/actividades',
+      'credenciales',
+      'Fuente no especificada',
+      'Sin actividades formativas detalladas en esta área.',
+      'Pendiente de verificación oficial',
+    ].map((value) => value.trim()).filter(Boolean)));
+
+    const translated = await translateCurriculumForExport({
       summary: String(cvSummary || ''),
-      impactMetrics: impactMetrics.map((metric: any) => ({ value: String(metric.value || ''), label: String(metric.label || ''), detail: String(metric.detail || '') })),
-      careerRoles: sourceRoles, educationItems: inputEducation,
-      certificateTitles: allOfficialCertificates.map((cert: any) => String(cert.title || '')),
-    }, 'Translate the curriculum faithfully into ' + (languageNames[targetLanguage] || 'Spanish') + '. TRANSLATION ONLY: do not rewrite, summarize, improve, remove, add or invent facts. Preserve every number, date, proper name, company name, credential title, acronym and URL exactly. Preserve the exact number and order of metrics, jobs, responsibilities, achievements and educationItems. Translate only human-readable descriptive text, category labels and role/education descriptions. Return every item, even if some text is already in the target language.');
+      impactMetrics: impactMetrics.map((metric: any) => ({
+        value: String(metric.value || ''), label: String(metric.label || ''), detail: String(metric.detail || ''),
+      })),
+      careerRoles: sourceRoles,
+      educationItems: inputEducation,
+      additionalTexts,
+    }, targetLanguage as 'es' | 'en' | 'pt' | 'it');
+
+    const isText = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0;
+    if (!isText(translated.summary) ||
+        !Array.isArray(translated.impactMetrics) || translated.impactMetrics.length !== impactMetrics.length ||
+        !Array.isArray(translated.careerRoles) || translated.careerRoles.length !== sourceRoles.length ||
+        !Array.isArray(translated.educationItems) || translated.educationItems.length !== inputEducation.length ||
+        !Array.isArray(translated.additionalTexts) || translated.additionalTexts.length !== additionalTexts.length) {
+      throw new Error('La traducción está incompleta. No se generó el PDF para evitar un currículo con idiomas mezclados.');
+    }
+    if (translated.impactMetrics.some((item) => !isText(item.label) || !isText(item.detail)) ||
+        translated.careerRoles.some((role, index) =>
+          !isText(role.title) ||
+          !Array.isArray(role.responsibilities) || role.responsibilities.length !== sourceRoles[index].responsibilities.length ||
+          role.responsibilities.some((text) => !isText(text)) ||
+          !Array.isArray(role.achievements) || role.achievements.length !== (sourceRoles[index].achievements || []).length ||
+          role.achievements.some((text) => !isText(text))) ||
+        translated.educationItems.some((item) => !isText(item.title) || !isText(item.description)) ||
+        translated.additionalTexts.some((text) => !isText(text))) {
+      throw new Error('La traducción no pasó la validación de contenido. No se generó el PDF.');
+    }
+
     const replacements = new Map<string, string>();
-    const add = (source: unknown, target: unknown) => { const a = String(source ?? '').trim(); const b = String(target ?? '').trim(); if (a && b && a !== b) replacements.set(a, b); };
+    const add = (source: unknown, target: unknown) => {
+      const original = String(source ?? '').trim();
+      const translatedText = String(target ?? '').trim();
+      if (original && translatedText && original !== translatedText) replacements.set(original, translatedText);
+    };
     add(cvSummary, translated.summary);
-    impactMetrics.forEach((item: any, i: number) => { const out = translated.impactMetrics?.[i]; if (out) { add(item.label, out.label); add(item.detail, out.detail); } });
-    sourceRoles.forEach((role, i) => { const out = translated.careerRoles?.[i]; if (!out) return; add(role.title, out.title); add(role.company, out.company); add(role.location, out.location); role.responsibilities.forEach((value, j) => add(value, out.responsibilities?.[j])); role.achievements?.forEach((value, j) => add(value, out.achievements?.[j])); });
-    inputEducation.forEach((item, i) => { const out = translated.educationItems?.[i]; if (out) { add(item.title, out.title); add(item.institution, out.institution); add(item.description, out.description); } });
+    impactMetrics.forEach((item: any, i: number) => {
+      const out = translated.impactMetrics[i];
+      add(item.label, out.label);
+      add(item.detail, out.detail);
+    });
+    sourceRoles.forEach((role, i) => {
+      const out = translated.careerRoles[i];
+      add(role.period, out.period);
+      add(role.title, out.title);
+      role.responsibilities.forEach((value, j) => add(value, out.responsibilities[j]));
+      (role.achievements || []).forEach((value, j) => add(value, (out.achievements || [])[j]));
+    });
+    inputEducation.forEach((item, i) => {
+      const out = translated.educationItems[i];
+      add(item.period, out.period);
+      add(item.title, out.title);
+      add(item.description, out.description);
+    });
+    additionalTexts.forEach((source, i) => add(source, translated.additionalTexts[i]));
     return replacements;
   };
 
@@ -276,20 +342,10 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     const previousLanguage = (i18n.language || 'es').slice(0, 2);
     let tempContainer: HTMLDivElement | null = null;
     try {
-      // Translation is optional: exporting a PDF in the current language must not
-      // depend on an API endpoint. If translation is unavailable (for example, a
-      // deployment without the rewrite-curriculum server route), still export the CV.
-      let replacements = new Map<string, string>();
-      let effectiveExportLanguage = previousLanguage;
-      if (exportLanguage !== previousLanguage) {
-        try {
-          replacements = await translateCurriculumForExport(exportLanguage);
-          effectiveExportLanguage = exportLanguage;
-        } catch (translationError) {
-          console.warn('La traducción automática no está disponible; se exportará el currículo en el idioma actual.', translationError);
-          alert('La traducción automática no está disponible en este momento. Se generará el PDF en el idioma actual para que puedas descargarlo.');
-        }
-      }
+      // Always translate and validate first, even if the selected language matches the UI.
+      // Never silently export the source language when translation fails or is incomplete.
+      const replacements = await translateCurriculumForExportAndValidate(exportLanguage);
+      const effectiveExportLanguage = exportLanguage;
       if (previousLanguage !== effectiveExportLanguage) await i18n.changeLanguage(effectiveExportLanguage);
 
       // PDF exports must always contain the complete curriculum, regardless of the
