@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ShieldCheck, Users, Globe, Linkedin, Mail, Award, Network, Workflow, FileCheck, Activity, CheckCircle2, Menu, X, Brain, BarChart3, ShieldAlert, LineChart, Rocket, ClipboardCheck, Briefcase, Map, Quote, ArrowRight, Image as ImageIcon, Layers, Play, Sliders, RotateCcw, Terminal, Check, HelpCircle, CheckSquare, TrendingUp, AlertTriangle, GraduationCap } from 'lucide-react';
+import { ShieldCheck, Users, Globe, Linkedin, Mail, Award, Network, Workflow, FileCheck, Activity, CheckCircle2, Menu, X, Brain, BarChart3, ShieldAlert, LineChart, Rocket, ClipboardCheck, Briefcase, Map, Quote, ArrowRight, Image as ImageIcon, Layers, Play, Sliders, RotateCcw, Terminal, Check, HelpCircle, CheckSquare, TrendingUp, AlertTriangle, GraduationCap, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import dataES from './data/es.json';
@@ -518,6 +518,9 @@ export default function App() {
             <button onClick={() => setIsCurriculumModalOpen(true)} className="text-amber-400 font-bold hover:text-amber-300 transition flex items-center gap-1">
               <Award className="w-4 h-4" /> Certificados & Credenciales
             </button>
+            <Link to="/curriculo" className="transition text-gray-300 hover:text-white flex items-center gap-1" aria-label="Abrir y descargar el currículo completo">
+              <Download className="w-4 h-4" /> CV PDF
+            </Link>
             <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`transition ${activeSection === 'services' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.servicios')}</a>
             <a href="#procesos" onClick={(e) => handleNavClick(e, 'procesos')} className={`transition ${activeSection === 'procesos' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.procesos')}</a>
             <a href="#certifications" onClick={(e) => handleNavClick(e, 'certifications')} className={`transition ${activeSection === 'certifications' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.certificaciones')}</a>
@@ -563,6 +566,14 @@ export default function App() {
                 <Award className="w-4 h-4" />
                 <span>Certificados & Credenciales</span>
               </button>
+              <Link
+                to="/curriculo"
+                onClick={closeMenu}
+                className="text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition text-gray-200 hover:bg-white/5 flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                <span>Descargar currículo PDF</span>
+              </Link>
               <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'services' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.servicios')}</a>
               <a href="#procesos" onClick={(e) => handleNavClick(e, 'procesos')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'procesos' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.procesos')}</a>
               <a href="#certifications" onClick={(e) => handleNavClick(e, 'certifications')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'certifications' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.certificaciones')}</a>
