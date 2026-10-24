@@ -45,7 +45,6 @@ interface CurriculumShowcaseModalProps {
 }
 
 const ISSUER_LOGO_URLS: Record<string, string> = {
-  ibm: 'https://cdn.simpleicons.org/ibm/052FAD',
   openclassrooms: 'https://cdn.simpleicons.org/openclassrooms/7451EB',
   openuniversity: 'https://cdn.simpleicons.org/theopenuniversity/CC0000',
   indeed: 'https://cdn.simpleicons.org/indeed/2164F3',
@@ -64,7 +63,7 @@ const ISSUER_LOGO_URLS: Record<string, string> = {
 function getIssuerLogoUrl(issuer?: string, logoKey?: string): string | undefined {
   const normalized = (issuer || '').toLowerCase();
   const detectedKey = logoKey || Object.keys(ISSUER_LOGO_URLS).find((key) => normalized.includes(key));
-  if (normalized.includes('skillsbuild') || normalized.includes('international business machines') || normalized.includes('ibm')) return ISSUER_LOGO_URLS.ibm;
+  // IBM's Simple Icons CDN endpoint currently returns 404; use the existing text fallback rather than a broken image.
   if (normalized.includes('credly')) return ISSUER_LOGO_URLS.credly;
   return detectedKey ? ISSUER_LOGO_URLS[detectedKey] : undefined;
 }
