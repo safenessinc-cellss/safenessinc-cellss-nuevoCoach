@@ -8,15 +8,16 @@
     "contacto": "Contato"
   },
   "hero": {
-    "badge": "Engenheiro, Economista e Especialista em Sistemas de Gestão Integrada | Otimização de Processos",
-    "title": "Otimizando processos e liderando equipes humanas",
-    "titleHighlight": "com mais de 30 anos de experiência.",
-    "description": "“Integro a precisão técnica da engenharia com a análise econômica estratégica e os sistemas de gestão integrada. Otimizamos processos, unimos equipes e agilizamos decisões críticas para sua rentabilidade.”"
+    "badge": "Engenharia, qualidade e liderança | Transformação de processos",
+    "title": "Transformando experiência em",
+    "titleHighlight": "melhores resultados operacionais.",
+    "description": "Engenheiro de Produção e Qualidade, Economista, Auditor Líder de Sistemas de Gestão e Coach Executivo IBM 2025. Mais de 30 anos de experiência internacional em melhoria contínua, liderança e otimização de processos."
   },
   "about": {
-    "badge": "Perfil Profissional",
-    "title": "Mais de 30 Anos de Excelência",
-    "description": "Especialista em Sistemas de Gestão ISO com mais de 30 anos de experiência em auditoria e consultoria estratégica. Auditor Líder certificado pela IBM 2025 e Coach Empresarial, complementa seu perfil técnico com estudos em Psicopedagogia, Bem-Estar Laboral e Inteligência Emocional Organizacional."
+    "badge": "Perfil profissional",
+    "title": "Experiência industrial com visão estratégica",
+    "description": "Integro engenharia, análise econômica e sistemas de gestão para ajudar organizações a melhorar a qualidade, controlar riscos e tomar decisões orientadas por dados. Minha trajetória inclui experiências em ambientes industriais e de serviços, entre eles General Motors, Aister SL, Aproinca Group e Rototech. Trabalho com melhoria contínua, Lean Manufacturing, Six Sigma, análise de causa raiz, metodologias 8D e sistemas de gestão ISO. Complemento essa base com aprendizado contínuo em coaching, inteligência artificial, cibersegurança, dados e nuvem.",
+    "quote": "A melhoria sustentável não consiste apenas em passar por uma auditoria: significa construir processos claros, equipes comprometidas e uma cultura de qualidade duradoura."
   },
   "services": {
     "badge": "Meus Serviços",
@@ -312,5 +313,23 @@
       "title_header": "Título da Atividade Formativa",
       "scale_cert_header": "Certificado em Escala"
     }
+  },
+  "impact": {
+    "title": "Resultados que orientam a melhoria",
+    "subtitle": "Indicadores reportados em projetos e experiências profissionais; os resultados dependem do contexto e do escopo de cada iniciativa.",
+    "kpi1": "Reclamações de clientes",
+    "kpi2": "Custos de estoque",
+    "kpi3": "Índice de rejeição",
+    "kpi4": "Capacidade produtiva",
+    "pillarsTitle": "Três áreas de contribuição",
+    "pillar1Title": "Sistemas de gestão e auditoria",
+    "pillar1Text": "Estruturação, auditoria e melhoria de sistemas de gestão, com foco em ISO 9001, ISO 14001, ISO 45001 e IATF 16949.",
+    "pillar2Title": "Excelência operacional",
+    "pillar2Text": "Análise de processos, causa raiz, ações corretivas e melhoria contínua para reduzir desperdícios, riscos e variabilidade.",
+    "pillar3Title": "Liderança e evolução digital",
+    "pillar3Text": "Coaching executivo e desenvolvimento de equipes, com aprendizado contínuo em IA, cibersegurança, análise de dados e nuvem.",
+    "credentialsTitle": "Credenciais e aprendizagem contínua",
+    "credentialsText": "Consulte as credenciais verificáveis e as atividades formativas organizadas por área no portal do currículo.",
+    "cta": "Explorar currículo e credenciais"
   }
 }
