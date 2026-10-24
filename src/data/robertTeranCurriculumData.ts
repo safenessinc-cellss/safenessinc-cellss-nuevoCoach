@@ -7,7 +7,7 @@ export interface CandidateInfo {
   credlyProfile: string;
   credlyId: string;
   transcriptDate: string;
-  summary: string;
+  summary: "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva. Mi carrera como desarrollador es consecuencia de mi experiencia industrial: desde Symbian y aplicaciones móviles hasta plataformas web con IA, creo herramientas que traducen la complejidad de los procesos y las normas en soluciones digitales usables."
 }
 
 export interface CareerRole {
@@ -241,7 +241,9 @@ export const CAREER_EXPERIENCE: CareerRole[] = [
     achievements: [
       "Desarrollo del dashboard Coach ISO para gestionar currículos, certificados, cursos, libros, visitas y tutorías con apoyo de IA.",
       "Digitalización de procesos de control de calidad y trazabilidad de acciones correctivas.",
-      "Experiencia combinada en procesos industriales y desarrollo de software para traducir requisitos operativos y normativos en herramientas digitales."
+      "Experiencia combinada en procesos industriales y desarrollo de software para traducir requisitos operativos y normativos en herramientas digitales.",
+      "Digitalización de sistemas de gestión con reducción reportada del 40% en tiempo de auditoría y eliminación del papel en procesos de control de calidad con adopción del 100% de los equipos en proyectos citados.",
+      "Competencias técnicas: Android (Java/Kotlin), iOS, Symbian OS (C++), Google Play Console, Firebase Cloud Messaging; React, TypeScript, Vite, Tailwind CSS, HTML5, CSS3 y JavaScript ES6+; Firebase Auth, Firestore, Firebase Hosting, APIs REST y Google Gemini; Git, GitHub, CI/CD y Vercel; modelado relacional y KPIs; ISO 9001, ISO 14001, ISO 45001, IATF 16949, Lean Manufacturing y Six Sigma."
     ]
   },
 ];
