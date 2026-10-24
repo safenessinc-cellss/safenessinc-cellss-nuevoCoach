@@ -1183,6 +1183,53 @@ export default function App() {
         </div>
       </section>
 
+      {/* ORGANIZATIONAL HUMAN BEHAVIOR: integrated people-development service */}
+      <section id="comportamiento-humano" className="relative z-10 border-t border-white/10 bg-white py-20">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-700">
+              {t('humanBehavior.badge')}
+            </span>
+            <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+              {t('humanBehavior.title')}
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-gray-600">
+              {t('humanBehavior.subtitle')}
+            </p>
+          </div>
+
+          <div className="mx-auto mt-8 max-w-4xl rounded-2xl border border-gray-200 bg-gray-50 p-6 md:p-8">
+            <p className="text-base leading-relaxed text-gray-700">{t('humanBehavior.intro')}</p>
+          </div>
+
+          <div className="mt-12">
+            <h3 className="mb-6 text-center text-xl font-semibold text-gray-900">{t('humanBehavior.pillarsTitle')}</h3>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {[0, 1, 2].map((index) => (
+                <article key={index} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                    {index === 0 ? <Brain className="h-5 w-5" /> : index === 1 ? <GraduationCap className="h-5 w-5" /> : <Users className="h-5 w-5" />}
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">{t(`humanBehavior.items.${index}.title`)}</h4>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-600">{t(`humanBehavior.items.${index}.text`)}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-6">
+              <h4 className="font-semibold text-gray-900">{t('humanBehavior.methodTitle')}</h4>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">{t('humanBehavior.methodText')}</p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6">
+              <h4 className="font-semibold text-gray-900">{t('humanBehavior.outcomeTitle')}</h4>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">{t('humanBehavior.outcomeText')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* PROCESS MAPPING & STRUCTURING SECTION */}
       <section id="procesos" className="py-24 relative z-10 bg-black/60 backdrop-blur-md border-t border-white/5">
         <div className="container mx-auto max-w-6xl px-4">
