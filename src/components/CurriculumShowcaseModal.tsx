@@ -373,6 +373,29 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
           windowWidth: 820,
           backgroundColor: '#ffffff',
           removeContainer: true,
+          // Tailwind v4 emits OKLCH colors; html2canvas cannot parse them yet.
+          // Convert unsupported computed colors in the cloned PDF DOM to safe RGB/hex values.
+          onclone: (clonedDocument: Document) => {
+            const elements = Array.from(clonedDocument.querySelectorAll<HTMLElement>('*'));
+            elements.forEach((node) => {
+              const computed = clonedDocument.defaultView?.getComputedStyle(node);
+              if (!computed) return;
+              for (let i = 0; i < computed.length; i += 1) {
+                const property = computed.item(i);
+                if (!property || property.startsWith('--')) continue;
+                const value = computed.getPropertyValue(property);
+                if (!/oklch\s*\(/i.test(value)) continue;
+                let fallback = '#1f2937';
+                if (property === 'background-image') fallback = 'none';
+                else if (property === 'background-color') fallback = '#ffffff';
+                else if (property.includes('border') && property.endsWith('color')) fallback = '#d1d5db';
+                else if (property.includes('shadow')) fallback = 'none';
+                else if (property === 'fill' || property === 'stroke') fallback = '#1f2937';
+                else if (property.includes('outline') && property.endsWith('color')) fallback = '#d1d5db';
+                node.style.setProperty(property, fallback, 'important');
+              }
+            });
+          },
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const, compress: true },
         pagebreak: { mode: ['css', 'legacy'], avoid: ['img', '.impact-metric', '.career-role', '.certificate-card'] },
