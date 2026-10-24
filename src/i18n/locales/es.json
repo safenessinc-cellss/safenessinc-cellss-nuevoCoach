@@ -333,6 +333,7 @@
     "cta": "Ver currículo y credenciales"
   },
   "humanBehavior": {
+    "navLabel": "Área humana",
     "badge": "Desarrollo organizacional",
     "title": "Comportamiento Humano Organizacional",
     "subtitle": "Psicopedagogía empresarial, desarrollo de talento y liderazgo adaptativo integrados con la experiencia industrial, la auditoría de sistemas de gestión y el coaching ejecutivo.",
