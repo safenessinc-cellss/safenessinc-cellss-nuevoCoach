@@ -47,6 +47,7 @@ interface CurriculumShowcaseModalProps {
 const ISSUER_LOGO_URLS: Record<string, string> = {
   ibm: 'https://cdn.simpleicons.org/ibm/052FAD',
   openclassrooms: 'https://cdn.simpleicons.org/openclassrooms/7451EB',
+  openuniversity: 'https://cdn.simpleicons.org/theopenuniversity/CC0000',
   indeed: 'https://cdn.simpleicons.org/indeed/2164F3',
   microsoft: 'https://cdn.simpleicons.org/microsoft/5E5E5E',
   linkedin: 'https://cdn.simpleicons.org/linkedin/0A66C2',
