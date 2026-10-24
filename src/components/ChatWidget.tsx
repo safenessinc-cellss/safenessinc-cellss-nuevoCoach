@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,28 +55,7 @@ function ChatWidget() {
       const replyText = payload.text || 'No pude generar una respuesta. Inténtalo de nuevo.';
       setMessages(prev => [...prev, { role: 'model', text: replyText }]);
 
-      // Log AI interaction to Firestore
-      try {
-        let category = 'Consulta General';
-        const lowerMsg = userMsg.toLowerCase();
-        if (lowerMsg.includes('9001') || lowerMsg.includes('calidad')) category = 'ISO 9001';
-        else if (lowerMsg.includes('27001') || lowerMsg.includes('seguridad')) category = 'ISO 27001';
-        else if (lowerMsg.includes('14001') || lowerMsg.includes('45001') || lowerMsg.includes('sgi')) category = 'Auditorías SGI';
-        else if (lowerMsg.includes('coaching') || lowerMsg.includes('liderazgo') || lowerMsg.includes('ibm')) category = 'Coaching IBM';
-        else if (lowerMsg.includes('agendar') || lowerMsg.includes('cita') || lowerMsg.includes('reserva')) category = 'Agendamiento';
-        else if (lowerMsg.includes('proceso') || lowerMsg.includes('lean') || lowerMsg.includes('six sigma')) category = 'Optimización Procesos';
 
-        await addDoc(collection(db, 'ai_activity_logs'), {
-          userPrompt: userMsg,
-          aiResponseSnippet: replyText.slice(0, 150),
-          category,
-          timestamp: serverTimestamp(),
-          dateStr: new Date().toISOString().split('T')[0],
-          source: 'Widget Asistente Virtual'
-        });
-      } catch (logErr) {
-        console.warn("Log de actividad IA no persistido:", logErr);
-      }
     } catch (error) {
       console.error('Error en el asistente:', error);
       const errorText = error instanceof Error ? error.message : 'Lo siento, hubo un error al procesar tu mensaje.';
