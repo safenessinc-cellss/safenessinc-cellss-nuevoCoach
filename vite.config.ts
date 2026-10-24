@@ -18,7 +18,7 @@ export default defineConfig(() => ({
         '/api': {
           target: 'http://127.0.0.1:5001',
           changeOrigin: true,
-          rewrite: (requestPath) => requestPath.replace(/^\\/api/, '/coach-iso-f6877/us-central1/api'),
+          rewrite: (requestPath) => requestPath.replace('/api', '/coach-iso-f6877/us-central1/api'),
         },
       },
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
