@@ -2,9 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import type { Auth } from 'firebase-admin/auth';
-import type { Firestore } from 'firebase-admin/firestore';
-
-const CHAT_SYSTEM_PROMPT = `Eres el asistente virtual de Robert Terán, ingeniero, economista y especialista en sistemas de gestión integral. Responde en el idioma del usuario, de forma profesional, clara y prudente. Ayuda con servicios de auditoría ISO, calidad, optimización de procesos, coaching y agendamiento. Para agendar, indica que la persona puede visitar /agendar. No inventes certificaciones, precios, disponibilidad ni resultados que no estén en el contexto.`;
+import { FieldValue, type Firestore } from 'firebase-admin/firestore';
 
 type AuthedRequest = Request & { authUid?: string; authEmail?: string };
 
@@ -219,5 +217,6 @@ app.post(['/rewrite-curriculum', '/api/rewrite-curriculum'], requireStaff, async
 
 
 
+  app.use((_req, res) => res.status(404).json({ error: 'Endpoint no encontrado.' }));
   return app;
 }
