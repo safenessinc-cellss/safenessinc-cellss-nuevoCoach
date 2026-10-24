@@ -331,5 +331,30 @@
     "credentialsTitle": "Credentials and continuous learning",
     "credentialsText": "The portal brings together the detailed résumé, verifiable credentials, and learning grouped by professional area, avoiding a duplicated full inventory on this page.",
     "cta": "View résumé and credentials"
+  },
+  "humanBehavior": {
+    "badge": "Organizational development",
+    "title": "Organizational Human Behavior",
+    "subtitle": "Corporate psychopedagogy, talent development and adaptive leadership integrated with industrial experience, management-system auditing and executive coaching.",
+    "intro": "Management systems take hold when people understand the change and have the tools to apply it. This service complements industrial and audit experience with a focus on learning, behavior and team dynamics.",
+    "pillarsTitle": "Areas of support",
+    "items": [
+      {
+        "title": "Diagnosis and change adoption",
+        "text": "Identify learning needs, resistance and available team resources to support management-system implementation, digital transformation and organizational change."
+      },
+      {
+        "title": "Training and talent development",
+        "text": "Corporate learning programs and individual development plans adapted to employees' needs, competencies and learning approaches."
+      },
+      {
+        "title": "Teams and adaptive leadership",
+        "text": "Executive coaching, emotional intelligence, communication, conflict management and multidisciplinary team composition aligned with project goals."
+      }
+    ],
+    "methodTitle": "Working approach",
+    "methodText": "Corporate psychopedagogy is used as a framework for understanding how teams learn. Behavioral-profile models and Sheldon's somatotypes are treated only as complementary exploratory perspectives—not clinical diagnoses or sole criteria for selecting or classifying people.",
+    "outcomeTitle": "Objective",
+    "outcomeText": "Support change adoption, strengthen collaboration and connect people development with operational and quality goals."
   }
 }
