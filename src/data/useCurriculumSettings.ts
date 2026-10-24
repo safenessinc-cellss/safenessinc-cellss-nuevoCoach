@@ -94,7 +94,13 @@ function normalizeSettings(input: Partial<CurriculumSettings> | null | undefined
   const parsed = input || {};
   const appearance = { ...DEFAULT_CURRICULUM_SETTINGS.appearance, ...(parsed.appearance || {}) };
   const normalized: CurriculumSettings = {
-    candidateInfo: { ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo, ...(parsed.candidateInfo || {}) },
+    candidateInfo: {
+      ...DEFAULT_CURRICULUM_SETTINGS.candidateInfo,
+      ...(parsed.candidateInfo || {}),
+      summary: parsed.candidateInfo?.summary === "Ingeniero de Producción y Calidad (Universidad Simón Bolívar), Economista, Auditor Líder en Sistemas Integrados de Gestión (ISO 9001, 14001, 45001 RAC/IRCA, IATF-16949) e IBM 2025 Executive Coach con 30 años de experiencia internacional en la industria. Especialista en optimización de procesos, gestión de la calidad, mejoría continua (Lean Manufacturing, Green Belt Six Sigma, 8D, RNC) y gestión de inventarios JIT. Con trayectoria demostrada en empresas como Rototech, Tapeçaria Palacio, D'classe Papeis y General Motors, liderando proyectos con reducción comprobada del 30% en reclamos de clientes, 25% en costos de inventarios y aumento del 15% en capacidad productiva."
+        ? DEFAULT_CURRICULUM_SETTINGS.candidateInfo.summary
+        : (parsed.candidateInfo?.summary || DEFAULT_CURRICULUM_SETTINGS.candidateInfo.summary)
+    },
     impactMetrics: Array.isArray(parsed.impactMetrics) ? parsed.impactMetrics : DEFAULT_CURRICULUM_SETTINGS.impactMetrics,
     careerRoles: mergeCareerRoles(Array.isArray(parsed.careerRoles) ? parsed.careerRoles : undefined),
     educationItems: sortEducationItems(Array.isArray(parsed.educationItems) ? parsed.educationItems : DEFAULT_CURRICULUM_SETTINGS.educationItems),
@@ -108,9 +114,22 @@ function normalizeSettings(input: Partial<CurriculumSettings> | null | undefined
       textColor: appearance.textColor || '#1F2937'
     }
   };
-  if (parsed.professionalAnalysis !== undefined && parsed.professionalAnalysis !== null) {
-    normalized.professionalAnalysis = parsed.professionalAnalysis;
-  }
+  normalized.professionalAnalysis = parsed.professionalAnalysis
+    ? {
+        ...parsed.professionalAnalysis,
+        executiveSummary: parsed.professionalAnalysis.executiveSummary || "Auditor Líder SGC IRCA (ISO 9001/14001/45001/IATF 16949) e IBM Executive Coach, con 30 años de experiencia internacional. Especialista en mejora continua, SGC y transformación organizacional, con resultados reportados de 30% menos reclamos, 25% menos costos de inventario y 15% más capacidad productiva. Complementa su perfil industrial con desarrollo de software (cinco aplicaciones en Google Play) y comportamiento humano organizacional. En 2025 obtuvo 22 credenciales oficiales y completó más de 500 actividades formativas en IA, ciberseguridad y cloud.",
+        shortCvHeadline: parsed.professionalAnalysis.shortCvHeadline || "Auditor Líder SGC IRCA · IBM Executive Coach · Ingeniero y Economista · Desarrollador de Software · Especialista en Comportamiento Humano — 30 años conectando excelencia operativa, tecnología y personas.",
+        shortCvFocusAreas: parsed.professionalAnalysis.shortCvFocusAreas || ["Excelencia operativa y sistemas ISO", "Transformación digital y desarrollo de software", "Comportamiento humano organizacional"],
+        professionalAreas: parsed.professionalAnalysis.professionalAreas || [],
+        recommendations: parsed.professionalAnalysis.recommendations || []
+      }
+    : {
+        executiveSummary: "Auditor Líder SGC IRCA (ISO 9001/14001/45001/IATF 16949) e IBM Executive Coach, con 30 años de experiencia internacional. Especialista en mejora continua, SGC y transformación organizacional, con resultados reportados de 30% menos reclamos, 25% menos costos de inventario y 15% más capacidad productiva. Complementa su perfil industrial con desarrollo de software (cinco aplicaciones en Google Play) y comportamiento humano organizacional. En 2025 obtuvo 22 credenciales oficiales y completó más de 500 actividades formativas en IA, ciberseguridad y cloud.",
+        shortCvHeadline: "Auditor Líder SGC IRCA · IBM Executive Coach · Ingeniero y Economista · Desarrollador de Software · Especialista en Comportamiento Humano — 30 años conectando excelencia operativa, tecnología y personas.",
+        shortCvFocusAreas: ["Excelencia operativa y sistemas ISO", "Transformación digital y desarrollo de software", "Comportamiento humano organizacional"],
+        professionalAreas: [],
+        recommendations: []
+      };
   return removeUndefined(normalized);
 }
 
