@@ -348,15 +348,15 @@ export default function CurriculumEditor() {
 
   return (
     <div className="space-y-8 max-w-5xl">
-      <div className="glass p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl">
+      <div className="bg-white p-6 md:p-8 rounded-3xl border border-gray-200 shadow-xl text-gray-900">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-white/10 pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-gray-200 pb-6">
           <div>
-            <h2 className="text-xl font-black text-white flex items-center gap-2">
+            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
               <FileText className="w-6 h-6 text-amber-500" /> Editor y Corrección de Currículo
             </h2>
-            <p className="text-gray-400 text-xs mt-1">
+            <p className="text-gray-600 text-xs mt-1">
               Modifica la información ejecutiva, trayectoria, métricas y formación que se muestra en el currículo oficial y exportación PDF.
             </p>
           </div>
@@ -398,11 +398,11 @@ export default function CurriculumEditor() {
         <section className="mb-6 rounded-2xl border border-amber-500/25 bg-amber-500/5 p-4 md:p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
+              <h3 className="text-sm font-extrabold text-gray-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-400" />
                 Fusionar un currículo o historial antiguo
               </h3>
-              <p className="mt-1 max-w-2xl text-xs leading-relaxed text-gray-400">
+              <p className="mt-1 max-w-2xl text-xs leading-relaxed text-gray-600">
                 La IA compara el documento con el currículo actual, recupera datos únicos y prepara una fusión sin duplicados para que la revises antes de guardarla.
               </p>
             </div>
@@ -425,15 +425,15 @@ export default function CurriculumEditor() {
           {importNotice && <p role="status" className="mt-3 rounded-lg border border-emerald-500/25 bg-emerald-500/10 p-3 text-xs text-emerald-300">{importNotice}</p>}
 
           {importPreview && (
-            <div className="mt-4 space-y-3 rounded-xl border border-white/10 bg-black/20 p-4">
+            <div className="mt-4 space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
               <div>
-                <p className="text-xs font-bold text-white">Fusión preparada: {importFileName}</p>
-                <p className="mt-1 text-[11px] text-gray-400">No se ha guardado todavía. Revisa las notas y las posibles contradicciones antes de aplicarla.</p>
+                <p className="text-xs font-bold text-gray-900">Fusión preparada: {importFileName}</p>
+                <p className="mt-1 text-[11px] text-gray-600">No se ha guardado todavía. Revisa las notas y las posibles contradicciones antes de aplicarla.</p>
               </div>
               {importPreview.notes.length > 0 && (
                 <div>
                   <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">Información recuperada</p>
-                  <ul className="list-disc space-y-1 pl-5 text-xs text-gray-300">
+                  <ul className="list-disc space-y-1 pl-5 text-xs text-gray-700">
                     {importPreview.notes.map((note, index) => <li key={index}>{note}</li>)}
                   </ul>
                 </div>
@@ -441,14 +441,14 @@ export default function CurriculumEditor() {
               {importPreview.conflicts.length > 0 && (
                 <div>
                   <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-300">Revisar antes de guardar</p>
-                  <ul className="list-disc space-y-1 pl-5 text-xs text-gray-300">
+                  <ul className="list-disc space-y-1 pl-5 text-xs text-gray-700">
                     {importPreview.conflicts.map((conflict, index) => <li key={index}>{conflict}</li>)}
                   </ul>
                 </div>
               )}
               <div className="flex flex-wrap gap-2 pt-1">
                 <button type="button" onClick={applyCurriculumMerge} className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-extrabold text-black transition hover:bg-amber-400">Aplicar fusión al editor</button>
-                <button type="button" onClick={() => setImportPreview(null)} className="rounded-lg border border-white/15 px-4 py-2 text-xs font-bold text-gray-300 transition hover:bg-white/5">Descartar</button>
+                <button type="button" onClick={() => setImportPreview(null)} className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-bold text-gray-700 transition hover:bg-gray-50">Descartar</button>
               </div>
             </div>
           )}
@@ -462,7 +462,7 @@ export default function CurriculumEditor() {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'info'
                 ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <User className="w-4 h-4" />
@@ -475,7 +475,7 @@ export default function CurriculumEditor() {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'metrics'
                 ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <Sparkles className="w-4 h-4" />
@@ -488,7 +488,7 @@ export default function CurriculumEditor() {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'experience'
                 ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <Briefcase className="w-4 h-4" />
@@ -501,7 +501,7 @@ export default function CurriculumEditor() {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'education'
                 ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <GraduationCap className="w-4 h-4" />
@@ -513,8 +513,8 @@ export default function CurriculumEditor() {
             onClick={() => setActiveTab('training')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'training'
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                ? 'bg-blue-500 text-gray-900 shadow-lg shadow-blue-500/20'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <BookOpen className="w-4 h-4" />
@@ -526,8 +526,8 @@ export default function CurriculumEditor() {
             onClick={() => setActiveTab('appearance')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'appearance'
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                ? 'bg-blue-500 text-gray-900 shadow-lg shadow-blue-500/20'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <Palette className="w-4 h-4" />
@@ -540,7 +540,7 @@ export default function CurriculumEditor() {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === 'languages'
                 ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'
             }`}
           >
             <BookOpen className="w-4 h-4" />
@@ -553,68 +553,68 @@ export default function CurriculumEditor() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Nombre Completo</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Nombre Completo</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.candidateInfo.name}
                   onChange={handleInfoChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-amber-500 font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Teléfono / WhatsApp</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Teléfono / WhatsApp</label>
                 <input
                   type="text"
                   name="phone"
                   value={formData.candidateInfo.phone || ''}
                   onChange={handleInfoChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-amber-500 font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Correo Electrónico</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Correo Electrónico</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.candidateInfo.email}
                   onChange={handleInfoChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-amber-500 font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Ubicación</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Ubicación</label>
                 <input
                   type="text"
                   name="location"
                   value={formData.candidateInfo.location || ''}
                   onChange={handleInfoChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-amber-500 font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Enlace Perfil Credly</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Enlace Perfil Credly</label>
                 <input
                   type="text"
                   name="credlyProfile"
                   value={formData.candidateInfo.credlyProfile}
                   onChange={handleInfoChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-amber-500 font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Fecha de Expedición Transcript</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Fecha de Expedición Transcript</label>
                 <input
                   type="text"
                   name="transcriptDate"
                   value={formData.candidateInfo.transcriptDate}
                   onChange={handleInfoChange}
-                  className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-amber-500 font-mono"
                 />
               </div>
             </div>
@@ -623,7 +623,7 @@ export default function CurriculumEditor() {
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <label className="block text-xs font-bold uppercase text-sky-300 mb-1">Resumo Profissional</label>
-                  <p className="text-xs leading-relaxed text-gray-400">Edite o texto ou peça à IA uma versão mais executiva. A sugestão só será aplicada quando você confirmar.</p>
+                  <p className="text-xs leading-relaxed text-gray-600">Edite o texto ou peça à IA uma versão mais executiva. A sugestão só será aplicada quando você confirmar.</p>
                 </div>
                 <button
                   type="button"
@@ -641,15 +641,15 @@ export default function CurriculumEditor() {
                 value={formData.candidateInfo.summary}
                 onChange={handleInfoChange}
                 rows={6}
-                className="w-full rounded-xl border border-white/10 bg-black/30 p-4 text-sm leading-relaxed text-white focus:border-sky-400 focus:outline-none"
+                className="w-full rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm leading-relaxed text-gray-900 focus:border-sky-400 focus:outline-none"
               />
               <label className="block space-y-1.5">
-                <span className="text-xs font-semibold text-gray-300">Orientações para a IA (opcional)</span>
+                <span className="text-xs font-semibold text-gray-700">Orientações para a IA (opcional)</span>
                 <textarea
                   value={summaryAiInstructions}
                   onChange={event => setSummaryAiInstructions(event.target.value)}
                   rows={2}
-                  className="w-full rounded-xl border border-white/10 bg-black/20 p-3 text-xs leading-relaxed text-gray-200 focus:border-sky-400 focus:outline-none"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-xs leading-relaxed text-gray-200 focus:border-sky-400 focus:outline-none"
                   placeholder="Ex.: destacar auditoria ISO, liderança industrial e resultados mensuráveis."
                 />
               </label>
@@ -660,7 +660,7 @@ export default function CurriculumEditor() {
                   <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-100">{summaryAiDraft}</p>
                   <div className="flex flex-wrap gap-2">
                     <button type="button" onClick={applyProfessionalSummary} className="rounded-lg bg-emerald-400 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-300">Aplicar proposta</button>
-                    <button type="button" onClick={() => setSummaryAiDraft('')} className="rounded-lg border border-white/15 px-4 py-2 text-xs font-semibold text-gray-200 hover:bg-white/5">Descartar</button>
+                    <button type="button" onClick={() => setSummaryAiDraft('')} className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-200 hover:bg-gray-50">Descartar</button>
                   </div>
                 </div>
               )}
@@ -672,7 +672,7 @@ export default function CurriculumEditor() {
         {activeTab === 'metrics' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-400">Tarjetas de métricas numéricas desplegadas en el encabezado.</span>
+              <span className="text-xs text-gray-600">Tarjetas de métricas numéricas desplegadas en el encabezado.</span>
               <button
                 type="button"
                 onClick={addMetric}
@@ -684,7 +684,7 @@ export default function CurriculumEditor() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {formData.impactMetrics.map((metric, idx) => (
-                <div key={`edit-metric-${idx}`} className="bg-black/40 border border-white/10 p-4 rounded-2xl relative space-y-3">
+                <div key={`edit-metric-${idx}`} className="bg-black/40 border border-gray-200 p-4 rounded-2xl relative space-y-3">
                   <button
                     type="button"
                     onClick={() => removeMetric(idx)}
@@ -696,32 +696,32 @@ export default function CurriculumEditor() {
 
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-1">
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Valor (%)</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Valor (%)</label>
                       <input
                         type="text"
                         value={metric.value}
                         onChange={(e) => handleMetricChange(idx, 'value', e.target.value)}
-                        className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-bold font-mono"
+                        className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-bold font-mono"
                       />
                     </div>
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Título / Etiqueta</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Título / Etiqueta</label>
                       <input
                         type="text"
                         value={metric.label}
                         onChange={(e) => handleMetricChange(idx, 'label', e.target.value)}
-                        className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white font-bold"
+                        className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 font-bold"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Detalle Operativo</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Detalle Operativo</label>
                     <input
                       type="text"
                       value={metric.detail}
                       onChange={(e) => handleMetricChange(idx, 'detail', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-300"
+                      className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700"
                     />
                   </div>
                 </div>
@@ -734,7 +734,7 @@ export default function CurriculumEditor() {
         {activeTab === 'experience' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-400">Cronología de cargos, empresas y logros operativos.</span>
+              <span className="text-xs text-gray-600">Cronología de cargos, empresas y logros operativos.</span>
               <button
                 type="button"
                 onClick={addRole}
@@ -745,7 +745,7 @@ export default function CurriculumEditor() {
             </div>
 
             {formData.careerRoles.map((role, idx) => (
-              <div key={`edit-role-${idx}`} className="bg-black/40 border border-white/10 p-5 rounded-2xl space-y-4 relative">
+              <div key={`edit-role-${idx}`} className="bg-black/40 border border-gray-200 p-5 rounded-2xl space-y-4 relative">
                 <button
                   type="button"
                   onClick={() => removeRole(idx)}
@@ -762,7 +762,7 @@ export default function CurriculumEditor() {
                       type="text"
                       value={role.period}
                       onChange={(e) => handleRoleChange(idx, 'period', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono"
+                      className="w-full bg-black/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-900 font-mono"
                     />
                   </div>
 
@@ -772,7 +772,7 @@ export default function CurriculumEditor() {
                       type="text"
                       value={role.title}
                       onChange={(e) => handleRoleChange(idx, 'title', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-bold"
+                      className="w-full bg-black/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-900 font-bold"
                     />
                   </div>
 
@@ -782,7 +782,7 @@ export default function CurriculumEditor() {
                       type="text"
                       value={role.company}
                       onChange={(e) => handleRoleChange(idx, 'company', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-bold"
+                      className="w-full bg-black/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-900 font-bold"
                     />
                   </div>
 
@@ -792,7 +792,7 @@ export default function CurriculumEditor() {
                       type="text"
                       value={role.location}
                       onChange={(e) => handleRoleChange(idx, 'location', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-xl px-3 py-2 text-xs text-white"
+                      className="w-full bg-black/60 border border-gray-200 rounded-xl px-3 py-2 text-xs text-gray-900"
                     />
                   </div>
                 </div>
@@ -800,7 +800,7 @@ export default function CurriculumEditor() {
                 {/* Responsibilities */}
                 <div className="space-y-2 pt-2 border-t border-white/5">
                   <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold text-gray-300">Responsabilidades Principales</label>
+                    <label className="text-xs font-bold text-gray-700">Responsabilidades Principales</label>
                     <button
                       type="button"
                       onClick={() => addResponsibility(idx)}
@@ -818,7 +818,7 @@ export default function CurriculumEditor() {
                           type="text"
                           value={resp}
                           onChange={(e) => handleResponsibilityChange(idx, rIdx, e.target.value)}
-                          className="flex-1 bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200"
+                          className="flex-1 bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-200"
                         />
                         <button
                           type="button"
@@ -840,7 +840,7 @@ export default function CurriculumEditor() {
         {activeTab === 'education' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-400">Títulos universitarios y certificaciones de formación académica.</span>
+              <span className="text-xs text-gray-600">Títulos universitarios y certificaciones de formación académica.</span>
               <button
                 type="button"
                 onClick={addEducation}
@@ -852,7 +852,7 @@ export default function CurriculumEditor() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {formData.educationItems.map((edu, idx) => (
-                <div key={`edit-edu-${idx}`} className="bg-black/40 border border-white/10 p-4 rounded-2xl space-y-3 relative">
+                <div key={`edit-edu-${idx}`} className="bg-black/40 border border-gray-200 p-4 rounded-2xl space-y-3 relative">
                   <button
                     type="button"
                     onClick={() => removeEducation(idx)}
@@ -864,42 +864,42 @@ export default function CurriculumEditor() {
 
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-1">
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Periodo</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Periodo</label>
                       <input
                         type="text"
                         value={edu.period}
                         onChange={(e) => handleEducationChange(idx, 'period', e.target.value)}
-                        className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-mono"
+                        className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-mono"
                       />
                     </div>
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Título Académico</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Título Académico</label>
                       <input
                         type="text"
                         value={edu.title}
                         onChange={(e) => handleEducationChange(idx, 'title', e.target.value)}
-                        className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white font-bold"
+                        className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 font-bold"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Institución / Universidad</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Institución / Universidad</label>
                     <input
                       type="text"
                       value={edu.institution}
                       onChange={(e) => handleEducationChange(idx, 'institution', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200"
+                      className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-200"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Descripción / Mención</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Descripción / Mención</label>
                     <input
                       type="text"
                       value={edu.description || ''}
                       onChange={(e) => handleEducationChange(idx, 'description', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-400"
+                      className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600"
                     />
                   </div>
                 </div>
@@ -913,8 +913,8 @@ export default function CurriculumEditor() {
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
-                <h3 className="text-sm font-extrabold text-white">Formación consolidada</h3>
-                <p className="mt-1 text-xs text-gray-400">Los cursos importados quedan guardados aquí y se muestran en el historial formativo y en el CV completo. Las actividades no se presentan automáticamente como certificaciones oficiales.</p>
+                <h3 className="text-sm font-extrabold text-gray-900">Formación consolidada</h3>
+                <p className="mt-1 text-xs text-gray-600">Los cursos importados quedan guardados aquí y se muestran en el historial formativo y en el CV completo. Las actividades no se presentan automáticamente como certificaciones oficiales.</p>
               </div>
               <button
                 type="button"
@@ -925,28 +925,28 @@ export default function CurriculumEditor() {
               </button>
             </div>
             {formData.industrialCourses.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-white/15 p-8 text-center text-xs text-gray-400">Todavía no hay formaciones importadas en este currículo.</div>
+              <div className="rounded-2xl border border-dashed border-gray-300 p-8 text-center text-xs text-gray-600">Todavía no hay formaciones importadas en este currículo.</div>
             ) : (
               <div className="space-y-3">
                 {formData.industrialCourses.map((course: any, idx: number) => (
-                  <div key={`training-${idx}`} className="grid grid-cols-1 md:grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-black/30 p-4">
+                  <div key={`training-${idx}`} className="grid grid-cols-1 md:grid-cols-2 gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4">
                     <div className="md:col-span-2 flex items-start justify-between gap-3">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-blue-300">Registro {idx + 1}</span>
                       <button type="button" onClick={() => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.filter((_: any, i: number) => i !== idx) }))} className="text-red-400 hover:text-red-300" aria-label={`Eliminar formación ${idx + 1}`}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                    <label className="block text-[10px] font-bold text-gray-400">Título de la formación
-                      <input value={course.title || course.name || course.course || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, title: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    <label className="block text-[10px] font-bold text-gray-600">Título de la formación
+                      <input value={course.title || course.name || course.course || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, title: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-900" />
                     </label>
-                    <label className="block text-[10px] font-bold text-gray-400">Institución / emisor
-                      <input value={course.institution || course.issuer || course.provider || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, institution: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    <label className="block text-[10px] font-bold text-gray-600">Institución / emisor
+                      <input value={course.institution || course.issuer || course.provider || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, institution: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-900" />
                     </label>
-                    <label className="block text-[10px] font-bold text-gray-400">Fecha / periodo
-                      <input value={course.period || course.completedDate || course.date || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, period: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    <label className="block text-[10px] font-bold text-gray-600">Fecha / periodo
+                      <input value={course.period || course.completedDate || course.date || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, period: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-900" />
                     </label>
-                    <label className="block text-[10px] font-bold text-gray-400">Categoría / descripción
-                      <input value={course.description || course.category || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, description: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-xs text-white" />
+                    <label className="block text-[10px] font-bold text-gray-600">Categoría / descripción
+                      <input value={course.description || course.category || ''} onChange={e => setFormData(prev => ({ ...prev, industrialCourses: prev.industrialCourses.map((item: any, i: number) => i === idx ? { ...item, description: e.target.value } : item) }))} className="mt-1 w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-900" />
                     </label>
                   </div>
                 ))}
@@ -958,9 +958,9 @@ export default function CurriculumEditor() {
         {/* APARIENCIA DEL CURRÍCULO */}
         {activeTab === 'appearance' && (
           <div className="space-y-6">
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-              <h3 className="text-sm font-bold text-white">Diseño del currículo ejecutivo</h3>
-              <p className="mt-1 text-xs text-gray-400">Estos colores se aplican al documento del currículo y a su exportación PDF. Guarda los cambios para conservarlos.</p>
+            <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+              <h3 className="text-sm font-bold text-gray-900">Diseño del currículo ejecutivo</h3>
+              <p className="mt-1 text-xs text-gray-600">Estos colores se aplican al documento del currículo y a su exportación PDF. Guarda los cambios para conservarlos.</p>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {([
                   ['backgroundColor', 'Fondo del currículo', '#FFFFFF'],
@@ -968,7 +968,7 @@ export default function CurriculumEditor() {
                   ['accentColor', 'Color principal / acento', '#4285F4'],
                   ['textColor', 'Color del texto', '#1F2937'],
                 ] as const).map(([field, label, fallback]) => (
-                  <label key={field} className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs text-gray-300">
+                  <label key={field} className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white/[0.03] p-3 text-xs text-gray-700">
                     <span>{label}</span>
                     <span className="flex items-center gap-2">
                       <input
@@ -1001,14 +1001,14 @@ export default function CurriculumEditor() {
                 ))}
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Google corporativo (fondo blanco)</button>
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Safeness teal</button>
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-white/15 px-3 py-2 text-xs text-gray-300 hover:bg-white/5">Azul ejecutivo</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">Google corporativo (fondo blanco)</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">Safeness teal</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">Azul ejecutivo</button>
               </div>
             </div>
             <div className="rounded-2xl border border-sky-400/25 bg-sky-400/5 p-5">
-              <h3 className="flex items-center gap-2 text-sm font-bold text-white"><Sparkles className="h-4 w-4 text-sky-300" />Análisis integral y mejora con IA</h3>
-              <p className="mt-1 text-xs leading-relaxed text-gray-400">La IA revisa el perfil, la trayectoria, los logros, las credenciales IBM/Credly y la formación para proponer una síntesis ejecutiva y agrupaciones profesionales. No inventa títulos ni certificaciones; revisa el resultado antes de aplicarlo.</p>
+              <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900"><Sparkles className="h-4 w-4 text-sky-300" />Análisis integral y mejora con IA</h3>
+              <p className="mt-1 text-xs leading-relaxed text-gray-600">La IA revisa el perfil, la trayectoria, los logros, las credenciales IBM/Credly y la formación para proponer una síntesis ejecutiva y agrupaciones profesionales. No inventa títulos ni certificaciones; revisa el resultado antes de aplicarlo.</p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <button type="button" onClick={handleAnalyzePresentation} disabled={isAnalyzing} className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2.5 text-xs font-extrabold text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-60">
                   {isAnalyzing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
@@ -1018,25 +1018,25 @@ export default function CurriculumEditor() {
               </div>
               {analysisError && <p role="alert" className="mt-3 rounded-lg border border-red-500/25 bg-red-500/10 p-3 text-xs text-red-300">{analysisError}</p>}
               {analysisPreview && (
-                <div className="mt-4 space-y-4 rounded-xl border border-white/10 bg-slate-950/60 p-4">
-                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Titular ejecutivo sugerido</p><p className="mt-1 text-sm font-bold text-white">{analysisPreview.shortCvHeadline}</p></div>
+                <div className="mt-4 space-y-4 rounded-xl border border-gray-200 bg-slate-950/60 p-4">
+                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Titular ejecutivo sugerido</p><p className="mt-1 text-sm font-bold text-gray-900">{analysisPreview.shortCvHeadline}</p></div>
                   <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Resumen ejecutivo propuesto</p><p className="mt-1 text-xs leading-relaxed text-gray-200">{analysisPreview.executiveSummary}</p></div>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {analysisPreview.professionalAreas.map((area) => (
-                      <div key={area.area} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-                        <p className="text-xs font-bold text-white">{area.area}</p><p className="mt-1 text-[11px] leading-relaxed text-gray-300">{area.summary}</p>
-                        {area.strengths.length > 0 && <p className="mt-2 text-[10px] text-gray-400">Competencias: {area.strengths.slice(0, 4).join(' · ')}</p>}
+                      <div key={area.area} className="rounded-lg border border-gray-200 bg-white/[0.03] p-3">
+                        <p className="text-xs font-bold text-gray-900">{area.area}</p><p className="mt-1 text-[11px] leading-relaxed text-gray-700">{area.summary}</p>
+                        {area.strengths.length > 0 && <p className="mt-2 text-[10px] text-gray-600">Competencias: {area.strengths.slice(0, 4).join(' · ')}</p>}
                         {area.featuredCredentials.length > 0 && <p className="mt-1 text-[10px] text-sky-200">Credenciales: {area.featuredCredentials.slice(0, 3).join(' · ')}</p>}
                       </div>
                     ))}
                   </div>
-                  {analysisPreview.recommendations.length > 0 && <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Recomendaciones de presentación</p><ul className="mt-2 list-disc space-y-1 pl-5 text-[11px] text-gray-300">{analysisPreview.recommendations.map((item, index) => <li key={index}>{item}</li>)}</ul></div>}
+                  {analysisPreview.recommendations.length > 0 && <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Recomendaciones de presentación</p><ul className="mt-2 list-disc space-y-1 pl-5 text-[11px] text-gray-700">{analysisPreview.recommendations.map((item, index) => <li key={index}>{item}</li>)}</ul></div>}
                 </div>
               )}
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-              <h3 className="text-sm font-bold text-white">Idioma y traducción</h3>
-              <p className="mt-1 text-xs text-gray-400">Cambia el idioma de visualización del portal. Las traducciones disponibles se aplican automáticamente a los textos traducidos.</p>
+            <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
+              <h3 className="text-sm font-bold text-gray-900">Idioma y traducción</h3>
+              <p className="mt-1 text-xs text-gray-600">Cambia el idioma de visualización del portal. Las traducciones disponibles se aplican automáticamente a los textos traducidos.</p>
               <div className="mt-4"><LanguageSelector variant="buttons" /></div>
             </div>
           </div>
@@ -1046,7 +1046,7 @@ export default function CurriculumEditor() {
         {activeTab === 'languages' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-400">Dominio de lenguas e idiomas técnicos.</span>
+              <span className="text-xs text-gray-600">Dominio de lenguas e idiomas técnicos.</span>
               <button
                 type="button"
                 onClick={addLanguage}
@@ -1058,7 +1058,7 @@ export default function CurriculumEditor() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {formData.languagesList.map((lang, idx) => (
-                <div key={`edit-lang-${idx}`} className="bg-black/40 border border-white/10 p-4 rounded-2xl space-y-3 relative">
+                <div key={`edit-lang-${idx}`} className="bg-black/40 border border-gray-200 p-4 rounded-2xl space-y-3 relative">
                   <button
                     type="button"
                     onClick={() => removeLanguage(idx)}
@@ -1070,32 +1070,32 @@ export default function CurriculumEditor() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Idioma</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Idioma</label>
                       <input
                         type="text"
                         value={lang.name}
                         onChange={(e) => handleLanguageChange(idx, 'name', e.target.value)}
-                        className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white font-bold"
+                        className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 font-bold"
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Nivel</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Nivel</label>
                       <input
                         type="text"
                         value={lang.level}
                         onChange={(e) => handleLanguageChange(idx, 'level', e.target.value)}
-                        className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-mono"
+                        className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-amber-400 font-mono"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Detalle de Dominio</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Detalle de Dominio</label>
                     <input
                       type="text"
                       value={lang.written}
                       onChange={(e) => handleLanguageChange(idx, 'written', e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-300"
+                      className="w-full bg-black/60 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-700"
                     />
                   </div>
                 </div>
