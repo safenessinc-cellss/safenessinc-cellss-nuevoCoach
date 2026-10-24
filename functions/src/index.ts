@@ -3,7 +3,7 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import { defineSecret } from 'firebase-functions/params';
 import { onRequest } from 'firebase-functions/v2/https';
 import { onDocumentCreated } from 'firebase-functions/v2/firestore';
@@ -47,7 +47,7 @@ async function requireStaff(req: AuthedRequest, res: Response, next: NextFunctio
 }
 
 const chatRequests = new Map<string, { count: number; resetAt: number }>();
-app.post('/chat', async (req: Request, res: Response) => {
+app.post(['/chat', '/api/chat'], async (req: Request, res: Response) => {
   const ip = String(req.headers['x-forwarded-for'] || req.ip || 'unknown').split(',')[0].trim();
   const now = Date.now();
   const record = chatRequests.get(ip);
@@ -81,7 +81,24 @@ app.post('/chat', async (req: Request, res: Response) => {
       contents: [...safeHistory, { role: 'user', parts: [{ text: message }] }],
       config: { systemInstruction: CHAT_SYSTEM_PROMPT, temperature: 0.35, maxOutputTokens: 700 },
     });
-    res.json({ text: response.text || 'No pude generar una respuesta. Inténtalo de nuevo.' });
+    const replyText = response.text || 'No pude generar una respuesta. Inténtalo de nuevo.';
+    let category = 'Consulta General';
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('9001') || lowerMessage.includes('calidad')) category = 'ISO 9001';
+    else if (lowerMessage.includes('27001') || lowerMessage.includes('seguridad')) category = 'ISO 27001';
+    else if (lowerMessage.includes('14001') || lowerMessage.includes('45001') || lowerMessage.includes('sgi')) category = 'Auditorías SGI';
+    else if (lowerMessage.includes('coaching') || lowerMessage.includes('liderazgo') || lowerMessage.includes('ibm')) category = 'Coaching IBM';
+    else if (lowerMessage.includes('agendar') || lowerMessage.includes('cita') || lowerMessage.includes('reserva')) category = 'Agendamiento';
+    else if (lowerMessage.includes('proceso') || lowerMessage.includes('lean') || lowerMessage.includes('six sigma')) category = 'Optimización Procesos';
+    await db.collection('ai_activity_logs').add({
+      userPrompt: message.slice(0, 4000),
+      aiResponseSnippet: replyText.slice(0, 150),
+      category,
+      timestamp: FieldValue.serverTimestamp(),
+      dateStr: new Date().toISOString().split('T')[0],
+      source: 'Widget Asistente Virtual',
+    }).catch(logError => console.warn('Could not persist AI activity log', logError));
+    res.json({ text: replyText });
   } catch (error) {
     console.error('Gemini chat failed', error instanceof Error ? error.message : error);
     res.status(502).json({ error: 'El asistente no está disponible temporalmente. Inténtalo más tarde.' });
@@ -95,7 +112,7 @@ const categoryLabels: Record<typeof categories[number], string> = {
   professional_skills: 'Soft Skills & Liderazgo', web_dev: 'Desarrollo Web',
 };
 
-app.post('/analyze-certificate', requireStaff, async (req: AuthedRequest, res: Response) => {
+app.post(['/analyze-certificate', '/api/analyze-certificate'], requireStaff, async (req: AuthedRequest, res: Response) => {
   const image = typeof req.body?.image === 'string' ? req.body.image : '';
   const mimeType = typeof req.body?.mimeType === 'string' ? req.body.mimeType : 'image/jpeg';
   if (!image || image.length > 7_000_000 || !/^image\/(jpeg|png|webp)$/.test(mimeType)) {
@@ -136,7 +153,7 @@ app.post('/analyze-certificate', requireStaff, async (req: AuthedRequest, res: R
   }
 });
 
-app.post('/rewrite-curriculum', requireStaff, async (req: AuthedRequest, res: Response) => {
+app.post(['/rewrite-curriculum', '/api/rewrite-curriculum'], requireStaff, async (req: AuthedRequest, res: Response) => {
   const input = req.body?.input;
   const instructions = typeof req.body?.instructions === 'string' ? req.body.instructions.slice(0, 2000) : '';
   if (!input || typeof input !== 'object' || JSON.stringify(input).length > 80_000) {
