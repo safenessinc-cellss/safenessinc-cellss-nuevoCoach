@@ -85,11 +85,7 @@ export function useProfileSettings() {
     } catch (e) {}
     window.dispatchEvent(new CustomEvent('profile-updated', { detail: newProfile }));
 
-    try {
-      await setDoc(doc(db, 'settings', 'profile'), newProfile);
-    } catch (error) {
-      console.warn("Error guardando perfil en Firestore (se mantuvo local):", error);
-    }
+    await setDoc(doc(db, 'settings', 'profile'), newProfile);
   };
 
   return { profile, updateProfile, loading };
