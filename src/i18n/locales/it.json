@@ -8,16 +8,16 @@
     "contacto": "Contatto"
   },
   "hero": {
-    "badge": "Ingegneria, qualità e leadership | Trasformazione dei processi",
-    "title": "Trasformare l’esperienza in",
-    "titleHighlight": "risultati operativi migliori.",
-    "description": "Ingegnere di Produzione e Qualità, Economista, Lead Auditor dei Sistemi di Gestione e IBM Executive Coach 2025. Oltre 30 anni di esperienza internazionale nel miglioramento continuo, nella leadership e nell’ottimizzazione dei processi."
+    "badge": "Eccellenza operativa · Sistemi di gestione · Leadership",
+    "title": "Ingegneria e leadership per ottenere",
+    "titleHighlight": "risultati migliori.",
+    "description": "Oltre 30 anni nell’integrare qualità, efficienza e sviluppo dei team per migliorare i processi, gestire i rischi e supportare le decisioni aziendali."
   },
   "about": {
-    "badge": "Profilo professionale",
-    "title": "Esperienza industriale e visione strategica",
-    "description": "Unisco ingegneria, analisi economica e sistemi di gestione per aiutare le organizzazioni a migliorare la qualità, controllare i rischi e prendere decisioni basate sui dati. Il mio percorso comprende esperienze in contesti industriali e di servizi, tra cui General Motors, Aister SL, Aproinca Group e Rototech. Lavoro con miglioramento continuo, Lean Manufacturing, Six Sigma, analisi delle cause alla radice, metodi 8D e sistemi di gestione ISO. Completo queste competenze con formazione continua in coaching, intelligenza artificiale, cybersecurity, dati e cloud.",
-    "quote": "Il miglioramento sostenibile non significa soltanto superare un audit: significa costruire processi chiari, team coinvolti e una cultura della qualità che duri nel tempo."
+    "badge": "Esperienza e approccio",
+    "title": "Esperienza industriale con una visione integrata",
+    "description": "Il mio percorso comprende contesti industriali e di servizi, con esperienze in General Motors, Aister SL, Aproinca Group e Rototech. Integro analisi delle cause, metodologie 8D, Lean Manufacturing, Six Sigma e indicatori di performance per trasformare i problemi operativi in miglioramenti sostenibili. Le evidenze dettagliate di credenziali e formazione sono raccolte nel portale del curriculum.",
+    "quote": "Il miglioramento sostenibile nasce da processi chiari, decisioni guidate dai dati e persone coinvolte nella soluzione."
   },
   "services": {
     "badge": "I Miei Servizi",
@@ -316,7 +316,7 @@
   },
   "impact": {
     "title": "Risultati che guidano il miglioramento",
-    "subtitle": "Indicatori riportati in progetti ed esperienze professionali; i risultati dipendono dal contesto e dall’ambito di ogni iniziativa.",
+    "subtitle": "Indicatori riportati in progetti ed esperienze professionali. Rappresentano risultati in contesti specifici e non garantiscono risultati futuri.",
     "kpi1": "Reclami dei clienti",
     "kpi2": "Costi di magazzino",
     "kpi3": "Indice di scarto",
@@ -329,7 +329,7 @@
     "pillar3Title": "Leadership ed evoluzione digitale",
     "pillar3Text": "Executive coaching e sviluppo dei team, affiancati da apprendimento continuo in IA, cybersecurity, analisi dei dati e cloud.",
     "credentialsTitle": "Credenziali e apprendimento continuo",
-    "credentialsText": "Consulta le credenziali verificabili e le attività formative organizzate per area professionale nel portale del curriculum.",
-    "cta": "Esplora curriculum e credenziali"
+    "credentialsText": "Il portale raccoglie il curriculum dettagliato, le credenziali verificabili e la formazione organizzata per area professionale, evitando di duplicare qui l’intero elenco.",
+    "cta": "Consulta curriculum e credenziali"
   }
 }
