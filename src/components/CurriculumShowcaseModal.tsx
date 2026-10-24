@@ -276,8 +276,21 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     const previousLanguage = (i18n.language || 'es').slice(0, 2);
     let tempContainer: HTMLDivElement | null = null;
     try {
-      const replacements = await translateCurriculumForExport(exportLanguage);
-      if (previousLanguage !== exportLanguage) await i18n.changeLanguage(exportLanguage);
+      // Translation is optional: exporting a PDF in the current language must not
+      // depend on an API endpoint. If translation is unavailable (for example, a
+      // deployment without the rewrite-curriculum server route), still export the CV.
+      let replacements = new Map<string, string>();
+      let effectiveExportLanguage = previousLanguage;
+      if (exportLanguage !== previousLanguage) {
+        try {
+          replacements = await translateCurriculumForExport(exportLanguage);
+          effectiveExportLanguage = exportLanguage;
+        } catch (translationError) {
+          console.warn('La traducción automática no está disponible; se exportará el currículo en el idioma actual.', translationError);
+          alert('La traducción automática no está disponible en este momento. Se generará el PDF en el idioma actual para que puedas descargarlo.');
+        }
+      }
+      if (previousLanguage !== effectiveExportLanguage) await i18n.changeLanguage(effectiveExportLanguage);
 
       // PDF exports must always contain the complete curriculum, regardless of the
       // synthesis/full selector currently visible in the interface.
