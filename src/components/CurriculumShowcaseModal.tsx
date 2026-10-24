@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import html2pdf from 'html2pdf.js';
 import { 
@@ -44,6 +44,31 @@ interface CurriculumShowcaseModalProps {
   initialTab?: 'cv_template' | 'official_certificates' | 'all_activities' | 'bio';
 }
 
+const ISSUER_LOGO_URLS: Record<string, string> = {
+  ibm: 'https://cdn.simpleicons.org/ibm/052FAD',
+  openclassrooms: 'https://cdn.simpleicons.org/openclassrooms/7451EB',
+  indeed: 'https://cdn.simpleicons.org/indeed/2164F3',
+  microsoft: 'https://cdn.simpleicons.org/microsoft/5E5E5E',
+  linkedin: 'https://cdn.simpleicons.org/linkedin/0A66C2',
+  coursera: 'https://cdn.simpleicons.org/coursera/0056D2',
+  codecademy: 'https://cdn.simpleicons.org/codecademy/1F4056',
+  freecodecamp: 'https://cdn.simpleicons.org/freecodecamp/0A0A23',
+  comptia: 'https://cdn.simpleicons.org/comptia/C8202F',
+  khanacademy: 'https://cdn.simpleicons.org/khanacademy/14BF96',
+  w3schools: 'https://cdn.simpleicons.org/w3schools/04AA6D',
+  forbes: 'https://cdn.simpleicons.org/forbes/000000'
+};
+
+function normalizeActivityKey(title: string): string {
+  return title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\|\s*[^|]+$/, '').replace(/\s+l\s+openclassrooms?$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function mergeLearningActivities(base: LearningActivity[], imported: LearningActivity[]): LearningActivity[] {
+  const merged = new Map<string, LearningActivity>();
+  base.forEach((activity) => merged.set(normalizeActivityKey(activity.title), activity));
+  imported.forEach((activity) => { const key = normalizeActivityKey(activity.title); if (key) merged.set(key, activity); });
+  return Array.from(merged.values()).sort((a, b) => (a.category || 'Otros recursos formativos').localeCompare(b.category || 'Otros recursos formativos') || a.title.localeCompare(b.title));
+}
 function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certificates' }: CurriculumShowcaseModalProps) {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>(initialTab);
@@ -51,6 +76,16 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
   const [cvMode, setCvMode] = useState<'synthesis' | 'full'>('full');
+  const [learningActivities, setLearningActivities] = useState<LearningActivity[]>(ALL_LEARNING_ACTIVITIES);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/curriculum-training.json', { cache: 'no-cache' })
+      .then((response) => response.ok ? response.json() : [])
+      .then((payload: unknown) => { if (!cancelled && Array.isArray(payload)) setLearningActivities(mergeLearningActivities(ALL_LEARNING_ACTIVITIES, payload as LearningActivity[])); })
+      .catch(() => { if (!cancelled) setLearningActivities(ALL_LEARNING_ACTIVITIES); });
+    return () => { cancelled = true; };
+  }, []);
   
   const { profile } = useProfileSettings();
   const { curriculumData } = useCurriculumSettings();
@@ -245,9 +280,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
   });
 
   // Filtered All Activities
-  const filteredActivities = ALL_LEARNING_ACTIVITIES.filter(act => {
-    return act.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-           act.code.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredActivities = learningActivities.filter(act => {
+    const query = searchQuery.toLowerCase();
+    return act.title.toLowerCase().includes(query) || act.code.toLowerCase().includes(query) || (act.issuer || '').toLowerCase().includes(query) || (act.category || '').toLowerCase().includes(query);
   });
 
   return (
@@ -362,7 +397,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                   }`}
                 >
                   <Layers className="w-4 h-4" />
-                  <span>{t('curriculum.tabs.activities', 'Actividades & Cursos')} ({ALL_LEARNING_ACTIVITIES.length})</span>
+                  <span>{t('curriculum.tabs.activities', 'Formación y actividades')} ({learningActivities.length})</span>
                 </button>
 
                 <button
@@ -880,7 +915,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                 <div>
                   <div className="mb-4">
                     <p className="text-xs font-mono text-gray-400">
-                      Catálogo completo de <strong className="text-white">{filteredActivities.length}</strong> actividades formativas, unidades, cursos y módulos acreditados por código oficial.
+                      Catálogo depurado de <strong className="text-white">{filteredActivities.length}</strong> registros únicos. Cursos, módulos, planes y recursos se muestran por separado; una actividad formativa no implica por sí sola una certificación oficial.
                     </p>
                   </div>
 
@@ -889,32 +924,31 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certi
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-black/60 border-b border-white/10 text-[10px] font-mono uppercase tracking-wider text-amber-400">
-                            <th className="p-3.5 pl-6">Código / ID</th>
-                            <th className="p-3.5">Título de la Actividad Formativa</th>
-                            <th className="p-3.5 text-right pr-6">Certificado Escala</th>
+                            <th className="p-3.5 pl-6">Institución / fuente</th>
+                            <th className="p-3.5">Título de la formación</th>
+                            <th className="p-3.5">Categoría y tipo</th>
+                            <th className="p-3.5 whitespace-nowrap">Finalización</th>
+                            <th className="p-3.5 text-right pr-6 whitespace-nowrap">Duración</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5 text-xs font-mono">
-                          {(Array.isArray(filteredActivities) ? filteredActivities : []).map((act, idx) => (
-                            <tr
-                              key={`official-act-${act.code || idx}-${idx}`}
-                              onClick={() => setViewingCertificate(act)}
-                              className="hover:bg-amber-500/10 transition cursor-pointer group"
-                            >
-                              <td className="p-3.5 pl-6 text-amber-400 font-bold whitespace-nowrap">
-                                {act.code}
-                              </td>
-                              <td className="p-3.5 text-gray-200 group-hover:text-white transition">
-                                {act.title}
-                              </td>
-                              <td className="p-3.5 text-right pr-6 whitespace-nowrap">
-                                <span className="p-1.5 rounded-lg bg-white/5 group-hover:bg-amber-500 text-gray-400 group-hover:text-black transition inline-flex items-center gap-1 text-[10px] font-bold">
-                                  <Award className="w-3.5 h-3.5" />
-                                  <span>Abrir</span>
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
+                        <tbody className="divide-y divide-white/5 text-xs">
+                          {(Array.isArray(filteredActivities) ? filteredActivities : []).map((act, idx) => {
+                            const logoUrl = act.issuerLogoKey ? ISSUER_LOGO_URLS[act.issuerLogoKey] : undefined;
+                            const duration = Number(act.durationMinutes || 0);
+                            const durationLabel = duration >= 60 ? `${Math.floor(duration / 60)} h ${duration % 60 ? `${duration % 60} min` : ''}`.trim() : duration > 0 ? `${duration} min` : '—';
+                            return (
+                              <tr key={`activity-${act.code || idx}-${idx}`} onClick={() => setViewingCertificate(act)} className="hover:bg-amber-500/10 transition cursor-pointer group">
+                                <td className="p-3.5 pl-6"><div className="flex items-center gap-2 min-w-36">
+                                  {logoUrl && <img src={logoUrl} alt="" loading="lazy" className="w-6 h-6 object-contain rounded bg-white p-0.5" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />}
+                                  <span className="text-gray-300 group-hover:text-white">{act.issuer || 'Fuente no especificada'}</span>
+                                </div></td>
+                                <td className="p-3.5 text-gray-100 group-hover:text-white transition min-w-64"><span className="font-semibold">{act.title}</span></td>
+                                <td className="p-3.5 text-gray-400 min-w-44"><span className="block">{act.category || 'Otros recursos formativos'}</span><span className="block text-[10px] text-gray-500">{act.activityKind || act.deliveryType || 'Actividad formativa'}</span></td>
+                                <td className="p-3.5 text-gray-400 whitespace-nowrap">{act.completedDate ? new Date(`${act.completedDate}T00:00:00`).toLocaleDateString(currentLang) : '—'}</td>
+                                <td className="p-3.5 text-right pr-6 text-gray-400 whitespace-nowrap">{durationLabel}</td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>
