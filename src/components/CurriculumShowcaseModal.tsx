@@ -41,11 +41,12 @@ import ScaledCertificateModal from './ScaledCertificateModal';
 interface CurriculumShowcaseModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialTab?: 'cv_template' | 'official_certificates' | 'all_activities' | 'bio';
 }
 
-function CurriculumShowcaseModal({ isOpen, onClose }: CurriculumShowcaseModalProps) {
+function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'official_certificates' }: CurriculumShowcaseModalProps) {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>('official_certificates');
+  const [activeTab, setActiveTab] = useState<'cv_template' | 'official_certificates' | 'all_activities' | 'bio'>(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isExporting, setIsExporting] = useState(false);
