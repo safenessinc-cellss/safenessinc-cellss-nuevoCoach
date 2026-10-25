@@ -520,7 +520,12 @@
       "message": "Mensagem para o assistente",
       "placeholder": "Pergunte sobre o painel ou descreva a tarefa necessária…",
       "send": "Enviar",
-      "privacy": "Não envie senhas, chaves de API ou dados confidenciais de clientes."
+      "privacy": "Não envie senhas, chaves de API ou dados confidenciais de clientes.",
+      "welcome": "Olá. Sou o assistente administrativo do Coach ISO. Pergunte sobre tarefas e problemas do painel ou peça um plano de trabalho. Esta conversa orienta, mas não altera dados nem executa comandos automaticamente.",
+      "sessionExpired": "A sessão expirou. Entre novamente.",
+      "contactError": "Não foi possível contatar o assistente.",
+      "noResponse": "Não recebi resposta. Tente novamente.",
+      "unexpected": "Ocorreu um erro inesperado."
     },
     "theme": {
       "title": "Aparência e cores",
