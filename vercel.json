@@ -8,5 +8,10 @@
       "source": "/:path((?!api/translate-curriculum$).*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/translate-curriculum.ts": {
+      "maxDuration": 60
+    }
+  }
 }
