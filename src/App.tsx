@@ -584,8 +584,8 @@ export default function App() {
             <button onClick={() => setIsCurriculumModalOpen(true)} className="text-amber-400 font-bold hover:text-amber-300 transition flex items-center gap-1">
               <Award className="w-4 h-4" /> Certificados & Credenciales
             </button>
-            <Link to="/curriculo" className="transition text-gray-300 hover:text-white flex items-center gap-1" aria-label="Abrir y descargar el currículo completo">
-              <Download className="w-4 h-4" /> CV PDF
+            <Link to="/curriculo" className="inline-flex items-center gap-2 rounded-full border border-amber-400/60 bg-amber-400/10 px-4 py-2 font-bold text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.12)] transition hover:border-amber-300 hover:bg-amber-400/20 hover:text-amber-200" aria-label="Abrir el currículo profesional completo">
+              <BookOpen className="w-4 h-4" /> Currículo completo
             </Link>
             <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`transition ${activeSection === 'services' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.servicios')}</a>
             <a href="#comportamiento-humano" onClick={(e) => handleNavClick(e, 'comportamiento-humano')} className={`transition ${activeSection === 'comportamiento-humano' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('humanBehavior.navLabel')}</a>
@@ -636,10 +636,10 @@ export default function App() {
               <Link
                 to="/curriculo"
                 onClick={closeMenu}
-                className="text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition text-gray-200 hover:bg-white/5 flex items-center gap-2"
+                className="text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition border border-amber-400/50 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 flex items-center gap-2"
               >
-                <Download className="w-4 h-4" />
-                <span>Descargar currículo PDF</span>
+                <BookOpen className="w-4 h-4" />
+                <span>Abrir currículo completo</span>
               </Link>
               <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'services' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.servicios')}</a>
               <a href="#comportamiento-humano" onClick={(e) => handleNavClick(e, 'comportamiento-humano')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'comportamiento-humano' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('humanBehavior.navLabel')}</a>
