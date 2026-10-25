@@ -222,7 +222,8 @@ const clientPhotos: Record<string, string> = {
 
 export default function App() {
   const { t, i18n } = useTranslation();
-  const data = mergeLocaleData(dataES, allData[i18n.language as keyof typeof allData] || dataES);
+  const activeLanguage = (i18n.language || 'es').split('-')[0] as keyof typeof allData;
+  const data = mergeLocaleData(dataES, allData[activeLanguage] || dataES);
   const { profile, loading: profileLoading } = useProfileSettings();
 
   const [bgImage, setBgImage] = useState('');
