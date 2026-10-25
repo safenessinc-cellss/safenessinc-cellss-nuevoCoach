@@ -361,11 +361,10 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     const batchRequests = Array.from({ length: batchCount }, (_, index) => {
       const start = index * chunkSize;
       return {
-        batchOnly: true,
         input: {
-          summary: batchOnly ? '' : sourceInput.summary,
-          impactMetrics: batchOnly ? [] : sourceInput.impactMetrics,
-          careerRoles: batchOnly ? [] : sourceInput.careerRoles,
+          summary: '',
+          impactMetrics: [],
+          careerRoles: [],
           educationItems: inputEducation.slice(start, start + chunkSize),
           additionalTexts: additionalTexts.slice(start, start + chunkSize),
         },
