@@ -332,7 +332,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
       'Pendiente de verificación oficial',
     ].map((value) => value.trim()).filter(Boolean)));
 
-    const translated = await translateCurriculumForExport({
+    const sourceInput = {
       summary: String(cvSummary || ''),
       impactMetrics: impactMetrics.map((metric: any) => ({
         value: String(metric.value || ''), label: String(metric.label || ''), detail: String(metric.detail || ''),
@@ -340,7 +340,54 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
       careerRoles: sourceRoles,
       educationItems: inputEducation,
       additionalTexts,
-    }, targetLanguage as 'es' | 'en' | 'pt' | 'it');
+    };
+
+    // Send small, independent requests instead of making one serverless function
+    // translate the entire training catalogue (which can exceed Vercel's 60s limit).
+    const chunkSize = 40;
+    const batchCount = Math.max(
+      Math.ceil(inputEducation.length / chunkSize),
+      Math.ceil(additionalTexts.length / chunkSize),
+      1,
+    );
+    const batchRequests = Array.from({ length: batchCount }, (_, index) => {
+      const start = index * chunkSize;
+      const batchOnly = index > 0;
+      return {
+        batchOnly,
+        input: {
+          summary: batchOnly ? '' : sourceInput.summary,
+          impactMetrics: batchOnly ? [] : sourceInput.impactMetrics,
+          careerRoles: batchOnly ? [] : sourceInput.careerRoles,
+          educationItems: inputEducation.slice(start, start + chunkSize),
+          additionalTexts: additionalTexts.slice(start, start + chunkSize),
+        },
+      };
+    });
+
+    const batchResults: Awaited<ReturnType<typeof translateCurriculumForExport>>[] = [];
+    // Bounded concurrency avoids flooding Gemini while allowing large inventories
+    // to finish without one long-running API request.
+    for (let offset = 0; offset < batchRequests.length; offset += 3) {
+      const group = batchRequests.slice(offset, offset + 3);
+      const translatedGroup = await Promise.all(group.map((batch) =>
+        translateCurriculumForExport(
+          batch.input,
+          targetLanguage as 'es' | 'en' | 'pt' | 'it',
+          batch.batchOnly,
+        )
+      ));
+      batchResults.push(...translatedGroup);
+    }
+
+    const firstBatch = batchResults[0];
+    const translated = {
+      summary: firstBatch?.summary || '',
+      impactMetrics: firstBatch?.impactMetrics || [],
+      careerRoles: firstBatch?.careerRoles || [],
+      educationItems: batchResults.flatMap((batch) => batch.educationItems || []),
+      additionalTexts: batchResults.flatMap((batch) => batch.additionalTexts || []),
+    };
 
     const isText = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0;
     if (!isText(translated.summary) ||
