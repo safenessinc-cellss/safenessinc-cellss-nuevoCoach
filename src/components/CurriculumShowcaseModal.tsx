@@ -484,27 +484,83 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
           windowWidth: 820,
           backgroundColor: '#ffffff',
           removeContainer: true,
-          // Tailwind v4 emits OKLCH colors; html2canvas cannot parse them yet.
-          // Convert unsupported computed colors in the cloned PDF DOM to safe RGB/hex values.
+          // Tailwind v4 emits OKLCH/OKLAB colors, which html2canvas cannot parse.
+          // Sanitize the cloned DOM, inline declarations, stylesheet rules and pseudo-elements.
+          // This only affects the temporary PDF clone, never the live page.
           onclone: (clonedDocument: Document) => {
-            const elements = Array.from(clonedDocument.querySelectorAll<HTMLElement>('*'));
-            elements.forEach((node) => {
-              const computed = clonedDocument.defaultView?.getComputedStyle(node);
-              if (!computed) return;
-              for (let i = 0; i < computed.length; i += 1) {
+            const unsupportedColor = /okl(?:ch|ab)\s*\(/i;
+            const safeValueFor = (property: string): string => {
+              if (property === 'background-image' || property.includes('shadow')) return 'none';
+              if (property === 'background-color') return '#ffffff';
+              if (property.includes('border') && property.endsWith('color')) return '#d1d5db';
+              if (property.includes('outline') && property.endsWith('color')) return '#d1d5db';
+              if (property === 'fill' || property === 'stroke') return '#1f2937';
+              if (property === 'opacity') return '1';
+              return '#1f2937';
+            };
+
+            const sanitizeStyle = (style: CSSStyleDeclaration) => {
+              for (let i = style.length - 1; i >= 0; i -= 1) {
+                const property = style.item(i);
+                if (!property) continue;
+                const value = style.getPropertyValue(property);
+                if (unsupportedColor.test(value)) {
+                  style.setProperty(property, safeValueFor(property), style.getPropertyPriority(property));
+                }
+              }
+            };
+
+            const sanitizeRules = (rules: CSSRuleList) => {
+              Array.from(rules).forEach((rule) => {
+                if (rule.type === 1) sanitizeStyle((rule as CSSStyleRule).style);
+                if ('cssRules' in rule) {
+                  try { sanitizeRules((rule as CSSGroupingRule).cssRules); } catch { /* inaccessible stylesheet */ }
+                }
+              });
+            };
+
+            Array.from(clonedDocument.styleSheets).forEach((sheet) => {
+              try { if (sheet.cssRules) sanitizeRules(sheet.cssRules); } catch { /* cross-origin stylesheet */ }
+            });
+
+            Array.from(clonedDocument.querySelectorAll<HTMLElement>('*')).forEach((node, index) => {
+              sanitizeStyle(node.style);
+              node.setAttribute('data-pdf-color-safe', String(index));
+              const view = clonedDocument.defaultView;
+              if (!view) return;
+              const computed = view.getComputedStyle(node);
+              for (let i = computed.length - 1; i >= 0; i -= 1) {
                 const property = computed.item(i);
                 if (!property || property.startsWith('--')) continue;
-                const value = computed.getPropertyValue(property);
-                if (!/oklch\s*\(/i.test(value)) continue;
-                let fallback = '#1f2937';
-                if (property === 'background-image') fallback = 'none';
-                else if (property === 'background-color') fallback = '#ffffff';
-                else if (property.includes('border') && property.endsWith('color')) fallback = '#d1d5db';
-                else if (property.includes('shadow')) fallback = 'none';
-                else if (property === 'fill' || property === 'stroke') fallback = '#1f2937';
-                else if (property.includes('outline') && property.endsWith('color')) fallback = '#d1d5db';
-                node.style.setProperty(property, fallback, 'important');
+                if (unsupportedColor.test(computed.getPropertyValue(property))) {
+                  node.style.setProperty(property, safeValueFor(property), 'important');
+                }
               }
+
+              // Pseudo-elements cannot be fixed with inline styles. Add explicit, safe
+              // overrides only when their computed styles contain unsupported color syntax.
+              (['::before', '::after', '::marker'] as const).forEach((pseudo) => {
+                const pseudoStyle = view.getComputedStyle(node, pseudo);
+                const declarations: string[] = [];
+                for (let i = 0; i < pseudoStyle.length; i += 1) {
+                  const property = pseudoStyle.item(i);
+                  if (property && !property.startsWith('--') &&
+                      unsupportedColor.test(pseudoStyle.getPropertyValue(property))) {
+                    declarations.push(property + ':' + safeValueFor(property) + ' !important');
+                  }
+                }
+                if (declarations.length) {
+                  let styleElement = clonedDocument.getElementById('pdf-oklab-color-fallbacks') as HTMLStyleElement | null;
+                  if (!styleElement) {
+                    styleElement = clonedDocument.createElement('style');
+                    styleElement.id = 'pdf-oklab-color-fallbacks';
+                    clonedDocument.head.appendChild(styleElement);
+                  }
+                  styleElement.appendChild(clonedDocument.createTextNode(
+                    '[data-pdf-color-safe="' + index + '"]' + pseudo + '{' + declarations.join(';') + '}'
+                  ));
+                }
+              });
             });
           },
         },
