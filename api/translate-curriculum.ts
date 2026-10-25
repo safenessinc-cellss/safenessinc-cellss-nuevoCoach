@@ -254,10 +254,12 @@ export default async function handler(req: any, res: any) {
           role.responsibilities.length !== source.responsibilities.length ||
           role.responsibilities.some((value: unknown, j: number) =>
             Boolean(source.responsibilities[j]?.trim()) && !hasText(value)) ||
-          !Array.isArray(role?.achievements) ||
-          role.achievements.length !== (source.achievements || []).length ||
-          role.achievements.some((value: unknown, j: number) =>
-            Boolean(source.achievements?.[j]?.trim()) && !hasText(value));
+          (role?.achievements !== undefined && (
+            !Array.isArray(role.achievements) ||
+            role.achievements.length !== (source.achievements || []).length ||
+            role.achievements.some((value: unknown, j: number) =>
+              Boolean(source.achievements?.[j]?.trim()) && !hasText(value)
+          ));
       })
     )) {
       throw new Error('La traducción de resumen, métricas o experiencia llegó incompleta.');
