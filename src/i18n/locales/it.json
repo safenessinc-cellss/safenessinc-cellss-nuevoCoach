@@ -412,7 +412,12 @@
       "logout": "Esci",
       "readOnly": "Modalità di sola lettura (lettore/editor)",
       "addRecord": "Aggiungi record",
-      "addCollaborator": "Aggiungi collaboratore"
+      "addCollaborator": "Aggiungi collaboratore",
+      "validating": "Verifica delle credenziali sicure dell'auditor…",
+      "redirecting": "Reindirizzamento all'accesso sicuro al pannello…",
+      "currentRole": "Ruolo attuale",
+      "specialist": "Specialista in SGI e processi",
+      "revoke": "Revoca autorizzazioni"
     },
     "dashboard": {
       "activeCourses": "Corsi attivi",
@@ -500,7 +505,8 @@
       "languageHelp": "Cambia la lingua di visualizzazione del portale. Le traduzioni disponibili si applicano automaticamente ai testi tradotti.",
       "languageDomain": "Conoscenza delle lingue e dei linguaggi tecnici",
       "level": "Livello",
-      "languageDetail": "Dettagli di competenza"
+      "languageDetail": "Dettagli di competenza",
+      "languageLabel": "Lingua"
     },
     "certificate": {
       "title": "Importatore di certificati IA",
@@ -591,7 +597,11 @@
       "title": "Registro risorse ISO",
       "total": "Totale registrato",
       "search": "Cerca per norma, clausola o descrizione...",
-      "edit": "Modifica"
+      "edit": "Modifica",
+      "idExample": "es. mappa-processi-v2",
+      "standardExample": "es. ISO 9001:2015",
+      "clauseExample": "es. 4.4",
+      "clauseInline": "Clausola"
     },
     "analytics": {
       "title": "Analisi della domanda e assistente IA",
@@ -716,7 +726,10 @@
       "editorRole": "Editor (gestisce corsi e visite)",
       "viewerRole": "Lettore (sola lettura)",
       "editAsset": "Modifica",
-      "courseCategory": "Categoria del corso"
+      "courseCategory": "Categoria del corso",
+      "addressExample": "Viale principale, uffici dello stabilimento industriale…",
+      "auditorNotesExample": "Es.: ottenere la firma dell'NDA e portare la checklist…",
+      "topicExample": "Revisione della clausola 7 o coaching generale…"
     }
   }
 }
