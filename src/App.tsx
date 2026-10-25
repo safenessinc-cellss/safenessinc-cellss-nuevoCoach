@@ -85,7 +85,7 @@ const systemStatusLabels: Record<string, string> = {
   it: 'STATO DEL SISTEMA: CONFORME',
 };
 const viewCoverageLabels: Record<string, string> = {
-  es: '{viewCoverageLabels[(i18n.language || "es").slice(0, 2)] || viewCoverageLabels.es}',
+  es: '[VER COBERTURA]',
   en: '[VIEW COVERAGE]',
   pt: '[VER COBERTURA]',
   it: '[VEDI COPERTURA]',
