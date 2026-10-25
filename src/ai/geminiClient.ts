@@ -101,10 +101,11 @@ export interface CurriculumTranslationOutput {
 export async function translateCurriculumForExport(
   input: CurriculumTranslationInput,
   targetLanguage: 'es' | 'en' | 'pt' | 'it',
+  batchOnly = false,
 ): Promise<CurriculumTranslationOutput> {
   return apiRequest<CurriculumTranslationOutput>(
     'translate-curriculum',
-    { input, targetLanguage },
+    { input, targetLanguage, batchOnly },
     false,
   );
 }
