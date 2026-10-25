@@ -259,7 +259,7 @@ export default async function handler(req: any, res: any) {
             role.achievements.length !== (source.achievements || []).length ||
             role.achievements.some((value: unknown, j: number) =>
               Boolean(source.achievements?.[j]?.trim()) && !hasText(value)
-          ));
+          )));
       })
     )) {
       throw new Error('La traducción de resumen, métricas o experiencia llegó incompleta.');
