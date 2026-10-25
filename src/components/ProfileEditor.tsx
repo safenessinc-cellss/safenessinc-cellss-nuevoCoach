@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Save, Loader2, CheckCircle2, AlertCircle, UserRound, Image as ImageIcon } from 'lucide-react';
 import { useProfileSettings, type ProfileSettings } from '../data/useProfileSettings';
 
 export default function ProfileEditor() {
+  const { t } = useTranslation();
   const { profile, updateProfile, loading } = useProfileSettings();
   const [formData, setFormData] = useState<ProfileSettings>(profile);
   const [saving, setSaving] = useState(false);
@@ -25,11 +27,11 @@ export default function ProfileEditor() {
         name: formData.name.trim(),
         experienceYears: Math.max(0, Number(formData.experienceYears) || 0),
       });
-      setNotice({ type: 'success', text: 'Perfil guardado y sincronizado.' });
+      setNotice({ type: 'success', text: t('adminModules.profile.saved') });
     } catch (error) {
       setNotice({
         type: 'error',
-        text: error instanceof Error ? error.message : 'No se pudo sincronizar el perfil con Firebase.',
+        text: error instanceof Error ? error.message : t('adminModules.profile.error'),
       });
     } finally {
       setSaving(false);
@@ -37,7 +39,7 @@ export default function ProfileEditor() {
   };
 
   if (loading && !formData.name) {
-    return <div className="flex items-center gap-2 p-8 text-sm text-gray-400"><Loader2 className="h-4 w-4 animate-spin" /> Cargando perfil…</div>;
+    return <div className="flex items-center gap-2 p-8 text-sm text-gray-400"><Loader2 className="h-4 w-4 animate-spin" /> {t('adminModules.profile.loading')}</div>;
   }
 
   const textField = (field: keyof ProfileSettings, label: string, type = 'text') => (
@@ -56,24 +58,24 @@ export default function ProfileEditor() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="flex items-center gap-2 text-xl font-extrabold text-white"><UserRound className="h-5 w-5 text-red-400" /> Perfil público</h2>
-          <p className="mt-1 text-xs text-gray-400">Edita los datos que aparecen en la página pública. Los cambios se guardan en Firebase.</p>
+          <h2 className="flex items-center gap-2 text-xl font-extrabold text-white"><UserRound className="h-5 w-5 text-red-400" /> {t('adminModules.profile.title')}</h2>
+          <p className="mt-1 text-xs text-gray-400">{t('adminModules.profile.description')}</p>
         </div>
         <button type="submit" disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-red-500 disabled:opacity-60">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {saving ? 'Guardando…' : 'Guardar perfil'}
+          {saving ? '{t('adminModules.profile.saving')}' : '{t('adminModules.profile.save')}'}
         </button>
       </header>
 
       <section className="grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 md:grid-cols-2">
-        {textField('name', 'Nombre público')}
-        {textField('title', 'Título profesional')}
-        {textField('coachTitle', 'Especialidad / subtítulo')}
-        {textField('experienceYears', 'Años de experiencia', 'number')}
-        {textField('photoUrl', 'URL de la foto')}
-        {textField('logoUrl', 'URL del logo')}
-        <div className="md:col-span-2">{textField('bio', 'Biografía')}</div>
-        <div className="md:col-span-2">{textField('quote', 'Frase destacada')}</div>
+        {textField('name', '{t('adminModules.profile.name')}')}
+        {textField('title', '{t('adminModules.profile.jobTitle')}')}
+        {textField('coachTitle', '{t('adminModules.profile.specialty')}')}
+        {textField('experienceYears', '{t('adminModules.profile.years')}', 'number')}
+        {textField('photoUrl', '{t('adminModules.profile.photo')}')}
+        {textField('logoUrl', '{t('adminModules.profile.logo')}')}
+        <div className="md:col-span-2">{textField('bio', '{t('adminModules.profile.bio')}')}</div>
+        <div className="md:col-span-2">{textField('quote', '{t('adminModules.profile.quote')}')}</div>
       </section>
 
       <div className="flex items-start gap-2 text-xs text-gray-400">
