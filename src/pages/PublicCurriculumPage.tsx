@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import html2pdf from 'html2pdf.js';
@@ -48,6 +49,10 @@ function createInput(): CurriculumTranslationInput {
       'Diseño y desarrollo de sitios web, aplicaciones y sistemas internos, automatización e integración de servicios.',
       'Desarrollo de liderazgo, formación de equipos, comunicación y comportamiento organizacional con enfoque profesional no clínico.',
       'Experiencia internacional en industria, calidad, compras, producción, tecnología y mejora continua.',
+      'Perfil ejecutivo','Perfil profesional ejecutivo',
+      'Calidad, procesos y operaciones','Ciberseguridad y redes','IA, datos y computación avanzada','Cloud y computación','Desarrollo web, software y apps','Gestión de proyectos y metodologías ágiles','Negocios, marketing y clientes','Liderazgo, habilidades humanas y organización','Competencias profesionales y formación general',
+      ...LANGUAGES_LIST.map(x => x.name + ' — ' + x.level),
+      'Consultoría de sistemas de gestión, mejora empresarial y soluciones digitales.',
     ],
   };
 }
@@ -169,6 +174,6 @@ export default function PublicCurriculumPage() {
     </div>
   </main>;
 }
-function Heading({icon,title}:{icon:React.ReactNode;title:string}) { return <h2 className="flex items-start gap-2 text-sm font-bold uppercase tracking-[.14em] text-slate-800"><span className="text-blue-800">{icon}</span><span>{title}</span></h2>; }
+function Heading({icon,title}:{icon:ReactNode;title:string}) { return <h2 className="flex items-start gap-2 text-sm font-bold uppercase tracking-[.14em] text-slate-800"><span className="text-blue-800">{icon}</span><span>{title}</span></h2>; }
 function Metric({value,label}:{value:string;label:string}) { return <article className="rounded-xl bg-slate-50 p-5"><p className="text-3xl font-bold text-slate-950">{value}</p><p className="mt-1 text-sm leading-5 text-slate-600">{label}</p></article>; }
 function Service({title,text}:{title:string;text:string}) { return <article className="rounded-xl border border-slate-200 p-5"><h3 className="font-bold text-slate-950">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{text}</p></article>; }
