@@ -46,7 +46,7 @@ export default async function handler(req: any, res: any) {
     .split(',')[0].trim();
   const now = Date.now();
   const current = requests.get(ip);
-  if (current && current.resetAt > now && current.count >= 4) {
+  if (current && current.resetAt > now && current.count >= 60) {
     return res.status(429).json({ error: 'Se alcanzó el límite temporal de traducciones. Espera un minuto e inténtalo de nuevo.' });
   }
   requests.set(ip, current && current.resetAt > now
@@ -59,6 +59,7 @@ export default async function handler(req: any, res: any) {
   const body = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch { return null; } })() : req.body;
   const input = body?.input as TranslationInput | undefined;
   const targetLanguage = body?.targetLanguage;
+  const batchOnly = body?.batchOnly === true;
   if (!input || typeof input !== 'object' || !languages[targetLanguage] ||
       JSON.stringify(input).length > 250_000 ||
       typeof input.summary !== 'string' || input.summary.length > 12000 ||
@@ -105,7 +106,9 @@ export default async function handler(req: any, res: any) {
   try {
     // Translate the executive summary, metrics and work history separately from
     // the potentially large training inventory to keep output complete.
-    const base = await generateJson([
+    // A request can translate only one inventory chunk. This keeps each serverless
+    // invocation comfortably below Vercel's function timeout for large CVs.
+    const base = batchOnly ? {} : await generateJson([
       baseRules,
       'Return keys: summary, impactMetrics, careerRoles.',
       'For careerRoles, translate title, period wording, responsibilities and achievements. Keep company and location unchanged.',
