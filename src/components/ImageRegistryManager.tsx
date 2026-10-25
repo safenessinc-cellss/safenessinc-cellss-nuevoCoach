@@ -132,7 +132,7 @@ export default function ImageRegistryManager() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
             {editingId ? <Edit3 className="w-6 h-6 text-amber-500" /> : <ImagePlus className="w-6 h-6 text-blue-500" />} 
-            {editingId ? t('adminModules.registry.editTitle', { id: editingId }) : '{t('adminModules.registry.newTitle')}'}
+            {editingId ? t('adminModules.registry.editTitle', { id: editingId }) : t('adminModules.registry.newTitle')}
           </h2>
           {editingId && (
             <button 
@@ -191,7 +191,7 @@ export default function ImageRegistryManager() {
             
             <button disabled={isUploading} type="submit" className={`w-full mt-4 font-bold py-3 rounded-xl transition flex justify-center items-center gap-2 ${editingId ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}>
               {isUploading ? <Loader2 className="w-5 h-5 animate-spin"/> : editingId ? <Save className="w-5 h-5" /> : <CheckCircle className="w-5 h-5" />} 
-              {editingId ? '{t('adminModules.registry.save')}' : '{t('adminModules.registry.register')}'}
+              {editingId ? t('adminModules.registry.save') : t('adminModules.registry.register')}
             </button>
           </div>
         </form>
