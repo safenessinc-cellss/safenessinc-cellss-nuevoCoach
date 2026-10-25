@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { Search, ImagePlus, CheckCircle, ShieldCheck, Tag, Loader2, Edit3, XCircle, Save, Trash2 } from 'lucide-react';
 import { collection, doc, setDoc, deleteDoc } from 'firebase/firestore';
@@ -8,6 +9,7 @@ import { ISOImageMetadata } from '../data/imageRegistry';
 import ISOImage from './ISOImage';
 
 export default function ImageRegistryManager() {
+  const { t } = useTranslation();
   const { registry, loading } = useImageRegistry();
   const [searchTerm, setSearchTerm] = useState('');
   const [isUploading, setIsUploading] = useState(false);
@@ -61,13 +63,13 @@ export default function ImageRegistryManager() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.id || !formData.alt || !formData.normaRelacionada || !fileBase64) {
-      alert("Por favor llena los campos requeridos y selecciona una imagen (ID, Alt, Norma).");
+      alert(t('adminModules.registry.requiredAlert'));
       return;
     }
 
     // Uniqueness validation only if new
     if (!editingId && registry[formData.id]) {
-      alert("El ID ya está registrado. Por favor, usa un ID único.");
+      alert(t('adminModules.registry.duplicateAlert'));
       return;
     }
 
@@ -79,7 +81,7 @@ export default function ImageRegistryManager() {
         src: fileBase64
       });
       
-      alert(editingId ? "Imagen actualizada con éxito" : "Imagen registrada con éxito");
+      alert(editingId ? t('adminModules.registry.successEdit') : t('adminModules.registry.successAdd'));
       setFormData({
         id: '',
         alt: '',
@@ -92,7 +94,7 @@ export default function ImageRegistryManager() {
       setEditingId(null);
     } catch (err) {
       console.error(err);
-      alert("Error al procesar imagen");
+      alert(t('adminModules.registry.error'));
     } finally {
       setIsUploading(false);
     }
@@ -113,7 +115,7 @@ export default function ImageRegistryManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('¿Estás seguro de eliminar este activo?')) {
+    if (window.confirm(t('adminModules.registry.deleteConfirm'))) {
       await deleteDoc(doc(db, 'image_registry', id));
     }
   };
@@ -130,7 +132,7 @@ export default function ImageRegistryManager() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
             {editingId ? <Edit3 className="w-6 h-6 text-amber-500" /> : <ImagePlus className="w-6 h-6 text-blue-500" />} 
-            {editingId ? `Editando Activo: ${editingId}` : 'Registrar Nuevo Activo ISO'}
+            {editingId ? t('adminModules.registry.editTitle', { id: editingId }) : '{t('adminModules.registry.newTitle')}'}
           </h2>
           {editingId && (
             <button 
@@ -141,7 +143,7 @@ export default function ImageRegistryManager() {
               }}
               className="text-xs font-bold text-amber-500 hover:text-white flex items-center gap-1 transition-colors"
             >
-              <XCircle className="w-4 h-4" /> Cancelar Edición
+              <XCircle className="w-4 h-4" /> {t('adminModules.registry.cancelEdit')}
             </button>
           )}
         </div>
@@ -149,47 +151,47 @@ export default function ImageRegistryManager() {
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">ID Único *</label>
+              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.uniqueId')}</label>
               <input type="text" name="id" required disabled={!!editingId} value={formData.id} onChange={handleChange} className={`w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500 ${editingId ? 'opacity-50 cursor-not-allowed' : ''}`} placeholder="ej. mapa-procesos-v2" />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Texto Alternativo (Alt) *</label>
-              <input type="text" name="alt" required value={formData.alt} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="Descripción breve de la imagen" />
+              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.alt')}</label>
+              <input type="text" name="alt" required value={formData.alt} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder={t('adminModules.registry.shortDesc')} />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Descripción / Caption</label>
-              <textarea name="description" value={formData.description} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500 h-24 resize-none" placeholder="Contexto técnico para el auditor..." />
+              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.caption')}</label>
+              <textarea name="description" value={formData.description} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500 h-24 resize-none" placeholder={t('adminModules.registry.context')} />
             </div>
           </div>
           
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Norma *</label>
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.standard')}</label>
                 <input type="text" name="normaRelacionada" required value={formData.normaRelacionada} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="ej. ISO 9001:2015" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Cláusula</label>
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.clause')}</label>
                 <input type="text" name="clausula" value={formData.clausula} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="ej. 4.4" />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Categoría</label>
+              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.category')}</label>
               <select name="categoria" value={formData.categoria} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500">
-                <option value="diagramas">Diagramas</option>
-                <option value="cumplimiento">Cumplimiento</option>
-                <option value="iconos">Iconos</option>
+                <option value="diagramas">{t('adminModules.registry.diagrams')}</option>
+                <option value="cumplimiento">{t('adminModules.registry.compliance')}</option>
+                <option value="iconos">{t('adminModules.registry.icons')}</option>
                 <option value="general">General</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Archivo de Imagen *</label>
+              <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.imageFile')}</label>
               <input type="file" accept="image/*" onChange={handleFileChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500/20 file:text-blue-400 hover:file:bg-blue-500/30" />
             </div>
             
             <button disabled={isUploading} type="submit" className={`w-full mt-4 font-bold py-3 rounded-xl transition flex justify-center items-center gap-2 ${editingId ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}>
               {isUploading ? <Loader2 className="w-5 h-5 animate-spin"/> : editingId ? <Save className="w-5 h-5" /> : <CheckCircle className="w-5 h-5" />} 
-              {editingId ? 'Guardar Cambios' : 'Registrar Imagen'}
+              {editingId ? '{t('adminModules.registry.save')}' : '{t('adminModules.registry.register')}'}
             </button>
           </div>
         </form>
@@ -200,7 +202,7 @@ export default function ImageRegistryManager() {
         <div className="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-green-500" /> Registro de Activos ISO
+              <ShieldCheck className="w-6 h-6 text-green-500" /> {t('adminModules.registry.title')}
             </h2>
             <p className="text-sm text-gray-400 mt-1">Total registrados: {imagesList.length}</p>
           </div>
@@ -208,7 +210,7 @@ export default function ImageRegistryManager() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input 
               type="text" 
-              placeholder="Buscar por norma, cláusula, descripción..." 
+              placeholder={t('adminModules.registry.search')} 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-blue-500"
@@ -239,7 +241,7 @@ export default function ImageRegistryManager() {
                 
                 <div className="flex items-center gap-2 text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-2 rounded-lg">
                   <Tag className="w-3 h-3" />
-                  {img.normaRelacionada} {img.clausula ? `// Cláusula ${img.clausula}` : ''}
+                  {img.normaRelacionada} {img.clausula ? `// {t('adminModules.registry.clause')} ${img.clausula}` : ''}
                 </div>
 
                 <div className="flex gap-2 mt-2 pt-2 border-t border-white/5">
@@ -247,7 +249,7 @@ export default function ImageRegistryManager() {
                     onClick={() => handleEdit(img)}
                     className="flex-1 bg-white/5 hover:bg-white/10 text-gray-300 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center justify-center gap-2"
                   >
-                    <Edit3 className="w-3 h-3" /> Editar
+                    <Edit3 className="w-3 h-3" /> {t('adminModules.registry.edit')}
                   </button>
                   <button 
                     onClick={() => handleDelete(img.id)}
