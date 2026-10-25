@@ -59,9 +59,13 @@ export default async function handler(req: any, res: any) {
   const body = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch { return null; } })() : req.body;
   const input = body?.input as TranslationInput | undefined;
   const targetLanguage = body?.targetLanguage;
+  const validLanguageCode = typeof targetLanguage === 'string' && /^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$/.test(targetLanguage);
+  const targetLanguageName = validLanguageCode
+    ? (languages[targetLanguage.toLowerCase()] || new Intl.DisplayNames(['en'], { type: 'language' }).of(targetLanguage) || targetLanguage)
+    : '';
   const batchOnly = body?.batchOnly === true;
   const baseOnly = body?.baseOnly === true;
-  if (!input || typeof input !== 'object' || !languages[targetLanguage] ||
+  if (!input || typeof input !== 'object' || !validLanguageCode ||
       JSON.stringify(input).length > 250_000 ||
       typeof input.summary !== 'string' || input.summary.length > 12000 ||
       !Array.isArray(input.impactMetrics) || input.impactMetrics.length > 30 ||
@@ -120,7 +124,7 @@ export default async function handler(req: any, res: any) {
   };
 
   const baseRules = [
-    'You are a professional executive-CV translator. Translate all human-readable descriptive content into ' + languages[targetLanguage] + '.',
+    'You are a professional executive-CV translator. Translate all human-readable descriptive content into ' + targetLanguageName + ' (language code: ' + targetLanguage + ').',
     'Return valid JSON only. Do not return markdown, comments, or explanations.',
     'TRANSLATION ONLY. Do not rewrite, summarize, embellish, remove, add, infer, or invent information.',
     'Preserve exact array counts, order, and nested list structure.',
