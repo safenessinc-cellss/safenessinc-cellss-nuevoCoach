@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertCircle, CheckCircle2, FileImage, Loader2, Save, Sparkles, Upload, X } from 'lucide-react';
 import { analyzeCertificateImage, type ExtractedCertificate } from '../ai/geminiClient';
 import { useCertificates } from '../data/useCertificates';
@@ -72,6 +73,7 @@ async function createCertificateThumbnail(dataUrl: string): Promise<string> {
 }
 
 export default function CertificateAIImporter() {
+  const { t } = useTranslation();
   const { addCertificate } = useCertificates();
   const [fileName, setFileName] = useState('');
   const [certificatePreview, setCertificatePreview] = useState<string>('');
@@ -147,14 +149,14 @@ export default function CertificateAIImporter() {
   return (
     <section className="mx-auto max-w-4xl space-y-6">
       <header>
-        <h2 className="flex items-center gap-2 text-xl font-extrabold text-white"><Sparkles className="h-5 w-5 text-amber-400" /> Importador de certificados con IA</h2>
-        <p className="mt-2 text-sm text-gray-400">Carga una imagen legible. La IA extrae los datos, guarda una miniatura comprimida para el PDF y deja la credencial pendiente de verificación oficial.</p>
+        <h2 className="flex items-center gap-2 text-xl font-extrabold text-white"><Sparkles className="h-5 w-5 text-amber-400" /> {t('adminModules.certificate.title')}</h2>
+        <p className="mt-2 text-sm text-gray-400">{t('adminModules.certificate.description')}</p>
       </header>
 
       <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/20 bg-white/[0.02] p-8 text-center transition hover:border-amber-400/50">
         {busy ? <Loader2 className="h-8 w-8 animate-spin text-amber-400" /> : <FileImage className="h-8 w-8 text-amber-400" />}
         <span className="text-sm font-semibold text-white">{busy ? 'Analizando certificado…' : 'Selecciona una imagen de certificado'}</span>
-        <span className="text-xs text-gray-500">JPEG, PNG o WebP · máximo 5 MB</span>
+        <span className="text-xs text-gray-500">{t('adminModules.certificate.fileTypes')}</span>
         <input className="sr-only" type="file" accept="image/jpeg,image/png,image/webp" disabled={busy || saving} onChange={handleFile} />
       </label>
 
@@ -163,8 +165,8 @@ export default function CertificateAIImporter() {
       {draft && (
         <div className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="font-bold text-white">Revisar datos extraídos</h3>
-            <button type="button" onClick={() => { setDraft(null); setFileName(''); setCertificatePreview(''); }} className="rounded-lg p-2 text-gray-400 hover:bg-white/5 hover:text-white" aria-label="Descartar borrador"><X className="h-4 w-4" /></button>
+            <h3 className="font-bold text-white">{t('adminModules.certificate.review')}</h3>
+            <button type="button" onClick={() => { setDraft(null); setFileName(''); setCertificatePreview(''); }} className="rounded-lg p-2 text-gray-400 hover:bg-white/5 hover:text-white" aria-label={t('adminModules.certificate.discard')}><X className="h-4 w-4" /></button>
           </div>
           {([
             ['title', 'Título'],
@@ -180,7 +182,7 @@ export default function CertificateAIImporter() {
             </label>
           ))}
           <label className="block space-y-1">
-            <span className="text-xs font-medium text-gray-400">Descripción</span>
+            <span className="text-xs font-medium text-gray-400">{t('adminModules.certificate.descriptionLabel')}</span>
             <textarea value={draft.description} onChange={event => edit('description', event.target.value)} rows={4} className="w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none focus:border-amber-400" />
           </label>
           <p className="text-xs text-amber-300">Confianza estimada de IA: {Math.round(draft.confidence * 100)}%. Este valor no equivale a una validación oficial.</p>
@@ -195,7 +197,7 @@ export default function CertificateAIImporter() {
         {notice.type === 'success' ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" /> : <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />}
         {notice.text}
       </p>}
-      <p className="text-xs text-gray-500">Las credenciales importadas se guardan en Firestore y aparecen en la sección de certificados. Confirma la autenticidad con la organización emisora antes de presentarlas como oficiales.</p>
+      <p className="text-xs text-gray-500">{t('adminModules.certificate.saveNote')}</p>
     </section>
   );
 }
