@@ -28,7 +28,7 @@ const requests = new Map<string, { count: number; resetAt: number }>();
 const languages: Record<string, string> = {
   es: 'Spanish', en: 'English', pt: 'Portuguese (Brazilian Portuguese)', it: 'Italian',
 };
-const CHUNK_SIZE = 80;
+const CHUNK_SIZE = 20;
 const MAX_EDUCATION_ITEMS = 1200;
 const MAX_ADDITIONAL_TEXTS = 200;
 
@@ -85,13 +85,35 @@ export default async function handler(req: any, res: any) {
   }
 
   const ai = new GoogleGenAI({ apiKey });
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const generateJson = async (prompt: string, maxOutputTokens = 10000): Promise<Record<string, any>> => {
-    const response = await ai.models.generateContent({
-      model: 'gemini-flash-latest',
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: { responseMimeType: 'application/json', temperature: 0.1, maxOutputTokens },
-    });
-    return JSON.parse(response.text || '{}') as Record<string, any>;
+    // A transient 503 from Google's shared "latest" alias used to fail the whole
+    // export immediately. Try a pinned Flash model, then the alias, with a short
+    // retry before returning an error. Each API request still translates only one
+    // small section/chunk, keeping it under Vercel's function timeout.
+    const attempts: Array<{ model: string; delay: number }> = [
+      { model: 'gemini-2.5-flash', delay: 0 },
+      { model: 'gemini-2.5-flash', delay: 500 },
+      { model: 'gemini-flash-latest', delay: 250 },
+    ];
+    let lastError: unknown;
+    for (const attempt of attempts) {
+      try {
+        if (attempt.delay) await sleep(attempt.delay);
+        const response = await ai.models.generateContent({
+          model: attempt.model,
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          config: { responseMimeType: 'application/json', temperature: 0.1, maxOutputTokens },
+        });
+        const text = response.text || '{}';
+        return JSON.parse(text) as Record<string, any>;
+      } catch (error) {
+        lastError = error;
+        const detail = error instanceof Error ? error.message : String(error);
+        console.warn(`Gemini translation attempt failed (${attempt.model}):`, detail.slice(0, 300));
+      }
+    }
+    throw lastError instanceof Error ? lastError : new Error('El servicio de traducción no respondió después de varios intentos.');
   };
 
   const baseRules = [
@@ -190,7 +212,13 @@ export default async function handler(req: any, res: any) {
       additionalTexts: translatedAdditionalTexts,
     });
   } catch (error) {
-    console.error('Curriculum translation failed:', error instanceof Error ? error.message : error);
-    return res.status(502).json({ error: 'No se pudo completar la traducción del currículo. No se ha generado el PDF.' });
+    const detail = error instanceof Error ? error.message : String(error);
+    console.error('Curriculum translation failed:', detail);
+    const temporarilyUnavailable = /503|UNAVAILABLE|high demand|overloaded|429|RESOURCE_EXHAUSTED/i.test(detail);
+    return res.status(temporarilyUnavailable ? 503 : 502).json({
+      error: temporarilyUnavailable
+        ? 'El servicio de traducción está temporalmente saturado incluso después de reintentar. No se generó el PDF; vuelve a intentarlo en unos segundos.'
+        : 'No se pudo completar la traducción del currículo. No se ha generado el PDF.',
+    });
   }
 }
