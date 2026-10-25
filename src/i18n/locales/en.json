@@ -357,5 +357,80 @@
     "methodText": "Corporate psychopedagogy is used as a framework for understanding how teams learn. Behavioral-profile models and Sheldon's somatotypes are treated only as complementary exploratory perspectives—not clinical diagnoses or sole criteria for selecting or classifying people.",
     "outcomeTitle": "Objective",
     "outcomeText": "Support change adoption, strengthen collaboration and connect people development with operational and quality goals."
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "aiDemand": "Demand & AI",
+      "aiCurriculum": "AI Curriculum",
+      "aiAssistant": "Admin Assistant",
+      "courses": "Courses",
+      "books": "Books & PDFs",
+      "visits": "On-site Visits",
+      "tutorials": "Online Tutorials",
+      "users": "User Management",
+      "registry": "ISO Assets",
+      "curriculum": "Curriculum Manager",
+      "theme": "Appearance",
+      "profile": "Public Profile"
+    },
+    "title": {
+      "dashboard": "Overview & Analytics",
+      "aiDemand": "Demand & AI Activity Analysis",
+      "aiCurriculum": "Assisted Certificate Import",
+      "aiAssistant": "Administration Assistant",
+      "courses": "Course Management",
+      "books": "Digital Library & PDFs",
+      "visits": "On-site Visit Schedule",
+      "tutorials": "Online Tutorial Schedule",
+      "users": "Collaborators & Permissions",
+      "registry": "ISO Asset Manager",
+      "curriculum": "Curriculum Management & Editing",
+      "theme": "Appearance & Colors",
+      "profile": "Consultant Settings"
+    },
+    "description": {
+      "dashboard": "Overall performance and upcoming activities.",
+      "aiDemand": "Real-time AI queries, most requested ISO services, and scheduled sessions.",
+      "aiCurriculum": "Extract data from images, review each field, and save credentials without marking them as verified.",
+      "aiAssistant": "Chat with the internal assistant to analyze tasks and prepare panel operations.",
+      "courses": "Manage in-person and digital educational programs.",
+      "books": "Manage technical books, downloads, and metrics.",
+      "visits": "Weekly planning for on-site audits at client facilities.",
+      "tutorials": "Remote coaching with Zoom and Meet links.",
+      "users": "Manage access and administrator, editor, and viewer roles.",
+      "registry": "Upload and organize compliance diagrams.",
+      "curriculum": "Edit executive data, career history, metrics, and CV education.",
+      "theme": "Customize the corporate palette, dark mode, and dashboard clarity.",
+      "profile": "Edit public information, logo, and testimonials."
+    },
+    "common": {
+      "language": "Language",
+      "demoUtilities": "DEMO UTILITIES",
+      "reloadDemo": "Reload demo data",
+      "goToWebsite": "Go to website",
+      "logout": "Sign out",
+      "readOnly": "Read-only mode (Viewer/Editor)",
+      "addRecord": "Add record",
+      "addCollaborator": "Add collaborator"
+    },
+    "dashboard": {
+      "activeCourses": "Active Courses",
+      "booksResources": "Books & Resources",
+      "monthlyVisits": "Visits This Month",
+      "pendingTutorials": "Pending Tutorials",
+      "visitsTrend": "On-site Visit Trend",
+      "visitsByMonth": "Total on-site audits scheduled per month this semester.",
+      "topDownloaded": "Most Downloaded Books",
+      "isoResources": "ISO audit resources with the most interactions.",
+      "loadBooks": "Add technical books to view download statistics.",
+      "upcomingActivities": "Upcoming Consultation Activities",
+      "chronological": "CHRONOLOGICAL ORDER",
+      "noActivities": "No visits or tutorials scheduled for this week.",
+      "visit": "Visit",
+      "tutorial": "Tutorial",
+      "featured": "Robert's ISO Highlights",
+      "downloads": "downloads"
+    }
   }
 }
