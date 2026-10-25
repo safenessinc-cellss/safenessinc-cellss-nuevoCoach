@@ -63,19 +63,19 @@ export default function ProfileEditor() {
         </div>
         <button type="submit" disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-red-500 disabled:opacity-60">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {saving ? '{t('adminModules.profile.saving')}' : '{t('adminModules.profile.save')}'}
+          {saving ? t('adminModules.profile.saving') : t('adminModules.profile.save')}
         </button>
       </header>
 
       <section className="grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 md:grid-cols-2">
-        {textField('name', '{t('adminModules.profile.name')}')}
-        {textField('title', '{t('adminModules.profile.jobTitle')}')}
-        {textField('coachTitle', '{t('adminModules.profile.specialty')}')}
-        {textField('experienceYears', '{t('adminModules.profile.years')}', 'number')}
-        {textField('photoUrl', '{t('adminModules.profile.photo')}')}
-        {textField('logoUrl', '{t('adminModules.profile.logo')}')}
-        <div className="md:col-span-2">{textField('bio', '{t('adminModules.profile.bio')}')}</div>
-        <div className="md:col-span-2">{textField('quote', '{t('adminModules.profile.quote')}')}</div>
+        {textField('name', t('adminModules.profile.name'))}
+        {textField('title', t('adminModules.profile.jobTitle'))}
+        {textField('coachTitle', t('adminModules.profile.specialty'))}
+        {textField('experienceYears', t('adminModules.profile.years'), 'number')}
+        {textField('photoUrl', t('adminModules.profile.photo'))}
+        {textField('logoUrl', t('adminModules.profile.logo'))}
+        <div className="md:col-span-2">{textField('bio', t('adminModules.profile.bio'))}</div>
+        <div className="md:col-span-2">{textField('quote', t('adminModules.profile.quote'))}</div>
       </section>
 
       <div className="flex items-start gap-2 text-xs text-gray-400">
