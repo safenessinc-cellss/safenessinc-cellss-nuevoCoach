@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   collection, onSnapshot, query, orderBy, limit 
 } from 'firebase/firestore';
@@ -58,6 +59,7 @@ const CATEGORIES_LIST = [
 ];
 
 function AIDemandAnalyticsDashboard() {
+  const { t } = useTranslation();
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d'>('30d');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas las Áreas');
   const [isSimulating, setIsSimulating] = useState(false);
@@ -334,7 +336,7 @@ function AIDemandAnalyticsDashboard() {
             <span className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500">
               <BarChart3 className="w-5 h-5" />
             </span>
-            <h2 className="text-xl font-black text-white tracking-tight">Dashboard de Demanda & Asistente IA</h2>
+            <h2 className="text-xl font-black text-white tracking-tight">{t('adminModules.analytics.title')}</h2>
             <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-bold flex items-center gap-1 ${logsAccessDenied ? "bg-amber-500/10 text-amber-300 border-amber-500/20" : "bg-green-500/10 text-green-400 border-green-500/20"}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${logsAccessDenied ? "bg-amber-400" : "bg-green-400 animate-pulse"}`} />
               {logsAccessDenied ? "Logs reales sin permiso · datos de demostración" : "Sincronizado Firestore"}
@@ -383,7 +385,7 @@ function AIDemandAnalyticsDashboard() {
             className="bg-black/50 text-xs font-mono text-gray-200 border border-white/10 rounded-xl px-3 py-2 focus:outline-none focus:border-red-500 cursor-pointer"
           >
             {CATEGORIES_LIST.map(cat => (
-              <option key={cat} value={cat} className="bg-zinc-900 text-white">{cat}</option>
+              <option key={cat} value={cat} className="bg-zinc-900 text-white">{cat === 'Todas las Áreas' ? t('adminModules.analytics.allAreas') : cat}</option>
             ))}
           </select>
 
@@ -414,10 +416,10 @@ function AIDemandAnalyticsDashboard() {
               <TrendingUp className="w-3 h-3" /> +24.8%
             </span>
           </div>
-          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">Consultas Procesadas IA</p>
+          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">{t('adminModules.analytics.processed')}</p>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-3xl font-black text-white">{totalAIInteractions}</span>
-            <span className="text-xs text-gray-500 font-mono">interacciones</span>
+            <span className="text-xs text-gray-500 font-mono">{t('adminModules.analytics.interactions')}</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
             Asistente virtual activo 24/7 resolviendo inquietudes ISO.
@@ -435,10 +437,10 @@ function AIDemandAnalyticsDashboard() {
               <TrendingUp className="w-3 h-3" /> +18.2%
             </span>
           </div>
-          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">Sesiones Agendadas</p>
+          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">{t('adminModules.analytics.sessions')}</p>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-3xl font-black text-white">{totalSessionsBooked}</span>
-            <span className="text-xs text-gray-500 font-mono">citas / tutorías</span>
+            <span className="text-xs text-gray-500 font-mono">{t('adminModules.analytics.appointments')}</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
             Tutorías online, visitas presenciales y consultoría directa.
@@ -456,10 +458,10 @@ function AIDemandAnalyticsDashboard() {
               Óptimo
             </span>
           </div>
-          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">Tasa de Conversión IA</p>
+          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">{t('adminModules.analytics.conversion')}</p>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-3xl font-black text-white">{conversionRate}%</span>
-            <span className="text-xs text-teal-400 font-mono font-bold">de IA a Cita</span>
+            <span className="text-xs text-teal-400 font-mono font-bold">{t('adminModules.analytics.toAppointment')}</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
             Porcentaje de usuarios en chat que derivan en agendamiento.
@@ -477,7 +479,7 @@ function AIDemandAnalyticsDashboard() {
               #1 Líder
             </span>
           </div>
-          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">Norma Más Demandada</p>
+          <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">{t('adminModules.analytics.mostDemanded')}</p>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-black text-white">ISO 9001:2015</span>
           </div>
@@ -497,7 +499,7 @@ function AIDemandAnalyticsDashboard() {
             <div>
               <h3 className="text-base font-extrabold text-white flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-red-500" />
-                <span>Evolución Temporal de la Demanda</span>
+                <span>{t('adminModules.analytics.evolution')}</span>
               </h3>
               <p className="text-xs text-gray-400">
                 Volumen diario de consultas al Asistente IA vs. Sesiones Agendadas confirmadas.
@@ -567,7 +569,7 @@ function AIDemandAnalyticsDashboard() {
           <div>
             <h3 className="text-base font-extrabold text-white flex items-center gap-2 mb-1">
               <Layers className="w-4 h-4 text-amber-500" />
-              <span>Canales de Origen de Sesiones</span>
+              <span>{t('adminModules.analytics.channels')}</span>
             </h3>
             <p className="text-xs text-gray-400">
               Distribución porcentual por vía de contacto y conversión.
@@ -625,7 +627,7 @@ function AIDemandAnalyticsDashboard() {
           <div>
             <h3 className="text-base font-extrabold text-white flex items-center gap-2 mb-1">
               <BarChart3 className="w-4 h-4 text-teal-400" />
-              <span>Demanda por Norma ISO & Servicio Técnico</span>
+              <span>{t('adminModules.analytics.standardDemand')}</span>
             </h3>
             <p className="text-xs text-gray-400">
               Comparativa entre preguntas en IA y sesiones agendadas por área temática.
@@ -658,7 +660,7 @@ function AIDemandAnalyticsDashboard() {
           <div>
             <h3 className="text-base font-extrabold text-white flex items-center gap-2 mb-1">
               <Clock className="w-4 h-4 text-blue-400" />
-              <span>Picos de Actividad Horaria</span>
+              <span>{t('adminModules.analytics.hourly')}</span>
             </h3>
             <p className="text-xs text-gray-400">
               Franjas de hora con mayor concentración de interacciones y solicitud de agenda.
@@ -694,7 +696,7 @@ function AIDemandAnalyticsDashboard() {
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
               <Bot className="w-4 h-4 text-red-500" />
-              <span>Registros Recientes de la IA</span>
+              <span>{t('adminModules.analytics.recent')}</span>
             </h3>
             <span className="text-[10px] font-mono text-gray-400 bg-white/5 px-2.5 py-1 rounded-lg">
               {mergedAiLogs.length} logs
@@ -730,7 +732,7 @@ function AIDemandAnalyticsDashboard() {
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
             <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
               <Calendar className="w-4 h-4 text-amber-500" />
-              <span>Sesiones & Citas Agendadas</span>
+              <span>{t('adminModules.analytics.scheduled')}</span>
             </h3>
             <span className="text-[10px] font-mono text-gray-400 bg-white/5 px-2.5 py-1 rounded-lg">
               {allSessions.length} programadas
