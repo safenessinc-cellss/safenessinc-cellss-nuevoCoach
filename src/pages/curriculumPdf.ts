@@ -1,4 +1,4 @@
-import { ACADEMIC_EDUCATION, ALL_LEARNING_ACTIVITIES, CANDIDATE_INFO, INDUSTRIAL_COURSES, LANGUAGES_LIST, IMPACT_METRICS, CAREER_EXPERIENCE, OFFICIAL_CERTIFICATES } from '../data/robertTeranCurriculumData';
+import { ACADEMIC_EDUCATION, ALL_LEARNING_ACTIVITIES, CANDIDATE_INFO, INDUSTRIAL_COURSES, LANGUAGES_LIST, OFFICIAL_CERTIFICATES } from '../data/robertTeranCurriculumData';
 import type { CurriculumTranslationOutput } from '../ai/geminiClient';
 
 export type CurriculumLength = 'full' | 'short';
@@ -45,8 +45,19 @@ export function buildCurriculumPdfHtml(data: CurriculumTranslationOutput, langua
     '<article class="education-item"><b>' + esc(item.title) + '</b><p>' + esc(item.institution) + (item.period ? ' · ' + esc(item.period) : '') + '</p>' + (short ? '' : '<p>' + esc(item.description) + '</p>') + '</article>').join('');
   const credItems = (short ? credentials.slice(0, 5) : credentials).map(item =>
     '<article class="credential"><b>✓ ' + esc(item.title) + '</b><span>' + esc(item.institution) + (item.period ? ' · ' + esc(item.period) : '') + '</span>' + (!short && item.description ? '<p>' + esc(item.description) + '</p>' : '') + '</article>').join('');
+  const groupLabels: Record<string, string> = {
+    'Calidad, procesos y operaciones': x[20] || 'Calidad, procesos y operaciones',
+    'Ciberseguridad y redes': x[21] || 'Ciberseguridad y redes',
+    'IA, datos y computación avanzada': x[22] || 'IA, datos y computación avanzada',
+    'Cloud y computación': x[23] || 'Cloud y computación',
+    'Desarrollo web, software y apps': x[24] || 'Desarrollo web, software y apps',
+    'Gestión de proyectos y metodologías ágiles': x[25] || 'Gestión de proyectos y metodologías ágiles',
+    'Negocios, marketing y clientes': x[26] || 'Negocios, marketing y clientes',
+    'Liderazgo, habilidades humanas y organización': x[27] || 'Liderazgo, habilidades humanas y organización',
+    'Competencias profesionales y formación general': x[28] || 'Competencias profesionales y formación general',
+  };
   const groupItems = [...grouped.entries()].sort((a, b) => b[1].length - a[1].length).map(([name, items]) =>
-    '<div class="course-group"><b>' + esc(name) + '</b><span>' + items.length + '</span>' +
+    '<div class="course-group"><b>' + esc(groupLabels[name] || name) + '</b><span>' + items.length + '</span>' +
     (short ? '' : '<ul>' + items.map(item => '<li>' + esc(item.title) + (item.institution ? ' <small>— ' + esc(item.institution) + '</small>' : '') + '</li>').join('') + '</ul>') + '</div>').join('');
   const languageItems = LANGUAGES_LIST.map((item, i) => {
     const translated = x[29 + i] || (item.name + ' — ' + item.level);
@@ -62,7 +73,6 @@ export function buildCurriculumPdfHtml(data: CurriculumTranslationOutput, langua
     section(title(0, labels.results), '<div class="metric-grid">' + metricItems + '</div>') +
     section(title(1, labels.experience), roleItems) +
     section(title(3, labels.credentials), credItems) +
-    (short ? '' : section(title(4, labels.courses), groupItems)) +
-    (short ? '' : section(title(4, labels.courses), '<p>' + esc(labels.allCoursesNote || '') + '</p>' + groupItems)) +
+    section(title(4, labels.courses), (short ? '<p>' + esc(labels.allCoursesNote || '') + '</p>' : '') + groupItems) +
     '<footer class="foot">' + esc(CANDIDATE_INFO.name) + ' · ' + esc(CANDIDATE_INFO.credlyProfile) + ' · ' + esc(language) + '</footer></div></article>';
 }
