@@ -352,7 +352,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
 
     // Send small, independent requests instead of making one serverless function
     // translate the entire training catalogue (which can exceed Vercel's 60s limit).
-    const chunkSize = 40;
+    const chunkSize = 20;
     const batchCount = Math.max(
       Math.ceil(inputEducation.length / chunkSize),
       Math.ceil(additionalTexts.length / chunkSize),
