@@ -1,22 +1,24 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../theme/ThemeContext';
 import { ThemeId } from '../theme/themes';
 import { Palette, RotateCcw, Check, Save } from 'lucide-react';
 
 const TOKEN_LABELS: Array<{ key: keyof ReturnType<typeof useTheme>['tokens']; label: string }> = [
-  { key: 'bgBase', label: 'Fondo base' },
-  { key: 'bgSurface', label: 'Superficie' },
-  { key: 'bgPanel', label: 'Panel / tarjeta' },
-  { key: 'bgSection', label: 'Sección alterna' },
-  { key: 'accent', label: 'Acento principal' },
-  { key: 'accent2', label: 'Acento secundario' },
-  { key: 'accent3', label: 'Acento terciario' },
-  { key: 'text', label: 'Texto principal' },
-  { key: 'textMuted', label: 'Texto secundario' },
-  { key: 'border', label: 'Bordes' },
+  { key: 'bgBase', label: 'adminModules.theme.base' },
+  { key: 'bgSurface', label: 'adminModules.theme.surface' },
+  { key: 'bgPanel', label: 'adminModules.theme.panel' },
+  { key: 'bgSection', label: 'adminModules.theme.alternate' },
+  { key: 'accent', label: 'adminModules.theme.accent' },
+  { key: 'accent2', label: 'adminModules.theme.accent2' },
+  { key: 'accent3', label: 'adminModules.theme.accent3' },
+  { key: 'text', label: 'adminModules.theme.text' },
+  { key: 'textMuted', label: 'adminModules.theme.muted' },
+  { key: 'border', label: 'adminModules.theme.border' },
 ];
 
 export default function ThemeEditor() {
+  const { t } = useTranslation();
   const { themeId, tokens, presets, setTheme, setTokens, resetTheme, saving } = useTheme();
 
   return (
@@ -24,22 +26,22 @@ export default function ThemeEditor() {
       <header className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <Palette className="w-5 h-5 text-[#00F0FF]" /> Apariencia y colores
+            <Palette className="w-5 h-5 text-[#00F0FF]" /> {t('adminModules.theme.title')}
           </h2>
           <p className="text-xs text-gray-400 mt-1">
-            Los cambios se aplican en vivo y se guardan en Firestore (<code>/settings/theme</code>).
+            {t('adminModules.theme.description')} (<code>/settings/theme</code>).
           </p>
         </div>
         <button
           onClick={resetTheme}
           className="text-xs px-3 py-2 rounded-xl border border-white/10 hover:border-white/30 text-gray-300 flex items-center gap-2"
         >
-          <RotateCcw className="w-3.5 h-3.5" /> Restaurar
+          <RotateCcw className="w-3.5 h-3.5" /> {t('adminModules.theme.restore')}
         </button>
       </header>
 
       <section>
-        <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">Presets</h3>
+        <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">{t('adminModules.theme.presets')}</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {(Object.keys(presets) as ThemeId[]).map(id => {
             const p = presets[id];
@@ -66,11 +68,11 @@ export default function ThemeEditor() {
       </section>
 
       <section>
-        <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">Ajuste fino</h3>
+        <h3 className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">{t('adminModules.theme.fineTune')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {TOKEN_LABELS.map(({ key, label }) => (
             <label key={key} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-black/20">
-              <span className="text-xs text-gray-300">{label}</span>
+              <span className="text-xs text-gray-300">{t(label)}</span>
               <span className="flex items-center gap-2">
                 <input
                   type="color"
@@ -87,7 +89,7 @@ export default function ThemeEditor() {
 
       <p className="text-[11px] text-gray-500 flex items-center gap-2">
         <Save className="w-3.5 h-3.5" />
-        {saving ? 'Guardando…' : 'Guardado automático activo.'}
+        {saving ? t('adminModules.theme.saving') : t('adminModules.theme.autosaved')}
       </p>
     </div>
   );
