@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import {
 } from '../data/robertTeranCurriculumData';
 import { translateCurriculumForExport, type CurriculumTranslationInput, type CurriculumTranslationOutput } from '../ai/geminiClient';
 import { buildCurriculumPdfHtml } from './curriculumPdf';
+import { translateCompleteCurriculum } from './curriculumTranslation';
 
 type UiLanguage = 'es' | 'en' | 'pt' | 'it';
 const UI: Record<UiLanguage, Record<string, string>> = {
@@ -99,74 +100,165 @@ export default function PublicCurriculumPage() {
   const [pdfLang, setPdfLang] = useState('es');
   const [customLang, setCustomLang] = useState('');
   const [busy, setBusy] = useState(false);
+  const [translatingView, setTranslatingView] = useState(false);
   const [progress, setProgress] = useState('');
   const [error, setError] = useState('');
+  const [viewData, setViewData] = useState<CurriculumTranslationOutput | null>(null);
+  const [viewLanguage, setViewLanguage] = useState<UiLanguage>('es');
   const t = UI[uiLang];
   const source = useMemo(createInput, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (uiLang === 'es') {
+      setViewData(null);
+      setViewLanguage('es');
+      setTranslatingView(false);
+      setProgress('');
+      return () => { cancelled = true; };
+    }
+    setViewData(null);
+    setTranslatingView(true);
+    setError('');
+    void translateCompleteCurriculum(source, uiLang, setProgress).then(result => {
+      if (!cancelled) {
+        setViewData(result);
+        setViewLanguage(uiLang);
+      }
+    }).catch(cause => {
+      console.error('Curriculum interface translation failed', cause);
+      if (!cancelled) {
+        setError(UI[uiLang].translationError);
+        setUiLang('es');
+        void i18n.changeLanguage('es');
+        document.documentElement.lang = 'es';
+      }
+    }).finally(() => {
+      if (!cancelled) {
+        setTranslatingView(false);
+        setProgress('');
+      }
+    });
+    return () => { cancelled = true; };
+  }, [uiLang, source, i18n]);
+
+  const translatedView = viewData && viewLanguage === uiLang ? viewData : null;
+  const visibleMetrics = translatedView?.impactMetrics ?? IMPACT_METRICS;
+  const visibleRoles = translatedView?.careerRoles ?? CAREER_EXPERIENCE;
+  const visibleEducation = translatedView?.educationItems.slice(0, ACADEMIC_EDUCATION.length) ?? ACADEMIC_EDUCATION;
+  const visibleLanguages = useMemo(() => LANGUAGES_LIST.map((item, index) => {
+    const translated = translatedView?.additionalTexts[29 + index];
+    if (!translated) return item;
+    const parts = translated.split(' — ');
+    return { ...item, name: parts[0] || item.name, level: parts[1] || item.level };
+  }), [translatedView]);
+  const visibleCredentials = useMemo(() => translatedView
+    ? OFFICIAL_CERTIFICATES.map((item, index) => {
+        const translated = translatedView.educationItems[ACADEMIC_EDUCATION.length + index];
+        return translated ? { ...item, title: translated.title || item.title, issuer: translated.institution || item.issuer, issuedDate: translated.period || item.issuedDate, description: translated.description || item.description } : item;
+      })
+    : OFFICIAL_CERTIFICATES, [translatedView]);
   const credentialGroups = useMemo(() => {
-    const groups = new Map<string, typeof OFFICIAL_CERTIFICATES>();
-    OFFICIAL_CERTIFICATES.forEach(x => { const list=groups.get(x.categoryLabel)||[]; list.push(x); groups.set(x.categoryLabel,list); });
+    const groups = new Map<string, typeof visibleCredentials>();
+    visibleCredentials.forEach(item => { const list = groups.get(item.categoryLabel) || []; list.push(item); groups.set(item.categoryLabel, list); });
     return [...groups.entries()];
-  }, []);
+  }, [visibleCredentials]);
   const learningGroups = useMemo(() => {
-    const groups = new Map<string, Array<{code:string;title:string}>>();
-    ALL_LEARNING_ACTIVITIES.forEach(x => { const key=courseArea(x.title); const list=groups.get(key)||[]; list.push(x); groups.set(key,list); });
-    INDUSTRIAL_COURSES.forEach((title,i) => { const key=courseArea(title); const list=groups.get(key)||[]; list.push({code:'IND-'+i,title}); groups.set(key,list); });
-    return [...groups.entries()].sort((a,b)=>b[1].length-a[1].length);
-  }, []);
-  const changeUi = (value: UiLanguage) => { setUiLang(value); void i18n.changeLanguage(value); document.documentElement.lang=value; };
+    const groups = new Map<string, Array<{ code: string; title: string }>>();
+    const offset = ACADEMIC_EDUCATION.length + OFFICIAL_CERTIFICATES.length;
+    ALL_LEARNING_ACTIVITIES.forEach((item, index) => {
+      const title = translatedView?.educationItems[offset + index]?.title || item.title;
+      const key = courseArea(item.title);
+      const list = groups.get(key) || [];
+      list.push({ code: item.code, title });
+      groups.set(key, list);
+    });
+    INDUSTRIAL_COURSES.forEach((sourceTitle, index) => {
+      const title = translatedView?.educationItems[offset + ALL_LEARNING_ACTIVITIES.length + index]?.title || sourceTitle;
+      const key = courseArea(sourceTitle);
+      const list = groups.get(key) || [];
+      list.push({ code: 'IND-' + index, title });
+      groups.set(key, list);
+    });
+    return [...groups.entries()].sort((a, b) => b[1].length - a[1].length);
+  }, [translatedView]);
+  const extra = (index: number, fallback: string) => translatedView?.additionalTexts[index] || fallback;
+  const translatedArea = (area: string) => {
+    const areaIndex: Record<string, number> = {
+      'Calidad, procesos y operaciones': 20, 'Ciberseguridad y redes': 21,
+      'IA, datos y computación avanzada': 22, 'Cloud y computación': 23,
+      'Desarrollo web, software y apps': 24, 'Gestión de proyectos y metodologías ágiles': 25,
+      'Negocios, marketing y clientes': 26, 'Liderazgo, habilidades humanas y organización': 27,
+      'Competencias profesionales y formación general': 28,
+    };
+    return areaIndex[area] === undefined ? area : extra(areaIndex[area], area);
+  };
+  const changeUi = (value: UiLanguage) => {
+    setUiLang(value);
+    void i18n.changeLanguage(value);
+    document.documentElement.lang = value;
+  };
   const exportPdf = async () => {
-    if (busy) return;
+    if (busy || translatingView) return;
     const language = (pdfLang === 'other' ? customLang : pdfLang).trim();
     if (!/^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$/.test(language)) { setError(t.noResults); return; }
     setBusy(true); setError(''); setProgress(t.exporting);
     try {
-      let result: CurriculumTranslationOutput;
-      if (language.toLowerCase() === 'es') {
-        result = {summary:source.summary,impactMetrics:source.impactMetrics,careerRoles:source.careerRoles,educationItems:source.educationItems,additionalTexts:source.additionalTexts};
-      } else {
-        const base = await translateCurriculumForExport(source, language, 'base');
-        const education: CurriculumTranslationOutput['educationItems'] = [];
-        const extras: string[] = [];
-        const batches = Math.max(Math.ceil(source.educationItems.length/20),Math.ceil(source.additionalTexts.length/20));
-        for (let start=0; start<batches; start+=2) {
-          const indices=[start,start+1].filter(i=>i<batches);
-          const partial=await Promise.all(indices.map(async index=>{
-            const input: CurriculumTranslationInput = {...source,summary:'',impactMetrics:[],careerRoles:[],educationItems:source.educationItems.slice(index*20,(index+1)*20),additionalTexts:source.additionalTexts.slice(index*20,(index+1)*20)};
-            setProgress(`${t.exporting} ${Math.min((index+1)*20,source.educationItems.length)} / ${source.educationItems.length}`);
-            return {index,data:await translateCurriculumForExport(input,language,'batch')};
-          }));
-          partial.sort((a,b)=>a.index-b.index).forEach(x=>{education.push(...x.data.educationItems);extras.push(...x.data.additionalTexts);});
-        }
-        result={summary:base.summary,impactMetrics:base.impactMetrics,careerRoles:base.careerRoles,educationItems:education,additionalTexts:extras};
+      const result = translatedView && viewLanguage.toLowerCase() === language.toLowerCase()
+        ? translatedView
+        : await translateCompleteCurriculum(source, language, setProgress);
+      if (!result.summary?.trim() ||
+          result.impactMetrics.length !== source.impactMetrics.length ||
+          result.careerRoles.length !== source.careerRoles.length ||
+          result.educationItems.length !== source.educationItems.length ||
+          result.additionalTexts.length !== source.additionalTexts.length ||
+          result.educationItems.some((item, index) => !item.title?.trim() ||
+            (Boolean(source.educationItems[index].description?.trim()) && !item.description?.trim()))) {
+        throw new Error('Incomplete translation');
       }
-      if (!result.summary?.trim() || result.impactMetrics.length!==source.impactMetrics.length || result.careerRoles.length!==source.careerRoles.length || result.educationItems.length!==source.educationItems.length || result.additionalTexts.length!==source.additionalTexts.length || result.educationItems.some((x,i)=>!x.title?.trim()||(Boolean(source.educationItems[i].description?.trim())&&!x.description?.trim()))) throw new Error('Incomplete translation');
-      const wrapper=document.createElement('div'); wrapper.innerHTML=buildCurriculumPdfHtml(result,language,t); wrapper.style.cssText='position:fixed;left:-12000px;top:0;width:794px;background:#fff;z-index:-1'; document.body.appendChild(wrapper);
-      try { await html2pdf().set({margin:[12,12,14,12],filename:`Deuwy-Robert-Teran-Medina-CV-${language}.pdf`,image:{type:'jpeg',quality:.96},html2canvas:{scale:1.6,useCORS:true,backgroundColor:'#fff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(wrapper.firstElementChild as HTMLElement).save(); }
-      finally { wrapper.remove(); }
-    } catch (cause) { console.error('Curriculum PDF export failed',cause); setError(cause instanceof Error && cause.message==='Incomplete translation' ? t.noResults : t.translationError); }
-    finally { setBusy(false); setProgress(''); }
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = buildCurriculumPdfHtml(result, language, t);
+      wrapper.style.cssText = 'position:fixed;left:-12000px;top:0;width:794px;background:#fff;z-index:-1';
+      document.body.appendChild(wrapper);
+      try {
+        await html2pdf().set({
+          margin: [12, 12, 14, 12],
+          filename: `Deuwy-Robert-Teran-Medina-CV-${language}.pdf`,
+          image: { type: 'jpeg', quality: 0.96 },
+          html2canvas: { scale: 1.6, useCORS: true, backgroundColor: '#fff', logging: false },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        }).from(wrapper.firstElementChild as HTMLElement).save();
+      } finally {
+        wrapper.remove();
+      }
+    } catch (cause) {
+      console.error('Curriculum PDF export failed', cause);
+      setError(cause instanceof Error && cause.message === 'Incomplete translation' ? t.noResults : t.translationError);
+    } finally {
+      setBusy(false);
+      setProgress('');
+    }
   };
-  const count=ALL_LEARNING_ACTIVITIES.length+INDUSTRIAL_COURSES.length;
+  const count = ALL_LEARNING_ACTIVITIES.length + INDUSTRIAL_COURSES.length;
   return <main className="min-h-screen bg-white text-slate-900">
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur"><div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-3 lg:px-8">
       <Link to="/portal" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-950"><ArrowLeft size={17}/>{t.back}</Link>
       <div className="flex flex-wrap items-center gap-3"><label className="sr-only" htmlFor="ui-language">Interface language</label><select id="ui-language" value={uiLang} onChange={e=>changeUi(e.target.value as UiLanguage)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option><option value="it">Italiano</option></select>
       <label className="sr-only" htmlFor="pdf-language">{t.pdfLanguage}</label><select id="pdf-language" value={pdfLang} onChange={e=>setPdfLang(e.target.value)} className="max-w-52 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">{PDF_LANGUAGES.map(([code,name])=><option key={code} value={code}>{name}</option>)}<option value="other">{t.otherLanguage}</option></select>
       {pdfLang==='other'&&<input value={customLang} onChange={e=>setCustomLang(e.target.value)} placeholder="fr, de, ja, zh-CN…" aria-label={t.otherLanguage} className="w-36 rounded-lg border border-slate-300 px-3 py-2 text-sm"/>}
-      <button type="button" onClick={exportPdf} disabled={busy} className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 disabled:opacity-60">{busy?<LoaderCircle size={17} className="animate-spin"/>:<ArrowDownToLine size={17}/>} {busy?t.exporting:t.download}</button></div></div></header>
+      <button type="button" onClick={exportPdf} disabled={busy || translatingView} className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 disabled:opacity-60">{busy?<LoaderCircle size={17} className="animate-spin"/>:<ArrowDownToLine size={17}/>} {busy || translatingView ? t.exporting : t.download}</button></div></div></header>
     <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-      <section className="grid gap-8 border-b border-slate-200 pb-10 md:grid-cols-[1.35fr_.65fr] md:items-end"><div><p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[.22em] text-blue-700"><ShieldCheck size={16}/>{t.eyebrow}</p><h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-950 md:text-6xl">{t.title}</h1><p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{t.intro}</p><div className="mt-6 flex flex-wrap gap-2"><span className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-800">SGQ · ISO · Auditoría</span><span className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">Negocio · Procesos · KPI</span><span className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">Web · Apps · Sistemas</span></div></div>
+      <section className="grid gap-8 border-b border-slate-200 pb-10 md:grid-cols-[1.35fr_.65fr] md:items-end"><div><p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[.22em] text-blue-700"><ShieldCheck size={16}/>{t.eyebrow}</p><h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-950 md:text-6xl">{t.title}</h1><p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">{t.intro}</p><div className="mt-6 flex flex-wrap gap-2"><span className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-800">{t.quality}</span><span className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">{t.business}</span><span className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">{t.digital}</span></div></div>
       <aside className="rounded-2xl border border-slate-200 bg-slate-50 p-6"><p className="text-xs font-bold uppercase tracking-widest text-slate-500">{t.contact}</p><h2 className="mt-2 text-2xl font-bold">{CANDIDATE_INFO.name}</h2><p className="mt-1 text-sm leading-6 text-slate-600">{t.professional}</p><div className="mt-4 space-y-2 text-sm text-slate-700"><p className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 shrink-0 text-blue-700"/>{CANDIDATE_INFO.location}</p><a className="flex items-center gap-2 hover:text-blue-700" href={`mailto:${CANDIDATE_INFO.email}`}><Mail size={16}/>{CANDIDATE_INFO.email}</a><a className="flex items-center gap-2 hover:text-blue-700" href={CANDIDATE_INFO.credlyProfile} target="_blank" rel="noreferrer"><ExternalLink size={16}/>{t.credentialLink}</a></div></aside></section>
       <section className="grid gap-4 border-b border-slate-200 py-7 sm:grid-cols-3"><Metric value="30+" label={t.years}/><Metric value={String(OFFICIAL_CERTIFICATES.length)} label={t.credentialsCount}/><Metric value={count.toLocaleString(uiLang)} label={t.coursesCount}/></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<Sparkles size={18}/>} title={t.summary}/><div className="max-w-4xl whitespace-pre-line text-base leading-8 text-slate-700">{CANDIDATE_INFO.summary}</div></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<CheckCircle2 size={18}/>} title={t.results}/><div className="grid gap-4 sm:grid-cols-2">{IMPACT_METRICS.map(x=><article key={x.label} className="rounded-xl border border-slate-200 p-5"><p className="text-3xl font-bold tracking-tight text-blue-800">{x.value}</p><h3 className="mt-2 font-semibold">{x.label}</h3><p className="mt-1 text-sm leading-6 text-slate-600">{x.detail}</p></article>)}<p className="text-xs leading-5 text-slate-500 sm:col-span-2">{t.careerNote}</p></div></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<BriefcaseBusiness size={18}/>} title={t.experience}/><div className="space-y-4">{CAREER_EXPERIENCE.map(job=><article key={job.company+job.period} className="rounded-xl border border-slate-200 p-5 md:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-lg font-bold">{job.title}</h3><p className="mt-1 font-medium text-blue-800">{job.company}</p><p className="mt-1 text-sm text-slate-500">{job.location}</p></div><span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">{job.period}</span></div><ul className="mt-4 list-disc space-y-1.5 pl-5 text-sm leading-6 text-slate-700">{job.responsibilities.map((x,i)=><li key={i}>{x}</li>)}</ul>{!!job.achievements?.length&&<div className="mt-4 rounded-lg bg-blue-50 p-4"><p className="text-xs font-bold uppercase tracking-wider text-blue-800">{t.achievement}</p><ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-slate-700">{job.achievements.map((x,i)=><li key={i}>{x}</li>)}</ul></div>}</article>)}</div></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<GraduationCap size={18}/>} title={t.education}/><div className="grid gap-4 sm:grid-cols-2">{ACADEMIC_EDUCATION.map(x=><article key={x.title} className="rounded-xl border border-slate-200 p-5"><p className="text-xs font-semibold uppercase tracking-wider text-blue-800">{x.period}</p><h3 className="mt-2 font-bold">{x.title}</h3><p className="mt-1 text-sm text-slate-600">{x.institution}</p>{x.description&&<p className="mt-3 text-sm leading-6 text-slate-600">{x.description}</p>}</article>)}</div></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<BadgeCheck size={18}/>} title={t.credentials}/><div className="space-y-6">{credentialGroups.map(([group,items])=><div key={group}><h3 className="mb-3 text-xs font-bold uppercase tracking-[.15em] text-slate-500">{group}</h3><div className="grid gap-3 sm:grid-cols-2">{items.map(x=><article key={x.code} className="rounded-xl border border-slate-200 p-4"><div className="flex items-start justify-between gap-3"><h4 className="font-semibold leading-6">{x.title}</h4>{x.verified?<BadgeCheck size={17} className="shrink-0 text-emerald-700"/>:<ShieldCheck size={17} className="shrink-0 text-slate-400"/>}</div><p className="mt-1 text-sm text-slate-600">{x.issuer} · {x.issuedDate}</p><p className="mt-2 text-xs leading-5 text-slate-500">{x.verified?t.verified:t.unverified}</p>{x.verificationUrl&&<a href={x.verificationUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-blue-800 hover:underline"><ExternalLink size={13}/>{t.credentialLink}</a>}</article>)}</div></div>)}</div></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<Languages size={18}/>} title={t.skills}/><div className="grid gap-4 sm:grid-cols-2"><Service title={t.quality} text={t.qualityText}/><Service title={t.business} text={t.businessText}/><Service title={t.digital} text={t.digitalText}/><Service title={t.people} text={t.peopleText}/></div></section>
-      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<Globe2 size={18}/>} title={t.languages}/><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{LANGUAGES_LIST.map(x=><div key={x.name} className="rounded-xl bg-slate-50 p-4"><div className="flex items-center justify-between gap-2"><span className="font-semibold">{x.name}</span><span className="text-sm text-slate-600">{x.percentage}%</span></div><p className="mt-1 text-sm text-slate-600">{x.level}</p><div className="mt-3 h-1.5 rounded-full bg-slate-200"><div className="h-1.5 rounded-full bg-blue-700" style={{width:`${Math.max(0,Math.min(100,x.percentage))}%`}}/></div></div>)}</div></section>
-      <section className="grid gap-8 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<GraduationCap size={18}/>} title={t.courses}/><div><p className="mb-5 text-sm leading-6 text-slate-600">{t.allCoursesNote}</p><div className="space-y-3">{learningGroups.map(([group,items])=><details key={group} className="group rounded-xl border border-slate-200 open:bg-slate-50"><summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-semibold"><span>{group}</span><span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600">{items.length}</span></summary><ul className="grid gap-x-6 gap-y-2 border-t border-slate-200 px-5 py-4 text-sm leading-6 text-slate-700 md:grid-cols-2">{items.map(x=><li key={x.code} className="break-words">{x.title}</li>)}</ul></details>)}</div></div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<Sparkles size={18}/>} title={t.summary}/><div className="max-w-4xl whitespace-pre-line text-base leading-8 text-slate-700">{translatedView?.summary ?? CANDIDATE_INFO.summary}</div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<CheckCircle2 size={18}/>} title={t.results}/><div className="grid gap-4 sm:grid-cols-2">{visibleMetrics.map(x=><article key={x.label} className="rounded-xl border border-slate-200 p-5"><p className="text-3xl font-bold tracking-tight text-blue-800">{x.value}</p><h3 className="mt-2 font-semibold">{x.label}</h3><p className="mt-1 text-sm leading-6 text-slate-600">{x.detail}</p></article>)}<p className="text-xs leading-5 text-slate-500 sm:col-span-2">{t.careerNote}</p></div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<BriefcaseBusiness size={18}/>} title={t.experience}/><div className="space-y-4">{visibleRoles.map(job=><article key={job.company+job.period} className="rounded-xl border border-slate-200 p-5 md:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-lg font-bold">{job.title}</h3><p className="mt-1 font-medium text-blue-800">{job.company}</p><p className="mt-1 text-sm text-slate-500">{job.location}</p></div><span className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">{job.period}</span></div><ul className="mt-4 list-disc space-y-1.5 pl-5 text-sm leading-6 text-slate-700">{job.responsibilities.map((x,i)=><li key={i}>{x}</li>)}</ul>{!!job.achievements?.length&&<div className="mt-4 rounded-lg bg-blue-50 p-4"><p className="text-xs font-bold uppercase tracking-wider text-blue-800">{t.achievement}</p><ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-slate-700">{job.achievements.map((x,i)=><li key={i}>{x}</li>)}</ul></div>}</article>)}</div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<GraduationCap size={18}/>} title={t.education}/><div className="grid gap-4 sm:grid-cols-2">{visibleEducation.map(x=><article key={x.title} className="rounded-xl border border-slate-200 p-5"><p className="text-xs font-semibold uppercase tracking-wider text-blue-800">{x.period}</p><h3 className="mt-2 font-bold">{x.title}</h3><p className="mt-1 text-sm text-slate-600">{x.institution}</p>{x.description&&<p className="mt-3 text-sm leading-6 text-slate-600">{x.description}</p>}</article>)}</div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<BadgeCheck size={18}/>} title={t.credentials}/><div className="space-y-6">{credentialGroups.map(([group,items])=><div key={group}><h3 className="mb-3 text-xs font-bold uppercase tracking-[.15em] text-slate-500">{extra(3, group)}</h3><div className="grid gap-3 sm:grid-cols-2">{items.map(x=><article key={x.code} className="rounded-xl border border-slate-200 p-4"><div className="flex items-start justify-between gap-3"><h4 className="font-semibold leading-6">{x.title}</h4>{x.verified?<BadgeCheck size={17} className="shrink-0 text-emerald-700"/>:<ShieldCheck size={17} className="shrink-0 text-slate-400"/>}</div><p className="mt-1 text-sm text-slate-600">{x.issuer} · {x.issuedDate}</p><p className="mt-2 text-xs leading-5 text-slate-500">{x.verified?t.verified:t.unverified}</p>{x.verificationUrl&&<a href={x.verificationUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-blue-800 hover:underline"><ExternalLink size={13}/>{t.credentialLink}</a>}</article>)}</div></div>)}</div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<Languages size={18}/>} title={t.skills}/><div className="grid gap-4 sm:grid-cols-2"><Service title={extra(9,t.quality)} text={extra(13,t.qualityText)}/><Service title={extra(10,t.business)} text={extra(14,t.businessText)}/><Service title={extra(11,t.digital)} text={extra(15,t.digitalText)}/><Service title={extra(12,t.people)} text={extra(16,t.peopleText)}/></div></section>
+      <section className="grid gap-8 border-b border-slate-200 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<Globe2 size={18}/>} title={t.languages}/><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{visibleLanguages.map(x=><div key={x.name} className="rounded-xl bg-slate-50 p-4"><div className="flex items-center justify-between gap-2"><span className="font-semibold">{x.name}</span><span className="text-sm text-slate-600">{x.percentage}%</span></div><p className="mt-1 text-sm text-slate-600">{x.level}</p><div className="mt-3 h-1.5 rounded-full bg-slate-200"><div className="h-1.5 rounded-full bg-blue-700" style={{width:`${Math.max(0,Math.min(100,x.percentage))}%`}}/></div></div>)}</div></section>
+      <section className="grid gap-8 py-10 md:grid-cols-[220px_1fr]"><Heading icon={<GraduationCap size={18}/>} title={t.courses}/><div><p className="mb-5 text-sm leading-6 text-slate-600">{t.allCoursesNote}</p><div className="space-y-3">{learningGroups.map(([group,items])=><details key={group} className="group rounded-xl border border-slate-200 open:bg-slate-50"><summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-semibold"><span>{translatedArea(group)}</span><span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600">{items.length}</span></summary><ul className="grid gap-x-6 gap-y-2 border-t border-slate-200 px-5 py-4 text-sm leading-6 text-slate-700 md:grid-cols-2">{items.map(x=><li key={x.code} className="break-words">{x.title}</li>)}</ul></details>)}</div></div></section>
       <footer className="flex flex-col gap-4 border-t border-slate-200 py-8 text-sm text-slate-500 md:flex-row md:items-center md:justify-between"><p>{CANDIDATE_INFO.name} · {CANDIDATE_INFO.location}</p><div className="flex flex-wrap items-center gap-4"><a className="hover:text-slate-900" href={`mailto:${CANDIDATE_INFO.email}`}>{CANDIDATE_INFO.email}</a><a className="hover:text-slate-900" href={CANDIDATE_INFO.credlyProfile} target="_blank" rel="noreferrer">Credly</a><Link className="hover:text-slate-900" to="/login">Dashboard / Acceso</Link></div></footer>
       <p className="text-xs text-slate-400">{t.translateNotice} {t.selectAll}</p>
       {error&&<div role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{error}</div>}
