@@ -520,7 +520,12 @@
       "message": "Message to the assistant",
       "placeholder": "Ask about the dashboard or describe the task you need…",
       "send": "Send",
-      "privacy": "Do not send passwords, API keys, or sensitive client data."
+      "privacy": "Do not send passwords, API keys, or sensitive client data.",
+      "welcome": "Hello. I’m your Coach ISO administration assistant. Ask me about dashboard tasks and issues, or ask me to prepare a work plan. This chat provides guidance; it does not change data or execute commands automatically.",
+      "sessionExpired": "Your session has expired. Please sign in again.",
+      "contactError": "Could not contact the assistant.",
+      "noResponse": "I did not receive a response. Please try again.",
+      "unexpected": "An unexpected error occurred."
     },
     "theme": {
       "title": "Appearance & colors",
