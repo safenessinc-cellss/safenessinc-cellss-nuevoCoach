@@ -357,5 +357,80 @@
     "methodText": "La psicopedagogia aziendale viene utilizzata come quadro di riferimento per comprendere come apprende il team. I modelli dei profili comportamentali e i somatotipi di Sheldon sono considerati soltanto prospettive esplorative complementari, non diagnosi cliniche né criteri unici per selezionare o classificare le persone.",
     "outcomeTitle": "Obiettivo",
     "outcomeText": "Favorire l’adozione del cambiamento, rafforzare la collaborazione e collegare lo sviluppo delle persone agli obiettivi operativi e di qualità."
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "aiDemand": "Domanda e IA",
+      "aiCurriculum": "IA per curriculum",
+      "aiAssistant": "Assistente amministrativo",
+      "courses": "Corsi",
+      "books": "Libri e PDF",
+      "visits": "Visite in sede",
+      "tutorials": "Tutoraggi online",
+      "users": "Gestione utenti",
+      "registry": "Risorse ISO",
+      "curriculum": "Gestione curriculum",
+      "theme": "Aspetto",
+      "profile": "Profilo pubblico"
+    },
+    "title": {
+      "dashboard": "Panoramica e analisi",
+      "aiDemand": "Analisi della domanda e attività IA",
+      "aiCurriculum": "Importazione assistita dei certificati",
+      "aiAssistant": "Assistente amministrativo",
+      "courses": "Gestione corsi",
+      "books": "Biblioteca digitale e PDF",
+      "visits": "Agenda delle visite in sede",
+      "tutorials": "Agenda dei tutoraggi online",
+      "users": "Collaboratori e autorizzazioni",
+      "registry": "Gestione risorse ISO",
+      "curriculum": "Gestione e modifica del curriculum",
+      "theme": "Aspetto e colori",
+      "profile": "Impostazioni del consulente"
+    },
+    "description": {
+      "dashboard": "Prestazioni generali e attività imminenti.",
+      "aiDemand": "Richieste IA in tempo reale, servizi ISO più richiesti e sessioni programmate.",
+      "aiCurriculum": "Estrai dati dalle immagini, rivedi ogni campo e salva le credenziali senza contrassegnarle come verificate.",
+      "aiAssistant": "Chatta con l'assistente interno per analizzare attività e preparare operazioni del pannello.",
+      "courses": "Gestione dei programmi educativi in presenza e digitali.",
+      "books": "Gestione di libri tecnici, download e indicatori.",
+      "visits": "Pianificazione settimanale degli audit presso le sedi dei clienti.",
+      "tutorials": "Coaching remoto con collegamenti Zoom e Meet.",
+      "users": "Gestione degli accessi e dei ruoli amministratore, editor e lettore.",
+      "registry": "Caricamento e organizzazione dei diagrammi di conformità.",
+      "curriculum": "Modifica dati professionali, esperienza, metriche e formazione del CV.",
+      "theme": "Personalizza la palette aziendale, la modalità scura e la leggibilità della dashboard.",
+      "profile": "Modifica informazioni pubbliche, logo e testimonianze."
+    },
+    "common": {
+      "language": "Lingua",
+      "demoUtilities": "UTILITÀ DEMO",
+      "reloadDemo": "Ricarica dati di prova",
+      "goToWebsite": "Vai al sito",
+      "logout": "Esci",
+      "readOnly": "Modalità di sola lettura (lettore/editor)",
+      "addRecord": "Aggiungi record",
+      "addCollaborator": "Aggiungi collaboratore"
+    },
+    "dashboard": {
+      "activeCourses": "Corsi attivi",
+      "booksResources": "Libri e risorse",
+      "monthlyVisits": "Visite del mese",
+      "pendingTutorials": "Tutoraggi in sospeso",
+      "visitsTrend": "Andamento delle visite in sede",
+      "visitsByMonth": "Totale degli audit in sede programmati ogni mese in questo semestre.",
+      "topDownloaded": "Libri più scaricati",
+      "isoResources": "Risorse di audit ISO con più interazioni.",
+      "loadBooks": "Aggiungi libri tecnici per visualizzare i download.",
+      "upcomingActivities": "Prossime attività di consulenza",
+      "chronological": "ORDINE CRONOLOGICO",
+      "noActivities": "Nessuna visita o tutoraggio programmato per questa settimana.",
+      "visit": "Visita",
+      "tutorial": "Tutoraggio",
+      "featured": "Selezione ISO di Robert",
+      "downloads": "download"
+    }
   }
 }
