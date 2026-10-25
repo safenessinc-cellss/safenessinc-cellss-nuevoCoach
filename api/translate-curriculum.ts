@@ -42,6 +42,30 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Método no permitido.' });
   }
 
+  // This public browser endpoint is only intended to be called by our own site.
+  // The check is a browser-origin safeguard, not a substitute for distributed rate limiting.
+  const origin = req.headers?.origin;
+  if (typeof origin !== 'string') {
+    return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+  }
+  let originHost = '';
+  try {
+    const parsedOrigin = new URL(origin);
+    if (parsedOrigin.protocol !== 'https:' && !(process.env.NODE_ENV !== 'production' && parsedOrigin.protocol === 'http:')) {
+      return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+    }
+    originHost = parsedOrigin.hostname.toLowerCase();
+  } catch {
+    return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+  }
+  const trustedOrigin = originHost === 'coach-iso.eu' ||
+    originHost === 'www.coach-iso.eu' ||
+    /^safenessinc-cellss-nuevo-coach(?:-[a-z0-9]+)*-safeness\\.vercel\\.app$/.test(originHost) ||
+    (process.env.NODE_ENV !== 'production' && ['localhost', '127.0.0.1'].includes(originHost));
+  if (!trustedOrigin) {
+    return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+  }
+
   const ip = String(req.headers?.['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown')
     .split(',')[0].trim();
   const now = Date.now();
