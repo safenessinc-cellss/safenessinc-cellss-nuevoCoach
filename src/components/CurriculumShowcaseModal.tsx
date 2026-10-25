@@ -352,7 +352,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
 
     // Send small, independent requests instead of making one serverless function
     // translate the entire training catalogue (which can exceed Vercel's 60s limit).
-    const chunkSize = 20;
+    const chunkSize = 40;
     const batchCount = Math.max(
       Math.ceil(inputEducation.length / chunkSize),
       Math.ceil(additionalTexts.length / chunkSize),
@@ -374,8 +374,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     const batchResults: Awaited<ReturnType<typeof translateCurriculumForExport>>[] = [];
     // Bounded concurrency avoids flooding Gemini while allowing large inventories
     // to finish without one long-running API request.
-    for (let offset = 0; offset < batchRequests.length; offset += 3) {
-      const group = batchRequests.slice(offset, offset + 3);
+    for (let offset = 0; offset < batchRequests.length; offset += 2) {
+      const group = batchRequests.slice(offset, offset + 2);
       const translatedGroup = await Promise.all(group.map((batch) =>
         translateCurriculumForExport(
           batch.input,
