@@ -42,6 +42,30 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Método no permitido.' });
   }
 
+  // This public browser endpoint is only intended to be called by our own site.
+  // The check is a browser-origin safeguard, not a substitute for distributed rate limiting.
+  const origin = req.headers?.origin;
+  if (typeof origin !== 'string') {
+    return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+  }
+  let originHost = '';
+  try {
+    const parsedOrigin = new URL(origin);
+    if (parsedOrigin.protocol !== 'https:' && !(process.env.NODE_ENV !== 'production' && parsedOrigin.protocol === 'http:')) {
+      return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+    }
+    originHost = parsedOrigin.hostname.toLowerCase();
+  } catch {
+    return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+  }
+  const trustedOrigin = originHost === 'coach-iso.eu' ||
+    originHost === 'www.coach-iso.eu' ||
+    /^safenessinc-cellss-nuevo-coach(?:-[a-z0-9]+)*-safeness\.vercel\.app$/.test(originHost) ||
+    (process.env.NODE_ENV !== 'production' && ['localhost', '127.0.0.1'].includes(originHost));
+  if (!trustedOrigin) {
+    return res.status(403).json({ error: 'Origen de solicitud no permitido.' });
+  }
+
   const ip = String(req.headers?.['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown')
     .split(',')[0].trim();
   const now = Date.now();
@@ -58,10 +82,28 @@ export default async function handler(req: any, res: any) {
 
   const body = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch { return null; } })() : req.body;
   const input = body?.input as TranslationInput | undefined;
-  const targetLanguage = body?.targetLanguage;
+  const rawLanguageCode = body?.targetLanguage;
+  let targetLanguage = '';
+  if (typeof rawLanguageCode === 'string' && /^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$/.test(rawLanguageCode)) {
+    try {
+      targetLanguage = Intl.getCanonicalLocales(rawLanguageCode)[0] || '';
+    } catch {
+      targetLanguage = '';
+    }
+  }
+  const validLanguageCode = Boolean(targetLanguage);
+  let targetLanguageName = '';
+  if (validLanguageCode) {
+    try {
+      targetLanguageName = languages[targetLanguage.toLowerCase()] ||
+        new Intl.DisplayNames(['en'], { type: 'language' }).of(targetLanguage) || targetLanguage;
+    } catch {
+      targetLanguageName = targetLanguage;
+    }
+  }
   const batchOnly = body?.batchOnly === true;
   const baseOnly = body?.baseOnly === true;
-  if (!input || typeof input !== 'object' || !languages[targetLanguage] ||
+  if (!input || typeof input !== 'object' || !validLanguageCode ||
       JSON.stringify(input).length > 250_000 ||
       typeof input.summary !== 'string' || input.summary.length > 12000 ||
       !Array.isArray(input.impactMetrics) || input.impactMetrics.length > 30 ||
@@ -120,7 +162,7 @@ export default async function handler(req: any, res: any) {
   };
 
   const baseRules = [
-    'You are a professional executive-CV translator. Translate all human-readable descriptive content into ' + languages[targetLanguage] + '.',
+    'You are a professional executive-CV translator. Translate all human-readable descriptive content into ' + targetLanguageName + ' (language code: ' + targetLanguage + ').',
     'Return valid JSON only. Do not return markdown, comments, or explanations.',
     'TRANSLATION ONLY. Do not rewrite, summarize, embellish, remove, add, infer, or invent information.',
     'Preserve exact array counts, order, and nested list structure.',

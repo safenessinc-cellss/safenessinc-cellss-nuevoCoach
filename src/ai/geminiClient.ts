@@ -100,7 +100,7 @@ export interface CurriculumTranslationOutput {
 /** Translate all CV content on the server before allowing PDF generation. */
 export async function translateCurriculumForExport(
   input: CurriculumTranslationInput,
-  targetLanguage: 'es' | 'en' | 'pt' | 'it',
+  targetLanguage: string,
   mode: 'all' | 'base' | 'batch' = 'all',
 ): Promise<CurriculumTranslationOutput> {
   return apiRequest<CurriculumTranslationOutput>(
