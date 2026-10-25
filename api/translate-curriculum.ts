@@ -134,8 +134,8 @@ export default async function handler(req: any, res: any) {
     // Use a stable, lighter model first, then one fallback instead of serially
     // trying several aliases that can each stall under provider load.
     const attempts: Array<{ model: string; delay: number }> = [
-      { model: 'gemini-2.5-flash-lite', delay: 0 },
-      { model: 'gemini-2.5-flash', delay: 900 },
+      { model: 'gemini-3.5-flash-lite', delay: 0 },
+      { model: 'gemini-3.6-flash', delay: 900 },
     ];
     let lastError: unknown;
     for (const attempt of attempts) {
