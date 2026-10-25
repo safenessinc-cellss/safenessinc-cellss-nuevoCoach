@@ -342,6 +342,14 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
       additionalTexts,
     };
 
+    // Translate the executive summary and work history in their own invocation,
+    // so no single serverless request needs to make multiple Gemini calls.
+    const baseTranslation = await translateCurriculumForExport({
+      ...sourceInput,
+      educationItems: [],
+      additionalTexts: [],
+    }, targetLanguage as 'es' | 'en' | 'pt' | 'it', 'base');
+
     // Send small, independent requests instead of making one serverless function
     // translate the entire training catalogue (which can exceed Vercel's 60s limit).
     const chunkSize = 40;
@@ -352,9 +360,8 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
     );
     const batchRequests = Array.from({ length: batchCount }, (_, index) => {
       const start = index * chunkSize;
-      const batchOnly = index > 0;
       return {
-        batchOnly,
+        batchOnly: true,
         input: {
           summary: batchOnly ? '' : sourceInput.summary,
           impactMetrics: batchOnly ? [] : sourceInput.impactMetrics,
@@ -374,17 +381,16 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
         translateCurriculumForExport(
           batch.input,
           targetLanguage as 'es' | 'en' | 'pt' | 'it',
-          batch.batchOnly,
+          'batch',
         )
       ));
       batchResults.push(...translatedGroup);
     }
 
-    const firstBatch = batchResults[0];
     const translated = {
-      summary: firstBatch?.summary || '',
-      impactMetrics: firstBatch?.impactMetrics || [],
-      careerRoles: firstBatch?.careerRoles || [],
+      summary: baseTranslation.summary || '',
+      impactMetrics: baseTranslation.impactMetrics || [],
+      careerRoles: baseTranslation.careerRoles || [],
       educationItems: batchResults.flatMap((batch) => batch.educationItems || []),
       additionalTexts: batchResults.flatMap((batch) => batch.additionalTexts || []),
     };
