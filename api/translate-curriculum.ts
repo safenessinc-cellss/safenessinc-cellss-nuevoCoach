@@ -84,20 +84,16 @@ export default async function handler(req: any, res: any) {
     return res.status(503).json({ error: 'La traducción automática no está configurada en el servidor.' });
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  // Bound each provider request so retries cannot consume Vercel's full 60-second budget.
+  const ai = new GoogleGenAI({ apiKey, httpOptions: { timeout: 18_000 } });
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const generateJson = async (prompt: string, maxOutputTokens = 10000): Promise<Record<string, any>> => {
-    // A transient 503 from Google's shared "latest" alias used to fail the whole
-    // export immediately. Try a pinned Flash model, then the alias, with a short
-    // retry before returning an error. Each API request still translates only one
-    // small section/chunk, keeping it under Vercel's function timeout.
+    // Keep the retry budget below Vercel's 60-second function limit.
+    // Use a stable, lighter model first, then one fallback instead of serially
+    // trying several aliases that can each stall under provider load.
     const attempts: Array<{ model: string; delay: number }> = [
-      // Start with the lighter Flash-Lite tier to reduce queue pressure, then
-      // fall back to Flash and the rolling alias if a region/model is saturated.
       { model: 'gemini-2.5-flash-lite', delay: 0 },
-      { model: 'gemini-2.5-flash-lite', delay: 1500 },
-      { model: 'gemini-2.5-flash', delay: 3000 },
-      { model: 'gemini-flash-latest', delay: 6000 },
+      { model: 'gemini-2.5-flash', delay: 900 },
     ];
     let lastError: unknown;
     for (const attempt of attempts) {
@@ -114,6 +110,10 @@ export default async function handler(req: any, res: any) {
         lastError = error;
         const detail = error instanceof Error ? error.message : String(error);
         console.warn(`Gemini translation attempt failed (${attempt.model}):`, detail.slice(0, 300));
+        // Do not waste the remaining budget retrying malformed requests or other
+        // permanent failures. Only retry rate limits, overloads and network timeouts.
+        const retryable = /503|UNAVAILABLE|high demand|overloaded|429|RESOURCE_EXHAUSTED|timeout|timed out|ECONNRESET|ETIMEDOUT/i.test(detail);
+        if (!retryable) throw error;
       }
     }
     throw lastError instanceof Error ? lastError : new Error('El servicio de traducción no respondió después de varios intentos.');
@@ -194,6 +194,43 @@ export default async function handler(req: any, res: any) {
 
     const translatedMetrics = Array.isArray(base.impactMetrics) ? base.impactMetrics : [];
     const translatedRoles = Array.isArray(base.careerRoles) ? base.careerRoles : [];
+    const hasText = (value: unknown) => typeof value === 'string' && value.trim().length > 0;
+
+    // Fail closed on malformed/partial model output. The browser also validates
+    // the assembled curriculum, but the API must never report incomplete data as success.
+    if (!batchOnly && (
+      !hasText(base.summary) ||
+      translatedMetrics.length !== input.impactMetrics.length ||
+      translatedRoles.length !== input.careerRoles.length ||
+      translatedMetrics.some((item, index) =>
+        !hasText(item?.label) || (Boolean(input.impactMetrics[index].detail.trim()) && !hasText(item?.detail))) ||
+      translatedRoles.some((role, index) => {
+        const source = input.careerRoles[index];
+        return !hasText(role?.title) ||
+          (Boolean(source.period.trim()) && !hasText(role?.period)) ||
+          !Array.isArray(role?.responsibilities) ||
+          role.responsibilities.length !== source.responsibilities.length ||
+          role.responsibilities.some((value: unknown, j: number) =>
+            Boolean(source.responsibilities[j]?.trim()) && !hasText(value)) ||
+          !Array.isArray(role?.achievements) ||
+          role.achievements.length !== (source.achievements || []).length ||
+          role.achievements.some((value: unknown, j: number) =>
+            Boolean(source.achievements?.[j]?.trim()) && !hasText(value));
+      })
+    )) {
+      throw new Error('La traducción de resumen, métricas o experiencia llegó incompleta.');
+    }
+
+    if (!baseOnly && (
+      translatedEducation.length !== input.educationItems.length ||
+      translatedEducation.some((item, index) =>
+        !hasText(item.title) ||
+        (Boolean(input.educationItems[index].description?.trim()) && !hasText(item.description))) ||
+      translatedAdditionalTexts.length !== input.additionalTexts.length ||
+      translatedAdditionalTexts.some((value) => !hasText(value))
+    )) {
+      throw new Error('La traducción de formación o textos complementarios llegó incompleta.');
+    }
     return res.status(200).json({
       summary: typeof base.summary === 'string' ? base.summary : '',
       impactMetrics: input.impactMetrics.map((item, index) => ({
