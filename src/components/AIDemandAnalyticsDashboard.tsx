@@ -339,11 +339,11 @@ function AIDemandAnalyticsDashboard() {
             <h2 className="text-xl font-black text-white tracking-tight">{t('adminModules.analytics.title')}</h2>
             <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-bold flex items-center gap-1 ${logsAccessDenied ? "bg-amber-500/10 text-amber-300 border-amber-500/20" : "bg-green-500/10 text-green-400 border-green-500/20"}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${logsAccessDenied ? "bg-amber-400" : "bg-green-400 animate-pulse"}`} />
-              {logsAccessDenied ? "Logs reales sin permiso · datos de demostración" : "Sincronizado Firestore"}
+              {logsAccessDenied ? t('adminModules.analytics.syncDemo') : t('adminModules.analytics.synced')}
             </span>
           </div>
           <p className="text-xs text-gray-400">
-            Análisis en tiempo real del flujo de consultas a la IA, servicios ISO más demandados y sesiones agendadas.
+            {t('adminModules.analytics.headerDescription')}
           </p>
         </div>
 
@@ -358,7 +358,7 @@ function AIDemandAnalyticsDashboard() {
                 timeframe === '7d' ? 'bg-red-600 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
-              7 Días
+              {t('adminModules.analytics.period7')}
             </button>
             <button
               onClick={() => setTimeframe('30d')}
@@ -366,7 +366,7 @@ function AIDemandAnalyticsDashboard() {
                 timeframe === '30d' ? 'bg-red-600 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
-              30 Días
+              {t('adminModules.analytics.period30')}
             </button>
             <button
               onClick={() => setTimeframe('90d')}
@@ -374,7 +374,7 @@ function AIDemandAnalyticsDashboard() {
                 timeframe === '90d' ? 'bg-red-600 text-white shadow' : 'text-gray-400 hover:text-white'
               }`}
             >
-              Trimestre
+              {t('adminModules.analytics.quarter')}
             </button>
           </div>
 
@@ -394,10 +394,10 @@ function AIDemandAnalyticsDashboard() {
             onClick={handleSimulateAIInteraction}
             disabled={isSimulating}
             className="px-3.5 py-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-extrabold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer shadow-lg disabled:opacity-50"
-            title="Genera un registro de prueba de consulta IA para verificar la actualización de la gráfica"
+            title={t('adminModules.analytics.simulateTitle')}
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSimulating ? 'animate-spin' : ''}`} />
-            <span>{isSimulating ? 'Generando...' : 'Simular Evento IA'}</span>
+            <span>{isSimulating ? t('adminModules.analytics.generating') : t('adminModules.analytics.simulate')}</span>
           </button>
         </div>
       </div>
@@ -422,7 +422,7 @@ function AIDemandAnalyticsDashboard() {
             <span className="text-xs text-gray-500 font-mono">{t('adminModules.analytics.interactions')}</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
-            Asistente virtual activo 24/7 resolviendo inquietudes ISO.
+            {t('adminModules.analytics.assistantActive')}
           </p>
         </div>
 
@@ -443,7 +443,7 @@ function AIDemandAnalyticsDashboard() {
             <span className="text-xs text-gray-500 font-mono">{t('adminModules.analytics.appointments')}</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
-            Tutorías online, visitas presenciales y consultoría directa.
+            {t('adminModules.analytics.sessionsInfo')}
           </p>
         </div>
 
@@ -455,7 +455,7 @@ function AIDemandAnalyticsDashboard() {
               <Target className="w-5 h-5" />
             </span>
             <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
-              Óptimo
+              {t('adminModules.analytics.optimal')}
             </span>
           </div>
           <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">{t('adminModules.analytics.conversion')}</p>
@@ -464,7 +464,7 @@ function AIDemandAnalyticsDashboard() {
             <span className="text-xs text-teal-400 font-mono font-bold">{t('adminModules.analytics.toAppointment')}</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
-            Porcentaje de usuarios en chat que derivan en agendamiento.
+            {t('adminModules.analytics.conversionInfo')}
           </p>
         </div>
 
@@ -476,7 +476,7 @@ function AIDemandAnalyticsDashboard() {
               <Award className="w-5 h-5" />
             </span>
             <span className="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
-              #1 Líder
+              {t('adminModules.analytics.leader')}
             </span>
           </div>
           <p className="text-gray-400 text-xs font-mono font-bold uppercase tracking-wider">{t('adminModules.analytics.mostDemanded')}</p>
@@ -484,7 +484,7 @@ function AIDemandAnalyticsDashboard() {
             <span className="text-2xl font-black text-white">ISO 9001:2015</span>
           </div>
           <p className="text-[11px] text-gray-500 mt-2">
-            Representa el 36% de las consultas y agendamientos totales.
+            {t('adminModules.analytics.demandShare')}
           </p>
         </div>
 
@@ -502,15 +502,15 @@ function AIDemandAnalyticsDashboard() {
                 <span>{t('adminModules.analytics.evolution')}</span>
               </h3>
               <p className="text-xs text-gray-400">
-                Volumen diario de consultas al Asistente IA vs. Sesiones Agendadas confirmadas.
+                {t('adminModules.analytics.evolutionInfo')}
               </p>
             </div>
             <div className="flex items-center gap-4 text-xs font-mono">
               <span className="flex items-center gap-1.5 text-red-400 font-bold">
-                <span className="w-3 h-3 rounded-sm bg-red-500" /> Consultas IA
+                <span className="w-3 h-3 rounded-sm bg-red-500" /> {t('adminModules.analytics.aiQueries')}
               </span>
               <span className="flex items-center gap-1.5 text-amber-400 font-bold">
-                <span className="w-3 h-3 rounded-sm bg-amber-500" /> Citas Reservadas
+                <span className="w-3 h-3 rounded-sm bg-amber-500" /> {t('adminModules.analytics.booked')}
               </span>
             </div>
           </div>
@@ -572,7 +572,7 @@ function AIDemandAnalyticsDashboard() {
               <span>{t('adminModules.analytics.channels')}</span>
             </h3>
             <p className="text-xs text-gray-400">
-              Distribución porcentual por vía de contacto y conversión.
+              {t('adminModules.analytics.sourceInfo')}
             </p>
           </div>
 
@@ -630,7 +630,7 @@ function AIDemandAnalyticsDashboard() {
               <span>{t('adminModules.analytics.standardDemand')}</span>
             </h3>
             <p className="text-xs text-gray-400">
-              Comparativa entre preguntas en IA y sesiones agendadas por área temática.
+              {t('adminModules.analytics.compareInfo')}
             </p>
           </div>
 
@@ -663,7 +663,7 @@ function AIDemandAnalyticsDashboard() {
               <span>{t('adminModules.analytics.hourly')}</span>
             </h3>
             <p className="text-xs text-gray-400">
-              Franjas de hora con mayor concentración de interacciones y solicitud de agenda.
+              {t('adminModules.analytics.hourlyInfo')}
             </p>
           </div>
 
@@ -680,7 +680,7 @@ function AIDemandAnalyticsDashboard() {
                     borderRadius: '12px' 
                   }} 
                 />
-                <Bar dataKey="demanda" name="Volumen de Actividad" fill={COLOR_PALETTE.blue} radius={[6, 6, 0, 0]} barSize={28} />
+                <Bar dataKey="demanda" name="{t('adminModules.analytics.hourlyVolume')}" fill={COLOR_PALETTE.blue} radius={[6, 6, 0, 0]} barSize={28} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -699,7 +699,7 @@ function AIDemandAnalyticsDashboard() {
               <span>{t('adminModules.analytics.recent')}</span>
             </h3>
             <span className="text-[10px] font-mono text-gray-400 bg-white/5 px-2.5 py-1 rounded-lg">
-              {mergedAiLogs.length} logs
+              {mergedAiLogs.length} {t('adminModules.analytics.logsCount')}
             </span>
           </div>
 
@@ -715,7 +715,7 @@ function AIDemandAnalyticsDashboard() {
                   </span>
                   <span className="text-gray-500 flex items-center gap-1">
                     <Clock className="w-3 h-3 text-gray-500" />
-                    {log.dateStr || 'Hoy'}
+                    {log.dateStr || t('adminModules.analytics.today')}
                   </span>
                 </div>
                 <p className="text-xs font-bold text-gray-200">"{log.userPrompt}"</p>
@@ -735,7 +735,7 @@ function AIDemandAnalyticsDashboard() {
               <span>{t('adminModules.analytics.scheduled')}</span>
             </h3>
             <span className="text-[10px] font-mono text-gray-400 bg-white/5 px-2.5 py-1 rounded-lg">
-              {allSessions.length} programadas
+              {allSessions.length} {t('adminModules.analytics.scheduledCount')}
             </span>
           </div>
 
