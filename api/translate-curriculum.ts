@@ -60,6 +60,7 @@ export default async function handler(req: any, res: any) {
   const input = body?.input as TranslationInput | undefined;
   const targetLanguage = body?.targetLanguage;
   const batchOnly = body?.batchOnly === true;
+  const baseOnly = body?.baseOnly === true;
   if (!input || typeof input !== 'object' || !languages[targetLanguage] ||
       JSON.stringify(input).length > 250_000 ||
       typeof input.summary !== 'string' || input.summary.length > 12000 ||
@@ -118,7 +119,7 @@ export default async function handler(req: any, res: any) {
     ].join('\n'), 10000);
 
     const batches: Array<{ educationItems: TranslationEducation[]; additionalTexts: string[] }> = [];
-    const batchCount = Math.max(
+    const batchCount = baseOnly ? 0 : Math.max(
       Math.ceil(input.educationItems.length / CHUNK_SIZE),
       Math.ceil(input.additionalTexts.length / CHUNK_SIZE),
       1,
