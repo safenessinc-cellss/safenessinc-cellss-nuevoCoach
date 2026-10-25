@@ -92,9 +92,12 @@ export default async function handler(req: any, res: any) {
     // retry before returning an error. Each API request still translates only one
     // small section/chunk, keeping it under Vercel's function timeout.
     const attempts: Array<{ model: string; delay: number }> = [
-      { model: 'gemini-2.5-flash', delay: 0 },
-      { model: 'gemini-2.5-flash', delay: 500 },
-      { model: 'gemini-flash-latest', delay: 250 },
+      // Start with the lighter Flash-Lite tier to reduce queue pressure, then
+      // fall back to Flash and the rolling alias if a region/model is saturated.
+      { model: 'gemini-2.5-flash-lite', delay: 0 },
+      { model: 'gemini-2.5-flash-lite', delay: 1500 },
+      { model: 'gemini-2.5-flash', delay: 3000 },
+      { model: 'gemini-flash-latest', delay: 6000 },
     ];
     let lastError: unknown;
     for (const attempt of attempts) {
