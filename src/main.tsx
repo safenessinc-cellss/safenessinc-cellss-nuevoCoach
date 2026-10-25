@@ -32,7 +32,7 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<PublicCurriculumPage />} />
+              <Route path="/" element={<App />} />
               <Route path="/portal" element={<App />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/agendar" element={<SchedulingPage />} />
