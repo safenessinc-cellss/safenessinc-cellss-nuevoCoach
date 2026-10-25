@@ -801,7 +801,7 @@ function AdminPanel() {
     return (
       <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-red-500 animate-spin mb-4" />
-        <p className="text-gray-400 font-mono text-sm">Validando credenciales seguras de Auditor...</p>
+        <p className="text-gray-400 font-mono text-sm">{t('admin.common.validating')}</p>
       </div>
     );
   }
@@ -811,7 +811,7 @@ function AdminPanel() {
     return (
       <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-red-500 animate-spin mb-4" />
-        <p className="text-gray-400 font-mono text-sm">Redirigiendo al panel de acceso seguro...</p>
+        <p className="text-gray-400 font-mono text-sm">{t('admin.common.redirecting')}</p>
       </div>
     );
   }
@@ -834,12 +834,12 @@ function AdminPanel() {
             </div>
             <div className="min-w-0">
               <p className="font-extrabold text-[14px] truncate">Robert Terán</p>
-              <p className="text-[10px] text-gray-400 font-mono">Especialista en SGI & Procesos</p>
+              <p className="text-[10px] text-gray-400 font-mono">{t('admin.common.specialist')}</p>
             </div>
           </div>
 
           <div className="bg-white/5 px-2.5 py-1 rounded-md flex items-center justify-between text-[10px] font-mono">
-            <span className="text-gray-500 uppercase">Rol Actual:</span>
+            <span className="text-gray-500 uppercase">{t('admin.common.currentRole')}:</span>
             <span className={`font-bold px-1.5 py-0.5 rounded uppercase ${
               activeRole === 'admin' ? 'text-red-400 bg-red-500/10' :
               activeRole === 'editor' ? 'text-yellow-400 bg-yellow-500/10' :
@@ -1772,7 +1772,7 @@ function AdminPanel() {
                                 <button 
                                   onClick={() => handleDeleteUser(usr.id, usr.email)}
                                   className="text-red-400 hover:text-red-300 p-1 bg-red-500/10 hover:bg-red-500/20 rounded transition"
-                                  title="Revocar permisos"
+                                  title={t('admin.common.revoke')}
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -1907,7 +1907,7 @@ function AdminPanel() {
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500"
                   >
                     <option value="Activo">{t('adminModules.panel.active')}</option>
-                    <option value="Inactivo">Inactivo</option>
+                    <option value="Inactivo">{t('adminModules.panel.inactive')}</option>
                   </select>
                 </div>
               </div>
@@ -2114,7 +2114,7 @@ function AdminPanel() {
                 <label className="text-[10px] font-bold text-gray-400 uppercase">{t('adminModules.panel.address')}</label>
                 <input 
                   type="text" required
-                  placeholder="Av. Principal, Oficinas de Planta Industrial Nº..."
+                  placeholder={t('adminModules.panel.addressExample')}
                   value={visitForm.address || ''}
                   onChange={(e) => setVisitForm({...visitForm, address: e.target.value})}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-red-500"
@@ -2141,7 +2141,7 @@ function AdminPanel() {
                 <textarea 
                   rows={2}
                   value={visitForm.notes || ''}
-                  placeholder="Ej: Asegurar firma de confidencialidad NDA, llevar checklist..."
+                  placeholder={t('adminModules.panel.auditorNotesExample')}
                   onChange={(e) => setVisitForm({...visitForm, notes: e.target.value})}
                   className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs focus:outline-none focus:border-red-500"
                 />
@@ -2269,7 +2269,7 @@ function AdminPanel() {
                 <label className="text-[10px] font-bold text-gray-400 uppercase">{t('adminModules.panel.topic')}</label>
                 <input 
                   type="text" required
-                  placeholder="Revisión cláusula 7 o coaching general..."
+                  placeholder={t('adminModules.panel.topicExample')}
                   value={tutorialForm.topic || ''}
                   onChange={(e) => setTutorialForm({...tutorialForm, topic: e.target.value})}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-red-500"
