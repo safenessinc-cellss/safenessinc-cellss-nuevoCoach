@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import html2pdf from 'html2pdf.js';
 import { ArrowDownToLine, ArrowLeft, BadgeCheck, BriefcaseBusiness, CheckCircle2, ExternalLink, Globe2, GraduationCap, Languages, LoaderCircle, Mail, MapPin, ShieldCheck, Sparkles } from 'lucide-react';
 import {
   ACADEMIC_EDUCATION, ALL_LEARNING_ACTIVITIES, CANDIDATE_INFO, CAREER_EXPERIENCE,
@@ -222,6 +221,8 @@ export default function PublicCurriculumPage() {
       wrapper.style.cssText = 'position:fixed;left:-12000px;top:0;width:794px;background:#fff;z-index:-1';
       document.body.appendChild(wrapper);
       try {
+        const html2pdfModule = await import('html2pdf.js');
+        const html2pdf = html2pdfModule.default;
         await html2pdf().set({
           margin: [12, 12, 14, 12],
           filename: `Deuwy-Robert-Teran-Medina-CV-${language}.pdf`,
