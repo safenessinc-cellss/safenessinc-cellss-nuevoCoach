@@ -1072,7 +1072,7 @@ export default function CurriculumEditor() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Idioma</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.languageLabel')}</label>
                       <input
                         type="text"
                         value={lang.name}
