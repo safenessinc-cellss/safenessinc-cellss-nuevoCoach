@@ -77,10 +77,10 @@ const MODAL_LABELS: Record<string, Record<string, string>> = {
     marketing: 'Marketing y Ventas', softSkills: 'Habilidades profesionales y liderazgo', webDev: 'Desarrollo web',
     showing: 'Mostrando', verifiedCredentials: 'credenciales registradas.', clickCredential: 'Selecciona una para abrir su',
     scaledModel: 'modelo de certificado a escala', viewScaledModel: 'Ver modelo a escala',
-    noCredentials: '{modalLabels.noCredentials}',
-    trainingHistoryTitle: '{modalLabels.trainingHistoryTitle}',
-    noActivitiesArea: '{modalLabels.noActivitiesArea}',
-    sourceNotSpecified: '{modalLabels.sourceNotSpecified}', pendingVerification: '{modalLabels.pendingVerification}',
+    noCredentials: 'No se encontraron credenciales que coincidan con la búsqueda.',
+    trainingHistoryTitle: 'Historial completo de formación y actividades',
+    noActivitiesArea: 'Sin actividades formativas detalladas en esta área.',
+    sourceNotSpecified: 'Fuente no especificada', pendingVerification: 'Pendiente de verificación oficial',
   },
   en: {
     pdfLanguage: 'PDF language', pdfProgress: 'Translating and generating PDF...', searchPlaceholder: 'Search by code (ID) or title...',
@@ -1135,7 +1135,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                                     <div className="min-w-0 flex-1">
                                       <p className="text-[9.5px] font-bold text-gray-900 leading-tight line-clamp-2">{cert.title}</p>
                                       <p className="text-[8px] text-amber-700 font-mono uppercase">{cert.issuer}</p>
-                                      {cert.verified === false && <p className="text-[7px] text-red-700 font-semibold">Pendiente de verificación oficial</p>}
+                                      {cert.verified === false && <p className="text-[7px] text-red-700 font-semibold">{modalLabels.pendingVerification}</p>}
                                     </div>
                                   </div>
                                 ))}
@@ -1148,7 +1148,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                           <div className="mt-5 space-y-2 page-break-before">
                             <div className="flex items-center gap-2">
                               <span className="w-5 h-5 rounded-full bg-blue-500 text-black flex items-center justify-center font-extrabold text-[10px] shrink-0"><Layers className="w-3 h-3" /></span>
-                              <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">Historial completo de formación y actividades</h2>
+                              <h2 className="font-extrabold uppercase tracking-wider text-xs text-gray-900">{modalLabels.trainingHistoryTitle}</h2>
                             </div>
                             <p className="pl-7 text-[8.5px] text-gray-600">{learningActivities.length} registros únicos consolidados. Los cursos, módulos, vídeos, artículos y planes se distinguen de las credenciales oficiales; la inclusión en este historial no acredita por sí misma una certificación.</p>
                             <div className="pl-7 space-y-4">
@@ -1163,13 +1163,13 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                                         <div key={`cv-training-${group.area}-${activity.code || idx}-${idx}`} className="border-b border-gray-200 py-1 text-[8px] leading-tight flex justify-between gap-2">
                                           <div className="min-w-0 flex-1">
                                             <p className="font-bold text-gray-900">{activity.title}</p>
-                                            <p className="text-gray-600">{activity.issuer || 'Fuente no especificada'} · {activity.category || group.area}</p>
+                                            <p className="text-gray-600">{activity.issuer || modalLabels.sourceNotSpecified} · {activity.category || group.area}</p>
                                           </div>
                                           <span className="text-gray-500 whitespace-nowrap">{activity.completedDate || ''}</span>
                                         </div>
                                       ))}
                                     </div>
-                                  ) : <p className="mt-1 text-[8px] text-gray-500">Sin actividades formativas detalladas en esta área.</p>}
+                                  ) : <p className="mt-1 text-[8px] text-gray-500">{modalLabels.noActivitiesArea}</p>}
                                 </section>
                               ))}
                             </div>
@@ -1264,7 +1264,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                   {filteredOfficial.length === 0 && (
                     <div className="text-center py-16 bg-white/[0.01] rounded-2xl border border-white/5">
                       <Search className="w-8 h-8 text-gray-600 mx-auto mb-2" />
-                      <p className="text-gray-400 text-xs font-mono">No se encontraron credenciales que coincidan con la búsqueda.</p>
+                      <p className="text-gray-400 text-xs font-mono">{modalLabels.noCredentials}</p>
                     </div>
                   )}
                 </div>
@@ -1337,7 +1337,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                               <tr key={`activity-${act.code || idx}-${idx}`} onClick={() => setViewingCertificate(act)} className="hover:bg-blue-50 transition cursor-pointer group">
                                 <td className="p-3.5 pl-6"><div className="flex items-center gap-2 min-w-36">
                                   {logoUrl && <img src={logoUrl} alt="" loading="lazy" className="w-6 h-6 object-contain rounded bg-white p-0.5" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />}
-                                  <span className="text-slate-700 group-hover:text-blue-800">{act.issuer || 'Fuente no especificada'}</span>
+                                  <span className="text-slate-700 group-hover:text-blue-800">{act.issuer || modalLabels.sourceNotSpecified}</span>
                                 </div></td>
                                 <td className="p-3.5 text-slate-900 group-hover:text-blue-800 transition min-w-64"><span className="font-semibold">{act.title}</span></td>
                                 <td className="p-3.5 text-slate-600 min-w-44"><span className="block">{act.category || 'Otros recursos formativos'}</span><span className="block text-[10px] text-slate-500">{act.activityKind || act.deliveryType || 'Actividad formativa'}</span></td>
