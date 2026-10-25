@@ -69,6 +69,57 @@ function getIssuerLogoUrl(issuer?: string, logoKey?: string): string | undefined
   return detectedKey ? ISSUER_LOGO_URLS[detectedKey] : undefined;
 }
 
+const MODAL_LABELS: Record<string, Record<string, string>> = {
+  es: {
+    pdfLanguage: 'Idioma del PDF', pdfProgress: 'Traduciendo y generando PDF...', searchPlaceholder: 'Buscar por código (ID) o título...',
+    allCredentials: 'Todas las credenciales', cybersecurity: 'Ciberseguridad', aiData: 'IA y Ciencia de Datos',
+    designThinking: 'Design Thinking y UX', cloud: 'Cloud y Computación', projectAgile: 'Gestión Ágil y Proyectos',
+    marketing: 'Marketing y Ventas', softSkills: 'Habilidades profesionales y liderazgo', webDev: 'Desarrollo web',
+    showing: 'Mostrando', verifiedCredentials: 'credenciales registradas.', clickCredential: 'Selecciona una para abrir su',
+    scaledModel: 'modelo de certificado a escala', viewScaledModel: 'Ver modelo a escala',
+    noCredentials: '{modalLabels.noCredentials}',
+    trainingHistoryTitle: '{modalLabels.trainingHistoryTitle}',
+    noActivitiesArea: '{modalLabels.noActivitiesArea}',
+    sourceNotSpecified: '{modalLabels.sourceNotSpecified}', pendingVerification: '{modalLabels.pendingVerification}',
+  },
+  en: {
+    pdfLanguage: 'PDF language', pdfProgress: 'Translating and generating PDF...', searchPlaceholder: 'Search by code (ID) or title...',
+    allCredentials: 'All credentials', cybersecurity: 'Cybersecurity', aiData: 'AI and Data Science',
+    designThinking: 'Design Thinking and UX', cloud: 'Cloud and Computing', projectAgile: 'Agile and Project Management',
+    marketing: 'Marketing and Sales', softSkills: 'Professional Skills and Leadership', webDev: 'Web Development',
+    showing: 'Showing', verifiedCredentials: 'listed credentials.', clickCredential: 'Select one to open its',
+    scaledModel: 'scaled certificate model', viewScaledModel: 'View scaled model',
+    noCredentials: 'No credentials match your search.',
+    trainingHistoryTitle: 'Complete training and activities history',
+    noActivitiesArea: 'No detailed training activities in this area.',
+    sourceNotSpecified: 'Source not specified', pendingVerification: 'Pending official verification',
+  },
+  pt: {
+    pdfLanguage: 'Idioma do PDF', pdfProgress: 'Traduzindo e gerando PDF...', searchPlaceholder: 'Buscar por código (ID) ou título...',
+    allCredentials: 'Todas as credenciais', cybersecurity: 'Cibersegurança', aiData: 'IA e Ciência de Dados',
+    designThinking: 'Design Thinking e UX', cloud: 'Cloud e Computação', projectAgile: 'Gestão Ágil e Projetos',
+    marketing: 'Marketing e Vendas', softSkills: 'Competências profissionais e liderança', webDev: 'Desenvolvimento web',
+    showing: 'Exibindo', verifiedCredentials: 'credenciais cadastradas.', clickCredential: 'Selecione uma para abrir seu',
+    scaledModel: 'modelo de certificado em escala', viewScaledModel: 'Ver modelo em escala',
+    noCredentials: 'Nenhuma credencial corresponde à busca.',
+    trainingHistoryTitle: 'Histórico completo de formação e atividades',
+    noActivitiesArea: 'Não há atividades formativas detalhadas nesta área.',
+    sourceNotSpecified: 'Fonte não especificada', pendingVerification: 'Aguardando verificação oficial',
+  },
+  it: {
+    pdfLanguage: 'Lingua del PDF', pdfProgress: 'Traduzione e generazione del PDF...', searchPlaceholder: 'Cerca per codice (ID) o titolo...',
+    allCredentials: 'Tutte le credenziali', cybersecurity: 'Sicurezza informatica', aiData: 'IA e scienza dei dati',
+    designThinking: 'Design Thinking e UX', cloud: 'Cloud e informatica', projectAgile: 'Agile e gestione dei progetti',
+    marketing: 'Marketing e vendite', softSkills: 'Competenze professionali e leadership', webDev: 'Sviluppo web',
+    showing: 'Visualizzate', verifiedCredentials: 'credenziali registrate.', clickCredential: 'Seleziona una per aprire il',
+    scaledModel: 'modello del certificato in scala', viewScaledModel: 'Visualizza modello in scala',
+    noCredentials: 'Nessuna credenziale corrisponde alla ricerca.',
+    trainingHistoryTitle: 'Storico completo della formazione e delle attività',
+    noActivitiesArea: 'Nessuna attività formativa dettagliata in quest’area.',
+    sourceNotSpecified: 'Fonte non specificata', pendingVerification: 'In attesa di verifica ufficiale',
+  },
+};
+
 const PROFESSIONAL_AREA_ORDER = [
   'Ciberseguridad',
   'IA y Ciencia de Datos',
@@ -185,6 +236,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
   const [viewingCertificate, setViewingCertificate] = useState<OfficialCertificate | LearningActivity | null>(null);
 
   const currentLang = (i18n.language || 'es').toLowerCase();
+  const modalLabels = MODAL_LABELS[currentLang.slice(0, 2)] || MODAL_LABELS.es;
 
   // Localized candidate info with fallback to Firestore/localStorage curriculum settings
   const candidateInfo = curriculumData.candidateInfo || CANDIDATE_INFO;
@@ -479,15 +531,15 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
 
   // Categories list
   const categories = [
-    { id: 'all', label: 'Todas las Credenciales' },
-    { id: 'cybersecurity', label: 'Ciberseguridad' },
-    { id: 'ai_data', label: 'IA & Ciencia de Datos' },
-    { id: 'design_thinking', label: 'Design Thinking & UX' },
-    { id: 'cloud', label: 'Cloud & Computación' },
-    { id: 'project_agile', label: 'Gestión Ágil & Proyectos' },
-    { id: 'marketing', label: 'Marketing & Ventas' },
-    { id: 'professional_skills', label: 'Soft Skills & Liderazgo' },
-    { id: 'web_dev', label: 'Desarrollo Web' }
+    { id: 'all', label: modalLabels.allCredentials },
+    { id: 'cybersecurity', label: modalLabels.cybersecurity },
+    { id: 'ai_data', label: modalLabels.aiData },
+    { id: 'design_thinking', label: modalLabels.designThinking },
+    { id: 'cloud', label: modalLabels.cloud },
+    { id: 'project_agile', label: modalLabels.projectAgile },
+    { id: 'marketing', label: modalLabels.marketing },
+    { id: 'professional_skills', label: modalLabels.softSkills },
+    { id: 'web_dev', label: modalLabels.webDev }
   ];
 
   // Filtered Official Certificates
@@ -571,7 +623,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                 <div className="flex flex-wrap items-center gap-2">
                   {/* Select the PDF language before translation and download. */}
                   <label className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-700">
-                    <span>Idioma del PDF</span>
+                    <span>{modalLabels.pdfLanguage}</span>
                     <select value={exportLanguage} onChange={(event) => setExportLanguage(event.target.value)} disabled={isExporting} className="bg-transparent font-bold outline-none cursor-pointer">
                       <option value="es">🇪🇸 Español</option><option value="en">🇬🇧 English</option><option value="pt">🇧🇷 Português</option><option value="it">🇮🇹 Italiano</option>
                     </select>
@@ -585,7 +637,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                     className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-xs rounded-xl shadow-sm flex items-center gap-2 transition disabled:opacity-50 cursor-pointer"
                   >
                     <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
-                    <span>{isExporting ? 'Generando PDF...' : t('curriculum.export', 'Exportar a PDF')}</span>
+                    <span>{isExporting ? modalLabels.pdfProgress : t('curriculum.export', 'Exportar a PDF')}</span>
                   </button>
 
                   {/* Print Button */}
@@ -679,7 +731,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Buscar por código (ID) o título..."
+                    placeholder={modalLabels.searchPlaceholder}
                     className="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-4 py-2 text-xs text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 font-mono"
                   />
                   {searchQuery && (
@@ -1135,7 +1187,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                 <div>
                   <div className="mb-4 flex justify-between items-center">
                     <p className="text-xs font-mono text-gray-400">
-                      Mostrando <strong className="text-white">{filteredOfficial.length}</strong> credenciales acreditadas. Haga clic en cualquiera para abrir su <span className="text-amber-400 font-bold">modelo de certificado a escala</span>.
+                      {modalLabels.showing} <strong className="text-white">{filteredOfficial.length}</strong> {modalLabels.verifiedCredentials} {modalLabels.clickCredential} <span className="text-amber-400 font-bold">{modalLabels.scaledModel}</span>.
                     </p>
                   </div>
 
@@ -1201,7 +1253,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
                             <Building className="w-3 h-3 text-amber-500" /> {cert.issuer}
                           </span>
                           <span className="text-amber-400 font-bold group-hover:underline flex items-center gap-1">
-                            <span>Ver Modelo Escala</span>
+                            <span>{modalLabels.viewScaledModel}</span>
                             <Maximize2 className="w-3 h-3" />
                           </span>
                         </div>
