@@ -287,8 +287,9 @@ export default async function handler(req: any, res: any) {
         location: item.location,
         responsibilities: item.responsibilities.map((_, j) =>
           typeof translatedRoles[index]?.responsibilities?.[j] === 'string' ? translatedRoles[index].responsibilities[j] : ''),
-        achievements: (item.achievements || []).map((_, j) =>
-          typeof translatedRoles[index]?.achievements?.[j] === 'string' ? translatedRoles[index].achievements[j] : ''),
+        achievements: (item.achievements || []).map((original, j) =>
+          typeof translatedRoles[index]?.achievements?.[j] === 'string' && translatedRoles[index].achievements[j].trim()
+            ? translatedRoles[index].achievements[j] : original),
       })),
       educationItems: translatedEducation,
       additionalTexts: translatedAdditionalTexts,
