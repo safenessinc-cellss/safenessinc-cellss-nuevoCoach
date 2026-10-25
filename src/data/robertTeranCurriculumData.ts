@@ -135,37 +135,66 @@ export const CAREER_EXPERIENCE: CareerRole[] = [
     ]
   },
   {
-    period: "2005 – 2018",
+    period: "Septiembre de 2016 – 2019",
+    title: "Director de TI y Marketing",
+    company: "Abraces.net",
+    location: "Manaus, Brasil",
+    responsibilities: [
+      "Coordinar lanzamientos de productos y la ejecución de planes de marketing.",
+      "Preparar previsiones de ventas y rentabilidad, presupuestos y seguimiento de resultados.",
+      "Coordinar líneas de producto con las áreas comerciales y tecnológicas."
+    ]
+  },
+  {
+    period: "Enero de 2013 – Agosto de 2016",
+    title: "Director de TI y Diseño",
+    company: "Aproinca Group",
+    location: "Barquisimeto, Venezuela",
+    responsibilities: [
+      "Gestionar los recursos tecnológicos de la organización y optimizar el uso de hardware y software.",
+      "Coordinar proyectos de desarrollo, implantación y mantenimiento de sistemas.",
+      "Alinear las soluciones tecnológicas con las necesidades operativas y de diseño."
+    ]
+  },
+  {
+    period: "Julio de 2001 – Diciembre de 2012",
+    title: "Director de Calidad Comercial",
+    company: "Aister SL",
+    location: "España",
+    responsibilities: [
+      "Coordinar proyectos durante el ciclo de vida de tecnologías, infraestructura de TI y sistemas.",
+      "Gestionar gobernanza tecnológica, ingeniería de procesos y continuidad operativa.",
+      "Desarrollar planes de contingencia y seguridad y coordinar al equipo responsable."
+    ]
+  },
+  {
+    period: "1995 – 1999",
     title: "Analista de Compras Senior & Gestión Comercial / Retail",
     company: "General Motors",
     location: "Brasil & LATAM",
     responsibilities: [
-      "Gestión estratégica y operacional de compras de materiales e insumos críticos para la producción automotriz.",
-      "Liderazgo en la adquisición de insumos negociando con proveedores para asegurar calidad y tiempos JIT.",
-      "Análisis de costos y evaluación continua de proveedores para una cadena de suministro rentable.",
-      "Estrategias de negociación y reducción de costos mediante metodologías Lean y Six Sigma.",
-      "Colaboración multidisciplinaria en proyectos de desarrollo de nuevos productos desde diseño hasta masa."
+      "Gestionar compras de materiales e insumos críticos para la producción automotriz.",
+      "Negociar con proveedores y asegurar calidad, disponibilidad y tiempos de suministro JIT.",
+      "Analizar costos, evaluar proveedores y apoyar la reducción de costos y el desarrollo de nuevos productos."
     ],
     achievements: [
-      "Optimización de la cadena de suministro reduciendo costos de adquisición en 15% mediante negociación estratégica.",
-      "Programa de desarrollo de proveedores que mejoró la calidad recibida, reduciendo reclamos en 20%.",
-      "Integración de nuevos proveedores internacionales, ampliando la base de suministro."
+      "Optimización de la cadena de suministro mediante negociación estratégica y evaluación de proveedores."
     ]
   },
   {
-    period: "1999 – 2005",
+    period: "1992 – 1994",
     title: "Auditor Interno de Calidad & Proyectos de Proceso (Estadía)",
     company: "General Motors",
-    location: "Planta Automotriz",
+    location: "Planta automotriz",
     responsibilities: [
-      "Participación en auditorías internas y externas ISO 9001.",
-      "Elaboración y gestión de PPAP (Production Part Approval Process) junto a proveedores.",
-      "Tratamiento de productos no conformes (RNC) y análisis de desvíos de proceso mediante metodología 8D.",
-      "Aplicación de herramientas de la calidad: Ishikawa, 5 Porqués, Brainstorming, FMEA y Control Estadístico."
+      "Participar en auditorías internas y externas ISO 9001.",
+      "Preparar y gestionar PPAP (Production Part Approval Process) con proveedores.",
+      "Tratar productos no conformes y analizar desvíos mediante metodología 8D.",
+      "Aplicar Ishikawa, 5 Porqués, Brainstorming, FMEA y Control Estadístico de Procesos."
     ],
     achievements: [
-      "TCC Aplicación de Herramientas de la Calidad en producción de capacitores con ganancias estimadas de $195,000.00 USD.",
-      "Análisis y proyectos de mejora en pruebas finales, con aumento de 7 puntos en piezas aprobadas al primer intento."
+      "Proyecto TCC de aplicación de herramientas de calidad en producción de capacitores, con ahorro estimado registrado de USD 195.000.",
+      "Proyectos de mejora en pruebas finales con aumento registrado de siete puntos en piezas aprobadas al primer intento."
     ]
   },
 
