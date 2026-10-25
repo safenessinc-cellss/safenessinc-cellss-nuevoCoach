@@ -8,7 +8,7 @@ import {
   ACADEMIC_EDUCATION, ALL_LEARNING_ACTIVITIES, CANDIDATE_INFO, CAREER_EXPERIENCE,
   IMPACT_METRICS, INDUSTRIAL_COURSES, LANGUAGES_LIST, OFFICIAL_CERTIFICATES,
 } from '../data/robertTeranCurriculumData';
-import { translateCurriculumForExport, type CurriculumTranslationInput, type CurriculumTranslationOutput } from '../ai/geminiClient';
+import type { CurriculumTranslationOutput } from '../ai/geminiClient';
 import { buildCurriculumPdfHtml } from './curriculumPdf';
 import { translateCompleteCurriculum } from './curriculumTranslation';
 
