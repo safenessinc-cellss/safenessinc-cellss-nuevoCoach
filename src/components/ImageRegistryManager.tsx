@@ -152,7 +152,7 @@ export default function ImageRegistryManager() {
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.uniqueId')}</label>
-              <input type="text" name="id" required disabled={!!editingId} value={formData.id} onChange={handleChange} className={`w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500 ${editingId ? 'opacity-50 cursor-not-allowed' : ''}`} placeholder="ej. mapa-procesos-v2" />
+              <input type="text" name="id" required disabled={!!editingId} value={formData.id} onChange={handleChange} className={`w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500 ${editingId ? 'opacity-50 cursor-not-allowed' : ''}`} placeholder={t('adminModules.registry.idExample')} />
             </div>
             <div>
               <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.alt')}</label>
@@ -168,11 +168,11 @@ export default function ImageRegistryManager() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.standard')}</label>
-                <input type="text" name="normaRelacionada" required value={formData.normaRelacionada} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="ej. ISO 9001:2015" />
+                <input type="text" name="normaRelacionada" required value={formData.normaRelacionada} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder={t('adminModules.registry.standardExample')} />
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">{t('adminModules.registry.clause')}</label>
-                <input type="text" name="clausula" value={formData.clausula} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder="ej. 4.4" />
+                <input type="text" name="clausula" value={formData.clausula} onChange={handleChange} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500" placeholder={t('adminModules.registry.clauseExample')} />
               </div>
             </div>
             <div>
@@ -181,7 +181,7 @@ export default function ImageRegistryManager() {
                 <option value="diagramas">{t('adminModules.registry.diagrams')}</option>
                 <option value="cumplimiento">{t('adminModules.registry.compliance')}</option>
                 <option value="iconos">{t('adminModules.registry.icons')}</option>
-                <option value="general">General</option>
+                <option value="general">{t('adminModules.registry.general')}</option>
               </select>
             </div>
             <div>
@@ -204,7 +204,7 @@ export default function ImageRegistryManager() {
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <ShieldCheck className="w-6 h-6 text-green-500" /> {t('adminModules.registry.title')}
             </h2>
-            <p className="text-sm text-gray-400 mt-1">Total registrados: {imagesList.length}</p>
+            <p className="text-sm text-gray-400 mt-1">{t('adminModules.registry.total')}: {imagesList.length}</p>
           </div>
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -235,7 +235,7 @@ export default function ImageRegistryManager() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-bold text-sm text-white truncate pr-2" title={img.alt}>{img.alt}</h3>
-                  <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 capitalize">{img.categoria}</span>
+                  <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 capitalize">{t(`adminModules.registry.${img.categoria}`)}</span>
                 </div>
                 {img.description && <p className="text-xs text-gray-400 line-clamp-2 mb-3">{img.description}</p>}
                 
