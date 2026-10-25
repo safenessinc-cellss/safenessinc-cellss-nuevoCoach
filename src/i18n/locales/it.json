@@ -520,7 +520,12 @@
       "message": "Messaggio per l'assistente",
       "placeholder": "Chiedi informazioni sul pannello o descrivi l'attività necessaria…",
       "send": "Invia",
-      "privacy": "Non inviare password, chiavi API o dati sensibili dei clienti."
+      "privacy": "Non inviare password, chiavi API o dati sensibili dei clienti.",
+      "welcome": "Ciao. Sono l'assistente amministrativo di Coach ISO. Puoi chiedermi informazioni sulle attività e sui problemi del pannello o chiedermi di preparare un piano di lavoro. Questa chat fornisce indicazioni; non modifica dati né esegue comandi automaticamente.",
+      "sessionExpired": "La sessione è scaduta. Accedi di nuovo.",
+      "contactError": "Impossibile contattare l'assistente.",
+      "noResponse": "Non ho ricevuto una risposta. Riprova.",
+      "unexpected": "Si è verificato un errore imprevisto."
     },
     "theme": {
       "title": "Aspetto e colori",
