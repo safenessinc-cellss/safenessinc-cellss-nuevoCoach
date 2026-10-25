@@ -412,7 +412,12 @@
       "logout": "Cerrar sesión",
       "readOnly": "Modo de solo lectura (lector/editor)",
       "addRecord": "Añadir registro",
-      "addCollaborator": "Añadir colaborador"
+      "addCollaborator": "Añadir colaborador",
+      "validating": "Validando credenciales seguras del auditor…",
+      "redirecting": "Redirigiendo al acceso seguro del panel…",
+      "currentRole": "Rol actual",
+      "specialist": "Especialista en SGI y procesos",
+      "revoke": "Revocar permisos"
     },
     "dashboard": {
       "activeCourses": "Cursos activos",
@@ -500,7 +505,8 @@
       "languageHelp": "Cambia el idioma de visualización del portal. Las traducciones disponibles se aplican automáticamente a los textos traducidos.",
       "languageDomain": "Dominio de lenguas e idiomas técnicos",
       "level": "Nivel",
-      "languageDetail": "Detalle del dominio"
+      "languageDetail": "Detalle del dominio",
+      "languageLabel": "Idioma"
     },
     "certificate": {
       "title": "Importador de certificados con IA",
@@ -589,9 +595,13 @@
       "save": "Guardar cambios",
       "register": "Registrar imagen",
       "title": "Registro de activos ISO",
-      "total": "Total registrado",
+      "total": "Total registrados",
       "search": "Buscar por norma, cláusula o descripción...",
-      "edit": "Editar"
+      "edit": "Editar",
+      "idExample": "ej. mapa-procesos-v2",
+      "standardExample": "ej. ISO 9001:2015",
+      "clauseExample": "ej. 4.4",
+      "clauseInline": "Cláusula"
     },
     "analytics": {
       "title": "Análisis de demanda y asistente de IA",
@@ -716,7 +726,10 @@
       "editorRole": "Editor (gestionar cursos y visitas)",
       "viewerRole": "Lector (solo lectura)",
       "editAsset": "Editar",
-      "courseCategory": "Categoría del curso"
+      "courseCategory": "Categoría del curso",
+      "addressExample": "Av. Principal, oficinas de planta industrial…",
+      "auditorNotesExample": "Ej.: asegurar firma del acuerdo de confidencialidad NDA y llevar la lista de verificación…",
+      "topicExample": "Revisión de la cláusula 7 o coaching general…"
     }
   }
 }
