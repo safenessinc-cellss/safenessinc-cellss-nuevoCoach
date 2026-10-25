@@ -680,7 +680,7 @@ function AIDemandAnalyticsDashboard() {
                     borderRadius: '12px' 
                   }} 
                 />
-                <Bar dataKey="demanda" name="{t('adminModules.analytics.hourlyVolume')}" fill={COLOR_PALETTE.blue} radius={[6, 6, 0, 0]} barSize={28} />
+                <Bar dataKey="demanda" name={t('adminModules.analytics.hourlyVolume')} fill={COLOR_PALETTE.blue} radius={[6, 6, 0, 0]} barSize={28} />
               </BarChart>
             </ResponsiveContainer>
           </div>
