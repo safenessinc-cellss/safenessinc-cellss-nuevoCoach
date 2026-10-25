@@ -235,7 +235,7 @@ export default function ImageRegistryManager() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-bold text-sm text-white truncate pr-2" title={img.alt}>{img.alt}</h3>
-                  <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 capitalize">{t(`adminModules.registry.${img.categoria}`)}</span>
+                  <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300 capitalize">{t(img.categoria === 'diagramas' ? 'adminModules.registry.diagrams' : img.categoria === 'cumplimiento' ? 'adminModules.registry.compliance' : img.categoria === 'iconos' ? 'adminModules.registry.icons' : 'adminModules.registry.general')}</span>
                 </div>
                 {img.description && <p className="text-xs text-gray-400 line-clamp-2 mb-3">{img.description}</p>}
                 
