@@ -206,9 +206,12 @@ export default function PublicCurriculumPage() {
     if (!/^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$/.test(language)) { setError(t.noResults); return; }
     setBusy(true); setError(''); setProgress(t.exporting);
     try {
-      const result = translatedView && viewLanguage.toLowerCase() === language.toLowerCase()
-        ? translatedView
-        : await translateCompleteCurriculum(source, language, setProgress);
+      // Spanish is the source language; export it without calling Gemini.
+      const result = language.toLowerCase() === 'es'
+        ? source
+        : translatedView && viewLanguage.toLowerCase() === language.toLowerCase()
+          ? translatedView
+          : await translateCompleteCurriculum(source, language, setProgress);
       if (!result.summary?.trim() ||
           result.impactMetrics.length !== source.impactMetrics.length ||
           result.careerRoles.length !== source.careerRoles.length ||
