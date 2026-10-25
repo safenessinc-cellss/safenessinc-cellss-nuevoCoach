@@ -142,7 +142,7 @@ export default function PublicCurriculumPage() {
       }
       if (!result.summary?.trim() || result.impactMetrics.length!==source.impactMetrics.length || result.careerRoles.length!==source.careerRoles.length || result.educationItems.length!==source.educationItems.length || result.additionalTexts.length!==source.additionalTexts.length || result.educationItems.some((x,i)=>!x.title?.trim()||(Boolean(source.educationItems[i].description?.trim())&&!x.description?.trim()))) throw new Error('Incomplete translation');
       const wrapper=document.createElement('div'); wrapper.innerHTML=buildCurriculumPdfHtml(result,language,t); wrapper.style.cssText='position:fixed;left:-12000px;top:0;width:794px;background:#fff;z-index:-1'; document.body.appendChild(wrapper);
-      try { await html2pdf().set({margin:[12,12,14,12],filename:`Deuwy-Robert-Teran-Medina-CV-${language}.pdf`,image:{type:'jpeg',quality:.96},html2canvas:{scale:1.6,useCORS:true,backgroundColor:'#fff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['.card','.role']}}).from(wrapper.firstElementChild as HTMLElement).save(); }
+      try { await html2pdf().set({margin:[12,12,14,12],filename:`Deuwy-Robert-Teran-Medina-CV-${language}.pdf`,image:{type:'jpeg',quality:.96},html2canvas:{scale:1.6,useCORS:true,backgroundColor:'#fff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(wrapper.firstElementChild as HTMLElement).save(); }
       finally { wrapper.remove(); }
     } catch (cause) { console.error('Curriculum PDF export failed',cause); setError(cause instanceof Error && cause.message==='Incomplete translation' ? t.noResults : t.translationError); }
     finally { setBusy(false); setProgress(''); }
