@@ -357,5 +357,80 @@
     "methodText": "La psicopedagogía empresarial se utiliza como marco para comprender cómo aprende el equipo. Los modelos de perfiles conductuales y los biotipos de Sheldon se consideran únicamente perspectivas complementarias de exploración, no diagnósticos clínicos ni criterios únicos para seleccionar o clasificar personas.",
     "outcomeTitle": "Objetivo",
     "outcomeText": "Facilitar la adopción de cambios, fortalecer la colaboración y conectar el desarrollo de las personas con los objetivos operativos y de calidad."
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Panel principal",
+      "aiDemand": "Demanda e IA",
+      "aiCurriculum": "IA para currículo",
+      "aiAssistant": "Asistente administrativo",
+      "courses": "Cursos",
+      "books": "Libros y PDF",
+      "visits": "Visitas presenciales",
+      "tutorials": "Tutorías online",
+      "users": "Gestión de usuarios",
+      "registry": "Activos ISO",
+      "curriculum": "Gestor de currículo",
+      "theme": "Apariencia",
+      "profile": "Perfil público"
+    },
+    "title": {
+      "dashboard": "Panel general y análisis",
+      "aiDemand": "Análisis de demanda y actividad de IA",
+      "aiCurriculum": "Importación asistida de certificados",
+      "aiAssistant": "Asistente de administración",
+      "courses": "Gestión de cursos",
+      "books": "Biblioteca digital y PDF",
+      "visits": "Agenda de visitas presenciales",
+      "tutorials": "Agenda de tutorías online",
+      "users": "Colaboradores y permisos",
+      "registry": "Gestor de activos ISO",
+      "curriculum": "Gestión y corrección del currículo",
+      "theme": "Apariencia y colores",
+      "profile": "Configuración del consultor"
+    },
+    "description": {
+      "dashboard": "Rendimiento general y próximas actividades.",
+      "aiDemand": "Consultas a la IA, servicios ISO más solicitados y sesiones agendadas en tiempo real.",
+      "aiCurriculum": "Extrae datos de imágenes, revisa cada campo y guarda credenciales sin marcarlas como verificadas.",
+      "aiAssistant": "Conversa con el asistente interno para analizar tareas y preparar operaciones del panel.",
+      "courses": "Administración de programas educativos presenciales y digitales.",
+      "books": "Gestión de libros técnicos, descargas e indicadores.",
+      "visits": "Planificación semanal de auditorías presenciales en las instalaciones de clientes.",
+      "tutorials": "Coaching remoto con enlaces de Zoom y Meet.",
+      "users": "Control de accesos y roles de administrador, editor y lector.",
+      "registry": "Carga y organización de diagramas de cumplimiento.",
+      "curriculum": "Modifica datos ejecutivos, trayectoria, métricas y formación del CV.",
+      "theme": "Personaliza la paleta corporativa, el modo oscuro y la claridad visual del panel.",
+      "profile": "Modifica la información pública, el logotipo y los testimonios."
+    },
+    "common": {
+      "language": "Idioma",
+      "demoUtilities": "UTILIDADES DE DEMOSTRACIÓN",
+      "reloadDemo": "Recargar datos de prueba",
+      "goToWebsite": "Ir al sitio web",
+      "logout": "Cerrar sesión",
+      "readOnly": "Modo de solo lectura (lector/editor)",
+      "addRecord": "Añadir registro",
+      "addCollaborator": "Añadir colaborador"
+    },
+    "dashboard": {
+      "activeCourses": "Cursos activos",
+      "booksResources": "Libros y recursos",
+      "monthlyVisits": "Visitas del mes",
+      "pendingTutorials": "Tutorías pendientes",
+      "visitsTrend": "Tendencia de visitas presenciales",
+      "visitsByMonth": "Total de auditorías presenciales programadas por mes durante este semestre.",
+      "topDownloaded": "Libros más descargados",
+      "isoResources": "Recursos de auditoría ISO con más interacciones.",
+      "loadBooks": "Añade libros técnicos para ver las descargas.",
+      "upcomingActivities": "Próximas actividades de consulta",
+      "chronological": "ORDEN CRONOLÓGICO",
+      "noActivities": "No hay visitas ni tutorías programadas para esta semana.",
+      "visit": "Visita",
+      "tutorial": "Tutoría",
+      "featured": "Selección ISO de Robert",
+      "downloads": "descargas"
+    }
   }
 }
