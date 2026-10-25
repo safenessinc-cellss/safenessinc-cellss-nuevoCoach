@@ -105,7 +105,7 @@ export default function CurriculumEditor() {
     setFormData(importPreview.curriculum);
     setImportPreview(null);
     setImportError('');
-    setImportNotice('Fusión aplicada al editor. Revisa los datos y pulsa “{t('adminModules.curriculum.save')}” para conservarlos.');
+    setImportNotice(`Fusión aplicada al editor. Revisa los datos y pulsa “${t('adminModules.curriculum.save')}” para conservarlos.`);
     setSaveSuccess(false);
     setActiveTab('training');
   };
@@ -253,7 +253,7 @@ export default function CurriculumEditor() {
         {
           period: "2025 - Actualidad",
           title: "Nuevo Cargo / Posición",
-          company: "Nombre de {t('adminModules.curriculum.company')}",
+          company: "Nombre de Empresa",
           location: "Ciudad, País",
           responsibilities: ["Liderar proyectos de optimización de procesos y calidad ISO."],
           achievements: ["Aumento de eficiencia en planta."]
@@ -410,7 +410,7 @@ export default function CurriculumEditor() {
             </div>
             <label className={`inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border border-amber-400/30 bg-amber-500/15 px-4 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/25 ${isImporting ? 'pointer-events-none opacity-60' : ''}`}>
               {isImporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-              {isImporting ? 'Analizando documento…' : '{t('adminModules.curriculum.uploadOld')}'}
+              {isImporting ? 'Analizando documento…' : t('adminModules.curriculum.uploadOld')}
               <input
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png,.webp,.txt,.md,application/pdf,image/jpeg,image/png,image/webp,text/plain,text/markdown"
@@ -639,7 +639,7 @@ export default function CurriculumEditor() {
               </div>
               <textarea
                 name="summary"
-                aria-label="{t('adminModules.curriculum.professionalSummary')}"
+                aria-label={t('adminModules.curriculum.professionalSummary')}
                 value={formData.candidateInfo.summary}
                 onChange={handleInfoChange}
                 rows={6}
@@ -652,7 +652,7 @@ export default function CurriculumEditor() {
                   onChange={event => setSummaryAiInstructions(event.target.value)}
                   rows={2}
                   className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-xs leading-relaxed text-gray-200 focus:border-sky-400 focus:outline-none"
-                  placeholder="{t('adminModules.curriculum.aiExample')}"
+                  placeholder={t('adminModules.curriculum.aiExample')}
                 />
               </label>
               {summaryAiError && <p role="alert" className="rounded-xl border border-red-400/20 bg-red-400/5 p-3 text-xs text-red-300">{summaryAiError}</p>}
