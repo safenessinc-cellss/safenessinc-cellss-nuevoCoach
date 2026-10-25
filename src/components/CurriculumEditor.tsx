@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { 
   FileText, 
@@ -25,6 +26,7 @@ import type { CurriculumMergePreview } from '../ai/geminiClient';
 import { OFFICIAL_CERTIFICATES } from '../data/robertTeranCurriculumData';
 
 export default function CurriculumEditor() {
+  const { t } = useTranslation();
   const { curriculumData, updateCurriculum, loading } = useCurriculumSettings();
   const [formData, setFormData] = useState<CurriculumSettings>(() => ({
     ...DEFAULT_CURRICULUM_SETTINGS,
@@ -103,7 +105,7 @@ export default function CurriculumEditor() {
     setFormData(importPreview.curriculum);
     setImportPreview(null);
     setImportError('');
-    setImportNotice('Fusión aplicada al editor. Revisa los datos y pulsa “Guardar Cambios” para conservarlos.');
+    setImportNotice('Fusión aplicada al editor. Revisa los datos y pulsa “{t('adminModules.curriculum.save')}” para conservarlos.');
     setSaveSuccess(false);
     setActiveTab('training');
   };
@@ -251,7 +253,7 @@ export default function CurriculumEditor() {
         {
           period: "2025 - Actualidad",
           title: "Nuevo Cargo / Posición",
-          company: "Nombre de Empresa",
+          company: "Nombre de {t('adminModules.curriculum.company')}",
           location: "Ciudad, País",
           responsibilities: ["Liderar proyectos de optimización de procesos y calidad ISO."],
           achievements: ["Aumento de eficiencia en planta."]
@@ -368,7 +370,7 @@ export default function CurriculumEditor() {
               className="px-4 py-2.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 rounded-xl text-xs font-bold flex items-center gap-2 transition cursor-pointer"
             >
               <Eye className="w-4 h-4" />
-              <span>Vista Previa del CV</span>
+              <span>{t('adminModules.curriculum.preview')}</span>
             </button>
 
             <button
@@ -382,12 +384,12 @@ export default function CurriculumEditor() {
               ) : saveSuccess ? (
                 <>
                   <CheckCircle className="w-4 h-4 text-emerald-950" />
-                  <span>¡Guardado!</span>
+                  <span>{t('adminModules.curriculum.saved')}</span>
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  <span>Guardar Cambios</span>
+                  <span>{t('adminModules.curriculum.save')}</span>
                 </>
               )}
             </button>
@@ -400,15 +402,15 @@ export default function CurriculumEditor() {
             <div>
               <h3 className="text-sm font-extrabold text-gray-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-400" />
-                Fusionar un currículo o historial antiguo
+                {t('adminModules.curriculum.merge')}
               </h3>
               <p className="mt-1 max-w-2xl text-xs leading-relaxed text-gray-600">
-                La IA compara el documento con el currículo actual, recupera datos únicos y prepara una fusión sin duplicados para que la revises antes de guardarla.
+                {t('adminModules.curriculum.mergeDesc')}
               </p>
             </div>
             <label className={`inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border border-amber-400/30 bg-amber-500/15 px-4 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/25 ${isImporting ? 'pointer-events-none opacity-60' : ''}`}>
               {isImporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-              {isImporting ? 'Analizando documento…' : 'Subir currículo antiguo'}
+              {isImporting ? 'Analizando documento…' : '{t('adminModules.curriculum.uploadOld')}'}
               <input
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png,.webp,.txt,.md,application/pdf,image/jpeg,image/png,image/webp,text/plain,text/markdown"
@@ -419,7 +421,7 @@ export default function CurriculumEditor() {
             </label>
           </div>
 
-          <p className="mt-3 text-[10px] text-gray-500">Admite PDF, imágenes, TXT y Markdown (máximo 3 MB). No publica ni guarda cambios automáticamente.</p>
+          <p className="mt-3 text-[10px] text-gray-500">{t('adminModules.curriculum.uploadHelp')}</p>
 
           {importError && <p role="alert" className="mt-3 rounded-lg border border-red-500/25 bg-red-500/10 p-3 text-xs text-red-300">{importError}</p>}
           {importNotice && <p role="status" className="mt-3 rounded-lg border border-emerald-500/25 bg-emerald-500/10 p-3 text-xs text-emerald-300">{importNotice}</p>}
@@ -428,11 +430,11 @@ export default function CurriculumEditor() {
             <div className="mt-4 space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-4">
               <div>
                 <p className="text-xs font-bold text-gray-900">Fusión preparada: {importFileName}</p>
-                <p className="mt-1 text-[11px] text-gray-600">No se ha guardado todavía. Revisa las notas y las posibles contradicciones antes de aplicarla.</p>
+                <p className="mt-1 text-[11px] text-gray-600">{t('adminModules.curriculum.notSaved')}</p>
               </div>
               {importPreview.notes.length > 0 && (
                 <div>
-                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">Información recuperada</p>
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-emerald-300">{t('adminModules.curriculum.recovered')}</p>
                   <ul className="list-disc space-y-1 pl-5 text-xs text-gray-700">
                     {importPreview.notes.map((note, index) => <li key={index}>{note}</li>)}
                   </ul>
@@ -440,15 +442,15 @@ export default function CurriculumEditor() {
               )}
               {importPreview.conflicts.length > 0 && (
                 <div>
-                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-300">Revisar antes de guardar</p>
+                  <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-amber-300">{t('adminModules.curriculum.review')}</p>
                   <ul className="list-disc space-y-1 pl-5 text-xs text-gray-700">
                     {importPreview.conflicts.map((conflict, index) => <li key={index}>{conflict}</li>)}
                   </ul>
                 </div>
               )}
               <div className="flex flex-wrap gap-2 pt-1">
-                <button type="button" onClick={applyCurriculumMerge} className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-extrabold text-black transition hover:bg-amber-400">Aplicar fusión al editor</button>
-                <button type="button" onClick={() => setImportPreview(null)} className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-bold text-gray-700 transition hover:bg-gray-50">Descartar</button>
+                <button type="button" onClick={applyCurriculumMerge} className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-extrabold text-black transition hover:bg-amber-400">{t('adminModules.curriculum.applyMerge')}</button>
+                <button type="button" onClick={() => setImportPreview(null)} className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-bold text-gray-700 transition hover:bg-gray-50">{t('adminModules.curriculum.discard')}</button>
               </div>
             </div>
           )}
@@ -466,7 +468,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <User className="w-4 h-4" />
-            <span>Datos Personales & Resumen</span>
+            <span>{t('adminModules.curriculum.info')}</span>
           </button>
 
           <button
@@ -479,7 +481,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <Sparkles className="w-4 h-4" />
-            <span>Métricas de Impacto ({formData.impactMetrics.length})</span>
+            <span>{t('adminModules.curriculum.metrics')} ({formData.impactMetrics.length})</span>
           </button>
 
           <button
@@ -492,7 +494,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <Briefcase className="w-4 h-4" />
-            <span>Experiencia Laboral ({formData.careerRoles.length})</span>
+            <span>{t('adminModules.curriculum.experience')} ({formData.careerRoles.length})</span>
           </button>
 
           <button
@@ -505,7 +507,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <GraduationCap className="w-4 h-4" />
-            <span>Educación ({formData.educationItems.length})</span>
+            <span>{t('adminModules.curriculum.education')} ({formData.educationItems.length})</span>
           </button>
 
           <button
@@ -518,7 +520,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Formación y cursos ({formData.industrialCourses.length})</span>
+            <span>{t('adminModules.curriculum.training')} ({formData.industrialCourses.length})</span>
           </button>
 
           <button
@@ -531,7 +533,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <Palette className="w-4 h-4" />
-            <span>Apariencia e idioma</span>
+            <span>{t('adminModules.curriculum.appearance')}</span>
           </button>
 
           <button
@@ -544,7 +546,7 @@ export default function CurriculumEditor() {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Idiomas ({formData.languagesList.length})</span>
+            <span>{t('adminModules.curriculum.languages')} ({formData.languagesList.length})</span>
           </button>
         </div>
 
@@ -553,7 +555,7 @@ export default function CurriculumEditor() {
           <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Nombre Completo</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">{t('adminModules.curriculum.fullName')}</label>
                 <input
                   type="text"
                   name="name"
@@ -564,7 +566,7 @@ export default function CurriculumEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Teléfono / WhatsApp</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">{t('adminModules.curriculum.phone')}</label>
                 <input
                   type="text"
                   name="phone"
@@ -575,7 +577,7 @@ export default function CurriculumEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Correo Electrónico</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">{t('adminModules.curriculum.email')}</label>
                 <input
                   type="email"
                   name="email"
@@ -586,7 +588,7 @@ export default function CurriculumEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Ubicación</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">{t('adminModules.curriculum.location')}</label>
                 <input
                   type="text"
                   name="location"
@@ -597,7 +599,7 @@ export default function CurriculumEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Enlace Perfil Credly</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">{t('adminModules.curriculum.credly')}</label>
                 <input
                   type="text"
                   name="credlyProfile"
@@ -608,7 +610,7 @@ export default function CurriculumEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">Fecha de Expedición Transcript</label>
+                <label className="block text-xs font-bold text-gray-600 uppercase mb-2">{t('adminModules.curriculum.transcriptDate')}</label>
                 <input
                   type="text"
                   name="transcriptDate"
@@ -622,8 +624,8 @@ export default function CurriculumEditor() {
             <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-4 md:p-5 space-y-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <label className="block text-xs font-bold uppercase text-sky-300 mb-1">Resumo Profissional</label>
-                  <p className="text-xs leading-relaxed text-gray-600">Edite o texto ou peça à IA uma versão mais executiva. A sugestão só será aplicada quando você confirmar.</p>
+                  <label className="block text-xs font-bold uppercase text-sky-300 mb-1">{t('adminModules.curriculum.professionalSummary')}</label>
+                  <p className="text-xs leading-relaxed text-gray-600">{t('adminModules.curriculum.summaryHelp')}</p>
                 </div>
                 <button
                   type="button"
@@ -637,30 +639,30 @@ export default function CurriculumEditor() {
               </div>
               <textarea
                 name="summary"
-                aria-label="Resumo Profissional"
+                aria-label="{t('adminModules.curriculum.professionalSummary')}"
                 value={formData.candidateInfo.summary}
                 onChange={handleInfoChange}
                 rows={6}
                 className="w-full rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm leading-relaxed text-gray-900 focus:border-sky-400 focus:outline-none"
               />
               <label className="block space-y-1.5">
-                <span className="text-xs font-semibold text-gray-700">Orientações para a IA (opcional)</span>
+                <span className="text-xs font-semibold text-gray-700">{t('adminModules.curriculum.aiGuidance')}</span>
                 <textarea
                   value={summaryAiInstructions}
                   onChange={event => setSummaryAiInstructions(event.target.value)}
                   rows={2}
                   className="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 text-xs leading-relaxed text-gray-200 focus:border-sky-400 focus:outline-none"
-                  placeholder="Ex.: destacar auditoria ISO, liderança industrial e resultados mensuráveis."
+                  placeholder="{t('adminModules.curriculum.aiExample')}"
                 />
               </label>
               {summaryAiError && <p role="alert" className="rounded-xl border border-red-400/20 bg-red-400/5 p-3 text-xs text-red-300">{summaryAiError}</p>}
               {summaryAiDraft && (
                 <div className="space-y-3 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-300"><Sparkles className="h-4 w-4" /> Proposta da IA — revise antes de aplicar</div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-300"><Sparkles className="h-4 w-4" /> {t('adminModules.curriculum.aiProposal')}</div>
                   <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-100">{summaryAiDraft}</p>
                   <div className="flex flex-wrap gap-2">
-                    <button type="button" onClick={applyProfessionalSummary} className="rounded-lg bg-emerald-400 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-300">Aplicar proposta</button>
-                    <button type="button" onClick={() => setSummaryAiDraft('')} className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-200 hover:bg-gray-50">Descartar</button>
+                    <button type="button" onClick={applyProfessionalSummary} className="rounded-lg bg-emerald-400 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-300">{t('adminModules.curriculum.applyProposal')}</button>
+                    <button type="button" onClick={() => setSummaryAiDraft('')} className="rounded-lg border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-200 hover:bg-gray-50">{t('adminModules.curriculum.discard')}</button>
                   </div>
                 </div>
               )}
@@ -672,7 +674,7 @@ export default function CurriculumEditor() {
         {activeTab === 'metrics' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-600">Tarjetas de métricas numéricas desplegadas en el encabezado.</span>
+              <span className="text-xs text-gray-600">{t('adminModules.curriculum.metricsHelp')}</span>
               <button
                 type="button"
                 onClick={addMetric}
@@ -689,14 +691,14 @@ export default function CurriculumEditor() {
                     type="button"
                     onClick={() => removeMetric(idx)}
                     className="absolute top-3 right-3 text-red-400 hover:text-red-300 transition"
-                    title="Eliminar"
+                    title={t('adminModules.curriculum.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
 
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-1">
-                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Valor (%)</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.value')}</label>
                       <input
                         type="text"
                         value={metric.value}
@@ -705,7 +707,7 @@ export default function CurriculumEditor() {
                       />
                     </div>
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Título / Etiqueta</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.label')}</label>
                       <input
                         type="text"
                         value={metric.label}
@@ -716,7 +718,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Detalle Operativo</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.detail')}</label>
                     <input
                       type="text"
                       value={metric.detail}
@@ -734,7 +736,7 @@ export default function CurriculumEditor() {
         {activeTab === 'experience' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-600">Cronología de cargos, empresas y logros operativos.</span>
+              <span className="text-xs text-gray-600">{t('adminModules.curriculum.careerHelp')}</span>
               <button
                 type="button"
                 onClick={addRole}
@@ -750,14 +752,14 @@ export default function CurriculumEditor() {
                   type="button"
                   onClick={() => removeRole(idx)}
                   className="absolute top-4 right-4 text-red-400 hover:text-red-300 transition p-1 bg-red-500/10 rounded-lg border border-red-500/20"
-                  title="Eliminar Cargo"
+                  title={t('adminModules.curriculum.deleteRole')}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pr-10">
                   <div className="lg:col-span-1">
-                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">Periodo</label>
+                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">{t('adminModules.curriculum.period')}</label>
                     <input
                       type="text"
                       value={role.period}
@@ -767,7 +769,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div className="lg:col-span-1">
-                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">Título del Cargo</label>
+                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">{t('adminModules.curriculum.roleTitle')}</label>
                     <input
                       type="text"
                       value={role.title}
@@ -777,7 +779,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div className="lg:col-span-1">
-                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">Empresa</label>
+                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">{t('adminModules.curriculum.company')}</label>
                     <input
                       type="text"
                       value={role.company}
@@ -787,7 +789,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div className="lg:col-span-1">
-                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">Ubicación</label>
+                    <label className="block text-[10px] font-bold text-amber-400 uppercase mb-1">{t('adminModules.curriculum.location')}</label>
                     <input
                       type="text"
                       value={role.location}
@@ -800,7 +802,7 @@ export default function CurriculumEditor() {
                 {/* Responsibilities */}
                 <div className="space-y-2 pt-2 border-t border-white/5">
                   <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold text-gray-700">Responsabilidades Principales</label>
+                    <label className="text-xs font-bold text-gray-700">{t('adminModules.curriculum.responsibilities')}</label>
                     <button
                       type="button"
                       onClick={() => addResponsibility(idx)}
@@ -840,7 +842,7 @@ export default function CurriculumEditor() {
         {activeTab === 'education' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-600">Títulos universitarios y certificaciones de formación académica.</span>
+              <span className="text-xs text-gray-600">{t('adminModules.curriculum.educationHelp')}</span>
               <button
                 type="button"
                 onClick={addEducation}
@@ -857,14 +859,14 @@ export default function CurriculumEditor() {
                     type="button"
                     onClick={() => removeEducation(idx)}
                     className="absolute top-3 right-3 text-red-400 hover:text-red-300 transition"
-                    title="Eliminar"
+                    title={t('adminModules.curriculum.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
 
                   <div className="grid grid-cols-3 gap-2">
                     <div className="col-span-1">
-                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Periodo</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.period')}</label>
                       <input
                         type="text"
                         value={edu.period}
@@ -873,7 +875,7 @@ export default function CurriculumEditor() {
                       />
                     </div>
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Título Académico</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.academicTitle')}</label>
                       <input
                         type="text"
                         value={edu.title}
@@ -884,7 +886,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Institución / Universidad</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.institution')}</label>
                     <input
                       type="text"
                       value={edu.institution}
@@ -894,7 +896,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Descripción / Mención</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.description')}</label>
                     <input
                       type="text"
                       value={edu.description || ''}
@@ -913,8 +915,8 @@ export default function CurriculumEditor() {
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
-                <h3 className="text-sm font-extrabold text-gray-900">Formación consolidada</h3>
-                <p className="mt-1 text-xs text-gray-600">Los cursos importados quedan guardados aquí y se muestran en el historial formativo y en el CV completo. Las actividades no se presentan automáticamente como certificaciones oficiales.</p>
+                <h3 className="text-sm font-extrabold text-gray-900">{t('adminModules.curriculum.consolidated')}</h3>
+                <p className="mt-1 text-xs text-gray-600">{t('adminModules.curriculum.consolidatedHelp')}</p>
               </div>
               <button
                 type="button"
@@ -925,7 +927,7 @@ export default function CurriculumEditor() {
               </button>
             </div>
             {formData.industrialCourses.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-gray-300 p-8 text-center text-xs text-gray-600">Todavía no hay formaciones importadas en este currículo.</div>
+              <div className="rounded-2xl border border-dashed border-gray-300 p-8 text-center text-xs text-gray-600">{t('adminModules.curriculum.noTraining')}</div>
             ) : (
               <div className="space-y-3">
                 {formData.industrialCourses.map((course: any, idx: number) => (
@@ -959,8 +961,8 @@ export default function CurriculumEditor() {
         {activeTab === 'appearance' && (
           <div className="space-y-6">
             <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-              <h3 className="text-sm font-bold text-gray-900">Diseño del currículo ejecutivo</h3>
-              <p className="mt-1 text-xs text-gray-600">Estos colores se aplican al documento del currículo y a su exportación PDF. Guarda los cambios para conservarlos.</p>
+              <h3 className="text-sm font-bold text-gray-900">{t('adminModules.curriculum.design')}</h3>
+              <p className="mt-1 text-xs text-gray-600">{t('adminModules.curriculum.designHelp')}</p>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {([
                   ['backgroundColor', 'Fondo del currículo', '#FFFFFF'],
@@ -1001,26 +1003,26 @@ export default function CurriculumEditor() {
                 ))}
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">Google corporativo (fondo blanco)</button>
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">Safeness teal</button>
-                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">Azul ejecutivo</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFFFF', sidebarColor: '#174EA6', accentColor: '#4285F4', textColor: '#1F2937' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">{t('adminModules.curriculum.googlePreset')}</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#F8FAFC', sidebarColor: '#0F766E', accentColor: '#14B8A6', textColor: '#0F172A' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">{t('adminModules.curriculum.tealPreset')}</button>
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, appearance: { backgroundColor: '#FFFDF7', sidebarColor: '#172554', accentColor: '#D4A574', textColor: '#1F2937' } }))} className="rounded-lg border border-gray-300 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50">{t('adminModules.curriculum.bluePreset')}</button>
               </div>
             </div>
             <div className="rounded-2xl border border-sky-400/25 bg-sky-400/5 p-5">
-              <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900"><Sparkles className="h-4 w-4 text-sky-300" />Análisis integral y mejora con IA</h3>
-              <p className="mt-1 text-xs leading-relaxed text-gray-600">La IA revisa el perfil, la trayectoria, los logros, las credenciales IBM/Credly y la formación para proponer una síntesis ejecutiva y agrupaciones profesionales. No inventa títulos ni certificaciones; revisa el resultado antes de aplicarlo.</p>
+              <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900"><Sparkles className="h-4 w-4 text-sky-300" />{t('adminModules.curriculum.analysis')}</h3>
+              <p className="mt-1 text-xs leading-relaxed text-gray-600">{t('adminModules.curriculum.analysisHelp')}</p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <button type="button" onClick={handleAnalyzePresentation} disabled={isAnalyzing} className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-4 py-2.5 text-xs font-extrabold text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-60">
                   {isAnalyzing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                   {isAnalyzing ? 'Analizando todo el currículo…' : 'Analizar y mejorar con IA'}
                 </button>
-                {analysisPreview && <button type="button" onClick={handleApplyPresentationAnalysis} className="rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-400/20">Aplicar análisis al currículo</button>}
+                {analysisPreview && <button type="button" onClick={handleApplyPresentationAnalysis} className="rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-2.5 text-xs font-bold text-emerald-300 hover:bg-emerald-400/20">{t('adminModules.curriculum.applyAnalysis')}</button>}
               </div>
               {analysisError && <p role="alert" className="mt-3 rounded-lg border border-red-500/25 bg-red-500/10 p-3 text-xs text-red-300">{analysisError}</p>}
               {analysisPreview && (
                 <div className="mt-4 space-y-4 rounded-xl border border-gray-200 bg-slate-950/60 p-4">
-                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Titular ejecutivo sugerido</p><p className="mt-1 text-sm font-bold text-gray-900">{analysisPreview.shortCvHeadline}</p></div>
-                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Resumen ejecutivo propuesto</p><p className="mt-1 text-xs leading-relaxed text-gray-200">{analysisPreview.executiveSummary}</p></div>
+                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">{t('adminModules.curriculum.headline')}</p><p className="mt-1 text-sm font-bold text-gray-900">{analysisPreview.shortCvHeadline}</p></div>
+                  <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">{t('adminModules.curriculum.summary')}</p><p className="mt-1 text-xs leading-relaxed text-gray-200">{analysisPreview.executiveSummary}</p></div>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {analysisPreview.professionalAreas.map((area) => (
                       <div key={area.area} className="rounded-lg border border-gray-200 bg-white/[0.03] p-3">
@@ -1030,13 +1032,13 @@ export default function CurriculumEditor() {
                       </div>
                     ))}
                   </div>
-                  {analysisPreview.recommendations.length > 0 && <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">Recomendaciones de presentación</p><ul className="mt-2 list-disc space-y-1 pl-5 text-[11px] text-gray-700">{analysisPreview.recommendations.map((item, index) => <li key={index}>{item}</li>)}</ul></div>}
+                  {analysisPreview.recommendations.length > 0 && <div><p className="text-[10px] font-bold uppercase tracking-wide text-sky-300">{t('adminModules.curriculum.recommendations')}</p><ul className="mt-2 list-disc space-y-1 pl-5 text-[11px] text-gray-700">{analysisPreview.recommendations.map((item, index) => <li key={index}>{item}</li>)}</ul></div>}
                 </div>
               )}
             </div>
             <div className="rounded-2xl border border-gray-200 bg-gray-50 p-5">
-              <h3 className="text-sm font-bold text-gray-900">Idioma y traducción</h3>
-              <p className="mt-1 text-xs text-gray-600">Cambia el idioma de visualización del portal. Las traducciones disponibles se aplican automáticamente a los textos traducidos.</p>
+              <h3 className="text-sm font-bold text-gray-900">{t('adminModules.curriculum.languageTranslation')}</h3>
+              <p className="mt-1 text-xs text-gray-600">{t('adminModules.curriculum.languageHelp')}</p>
               <div className="mt-4"><LanguageSelector variant="buttons" /></div>
             </div>
           </div>
@@ -1046,7 +1048,7 @@ export default function CurriculumEditor() {
         {activeTab === 'languages' && (
           <div className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-600">Dominio de lenguas e idiomas técnicos.</span>
+              <span className="text-xs text-gray-600">{t('adminModules.curriculum.languageDomain')}</span>
               <button
                 type="button"
                 onClick={addLanguage}
@@ -1063,7 +1065,7 @@ export default function CurriculumEditor() {
                     type="button"
                     onClick={() => removeLanguage(idx)}
                     className="absolute top-3 right-3 text-red-400 hover:text-red-300 transition"
-                    title="Eliminar"
+                    title={t('adminModules.curriculum.delete')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -1079,7 +1081,7 @@ export default function CurriculumEditor() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Nivel</label>
+                      <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.level')}</label>
                       <input
                         type="text"
                         value={lang.level}
@@ -1090,7 +1092,7 @@ export default function CurriculumEditor() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">Detalle de Dominio</label>
+                    <label className="block text-[10px] font-bold text-gray-600 uppercase mb-1">{t('adminModules.curriculum.languageDetail')}</label>
                     <input
                       type="text"
                       value={lang.written}
