@@ -82,11 +82,25 @@ export default async function handler(req: any, res: any) {
 
   const body = typeof req.body === 'string' ? (() => { try { return JSON.parse(req.body); } catch { return null; } })() : req.body;
   const input = body?.input as TranslationInput | undefined;
-  const targetLanguage = body?.targetLanguage;
-  const validLanguageCode = typeof targetLanguage === 'string' && /^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$/.test(targetLanguage);
-  const targetLanguageName = validLanguageCode
-    ? (languages[targetLanguage.toLowerCase()] || new Intl.DisplayNames(['en'], { type: 'language' }).of(targetLanguage) || targetLanguage)
-    : '';
+  const rawLanguageCode = body?.targetLanguage;
+  let targetLanguage = '';
+  if (typeof rawLanguageCode === 'string' && /^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$/.test(rawLanguageCode)) {
+    try {
+      targetLanguage = Intl.getCanonicalLocales(rawLanguageCode)[0] || '';
+    } catch {
+      targetLanguage = '';
+    }
+  }
+  const validLanguageCode = Boolean(targetLanguage);
+  let targetLanguageName = '';
+  if (validLanguageCode) {
+    try {
+      targetLanguageName = languages[targetLanguage.toLowerCase()] ||
+        new Intl.DisplayNames(['en'], { type: 'language' }).of(targetLanguage) || targetLanguage;
+    } catch {
+      targetLanguageName = targetLanguage;
+    }
+  }
   const batchOnly = body?.batchOnly === true;
   const baseOnly = body?.baseOnly === true;
   if (!input || typeof input !== 'object' || !validLanguageCode ||
