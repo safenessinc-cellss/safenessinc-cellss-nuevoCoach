@@ -412,7 +412,12 @@
       "logout": "Sign out",
       "readOnly": "Read-only mode (Viewer/Editor)",
       "addRecord": "Add record",
-      "addCollaborator": "Add collaborator"
+      "addCollaborator": "Add collaborator",
+      "validating": "Validating secure auditor credentials…",
+      "redirecting": "Redirecting to secure dashboard access…",
+      "currentRole": "Current role",
+      "specialist": "IMS and process specialist",
+      "revoke": "Revoke permissions"
     },
     "dashboard": {
       "activeCourses": "Active Courses",
@@ -500,7 +505,8 @@
       "languageHelp": "Change the portal display language. Available translations are applied automatically to translated text.",
       "languageDomain": "Language and technical-language proficiency",
       "level": "Level",
-      "languageDetail": "Proficiency details"
+      "languageDetail": "Proficiency details",
+      "languageLabel": "Language"
     },
     "certificate": {
       "title": "AI certificate importer",
@@ -591,7 +597,11 @@
       "title": "ISO asset registry",
       "total": "Total registered",
       "search": "Search by standard, clause, or description...",
-      "edit": "Edit"
+      "edit": "Edit",
+      "idExample": "e.g. process-map-v2",
+      "standardExample": "e.g. ISO 9001:2015",
+      "clauseExample": "e.g. 4.4",
+      "clauseInline": "Clause"
     },
     "analytics": {
       "title": "Demand analysis & AI assistant",
@@ -716,7 +726,10 @@
       "editorRole": "Editor (manage courses and visits)",
       "viewerRole": "Viewer (read-only)",
       "editAsset": "Edit",
-      "courseCategory": "Course category"
+      "courseCategory": "Course category",
+      "addressExample": "Main Avenue, industrial plant offices…",
+      "auditorNotesExample": "E.g. obtain NDA signature and bring the checklist…",
+      "topicExample": "Review clause 7 or general coaching…"
     }
   }
 }
