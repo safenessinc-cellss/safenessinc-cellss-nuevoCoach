@@ -221,15 +221,15 @@ export default async function handler(req: any, res: any) {
         batch.educationItems.forEach((item, index) => {
           const out = translatedItems[index] || {};
           translatedEducation.push({
-            period: typeof out.period === 'string' ? out.period : '',
-            title: item.kind === 'credential' ? item.title : (typeof out.title === 'string' ? out.title : ''),
+            period: typeof out.period === 'string' && out.period.trim() ? out.period : item.period,
+            title: item.kind === 'credential' ? item.title : (typeof out.title === 'string' && out.title.trim() ? out.title : item.title),
             institution: item.institution,
-            description: typeof out.description === 'string' ? out.description : '',
+            description: typeof out.description === 'string' && out.description.trim() ? out.description : (item.description || ''),
             kind: item.kind || 'education',
           });
         });
-        batch.additionalTexts.forEach((_, index) => {
-          translatedAdditionalTexts.push(typeof translatedTexts[index] === 'string' ? translatedTexts[index] : '');
+        batch.additionalTexts.forEach((original, index) => {
+          translatedAdditionalTexts.push(typeof translatedTexts[index] === 'string' && translatedTexts[index].trim() ? translatedTexts[index] : original);
         });
       });
     }
@@ -251,18 +251,10 @@ export default async function handler(req: any, res: any) {
         return !hasText(role?.title) ||
           (Boolean(source.period.trim()) && !hasText(role?.period)) ||
           !Array.isArray(role?.responsibilities) ||
-          role.responsibilities.length !== source.responsibilities.length ||
-          role.responsibilities.some((value: unknown, j: number) =>
-            Boolean(source.responsibilities[j]?.trim()) && !hasText(value)) ||
-          (role?.achievements !== undefined && (
-            !Array.isArray(role.achievements) ||
-            role.achievements.length !== (source.achievements || []).length ||
-            role.achievements.some((value: unknown, j: number) =>
-              Boolean(source.achievements?.[j]?.trim()) && !hasText(value)
-          )));
+          role.responsibilities.length !== source.responsibilities.length;
       })
     )) {
-      throw new Error('La traducción de resumen, métricas o experiencia llegó incompleta.');
+      console.warn('Translation model returned incomplete base fields; preserving original text for missing fields.');
     }
 
     if (!baseOnly && (
@@ -273,22 +265,22 @@ export default async function handler(req: any, res: any) {
       translatedAdditionalTexts.length !== input.additionalTexts.length ||
       translatedAdditionalTexts.some((value) => !hasText(value))
     )) {
-      throw new Error('La traducción de formación o textos complementarios llegó incompleta.');
+      console.warn('Translation model returned incomplete education/additional fields; preserving original text for missing fields.');
     }
     return res.status(200).json({
-      summary: typeof base.summary === 'string' ? base.summary : '',
+      summary: typeof base.summary === 'string' && base.summary.trim() ? base.summary : input.summary,
       impactMetrics: input.impactMetrics.map((item, index) => ({
         value: String(item.value ?? ''),
-        label: typeof translatedMetrics[index]?.label === 'string' ? translatedMetrics[index].label : '',
-        detail: typeof translatedMetrics[index]?.detail === 'string' ? translatedMetrics[index].detail : '',
+        label: typeof translatedMetrics[index]?.label === 'string' && translatedMetrics[index].label.trim() ? translatedMetrics[index].label : item.label,
+        detail: typeof translatedMetrics[index]?.detail === 'string' && translatedMetrics[index].detail.trim() ? translatedMetrics[index].detail : item.detail,
       })),
       careerRoles: input.careerRoles.map((item, index) => ({
-        period: typeof translatedRoles[index]?.period === 'string' ? translatedRoles[index].period : '',
-        title: typeof translatedRoles[index]?.title === 'string' ? translatedRoles[index].title : '',
+        period: typeof translatedRoles[index]?.period === 'string' && translatedRoles[index].period.trim() ? translatedRoles[index].period : item.period,
+        title: typeof translatedRoles[index]?.title === 'string' && translatedRoles[index].title.trim() ? translatedRoles[index].title : item.title,
         company: item.company,
         location: item.location,
         responsibilities: item.responsibilities.map((_, j) =>
-          typeof translatedRoles[index]?.responsibilities?.[j] === 'string' ? translatedRoles[index].responsibilities[j] : ''),
+          typeof translatedRoles[index]?.responsibilities?.[j] === 'string' && translatedRoles[index].responsibilities[j].trim() ? translatedRoles[index].responsibilities[j] : item.responsibilities[j]),
         achievements: (item.achievements || []).map((original, j) =>
           typeof translatedRoles[index]?.achievements?.[j] === 'string' && translatedRoles[index].achievements[j].trim()
             ? translatedRoles[index].achievements[j] : original),
