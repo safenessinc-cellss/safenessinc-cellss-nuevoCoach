@@ -350,7 +350,7 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
         !Array.isArray(translated.additionalTexts) || translated.additionalTexts.length !== additionalTexts.length) {
       throw new Error('La traducción está incompleta. No se generó el PDF para evitar un currículo con idiomas mezclados.');
     }
-    if (translated.impactMetrics.some((item) => !isText(item.label) || !isText(item.detail)) ||
+    if (translated.impactMetrics.some((item, index) => !isText(item.label) || (Boolean(impactMetrics[index]?.detail) && !isText(item.detail))) ||
         translated.careerRoles.some((role, index) =>
           !isText(role.title) || (Boolean(sourceRoles[index].period) && !isText(role.period)) ||
           !Array.isArray(role.responsibilities) || role.responsibilities.length !== sourceRoles[index].responsibilities.length ||
