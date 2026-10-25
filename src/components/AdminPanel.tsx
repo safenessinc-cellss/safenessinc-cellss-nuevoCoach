@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   collection, query, orderBy, onSnapshot, doc, 
   setDoc, updateDoc, deleteDoc, addDoc, serverTimestamp, getDoc 
@@ -77,6 +78,8 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 
 function AdminPanel() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = ['es', 'en', 'pt', 'it'].includes(i18n.resolvedLanguage || '') ? (i18n.resolvedLanguage || 'es') : 'es';
 
   // Authentication & Role State from central AuthContext
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
@@ -849,19 +852,19 @@ function AdminPanel() {
         {/* Sidebar Nav Items */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {[
-            { id: 'dashboard', name: 'Dashboard', icon: Layers },
-            { id: 'ai_demand', name: 'Demanda & IA', icon: Bot },
-            { id: 'ai_curriculum', name: 'IA Currículo', icon: Sparkles },
-            { id: 'ai_assistant', name: 'Asistente Admin', icon: Bot },
-            { id: 'courses', name: 'Cursos', icon: GraduationCap },
-            { id: 'books', name: 'Libros y PDF', icon: BookOpen },
-            { id: 'visits', name: 'Visitas Onsite', icon: MapPin },
-            { id: 'tutorials', name: 'Tutorías Online', icon: Video },
-            { id: 'users', name: 'Gestión Usuarios', icon: Users },
-            { id: 'registry', name: 'Activos ISO', icon: CabinetIconPlaceholder },
-            { id: 'curriculum', name: 'Gestor Currículo', icon: FileText },
-            { id: 'theme', name: 'Apariencia', icon: Palette },
-            { id: 'profile', name: 'Perfil Público', icon: Settings }
+            { id: 'dashboard', name: t('admin.nav.dashboard'), icon: Layers },
+            { id: 'ai_demand', name: t('admin.nav.aiDemand'), icon: Bot },
+            { id: 'ai_curriculum', name: t('admin.nav.aiCurriculum'), icon: Sparkles },
+            { id: 'ai_assistant', name: t('admin.nav.aiAssistant'), icon: Bot },
+            { id: 'courses', name: t('admin.nav.courses'), icon: GraduationCap },
+            { id: 'books', name: t('admin.nav.books'), icon: BookOpen },
+            { id: 'visits', name: t('admin.nav.visits'), icon: MapPin },
+            { id: 'tutorials', name: t('admin.nav.tutorials'), icon: Video },
+            { id: 'users', name: t('admin.nav.users'), icon: Users },
+            { id: 'registry', name: t('admin.nav.registry'), icon: CabinetIconPlaceholder },
+            { id: 'curriculum', name: t('admin.nav.curriculum'), icon: FileText },
+            { id: 'theme', name: t('admin.nav.theme'), icon: Palette },
+            { id: 'profile', name: t('admin.nav.profile'), icon: Settings }
           ].map((item, idx) => {
             const Icon = item.icon as any;
             const isActive = activeTab === item.id;
@@ -891,32 +894,43 @@ function AdminPanel() {
         {/* Seed Data Utilities Area for Editor/Admins */}
         {canEdit && (
           <div className="p-4 border-t border-white/5 bg-black/20 space-y-2">
-            <p className="text-[10px] font-mono text-gray-500">UTILIDADES DEMO</p>
+            <p className="text-[10px] font-mono text-gray-500">{t('admin.common.demoUtilities')}</p>
             <button 
               onClick={seedDemoData}
               className="w-full text-left bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] font-medium py-2 px-3 rounded-lg flex items-center gap-2 transition"
             >
               <UploadCloud className="w-4.5 h-4.5 text-red-500" />
-              Recargar Datos de Prueba
+              {t('admin.common.reloadDemo')}
             </button>
           </div>
         )}
 
         {/* Sidebar Footer Logout */}
-        <div className="p-4 border-t border-white/5 flex gap-2">
+        <div className="p-4 border-t border-white/5 flex flex-col gap-3">
+          <label className="flex items-center justify-between gap-3 text-[11px] text-gray-400">
+            <span>{t('admin.common.language')}</span>
+            <select aria-label={t('admin.common.language')} value={currentLanguage} onChange={(event) => void i18n.changeLanguage(event.target.value)} className="rounded-lg border border-white/10 bg-zinc-900 px-2 py-1.5 text-white outline-none">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+              <option value="pt">Português</option>
+              <option value="it">Italiano</option>
+            </select>
+          </label>
+          <div className="flex gap-2">
           <Link 
             to="/" 
             className="flex-1 text-center py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[11px] font-medium border border-white/5 transition"
           >
-            Ir a la Web
+            {t('admin.common.goToWebsite')}
           </Link>
           <button 
             onClick={handleLogoutClick}
             className="p-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 rounded-lg transition"
-            title="Cerrar sesión"
+            title={t('admin.common.logout')}
           >
             <LogOut className="w-4.5 h-4.5" />
           </button>
+          </div>
         </div>
       </aside>
 
@@ -927,34 +941,34 @@ function AdminPanel() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-6">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              {activeTab === 'dashboard' && 'Panel General y Analytics'}
-              {activeTab === 'ai_demand' && 'Análisis de Demanda & Actividad IA'}
-              {activeTab === 'ai_curriculum' && 'Importación asistida de certificados'}
-              {activeTab === 'ai_assistant' && 'Asistente de Administración'}
-              {activeTab === 'courses' && 'Gestión de Cursos'}
-              {activeTab === 'books' && 'Librería Digital & PDFs'}
-              {activeTab === 'visits' && 'Agenda de Visitas Presenciales'}
-              {activeTab === 'tutorials' && 'Agenda de Tutorías Online'}
-              {activeTab === 'users' && 'Colaboradores y Permisos'}
-              {activeTab === 'registry' && 'Gestor de Activos ISO'}
-              {activeTab === 'curriculum' && 'Gestión y Corrección de Currículo'}
-              {activeTab === 'theme' && 'Apariencia y Colores'}
-              {activeTab === 'profile' && 'Configuración del Consultor'}
+              {activeTab === 'dashboard' && t('admin.title.dashboard')}
+              {activeTab === 'ai_demand' && t('admin.title.aiDemand')}
+              {activeTab === 'ai_curriculum' && t('admin.title.aiCurriculum')}
+              {activeTab === 'ai_assistant' && t('admin.title.aiAssistant')}
+              {activeTab === 'courses' && t('admin.title.courses')}
+              {activeTab === 'books' && t('admin.title.books')}
+              {activeTab === 'visits' && t('admin.title.visits')}
+              {activeTab === 'tutorials' && t('admin.title.tutorials')}
+              {activeTab === 'users' && t('admin.title.users')}
+              {activeTab === 'registry' && t('admin.title.registry')}
+              {activeTab === 'curriculum' && t('admin.title.curriculum')}
+              {activeTab === 'theme' && t('admin.title.theme')}
+              {activeTab === 'profile' && t('admin.title.profile')}
             </h2>
             <p className="text-sm text-gray-400">
-              {activeTab === 'dashboard' && 'Rendimiento general y próximas actividades.'}
-              {activeTab === 'ai_demand' && 'Visualización en tiempo real con Recharts de consultas a la IA, servicios ISO más solicitados y sesiones agendadas.'}
-              {activeTab === 'ai_curriculum' && 'Extrae datos de imágenes, revisa cada campo y guarda credenciales sin marcarlas como verificadas.'}
-              {activeTab === 'ai_assistant' && 'Conversa con el asistente interno para analizar tareas y preparar operaciones del panel.'}
-              {activeTab === 'courses' && 'Administración de programas educativos presenciales y digitales.'}
-              {activeTab === 'books' && 'Gestor de libros técnicos, descargables e indicadores.'}
-              {activeTab === 'visits' && 'Planificación semanal de auditorías físicas en plantas de clientes.'}
-              {activeTab === 'tutorials' && 'Coaching telemático con enlaces automatizados de Zoom y Meet.'}
-              {activeTab === 'users' && 'Control de accesos y roles (Admin, Editor y Viewer).'}
-              {activeTab === 'registry' && 'Subidas y organización integrada de diagramas de cumplimiento.'}
-              {activeTab === 'curriculum' && 'Modifica datos ejecutivos, trayectoria, métricas y formación del CV.'}
-              {activeTab === 'theme' && 'Personaliza paleta corporativa, modo oscuro y claridad visual del dashboard.'}
-              {activeTab === 'profile' && 'Modificar información pública, logo y testimonios.'}
+              {activeTab === 'dashboard' && t('admin.description.dashboard')}
+              {activeTab === 'ai_demand' && t('admin.description.aiDemand')}
+              {activeTab === 'ai_curriculum' && t('admin.description.aiCurriculum')}
+              {activeTab === 'ai_assistant' && t('admin.description.aiAssistant')}
+              {activeTab === 'courses' && t('admin.description.courses')}
+              {activeTab === 'books' && t('admin.description.books')}
+              {activeTab === 'visits' && t('admin.description.visits')}
+              {activeTab === 'tutorials' && t('admin.description.tutorials')}
+              {activeTab === 'users' && t('admin.description.users')}
+              {activeTab === 'registry' && t('admin.description.registry')}
+              {activeTab === 'curriculum' && t('admin.description.curriculum')}
+              {activeTab === 'theme' && t('admin.description.theme')}
+              {activeTab === 'profile' && t('admin.description.profile')}
             </p>
           </div>
 
@@ -963,7 +977,7 @@ function AdminPanel() {
             {!hasAdminRights && (
               <span className="text-[11px] font-mono text-yellow-400 bg-yellow-500/10 px-3 py-1.5 rounded-lg border border-yellow-500/20 flex items-center gap-2">
                 <Info className="w-3.5 h-3.5" />
-                Modo lectura (Viewer/Editor)
+                {t('admin.common.readOnly')}
               </span>
             )}
             {activeTab !== 'dashboard' && activeTab !== 'registry' && activeTab !== 'profile' && activeTab !== 'curriculum' && activeTab !== 'users' && canEdit && (
@@ -977,7 +991,7 @@ function AdminPanel() {
                 className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition tracking-wider uppercase cursor-pointer shadow-lg"
               >
                 <Plus className="w-4 h-4 text-white" />
-                Añadir Registro
+                {t('admin.common.addRecord')}
               </button>
             )}
             {activeTab === 'users' && hasAdminRights && (
@@ -986,7 +1000,7 @@ function AdminPanel() {
                 className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition tracking-wider uppercase cursor-pointer"
               >
                 <Plus className="w-4 h-4 text-white" />
-                Añadir Colaborador
+                {t('admin.common.addCollaborator')}
               </button>
             )}
           </div>
@@ -1019,7 +1033,7 @@ function AdminPanel() {
                       <GraduationCap className="w-6 h-6 text-red-500" />
                     </div>
                     <div>
-                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Cursos Activos</p>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.activeCourses')}</p>
                       <p className="text-3xl font-extrabold text-white mt-1">{kpis.activeC}</p>
                     </div>
                   </div>
@@ -1030,7 +1044,7 @@ function AdminPanel() {
                       <BookOpen className="w-6 h-6 text-yellow-500" />
                     </div>
                     <div>
-                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Libros & Recursos</p>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.booksResources')}</p>
                       <p className="text-3xl font-extrabold text-white mt-1">{kpis.countBooks}</p>
                     </div>
                   </div>
@@ -1041,7 +1055,7 @@ function AdminPanel() {
                       <MapPin className="w-6 h-6 text-blue-500" />
                     </div>
                     <div>
-                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Visitas del Mes</p>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.monthlyVisits')}</p>
                       <p className="text-3xl font-extrabold text-white mt-1">{kpis.upcomingV}</p>
                     </div>
                   </div>
@@ -1052,7 +1066,7 @@ function AdminPanel() {
                       <Video className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
-                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">Tutorías Pendientes</p>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.pendingTutorials')}</p>
                       <p className="text-3xl font-extrabold text-white mt-1">{kpis.pendingT}</p>
                     </div>
                   </div>
@@ -1065,8 +1079,8 @@ function AdminPanel() {
                   {/* Visitas onsite por mes */}
                   <div className="glass p-6 rounded-2xl border border-white/5 space-y-4">
                     <div>
-                      <h4 className="text-base font-bold tracking-tight text-white mb-1">Tendencia de Visitas Onsite</h4>
-                      <p className="text-xs text-gray-400">Total auditorías físicas programadas por mes en este semestre.</p>
+                      <h4 className="text-base font-bold tracking-tight text-white mb-1">{t('admin.dashboard.visitsTrend')}</h4>
+                      <p className="text-xs text-gray-400">{t('admin.dashboard.visitsByMonth')}</p>
                     </div>
                     <div className="h-[240px] w-full min-w-0">
                       <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={180}>
@@ -1090,12 +1104,12 @@ function AdminPanel() {
                   {/* Top Descargas BarChart */}
                   <div className="glass p-6 rounded-2xl border border-white/5 space-y-4">
                     <div>
-                      <h4 className="text-base font-bold tracking-tight text-white mb-1">Top Libros más Descargados</h4>
-                      <p className="text-xs text-gray-400">Recursos de Auditoría ISO con mayor número de interacciones.</p>
+                      <h4 className="text-base font-bold tracking-tight text-white mb-1">{t('admin.dashboard.topDownloaded')}</h4>
+                      <p className="text-xs text-gray-400">{t('admin.dashboard.isoResources')}</p>
                     </div>
                     <div className="h-[240px] w-full min-w-0">
                       {downloadsChartData.length === 0 ? (
-                        <div className="h-full flex items-center justify-center text-gray-500 font-mono text-xs">Carga libros técnicos para visualizar descargas.</div>
+                        <div className="h-full flex items-center justify-center text-gray-500 font-mono text-xs">{t('admin.dashboard.loadBooks')}</div>
                       ) : (
                         <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={180}>
                           <BarChart data={downloadsChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
@@ -1118,15 +1132,15 @@ function AdminPanel() {
                   {/* Proximas Actividades List */}
                   <div className="lg:col-span-2 glass p-6 rounded-2xl border border-white/5 space-y-4">
                     <div className="flex justify-between items-center bg-black/40 p-1 rounded-xl">
-                      <h4 className="text-sm font-bold text-white px-3">Próximas Actividades de Consulta</h4>
-                      <span className="text-[10px] font-mono text-gray-500 uppercase">Orden Cronológico</span>
+                      <h4 className="text-sm font-bold text-white px-3">{t('admin.dashboard.upcomingActivities')}</h4>
+                      <span className="text-[10px] font-mono text-gray-500 uppercase">{t('admin.dashboard.chronological')}</span>
                     </div>
 
                     <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                       {nextActivities.length === 0 ? (
                         <div className="text-center p-8 text-gray-500 text-xs">
                           <CalendarIcon className="w-8 h-8 text-gray-600 mx-auto mb-2" />
-                          No hay visitas ni tutorías programadas para esta semana.
+                          {t('admin.dashboard.noActivities')}
                         </div>
                       ) : (
                         (Array.isArray(nextActivities) ? nextActivities : []).map((act, index) => (
@@ -1136,7 +1150,7 @@ function AdminPanel() {
                           >
                             <div className="flex items-center gap-3">
                               <span className={`text-[10px] font-bold uppercase rounded-lg px-2.5 py-1 border ${act.color}`}>
-                                {act.type === 'Onsite Visit' ? '🏢 Visita' : '💻 Tutoría'}
+                                {act.type === 'Onsite Visit' ? `🏢 ${t('admin.dashboard.visit')}` : `💻 ${t('admin.dashboard.tutorial')}`}
                               </span>
                               <div>
                                 <p className="text-xs font-bold text-white">{act.title}</p>
@@ -1159,7 +1173,7 @@ function AdminPanel() {
 
                   {/* Top 3 Libros Descargados Side Column */}
                   <div className="glass p-6 rounded-2xl border border-white/5 space-y-4">
-                    <h4 className="text-sm font-bold text-white border-b border-white/5 pb-2">Destacados ISO de Robert</h4>
+                    <h4 className="text-sm font-bold text-white border-b border-white/5 pb-2">{t('admin.dashboard.featured')}</h4>
                     <div className="space-y-4">
                       {books.sort((a,b) => b.downloadsCount - a.downloadsCount).slice(0, 3).map((b, idx) => (
                         <div key={`topbook-${b.id || idx}-${idx}`} className="flex gap-3 items-center">
@@ -1169,7 +1183,7 @@ function AdminPanel() {
                           <div className="min-w-0 flex-1">
                             <h5 className="font-bold text-xs truncate text-white">{b.title}</h5>
                             <p className="text-[10px] text-gray-400 truncate">{b.category} • {b.author}</p>
-                            <p className="text-[10px] text-green-400 font-mono font-semibold mt-1">📥 {b.downloadsCount || 0} descargas</p>
+                            <p className="text-[10px] text-green-400 font-mono font-semibold mt-1">📥 {b.downloadsCount || 0} {t('admin.dashboard.downloads')}</p>
                           </div>
                         </div>
                       ))}
