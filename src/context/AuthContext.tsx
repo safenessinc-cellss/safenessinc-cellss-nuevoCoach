@@ -58,9 +58,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const snap = await getDoc(ref);
           if (snap.exists()) {
             const d = snap.data() as any;
-            if (d.role) role = d.role;
-            if (d.status) status = d.status;
             if (d.name) displayName = d.name;
+            if (d.status === 'pending' && !SUPERADMIN_EMAILS.includes(email)) {
+              const invitationSnap = await getDoc(doc(db, 'invitations', email));
+              const invitation = invitationSnap.exists() ? invitationSnap.data() as any : null;
+              if (invitation && invitation.email === email && invitation.status === 'active'
+                && ['admin', 'supervisor', 'editor', 'colaborador', 'tlmk', 'cliente', 'viewer'].includes(invitation.role)) {
+                role = invitation.role as Role;
+                status = 'active';
+                displayName = invitation.name || displayName;
+                await setDoc(ref, { email, name: displayName, role, status, invitedAt: invitation.createdAt || serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
+              } else {
+                role = (d.role || 'pending') as Role;
+                status = 'pending';
+              }
+            } else {
+              if (d.role) role = d.role;
+              if (d.status) status = d.status;
+            }
           } else if (!SUPERADMIN_EMAILS.includes(email)) {
             // Invitations are created only by the super administrator. The invite
             // document ID is the normalized email, so it can be matched securely.
