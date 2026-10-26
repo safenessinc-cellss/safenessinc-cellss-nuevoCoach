@@ -97,7 +97,10 @@ service cloud.firestore {
     // No client-side access: a secure server-side MFA flow has not been implemented.
     match /2fa_sessions/{id} { allow read, write: if false; }
     match /image_registry/{id} { allow read: if true; allow write: if isEditor(); }
-    match /settings/{id} { allow read: if true; allow write: if isEditor(); }
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if (id == 'profile' && isSuperAdmin()) || (id != 'profile' && isEditor());
+    }
 
     match /{document=**} { allow read, write: if false; }
   }
