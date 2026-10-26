@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Save, Loader2, CheckCircle2, AlertCircle, UserRound, Image as ImageIcon } from 'lucide-react';
 import { useProfileSettings, type ProfileSettings } from '../data/useProfileSettings';
+import { useAuth } from '../context/AuthContext';
 
 export default function ProfileEditor() {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const { profile, updateProfile, loading } = useProfileSettings();
   const [formData, setFormData] = useState<ProfileSettings>(profile);
   const [saving, setSaving] = useState(false);
@@ -55,6 +57,10 @@ export default function ProfileEditor() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!currentUser?.isSuperAdmin) {
+      setNotice({ type: 'error', text: 'Solo el superadministrador puede modificar el perfil público.' });
+      return;
+    }
     setSaving(true);
     setNotice(null);
     try {
@@ -76,6 +82,19 @@ export default function ProfileEditor() {
 
   if (loading && !formData.name) {
     return <div className="flex items-center gap-2 p-8 text-sm text-gray-400"><Loader2 className="h-4 w-4 animate-spin" /> {t('adminModules.profile.loading')}</div>;
+  }
+
+  if (!currentUser?.isSuperAdmin) {
+    return (
+      <section className="rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm">
+        <h2 className="text-lg font-bold text-slate-900">Perfil público de Coach ISO</h2>
+        <p className="mt-2 text-sm leading-6 text-slate-600">La edición del nombre, la fotografía y los datos que se publican en la web oficial está reservada a safeness.c.a@gmail.com como superadministrador.</p>
+        <div className="mt-4 flex items-center gap-4">
+          <img src={profile.photoUrl} alt="Fotografía pública actual" className="h-20 w-20 rounded-2xl border border-slate-200 object-cover" />
+          <div><p className="font-semibold text-slate-900">{profile.name}</p><p className="text-sm text-slate-600">{profile.title}</p></div>
+        </div>
+      </section>
+    );
   }
 
   const textField = (field: keyof ProfileSettings, label: string, type = 'text') => (
