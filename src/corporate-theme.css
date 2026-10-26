@@ -33,6 +33,11 @@ body {
 [class*="bg-[#03050C"],
 [class*="bg-[#050505"],
 [class*="bg-[#050814"],
+[class*="bg-[#080D18"],
+[class*="bg-[#0B1220"],
+[class*="bg-[#0b0c10"],
+[class*="bg-[#121212"],
+[class*="bg-[#1a0e14"],
 [class*="bg-[#0a0a0a"],
 [class*="bg-[#090D1A"],
 [class*="bg-[#0A1628"],
@@ -280,3 +285,15 @@ button.bg-blue-700 {
   outline-offset: 2px;
 }
 
+
+/* Preserve legible foregrounds on intentional green contact actions. */
+[class*="bg-[#20bd5a"],
+[class*="bg-[#25D366"] {
+  color: #ffffff !important;
+}
+
+/* Keyboard users get a consistent, visible focus indicator throughout the site. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #8ab4f8 !important;
+  outline-offset: 2px;
+}
