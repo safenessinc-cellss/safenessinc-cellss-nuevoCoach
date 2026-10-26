@@ -46,6 +46,10 @@ interface CurriculumShowcaseModalProps {
 }
 
 const ISSUER_LOGO_URLS: Record<string, string> = {
+  ibm: 'https://cdn.simpleicons.org/ibm/052FAD',
+  fortinet: 'https://cdn.simpleicons.org/fortinet/EE3124',
+  cisco: 'https://cdn.simpleicons.org/cisco/1BA0D7',
+  google: 'https://cdn.simpleicons.org/google/4285F4',
   openclassrooms: 'https://cdn.simpleicons.org/openclassrooms/7451EB',
   openuniversity: 'https://cdn.simpleicons.org/theopenuniversity/CC0000',
   indeed: 'https://cdn.simpleicons.org/indeed/2164F3',
@@ -1357,8 +1361,9 @@ function CurriculumShowcaseModal({ isOpen, onClose, initialTab = 'all_activities
 
                         {/* Bottom Metadata */}
                         <div className="pt-3 border-t border-white/5 flex justify-between items-center text-[10px] font-mono">
-                          <span className="text-gray-500 flex items-center gap-1">
-                            <Building className="w-3 h-3 text-amber-500" /> {cert.issuer}
+                          <span className="text-gray-500 flex items-center gap-2 min-w-0">
+                            {getIssuerLogoUrl(cert.issuer) && <img src={getIssuerLogoUrl(cert.issuer)} alt={cert.issuer + ' logo'} className="h-5 w-7 rounded bg-white p-0.5 object-contain" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />}
+                            <Building className="w-3 h-3 shrink-0 text-blue-600" /> <span className="truncate">{cert.issuer}</span>
                           </span>
                           <span className="text-amber-400 font-bold group-hover:underline flex items-center gap-1">
                             <span>{modalLabels.viewScaledModel}</span>

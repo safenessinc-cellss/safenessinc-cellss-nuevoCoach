@@ -27,6 +27,7 @@ import { Course, Book, Visit, Tutorial, UserProfile, UserRole } from '../types';
 import ImageRegistryManager from './ImageRegistryManager';
 import ThemeEditor from './ThemeEditor';
 import ProfileEditor from './ProfileEditor';
+import { useProfileSettings } from '../data/useProfileSettings';
 import CurriculumEditor from './CurriculumEditor';
 import AIDemandAnalyticsDashboard from './AIDemandAnalyticsDashboard';
 import CertificateAIImporter from './CertificateAIImporter';
@@ -83,6 +84,7 @@ function AdminPanel() {
 
   // Authentication & Role State from central AuthContext
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
+  const { profile } = useProfileSettings();
   
   // Active Tab State
   const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'ai_curriculum' | 'ai_assistant' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
@@ -93,6 +95,7 @@ function AdminPanel() {
   const [visits, setVisits] = useState<Visit[]>([]);
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [usersList, setUsersList] = useState<UserProfile[]>([]);
+  const [invitedUsers, setInvitedUsers] = useState<UserProfile[]>([]);
   const [consultations, setConsultations] = useState<any[]>([]);
 
   // Loading indicator states
@@ -213,15 +216,28 @@ function AdminPanel() {
       setLoadingStates(prev => ({ ...prev, tutorials: false }));
     });
 
-    // 5. Team Users Subscription
-    const unsubUsers = onSnapshot(collection(db, 'users'), (snap) => {
-      const data = snap.docs.map(d => ({ id: d.id, ...d.data() }) as UserProfile);
-      setUsersList(data);
+    // User and invitation management is private to the super administrator.
+    let unsubUsers = () => {};
+    let unsubInvitations = () => {};
+    if (currentUser?.isSuperAdmin) {
+      unsubUsers = onSnapshot(collection(db, 'users'), (snap) => {
+        const data = snap.docs.map(d => ({ id: d.id, ...d.data() }) as UserProfile);
+        setUsersList(data);
+        setLoadingStates(prev => ({ ...prev, users: false }));
+      }, (err) => {
+        console.warn('Unable to load user accounts', err);
+        setLoadingStates(prev => ({ ...prev, users: false }));
+      });
+      unsubInvitations = onSnapshot(collection(db, 'invitations'), (snap) => {
+        const data = snap.docs.map(d => {
+          const invitation = d.data();
+          return { id: 'invite:' + d.id, email: invitation.email, name: invitation.name || 'Invitación pendiente', role: invitation.role || 'viewer' } as UserProfile;
+        });
+        setInvitedUsers(data);
+      }, (err) => console.warn('Unable to load invitations', err));
+    } else {
       setLoadingStates(prev => ({ ...prev, users: false }));
-    }, (err) => {
-      console.warn("Error users snapshot.");
-      setLoadingStates(prev => ({ ...prev, users: false }));
-    });
+    }
 
     // 6. Legacy Consultations Subscription for KPI correlation
     const unsubConsultations = onSnapshot(collection(db, 'consultations'), (snap) => {
@@ -239,6 +255,7 @@ function AdminPanel() {
       unsubVisits();
       unsubTutorials();
       unsubUsers();
+      unsubInvitations();
       unsubConsultations();
     };
   }, [user]);
@@ -619,38 +636,41 @@ function AdminPanel() {
   // --- Teams User Management CRUD ---
   const handleUserSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!hasAdminRights) return alert("Operación exclusiva de Administradores");
-    if (!userForm.email) return alert("Introduce un correo válido");
-    
+    if (!currentUser?.isSuperAdmin) return alert('Solo el superadministrador puede invitar usuarios.');
+    const userMail = (userForm.email || '').trim().toLowerCase();
+    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(userMail)) return alert('Introduce un correo válido.');
+    if (userMail === ADMIN_EMAIL) return alert('La cuenta superadministradora no necesita invitación.');
+    const role = userForm.role || 'viewer';
+    if (!['admin', 'editor', 'supervisor', 'colaborador', 'tlmk', 'cliente', 'viewer'].includes(role)) {
+      return alert('El rol seleccionado no está permitido para invitaciones.');
+    }
     try {
-      // Use email lower as ID or random
-      const userMail = userForm.email.trim().toLowerCase();
-      const fakeId = userMail.replace(/[^a-zA-Z0-9]/g, "_");
-      
-      await setDoc(doc(db, 'users', fakeId), {
+      await setDoc(doc(db, 'invitations', userMail), {
         email: userMail,
-        name: userForm.name || "Colaborador",
-        role: userForm.role || "viewer",
-        createdAt: new Date().toISOString()
+        name: (userForm.name || 'Colaborador').trim(),
+        role,
+        status: 'active',
+        invitedBy: currentUser.email,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
-
-      alert("Colaborador registrado/actualizado éxitosamente");
+      alert('Invitación creada. La persona debe iniciar sesión con Google usando ese correo.');
       setIsUserModalOpen(false);
       setUserForm({ email: '', name: '', role: 'viewer' });
     } catch (e) {
-      handleFirestoreError(e, OperationType.WRITE, 'users');
+      handleFirestoreError(e, OperationType.WRITE, 'invitations');
     }
   };
 
   const handleDeleteUser = async (id: string, email: string) => {
-    if (!hasAdminRights) return alert("Se requieren privilegios de Administrador");
-    if (email === ADMIN_EMAIL) return alert("No se puede eliminar el superadministrador principal.");
-    
-    if (window.confirm(`¿Deseas revocar el acceso para ${email}?`)) {
+    if (!currentUser?.isSuperAdmin) return alert('Solo el superadministrador puede revocar accesos.');
+    if (email.toLowerCase() === ADMIN_EMAIL) return alert('No se puede revocar la cuenta superadministradora principal.');
+    if (window.confirm('¿Deseas revocar el acceso de ' + email + '? Si ya tiene cuenta, se eliminará su autorización y deberá volver a ser invitado.')) {
       try {
-        await deleteDoc(doc(db, 'users', id));
+        await deleteDoc(doc(db, 'invitations', email.toLowerCase()));
+        if (!id.startsWith('invite:')) await deleteDoc(doc(db, 'users', id));
       } catch (e) {
-        handleFirestoreError(e, OperationType.DELETE, `users/${id}`);
+        handleFirestoreError(e, OperationType.DELETE, 'invitations/' + email.toLowerCase());
       }
     }
   };
@@ -827,13 +847,13 @@ function AdminPanel() {
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full overflow-hidden border border-red-500/20 bg-black/40 shrink-0">
               <img 
-                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=250&auto=format&fit=crop" 
-                alt="Robert Teran" 
+                src={profile.photoUrl || currentUser?.photoURL || undefined} 
+                alt={profile.name || currentUser?.name || "Perfil profesional"} 
                 className="w-full h-full object-cover" 
               />
             </div>
             <div className="min-w-0">
-              <p className="font-extrabold text-[14px] truncate">Robert Terán</p>
+              <p className="font-extrabold text-[14px] truncate">{profile.name || currentUser?.name || 'Coach ISO'}</p>
               <p className="text-[10px] text-gray-400 font-mono">{t('admin.common.specialist')}</p>
             </div>
           </div>
@@ -860,7 +880,7 @@ function AdminPanel() {
             { id: 'books', name: t('admin.nav.books'), icon: BookOpen },
             { id: 'visits', name: t('admin.nav.visits'), icon: MapPin },
             { id: 'tutorials', name: t('admin.nav.tutorials'), icon: Video },
-            { id: 'users', name: t('admin.nav.users'), icon: Users },
+            ...(currentUser?.isSuperAdmin ? [{ id: 'users', name: t('admin.nav.users'), icon: Users }] : []),
             { id: 'registry', name: t('admin.nav.registry'), icon: CabinetIconPlaceholder },
             { id: 'curriculum', name: t('admin.nav.curriculum'), icon: FileText },
             { id: 'theme', name: t('admin.nav.theme'), icon: Palette },
@@ -994,7 +1014,7 @@ function AdminPanel() {
                 {t('admin.common.addRecord')}
               </button>
             )}
-            {activeTab === 'users' && hasAdminRights && (
+            {activeTab === 'users' && currentUser?.isSuperAdmin && (
               <button 
                 onClick={() => { setEditingUser(null); setIsUserModalOpen(true); }}
                 className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition tracking-wider uppercase cursor-pointer"
@@ -1732,7 +1752,7 @@ function AdminPanel() {
                           <th className="p-4 pl-6">{t('adminModules.panel.memberName')}</th>
                           <th className="p-4">{t('adminModules.panel.corporateEmail')}</th>
                           <th className="p-4">{t('adminModules.panel.privileges')}</th>
-                          {hasAdminRights && <th className="p-4 pr-6 text-right">{t('adminModules.panel.actions')}</th>}
+                          {currentUser?.isSuperAdmin && <th className="p-4 pr-6 text-right">{t('adminModules.panel.actions')}</th>}
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5 text-xs">
@@ -1747,10 +1767,10 @@ function AdminPanel() {
                           <td className="p-4">
                             <span className="text-[10px] bg-red-500/10 text-red-400 font-mono uppercase font-bold px-2 py-0.5 rounded border border-red-500/20">admin</span>
                           </td>
-                          {hasAdminRights && <td className="p-4 pr-6 text-right text-gray-500 italic text-[11px] font-medium">—</td>}
+                          {currentUser?.isSuperAdmin && <td className="p-4 pr-6 text-right text-gray-500 italic text-[11px] font-medium">—</td>}
                         </tr>
 
-                        {(Array.isArray(usersList) ? usersList : []).map((usr, idx) => (
+                        {[...usersList.filter(usr => usr.email?.toLowerCase() !== ADMIN_EMAIL), ...invitedUsers.filter(inv => !usersList.some(usr => usr.email?.toLowerCase() === inv.email?.toLowerCase()))].map((usr, idx) => (
                           <tr key={`usr-${usr.id || idx}-${idx}`} className="hover:bg-white/2 transition">
                             <td className="p-4 pl-6 text-white font-medium">{usr.name}</td>
                             <td className="p-4 text-gray-400">{usr.email}</td>
@@ -1767,7 +1787,7 @@ function AdminPanel() {
                                 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                               }`}>{usr.role}</span>
                             </td>
-                            {hasAdminRights && (
+                            {currentUser?.isSuperAdmin && (
                               <td className="p-4 pr-6 text-right">
                                 <button 
                                   onClick={() => handleDeleteUser(usr.id, usr.email)}
@@ -2343,7 +2363,11 @@ function AdminPanel() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500"
                 >
                   <option value="admin">{t('adminModules.panel.administrator')}</option>
+                  <option value="supervisor">Supervisor</option>
                   <option value="editor">{t('adminModules.panel.editorRole')}</option>
+                  <option value="colaborador">Colaborador</option>
+                  <option value="tlmk">Atención / TLMK</option>
+                  <option value="cliente">Cliente</option>
                   <option value="viewer">{t('adminModules.panel.viewerRole')}</option>
                 </select>
               </div>

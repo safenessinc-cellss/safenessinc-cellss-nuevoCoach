@@ -297,3 +297,205 @@ button.bg-blue-700 {
   outline: 3px solid #8ab4f8 !important;
   outline-offset: 2px;
 }
+
+
+/* Coach ISO dashboard — iOS-inspired glass surfaces and calm enterprise hierarchy. */
+.admin-panel {
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(191, 219, 254, .55), transparent 35%),
+    radial-gradient(ellipse at 92% 12%, rgba(221, 214, 254, .42), transparent 30%),
+    #f4f6fb !important;
+  color: #172033 !important;
+}
+.admin-panel > aside {
+  background: rgba(250, 251, 255, .84) !important;
+  border-right: 1px solid rgba(148, 163, 184, .22) !important;
+  box-shadow: 8px 0 32px rgba(15, 23, 42, .035);
+  backdrop-filter: blur(28px) saturate(170%) !important;
+}
+.admin-panel > aside > div:first-child {
+  border-bottom-color: rgba(148, 163, 184, .22) !important;
+}
+.admin-panel > aside nav button {
+  border: 1px solid transparent !important;
+  border-radius: 14px !important;
+  min-height: 42px;
+  color: #536078 !important;
+  transition: background .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease !important;
+}
+.admin-panel > aside nav button:hover {
+  background: rgba(226, 232, 240, .72) !important;
+  color: #172033 !important;
+  transform: translateX(2px);
+}
+.admin-panel > aside nav button.bg-red-600 {
+  background: linear-gradient(135deg, #3478f6, #5b5ce2) !important;
+  border-color: rgba(255,255,255,.38) !important;
+  box-shadow: 0 8px 18px rgba(59, 99, 230, .20) !important;
+  color: #fff !important;
+}
+.admin-panel > aside nav button.bg-red-600 svg { color: #fff !important; }
+.admin-panel > aside .bg-white\/5,
+.admin-panel > aside .bg-black\/20 {
+  background: rgba(226, 232, 240, .56) !important;
+}
+.admin-panel > aside .text-gray-400,
+.admin-panel > aside .text-gray-500 { color: #68758d !important; }
+.admin-panel > aside select {
+  background: rgba(255,255,255,.88) !important;
+  color: #263248 !important;
+  border-color: #d8deea !important;
+}
+.admin-panel > main {
+  background: transparent !important;
+  max-width: none !important;
+  padding: clamp(1.25rem, 3vw, 2.75rem) !important;
+}
+.admin-panel > main > div:first-child {
+  border-bottom-color: rgba(148, 163, 184, .28) !important;
+  padding-bottom: 1.35rem;
+}
+.admin-panel > main h2,
+.admin-panel > main h3 { letter-spacing: -.025em; }
+.admin-panel > main .glass,
+.admin-panel > main article,
+.admin-panel > main section,
+.admin-panel > main [class*="rounded-2xl"][class*="border"] {
+  border-color: rgba(148, 163, 184, .24) !important;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, .045);
+}
+.admin-panel > main button.bg-red-600,
+.admin-panel > main a.bg-red-600 {
+  background: linear-gradient(135deg, #3478f6, #5b5ce2) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.42) !important;
+  box-shadow: 0 7px 16px rgba(59, 99, 230, .16);
+}
+.admin-panel > main button.bg-red-600:hover,
+.admin-panel > main a.bg-red-600:hover { filter: brightness(1.04); }
+.admin-panel > main input,
+.admin-panel > main textarea,
+.admin-panel > main select {
+  border-radius: 12px;
+  border-color: #d8deea !important;
+  background: rgba(255,255,255,.9) !important;
+  color: #172033 !important;
+  box-shadow: inset 0 1px 1px rgba(15,23,42,.025);
+}
+.admin-panel > main input:focus,
+.admin-panel > main textarea:focus,
+.admin-panel > main select:focus {
+  border-color: #6d8ff7 !important;
+  box-shadow: 0 0 0 3px rgba(79, 119, 242, .13) !important;
+}
+.admin-panel > main table thead tr {
+  background: rgba(241, 245, 249, .92) !important;
+}
+.admin-panel > main table tbody tr:hover { background: rgba(239, 246, 255, .75) !important; }
+.admin-panel > main .text-red-400,
+.admin-panel > main .text-red-500 { color: #315fd4 !important; }
+.admin-panel > main .bg-red-500\/10 { background: rgba(59, 130, 246, .08) !important; }
+.admin-panel > main .border-red-500\/20 { border-color: rgba(59, 130, 246, .2) !important; }
+.admin-panel :where(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid #8ab4f8 !important;
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  .admin-panel > aside { border-right: 0 !important; border-bottom: 1px solid rgba(148,163,184,.25) !important; }
+  .admin-panel > aside nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-panel > aside nav button { padding: 10px 12px !important; }
+}
+
+
+/* Public consulting site: confident editorial layout, clean white space and blue accents. */
+.public-site {
+  background: #f7f9fc !important;
+  color: #172033 !important;
+}
+.public-site > div[style*="background-image"] { display: none !important; }
+.public-site > div.fixed.inset-0[class*="bg-[#03050C"] { display: none !important; }
+.public-site nav {
+  max-width: min(94vw, 1320px) !important;
+  top: 16px !important;
+}
+.public-site nav > div {
+  background: rgba(255,255,255,.88) !important;
+  border: 1px solid rgba(148,163,184,.24) !important;
+  box-shadow: 0 12px 40px rgba(15,23,42,.08) !important;
+  backdrop-filter: blur(24px) saturate(170%) !important;
+}
+.public-site nav button,
+.public-site nav a { font-size: 11px; }
+.public-site #inicio {
+  background:
+    radial-gradient(ellipse at 12% 12%, rgba(191,219,254,.65), transparent 34%),
+    radial-gradient(ellipse at 88% 24%, rgba(224,231,255,.7), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%) !important;
+  min-height: 88vh !important;
+}
+.public-site #inicio h1 {
+  max-width: 1100px;
+  margin-inline: auto;
+  color: #14213d !important;
+  font-size: clamp(2.7rem, 6.2vw, 5.8rem) !important;
+  line-height: .99 !important;
+  letter-spacing: -.055em !important;
+  text-wrap: balance;
+}
+.public-site #inicio h1 span {
+  background-image: linear-gradient(105deg, #2456a6, #4777d5) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+.public-site #inicio p {
+  color: #536078 !important;
+  font-weight: 400 !important;
+}
+.public-site #inicio [class*="border-[#00F0FF]"],
+.public-site #inicio [class*="border-[#FF007A"] {
+  border-color: #d8e3f4 !important;
+  background: rgba(255,255,255,.78) !important;
+  box-shadow: 0 4px 16px rgba(15,23,42,.035) !important;
+}
+.public-site #impacto {
+  background: #f0f4fa !important;
+  border-color: #e0e7f1 !important;
+}
+.public-site #impacto > div,
+.public-site #services,
+.public-site #procesos,
+.public-site #certifications,
+.public-site #comportamiento-humano {
+  color: #172033;
+}
+.public-site #impacto [class*="rounded-2xl"],
+.public-site #services [class*="rounded-2xl"],
+.public-site #procesos [class*="rounded-2xl"],
+.public-site #certifications [class*="rounded-2xl"],
+.public-site #comportamiento-humano [class*="rounded-2xl"] {
+  border-color: #e0e7f1 !important;
+  box-shadow: 0 8px 24px rgba(15,23,42,.045) !important;
+}
+.public-site .futuristic-card,
+.public-site .glass {
+  background: rgba(255,255,255,.9) !important;
+  border-color: #e0e7f1 !important;
+  box-shadow: 0 8px 28px rgba(15,23,42,.045) !important;
+}
+.public-site button.bg-red-600,
+.public-site a.bg-red-600,
+.public-site button.bg-blue-600,
+.public-site a.bg-blue-600 {
+  background: linear-gradient(135deg, #2456a6, #4777d5) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 18px rgba(37,86,166,.16) !important;
+}
+.public-site footer {
+  background: #f7f9fc;
+  border-color: #e0e7f1 !important;
+}
+@media (max-width: 767px) {
+  .public-site nav { top: 8px !important; }
+  .public-site #inicio { min-height: 78vh !important; padding-top: 7rem !important; }
+  .public-site #inicio h1 { font-size: clamp(2.4rem, 12vw, 4.2rem) !important; }
+}
