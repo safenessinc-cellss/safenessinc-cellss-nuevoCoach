@@ -6,7 +6,7 @@ service cloud.firestore {
     function existsUser() { return signedIn() && exists(userPath()); }
     function role() { return existsUser() ? get(userPath()).data.get('role', 'pending') : 'pending'; }
     function status() { return existsUser() ? get(userPath()).data.get('status', 'pending') : 'pending'; }
-    function active() { return signedIn() && status() == 'active'; }
+    function active() { return signedIn() && status() == 'active' && hasActiveInvitation() && role() == get(invitationPath()).data.role; }
 
     function isSuperAdmin() {
       return signedIn()
