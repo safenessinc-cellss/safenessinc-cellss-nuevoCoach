@@ -5,9 +5,9 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-  --color-cosmic-bg: #03050C;
-  --color-neon-cyan: #00F0FF;
-  --color-neon-fuchsia: #FF007A;
+  --color-cosmic-bg: #0B1220;
+  --color-neon-cyan: #6AAED6;
+  --color-neon-fuchsia: #D6B36A;
   --color-satin-white: #E2E8F0;
   --color-slate-slate: #64748B;
 }
@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  background-color: #03050C;
+  background-color: #0B1220;
   background-image: radial-gradient(rgba(30, 41, 59, 0.45) 1px, transparent 1px);
   background-size: 24px 24px;
   color: #E2E8F0;
@@ -26,7 +26,7 @@ body {
 .glass {
   background: rgba(9, 13, 26, 0.65);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(106, 174, 214, 0.1);
 }
 
 .bento-card {
@@ -46,7 +46,7 @@ body {
 .futuristic-card {
   position: relative;
   background: rgba(9, 13, 26, 0.75);
-  border: 1px solid rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(106, 174, 214, 0.12);
   border-radius: 1.5rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -58,7 +58,7 @@ body {
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+  background: linear-gradient(90deg, transparent, #6AAED6, transparent);
   opacity: 0;
   filter: blur(1.5px);
   pointer-events: none;
@@ -72,18 +72,18 @@ body {
   }
   
   .futuristic-card:hover {
-    border-color: rgba(0, 240, 255, 0.45);
-    box-shadow: 0 0 25px rgba(0, 240, 255, 0.12), inset 0 0 10px rgba(0, 240, 255, 0.05);
+    border-color: rgba(106, 174, 214, 0.45);
+    box-shadow: 0 0 25px rgba(106, 174, 214, 0.12), inset 0 0 10px rgba(106, 174, 214, 0.05);
     transform: translateY(-3px);
   }
 
   .futuristic-card-fuchsia::before {
-    background: linear-gradient(90deg, transparent, #ff007a, transparent);
+    background: linear-gradient(90deg, transparent, #D6B36A, transparent);
   }
 
   .futuristic-card-fuchsia:hover {
-    border-color: rgba(255, 0, 122, 0.45);
-    box-shadow: 0 0 25px rgba(255, 0, 122, 0.12), inset 0 0 10px rgba(255, 0, 122, 0.05);
+    border-color: rgba(214, 179, 106, 0.45);
+    box-shadow: 0 0 25px rgba(214, 179, 106, 0.12), inset 0 0 10px rgba(214, 179, 106, 0.05);
     transform: translateY(-3px);
   }
 }
@@ -152,23 +152,23 @@ body {
 
 /* Fondos base más comunes del proyecto */
 html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
-.bg-\[\#03050C\] { background-color: var(--theme-bg-base) !important; }
+.bg-\[\#0B1220\] { background-color: var(--theme-bg-base) !important; }
 .bg-\[\#050505\] { background-color: var(--theme-bg-base) !important; }
 .bg-\[\#050814\]\/45 { background-color: color-mix(in srgb, var(--theme-bg-section) 45%, transparent) !important; }
 .bg-\[\#090D1A\]\/50 { background-color: color-mix(in srgb, var(--theme-bg-panel) 50%, transparent) !important; }
 .bg-\[\#090D1A\]\/55 { background-color: color-mix(in srgb, var(--theme-bg-panel) 55%, transparent) !important; }
 .bg-\[\#090D1A\]\/40 { background-color: color-mix(in srgb, var(--theme-bg-panel) 40%, transparent) !important; }
 
-/* Acento teal (antes #00F0FF) */
-.text-\[\#00F0FF\] { color: var(--theme-accent) !important; }
-.bg-\[\#00F0FF\] { background-color: var(--theme-accent) !important; }
-.border-\[\#00F0FF\]\/30 { border-color: color-mix(in srgb, var(--theme-accent) 30%, transparent) !important; }
-.border-\[\#00F0FF\]\/35 { border-color: color-mix(in srgb, var(--theme-accent) 35%, transparent) !important; }
+/* Acento teal (antes #6AAED6) */
+.text-\[\#6AAED6\] { color: var(--theme-accent) !important; }
+.bg-\[\#6AAED6\] { background-color: var(--theme-accent) !important; }
+.border-\[\#6AAED6\]\/30 { border-color: color-mix(in srgb, var(--theme-accent) 30%, transparent) !important; }
+.border-\[\#6AAED6\]\/35 { border-color: color-mix(in srgb, var(--theme-accent) 35%, transparent) !important; }
 
-/* Acento fucsia (antes #FF007A) */
-.text-\[\#FF007A\] { color: var(--theme-accent-2) !important; }
-.bg-\[\#FF007A\] { background-color: var(--theme-accent-2) !important; }
-.border-\[\#FF007A\]\/30 { border-color: color-mix(in srgb, var(--theme-accent-2) 30%, transparent) !important; }
+/* Acento fucsia (antes #D6B36A) */
+.text-\[\#D6B36A\] { color: var(--theme-accent-2) !important; }
+.bg-\[\#D6B36A\] { background-color: var(--theme-accent-2) !important; }
+.border-\[\#D6B36A\]\/30 { border-color: color-mix(in srgb, var(--theme-accent-2) 30%, transparent) !important; }
 
 /* Texto muted */
 .text-\[\#64748B\] { color: var(--theme-text-muted) !important; }
@@ -176,7 +176,7 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
 .text-gray-400 { color: var(--theme-text-muted) !important; }
 
 /* Modo light: forzar legibilidad */
-[data-theme-mode="light"] .bg-\[\#03050C\],
+[data-theme-mode="light"] .bg-\[\#0B1220\],
 [data-theme-mode="light"] .bg-\[\#050505\] { background-color: var(--theme-bg-base) !important; }
 [data-theme-mode="light"] .text-white { color: var(--theme-text) !important; }
 [data-theme-mode="light"] .text-gray-200 { color: var(--theme-text) !important; }
@@ -211,17 +211,17 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
 /* ============================================
    OVERRIDES ADICIONALES DE TEMA (Tailwind v4)
    ============================================ */
-.bg-\[\#00F0FF\]\/10 { background-color: color-mix(in srgb, var(--theme-accent) 10%, transparent) !important; }
-.bg-\[\#00F0FF\]\/15 { background-color: color-mix(in srgb, var(--theme-accent) 15%, transparent) !important; }
-.bg-\[\#00F0FF\]\/25 { background-color: color-mix(in srgb, var(--theme-accent) 25%, transparent) !important; }
-.border-\[\#00F0FF\]\/10 { border-color: color-mix(in srgb, var(--theme-accent) 10%, transparent) !important; }
-.border-\[\#00F0FF\]\/20 { border-color: color-mix(in srgb, var(--theme-accent) 20%, transparent) !important; }
-.border-\[\#00F0FF\]\/25 { border-color: color-mix(in srgb, var(--theme-accent) 25%, transparent) !important; }
+.bg-\[\#6AAED6\]\/10 { background-color: color-mix(in srgb, var(--theme-accent) 10%, transparent) !important; }
+.bg-\[\#6AAED6\]\/15 { background-color: color-mix(in srgb, var(--theme-accent) 15%, transparent) !important; }
+.bg-\[\#6AAED6\]\/25 { background-color: color-mix(in srgb, var(--theme-accent) 25%, transparent) !important; }
+.border-\[\#6AAED6\]\/10 { border-color: color-mix(in srgb, var(--theme-accent) 10%, transparent) !important; }
+.border-\[\#6AAED6\]\/20 { border-color: color-mix(in srgb, var(--theme-accent) 20%, transparent) !important; }
+.border-\[\#6AAED6\]\/25 { border-color: color-mix(in srgb, var(--theme-accent) 25%, transparent) !important; }
 
-.bg-\[\#FF007A\]\/10 { background-color: color-mix(in srgb, var(--theme-accent-2) 10%, transparent) !important; }
-.bg-\[\#FF007A\]\/15 { background-color: color-mix(in srgb, var(--theme-accent-2) 15%, transparent) !important; }
-.border-\[\#FF007A\]\/20 { border-color: color-mix(in srgb, var(--theme-accent-2) 20%, transparent) !important; }
-.border-\[\#FF007A\]\/25 { border-color: color-mix(in srgb, var(--theme-accent-2) 25%, transparent) !important; }
+.bg-\[\#D6B36A\]\/10 { background-color: color-mix(in srgb, var(--theme-accent-2) 10%, transparent) !important; }
+.bg-\[\#D6B36A\]\/15 { background-color: color-mix(in srgb, var(--theme-accent-2) 15%, transparent) !important; }
+.border-\[\#D6B36A\]\/20 { border-color: color-mix(in srgb, var(--theme-accent-2) 20%, transparent) !important; }
+.border-\[\#D6B36A\]\/25 { border-color: color-mix(in srgb, var(--theme-accent-2) 25%, transparent) !important; }
 
 /* ============================================
    PRINT MEJORADO (Imprimir del CV)
@@ -270,7 +270,7 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
   box-shadow: 0 1px 3px rgba(60,64,67,.12) !important;
   backdrop-filter: blur(10px);
 }
-.public-site [class*="bg-[#03050C]"],
+.public-site [class*="bg-[#0B1220]"],
 .public-site [class*="bg-[#050505]"],
 .public-site [class*="bg-[#080D18]"],
 .public-site [class*="bg-[#0B1220]"],
@@ -292,8 +292,8 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
   background-color: #f8f9fa !important;
 }
 .public-site [class*="border-white/"],
-.public-site [class*="border-[#00F0FF]"],
-.public-site [class*="border-[#FF007A]"],
+.public-site [class*="border-[#6AAED6]"],
+.public-site [class*="border-[#D6B36A]"],
 .public-site [class*="border-red-"] {
   border-color: #dadce0 !important;
 }
@@ -304,17 +304,17 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
 .public-site .text-gray-500,
 .public-site .text-gray-600 { color: #70757a !important; }
 .public-site .text-gray-700 { color: #5f6368 !important; }
-.public-site .text-\[\#00F0FF\],
+.public-site .text-\[\#6AAED6\],
 .public-site .text-red-500 { color: #1a73e8 !important; }
-.public-site .text-\[\#FF007A\] { color: #ea4335 !important; }
-.public-site [class~="bg-[#00F0FF]"],
+.public-site .text-\[\#D6B36A\] { color: #ea4335 !important; }
+.public-site [class~="bg-[#6AAED6]"],
 .public-site .bg-red-600 {
   background-color: #1a73e8 !important;
 }
 .public-site .bg-red-700,
 .public-site .hover\:bg-red-700:hover { background-color: #1558b0 !important; }
-.public-site [class~="bg-[#FF007A]"] { background-color: #ea4335 !important; }
-.public-site [class*="from-[#00F0FF]"][class*="to-[#FF007A]"] {
+.public-site [class~="bg-[#D6B36A]"] { background-color: #ea4335 !important; }
+.public-site [class*="from-[#6AAED6]"][class*="to-[#D6B36A]"] {
   background-image: linear-gradient(90deg, #1a73e8, #4285f4) !important;
 }
 .public-site button.text-white,
