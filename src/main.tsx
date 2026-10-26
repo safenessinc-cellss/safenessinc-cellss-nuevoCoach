@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/curriculo" element={<PublicCurriculumPage />} />
               <Route path="/resume" element={<PublicCurriculumPage />} />
               <Route path="/admin" element={
-                <ProtectedRoute allowedRoles={['superadmin', 'admin']}>
+                <ProtectedRoute allowedRoles={['superadmin', 'admin', 'supervisor', 'editor', 'colaborador', 'tlmk', 'cliente', 'viewer']}>
                   <AdminPanel />
                 </ProtectedRoute>
               } />
