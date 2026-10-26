@@ -27,6 +27,7 @@ import { Course, Book, Visit, Tutorial, UserProfile, UserRole } from '../types';
 import ImageRegistryManager from './ImageRegistryManager';
 import ThemeEditor from './ThemeEditor';
 import ProfileEditor from './ProfileEditor';
+import { useProfileSettings } from '../data/useProfileSettings';
 import CurriculumEditor from './CurriculumEditor';
 import AIDemandAnalyticsDashboard from './AIDemandAnalyticsDashboard';
 import CertificateAIImporter from './CertificateAIImporter';
@@ -83,6 +84,7 @@ function AdminPanel() {
 
   // Authentication & Role State from central AuthContext
   const { currentUser, logout: performContextLogout, loading: authChecking } = useAuth();
+  const { profile } = useProfileSettings();
   
   // Active Tab State
   const [activeTab, setActiveTab] = useState<'dashboard' | 'ai_demand' | 'ai_curriculum' | 'ai_assistant' | 'courses' | 'books' | 'visits' | 'tutorials' | 'users' | 'registry' | 'profile' | 'curriculum' | 'theme'>('dashboard');
@@ -845,13 +847,13 @@ function AdminPanel() {
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full overflow-hidden border border-red-500/20 bg-black/40 shrink-0">
               <img 
-                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=250&auto=format&fit=crop" 
-                alt="Robert Teran" 
+                src={profile.photoUrl || currentUser?.photoURL || undefined} 
+                alt={profile.name || currentUser?.name || "Perfil profesional"} 
                 className="w-full h-full object-cover" 
               />
             </div>
             <div className="min-w-0">
-              <p className="font-extrabold text-[14px] truncate">Robert Terán</p>
+              <p className="font-extrabold text-[14px] truncate">{profile.name || currentUser?.name || 'Coach ISO'}</p>
               <p className="text-[10px] text-gray-400 font-mono">{t('admin.common.specialist')}</p>
             </div>
           </div>
@@ -878,7 +880,7 @@ function AdminPanel() {
             { id: 'books', name: t('admin.nav.books'), icon: BookOpen },
             { id: 'visits', name: t('admin.nav.visits'), icon: MapPin },
             { id: 'tutorials', name: t('admin.nav.tutorials'), icon: Video },
-            { id: 'users', name: t('admin.nav.users'), icon: Users },
+            ...(currentUser?.isSuperAdmin ? [{ id: 'users', name: t('admin.nav.users'), icon: Users }] : []),
             { id: 'registry', name: t('admin.nav.registry'), icon: CabinetIconPlaceholder },
             { id: 'curriculum', name: t('admin.nav.curriculum'), icon: FileText },
             { id: 'theme', name: t('admin.nav.theme'), icon: Palette },
