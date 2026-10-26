@@ -72,10 +72,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 status = 'active';
                 displayName = invitation.name || displayName;
                 await setDoc(ref, { email, name: displayName, role, status, invitedAt: invitation.createdAt || serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
-              } else if (validInvitation && d.status === 'active' && d.role === invitation.role) {
+              } else if (validInvitation && d.status === 'active') {
                 role = invitation.role as Role;
                 status = 'active';
                 displayName = invitation.name || displayName;
+                if (d.role !== invitation.role) {
+                  await setDoc(ref, { email, name: displayName, role, status, invitedAt: invitation.createdAt || serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
+                }
               } else {
                 role = 'pending';
                 status = d.status === 'suspended' ? 'suspended' : 'pending';
