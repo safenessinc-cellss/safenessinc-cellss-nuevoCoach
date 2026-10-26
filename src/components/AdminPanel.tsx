@@ -2363,7 +2363,11 @@ function AdminPanel() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500"
                 >
                   <option value="admin">{t('adminModules.panel.administrator')}</option>
+                  <option value="supervisor">Supervisor</option>
                   <option value="editor">{t('adminModules.panel.editorRole')}</option>
+                  <option value="colaborador">Colaborador</option>
+                  <option value="tlmk">Atención / TLMK</option>
+                  <option value="cliente">Cliente</option>
                   <option value="viewer">{t('adminModules.panel.viewerRole')}</option>
                 </select>
               </div>
