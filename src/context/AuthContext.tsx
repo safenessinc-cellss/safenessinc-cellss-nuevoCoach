@@ -59,22 +59,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (snap.exists()) {
             const d = snap.data() as any;
             if (d.name) displayName = d.name;
-            if (d.status === 'pending' && !SUPERADMIN_EMAILS.includes(email)) {
+            if (SUPERADMIN_EMAILS.includes(email)) {
+              role = (d.role || 'pending') as Role;
+              status = (d.status || 'pending') as Status;
+            } else {
               const invitationSnap = await getDoc(doc(db, 'invitations', email));
               const invitation = invitationSnap.exists() ? invitationSnap.data() as any : null;
-              if (invitation && invitation.email === email && invitation.status === 'active'
-                && ['admin', 'supervisor', 'editor', 'colaborador', 'tlmk', 'cliente', 'viewer'].includes(invitation.role)) {
+              const validInvitation = invitation && invitation.email === email && invitation.status === 'active'
+                && ['admin', 'supervisor', 'editor', 'colaborador', 'tlmk', 'cliente', 'viewer'].includes(invitation.role);
+              if (validInvitation && d.status === 'pending') {
                 role = invitation.role as Role;
                 status = 'active';
                 displayName = invitation.name || displayName;
                 await setDoc(ref, { email, name: displayName, role, status, invitedAt: invitation.createdAt || serverTimestamp(), updatedAt: serverTimestamp() }, { merge: true });
+              } else if (validInvitation && d.status === 'active' && d.role === invitation.role) {
+                role = invitation.role as Role;
+                status = 'active';
+                displayName = invitation.name || displayName;
               } else {
-                role = (d.role || 'pending') as Role;
-                status = 'pending';
+                role = 'pending';
+                status = d.status === 'suspended' ? 'suspended' : 'pending';
               }
-            } else {
-              if (d.role) role = d.role;
-              if (d.status) status = d.status;
             }
           } else if (!SUPERADMIN_EMAILS.includes(email)) {
             // Invitations are created only by the super administrator. The invite
