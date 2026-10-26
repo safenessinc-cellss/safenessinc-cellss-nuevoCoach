@@ -6,7 +6,6 @@ service cloud.firestore {
     function existsUser() { return signedIn() && exists(userPath()); }
     function role() { return existsUser() ? get(userPath()).data.get('role', 'pending') : 'pending'; }
     function status() { return existsUser() ? get(userPath()).data.get('status', 'pending') : 'pending'; }
-    function active() { return signedIn() && status() == 'active' && hasActiveInvitation() && role() == get(invitationPath()).data.role; }
 
     function isSuperAdmin() {
       return signedIn()
@@ -24,6 +23,7 @@ service cloud.firestore {
         && get(invitationPath()).data.status == 'active'
         && get(invitationPath()).data.role in ['admin','supervisor','editor','colaborador','tlmk','cliente','viewer'];
     }
+    function active() { return signedIn() && status() == 'active' && hasActiveInvitation() && role() == get(invitationPath()).data.role; }
     function isAdmin() { return isSuperAdmin() || (active() && role() == 'admin'); }
     function isEditor() {
       return isAdmin() || (active() && role() in ['editor', 'supervisor']);
