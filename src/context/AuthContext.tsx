@@ -62,7 +62,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             if (d.status) status = d.status;
             if (d.name) displayName = d.name;
           } else if (!SUPERADMIN_EMAILS.includes(email)) {
-            try {
+            // Invitations are created only by the super administrator. The invite
+            // document ID is the normalized email, so it can be matched securely.
+            const invitationRef = doc(db, 'invitations', email);
+            const invitationSnap = await getDoc(invitationRef);
+            const invitation = invitationSnap.exists() ? invitationSnap.data() as any : null;
+            if (invitation && invitation.email === email && invitation.status === 'active'
+              && ['admin', 'supervisor', 'editor', 'colaborador', 'tlmk', 'cliente', 'viewer'].includes(invitation.role)) {
+              role = invitation.role as Role;
+              status = 'active';
+              displayName = invitation.name || displayName;
+              await setDoc(ref, {
+                email,
+                name: displayName,
+                role,
+                status,
+                invitedAt: invitation.createdAt || serverTimestamp(),
+                updatedAt: serverTimestamp(),
+              });
+            } else {
+              role = 'pending';
+              status = 'pending';
               await setDoc(ref, {
                 email,
                 name: displayName,
@@ -70,18 +90,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 status: 'pending',
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
-                requestedRole: 'colaborador',
+                requestedRole: 'viewer',
               });
-              role = 'pending';
-              status = 'pending';
-            } catch (createErr) {
-              console.warn('auto-create /users failed', createErr);
             }
           }
-        } catch (e) { console.warn('read /users failed', e); }
-        if (SUPERADMIN_EMAILS.includes(email)) {
+        } catch (e) {
+          console.warn('Unable to resolve user access / invitation', e);
+          // Fail closed: never grant privileges when Firestore cannot verify access.
+          if (!SUPERADMIN_EMAILS.includes(email)) {
+            role = 'pending';
+            status = 'pending';
+          }
+        }
+        if (SUPERADMIN_EMAILS.includes(email) && fu.emailVerified) {
           role = 'superadmin';
           status = 'active';
+        } else if (SUPERADMIN_EMAILS.includes(email)) {
+          role = 'pending';
+          status = 'pending';
         }
         setCurrentUser(buildAuthInfo(fu.uid, email, displayName, role, status, fu.photoURL || undefined));
       } catch (e) {
