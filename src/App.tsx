@@ -14,6 +14,8 @@ import UserProfileModal from './components/UserProfileModal';
 import { useProfileSettings } from './data/useProfileSettings';
 import CoachingPillarsPanel from './components/CoachingPillarsPanel';
 import CurriculumShowcaseModal from './components/CurriculumShowcaseModal';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from './firebase';
 
 const iconMap: Record<string, any> = {
   ShieldCheck, Network, Workflow, Brain, BarChart3, ShieldAlert, LineChart, Rocket, Award, ClipboardCheck, Map
@@ -225,6 +227,17 @@ export default function App() {
   const activeLanguage = (i18n.language || 'es').split('-')[0] as keyof typeof allData;
   const data = mergeLocaleData(dataES, allData[activeLanguage] || dataES);
   const { profile, loading: profileLoading } = useProfileSettings();
+  const [publicBooks, setPublicBooks] = useState<Array<{ id: string; title: string; author: string; category: string; year: number; coverUrl: string; pdfUrl: string }>>([]);
+
+  useEffect(() => {
+    let active = true;
+    getDocs(collection(db, 'books')).then((snapshot) => {
+      if (!active) return;
+      setPublicBooks(snapshot.docs.map((book) => ({ id: book.id, ...book.data() } as { id: string; title: string; author: string; category: string; year: number; coverUrl: string; pdfUrl: string }))
+        .filter((book) => Boolean(book.title && book.pdfUrl)));
+    }).catch((error) => console.error('Could not load public books', error));
+    return () => { active = false; };
+  }, []);
 
   const [bgImage, setBgImage] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -1747,15 +1760,15 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-3"><ShieldCheck className="w-6 h-6 text-blue-700" /><h3 className="font-bold text-slate-900">{i18n.language.startsWith('pt') ? 'Credenciais verificáveis' : i18n.language.startsWith('en') ? 'Verifiable credentials' : 'Credenciales verificables'}</h3></div>
-              <p className="text-sm leading-relaxed text-slate-600">IBM SkillsBuild, Credly e outras entidades emissoras, com links de verificação quando disponíveis.</p>
+              <p className="text-sm leading-relaxed text-slate-600">{i18n.language.startsWith('pt') ? 'IBM SkillsBuild, Credly e outras entidades emissoras, com links de verificação quando disponíveis.' : i18n.language.startsWith('it') ? 'IBM SkillsBuild, Credly e altri enti emittenti, con link di verifica quando disponibili.' : i18n.language.startsWith('en') ? 'IBM SkillsBuild, Credly and other issuing organizations, with verification links where available.' : 'IBM SkillsBuild, Credly y otras entidades emisoras, con enlaces de verificación cuando están disponibles.'}</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-3"><GraduationCap className="w-6 h-6 text-blue-700" /><h3 className="font-bold text-slate-900">{i18n.language.startsWith('pt') ? 'Formação por áreas' : i18n.language.startsWith('en') ? 'Learning by professional area' : 'Formación por áreas'}</h3></div>
-              <p className="text-sm leading-relaxed text-slate-600">Cibersegurança, IA e dados, cloud, qualidade e ISO, gestão ágil, liderança e desenvolvimento web.</p>
+              <p className="text-sm leading-relaxed text-slate-600">{i18n.language.startsWith('pt') ? 'Cibersegurança, IA e dados, cloud, qualidade e ISO, gestão ágil, liderança e desenvolvimento web.' : i18n.language.startsWith('it') ? 'Cybersecurity, IA e dati, cloud, qualità e ISO, gestione agile, leadership e sviluppo web.' : i18n.language.startsWith('en') ? 'Cybersecurity, AI and data, cloud, quality and ISO, agile management, leadership, and web development.' : 'Ciberseguridad, IA y datos, nube, calidad e ISO, gestión ágil, liderazgo y desarrollo web.'}</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
               <div className="flex items-center gap-3 mb-3"><Rocket className="w-6 h-6 text-blue-700" /><h3 className="font-bold text-slate-900">{i18n.language.startsWith('pt') ? 'Desenvolvimento de software' : i18n.language.startsWith('en') ? 'Software development' : 'Desarrollo de software'}</h3></div>
-              <p className="text-sm leading-relaxed text-slate-600">Experiência com Android, iOS, Symbian e aplicações web full stack; cinco aplicações publicadas no Google Play e ferramentas digitais para gestão da qualidade.</p>
+              <p className="text-sm leading-relaxed text-slate-600">{i18n.language.startsWith('pt') ? 'Na SAFENESS.INC, desenvolve aplicações móveis e web, ferramentas internas e soluções digitais para gestão da qualidade. Projetos independentes incluem publicações para Android e protótipos para iOS e Symbian.' : i18n.language.startsWith('it') ? 'Con SAFENESS.INC sviluppa applicazioni mobili e web, strumenti interni e soluzioni digitali per la gestione della qualità. I progetti indipendenti includono app Android e prototipi per iOS e Symbian.' : i18n.language.startsWith('en') ? 'Through SAFENESS.INC, develops mobile and web applications, internal tools, and digital solutions for quality management. Independent projects include Android releases and prototypes for iOS and Symbian.' : 'A través de SAFENESS.INC desarrolla aplicaciones móviles y web, herramientas internas y soluciones digitales para la gestión de calidad. Sus proyectos independientes incluyen publicaciones para Android y prototipos para iOS y Symbian.'}</p>
             </div>
           </div>
           <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-6 md:p-8 mb-8">
@@ -1778,6 +1791,29 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {publicBooks.length > 0 && (
+        <section id="publicaciones" className="relative z-10 border-t border-slate-200 bg-white py-20">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="mx-auto mb-10 max-w-3xl text-center">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">{i18n.language.startsWith('pt') ? 'Publicações' : i18n.language.startsWith('it') ? 'Pubblicazioni' : i18n.language.startsWith('en') ? 'Publications' : 'Publicaciones'}</span>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">{i18n.language.startsWith('pt') ? 'Livros e recursos profissionais' : i18n.language.startsWith('it') ? 'Libri e risorse professionali' : i18n.language.startsWith('en') ? 'Books and professional resources' : 'Libros y recursos profesionales'}</h2>
+              <p className="mt-3 text-slate-600">{i18n.language.startsWith('pt') ? 'Materiais publicados por Robert Terán sobre gestão, qualidade e melhoria contínua.' : i18n.language.startsWith('it') ? 'Materiali di Robert Terán su gestione, qualità e miglioramento continuo.' : i18n.language.startsWith('en') ? 'Materials by Robert Terán on management, quality, and continuous improvement.' : 'Materiales de Robert Terán sobre gestión, calidad y mejora continua.'}</p>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {publicBooks.map((book) => <article key={book.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                {book.coverUrl && <img src={book.coverUrl} alt={`${book.title} — portada`} loading="lazy" className="aspect-[16/9] w-full object-cover" />}
+                <div className="p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">{book.category}{book.year ? ` · ${book.year}` : ''}</p>
+                  <h3 className="mt-2 text-lg font-bold text-slate-900">{book.title}</h3>
+                  <p className="mt-1 text-sm text-slate-600">{i18n.language.startsWith('pt') ? 'Por' : i18n.language.startsWith('it') ? 'Di' : i18n.language.startsWith('en') ? 'By' : 'Por'} {book.author}</p>
+                  <a href={book.pdfUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">{i18n.language.startsWith('pt') ? 'Abrir publicação' : i18n.language.startsWith('it') ? 'Apri pubblicazione' : i18n.language.startsWith('en') ? 'View publication' : 'Ver publicación'} <ArrowRight className="h-4 w-4" /></a>
+                </div>
+              </article>)}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SECCIÓN: MÁS ALLÁ DE LA NORMA */}
       <section id="comportamiento-humano" className="py-24 relative z-10 bg-slate-50 border-t border-slate-200">
@@ -1955,32 +1991,13 @@ export default function App() {
             </div>
           </div>
 
-          {/* ETIQUETAS DE ACCIÓN EN EL DASHBOARD / MARBETES */}
-          <div className="text-center mb-8">
-            <h4 className="text-sm uppercase tracking-widest text-red-500/90 font-mono mb-4">Económicas y Especialidades de Acompañamiento Integral</h4>
-            <div className="flex flex-wrap gap-2 justify-center max-w-4xl mx-auto">
-              {[
-                "Gestión de la ira", "Orientación laboral", "Impulsividad", 
-                "Habilidades de afrontamiento", "Problemas emocionales", "Life Coaching", 
-                "Problemas relacionales", "Rendimiento deportivo", "Estrés", "Recursos humanos"
-              ].map((specialty, idx) => (
-                <button 
-                  key={`spec-btn-${specialty}-${idx}`} 
-                  onClick={() => {
-                    // Reset custom states before opening
-                    if (specialty === 'Impulsividad') {
-                      setImpulseActive(false);
-                      setImpulseSuccess(false);
-                      setImpulseTime(5);
-                    }
-                    setSelectedSpecialty(specialty);
-                  }}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121212] hover:bg-red-950/20 text-gray-300 hover:text-white border border-slate-200 hover:border-red-500/35 transition-all duration-300 cursor-pointer active:scale-95 flex items-center gap-1.5 focus:outline-none"
-                >
-                  <span className="text-red-500 text-xs">✨</span> {specialty}
-                </button>
-              ))}
-            </div>
+          <div className="mx-auto mb-8 max-w-4xl rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900">
+              {i18n.language.startsWith('pt') ? 'Consultoria para sistemas e operações' : i18n.language.startsWith('it') ? 'Consulenza per sistemi e operations' : i18n.language.startsWith('en') ? 'Systems and operations consulting' : 'Consultoría para sistemas y operaciones'}
+            </h3>
+            <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+              {i18n.language.startsWith('pt') ? 'Sistemas de gestão ISO, auditoria, melhoria de processos e desenvolvimento de equipes para organizações industriais e de serviços.' : i18n.language.startsWith('it') ? 'Sistemi di gestione ISO, audit, miglioramento dei processi e sviluppo dei team per organizzazioni industriali e di servizi.' : i18n.language.startsWith('en') ? 'ISO management systems, audits, process improvement and team development for industrial and service organizations.' : 'Sistemas de gestión ISO, auditoría, mejora de procesos y desarrollo de equipos para organizaciones industriales y de servicios.'}
+            </p>
           </div>
         </div>
       </section>
