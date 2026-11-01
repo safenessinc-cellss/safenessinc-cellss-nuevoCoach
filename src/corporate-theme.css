@@ -675,3 +675,12 @@ button.bg-blue-700 {
 .coaching-executive-section .coaching-method-panel li { color: #4e5d56; }
 .coaching-executive-section .coaching-method-panel li strong { color: #20312d; }
 .coaching-executive-section .coaching-method-panel .text-teal-400 { color: #267165 !important; }
+
+
+/* Editorial public experience, services and contact sections. */
+.public-site .career-editorial-section, .public-site .consulting-services-section, .public-site .credentials-summary-section, .public-site .business-contact-section { background: #f5f3ed; border-color: #e5e1d7; }
+.public-site .career-editorial-card, .public-site .consulting-service-card { display: block; background: #fff; border-color: #e1e3dc; color: #20312d; box-shadow: 0 12px 32px rgba(32,49,45,.045); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.public-site .career-editorial-card:hover, .public-site .consulting-service-card:hover { transform: translateY(-3px); border-color: #aabaae; box-shadow: 0 18px 40px rgba(32,49,45,.08); }
+.public-site .career-editorial-section ul { list-style: none; padding: 0; }
+.public-site .credentials-summary-section { border-color: #e5e1d7; }
+.public-site .business-contact-section { border-color: #e5e1d7; }
