@@ -756,182 +756,66 @@ export default function App() {
       </section>
 
       {/* PERFIL Y TRAYECTORIA */}
-      <section id="about" className="py-24 relative z-10 bg-black/40 backdrop-blur-md border-t border-white/5">
+      <section id="about" className="profile-section relative z-10 border-t py-24">
         <div className="container mx-auto max-w-6xl px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-            {/* Profile Image - Left Side (Column Span 5) */}
-            <div className="lg:col-span-5 relative group">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="relative z-10"
-              >
-                <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-2 border-white/10 relative">
-                  <img 
-                    src={profile.photoUrl || undefined} 
-                    alt={profile.name}
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
-                  
-                  {/* Floating Badge on Image */}
-                  <div className="absolute bottom-6 left-6 right-6 p-4 glass rounded-2xl border border-white/10 backdrop-blur-md">
-                    <p className="text-red-500 font-bold text-xs uppercase tracking-widest mb-1">{profile.coachTitle}</p>
-                    <p className="text-white font-bold text-lg">{profile.name}</p>
-                  </div>
+          <div className="profile-section__grid grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
+            <motion.aside initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .55 }} className="lg:col-span-4">
+              <div className="profile-section__portrait">
+                <img src={profile.photoUrl || undefined} alt={profile.name} className="aspect-[4/4.6] w-full rounded-[1.6rem] object-cover object-center" />
+              </div>
+              <div className="profile-section__identity">
+                <span>{profile.coachTitle}</span>
+                <h3>{profile.name}</h3>
+                <p>{i18n.language.startsWith('pt') ? 'Consultoria · Operações · Tecnologia' : i18n.language.startsWith('it') ? 'Consulenza · Operations · Tecnologia' : i18n.language.startsWith('en') ? 'Consulting · Operations · Technology' : 'Consultoría · Operaciones · Tecnología'}</p>
+              </div>
+            </motion.aside>
+
+            <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .55, delay: .08 }} className="lg:col-span-8">
+              <span className="profile-section__eyebrow">{t('about.badge')}</span>
+              <h2 className="profile-section__title">{t('about.title')}</h2>
+              <p className="profile-section__intro">{t('about.description')}</p>
+
+              <div className="profile-section__quote">
+                <span aria-hidden="true">“</span>
+                <p>{t('about.quote')}</p>
+              </div>
+
+              <div className="profile-section__expertise-heading">
+                <div>
+                  <span className="profile-section__eyebrow">{i18n.language.startsWith('pt') ? 'FOCOS DE ATUAÇÃO' : i18n.language.startsWith('it') ? 'AREE DI INTERVENTO' : i18n.language.startsWith('en') ? 'AREAS OF FOCUS' : 'ÁREAS DE ESPECIALIDAD'}</span>
+                  <h3>{i18n.language.startsWith('pt') ? 'Experiência aplicada aos desafios reais' : i18n.language.startsWith('it') ? 'Esperienza applicata alle sfide reali' : i18n.language.startsWith('en') ? 'Experience applied to real challenges' : 'Experiencia aplicada a retos reales'}</h3>
                 </div>
-
-                {/* Decorative Elements */}
-                <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-red-600/30 rounded-tl-3xl -z-10"></div>
-                <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-red-600/30 rounded-br-3xl -z-10"></div>
-              </motion.div>
-            </div>
-
-            {/* Bio & Info - Right Side (Column Span 7) */}
-            <div className="lg:col-span-7 space-y-8">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-              >
-                <span className="inline-block px-4 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-500 text-xs font-bold mb-6 tracking-[0.2em] uppercase">
-                  {t('about.badge')}
-                </span>
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight leading-tight">
-                  {t('about.title')}
-                </h2>
-                <div className="w-20 h-1 bg-red-600 mb-8"></div>
-                
-                <p className="text-gray-300 text-lg font-light leading-relaxed mb-8">
-                  {t('about.description')}
-                </p>
-                
-                {/* Specific Highlight */}
-                <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-8 relative overflow-hidden group">
-                  <Quote className="absolute -top-2 -right-2 w-24 h-24 text-white/5 group-hover:text-red-500/10 transition-colors" />
-                  <p className="text-gray-400 italic text-lg relative z-10 leading-relaxed">
-                    {t('about.quote')}
-                  </p>
-                </div>
-
-                {/* Painel de Comando Digital de Habilidades (Status Console) */}
-                <h4 className="text-xs uppercase tracking-widest font-mono text-[#00F0FF] mb-3 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#00F0FF] rounded-full animate-ping"></span>
-                  <span>{consoleHeadingLabels[(i18n.language || "es").slice(0, 2)] || consoleHeadingLabels.es}</span>
-                </h4>
-
-                {/* Badges Grid */}
-                <div className="flex flex-wrap gap-2.5 mb-6">
+                <div className="profile-section__chips">
                   {(data?.about?.badges || []).map((badge, idx) => {
-                    const Icon = iconMap[badge.icon] || CheckCircle2;
-                    const isActive = activeSkillIdx === idx;
                     const languageCode = (i18n.language || 'es').slice(0, 2);
-                    const canonicalLabel = canonicalBadgeLabels[idx] || badge.label;
                     const displayLabel = badgeLabelsByLanguage[languageCode]?.[idx] || badge.label;
-                    const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(canonicalLabel);
-                    
-                    return (
-                      <button 
-                        key={`badge-${badge.label || idx}-${idx}`} 
-                        onClick={() => setActiveSkillIdx(idx)}
-                        onMouseEnter={() => setActiveSkillIdx(idx)}
-                        className={`flex items-center gap-2.5 border rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-300 transform cursor-pointer ${
-                          isActive 
-                            ? isFuchsiaSkill
-                              ? 'border-[#FF007A] bg-[#FF007A]/15 text-white scale-105 shadow-[0_0_15px_rgba(255,0,122,0.35)]'
-                              : 'border-[#00F0FF] bg-[#00F0FF]/15 text-white scale-105 shadow-[0_0_15px_rgba(0,240,255,0.35)]'
-                            : 'bg-[#090D1A]/55 border-[#00F0FF]/10 text-gray-400 hover:border-[#00F0FF]/30 hover:text-white'
-                        }`}
-                      >
-                        <Icon className={`w-4 h-4 transition-colors ${isActive ? (isFuchsiaSkill ? 'text-[#FF007A]' : 'text-[#00F0FF]') : 'text-gray-400'}`} />
-                        <span>{displayLabel}</span>
-                      </button>
-                    )
+                    return <button key={`profile-area-${idx}`} type="button" aria-pressed={activeSkillIdx === idx} onClick={() => setActiveSkillIdx(idx)} className={activeSkillIdx === idx ? 'is-active' : ''}>{displayLabel}</button>;
                   })}
                 </div>
+              </div>
 
-                {/* Active Skill Dynamic Console */}
-                {(() => {
-                  const activeBadge = data.about.badges[activeSkillIdx];
-                  if (!activeBadge) return null;
-                  const currentLang = (i18n.language || "es").slice(0, 2);
-                  const canonicalLabel = canonicalBadgeLabels[activeSkillIdx] || activeBadge.label;
-                  const displayLabel = badgeLabelsByLanguage[currentLang]?.[activeSkillIdx] || activeBadge.label;
-                  const detail = skillDetails[canonicalLabel] || {
-                    rating: "95% Óptimo",
-                    info: { es: "Excelente capacidad analítica y resolución sistémica." },
-                    systemLog: "GENERIC_PERFORMANCE_LOADER // 2026_INDEX"
-                  };
-                  const resolvedInfo = (detail?.info && detail.info[currentLang]) || (detail?.info && detail.info["es"]) || (detail?.info ? Object.values(detail.info)[0] : "Información no disponible");
-                  const isFuchsiaSkill = ["Estructuras de Empresas", "IBM 2025 Coach", "Coach Estratégico"].includes(canonicalLabel);
-
-                  return (
-                    <motion.div 
-                      key={`active-skill-${activeSkillIdx}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`font-mono text-xs p-6 rounded-2xl border bg-[#050814]/80 backdrop-blur-md relative overflow-hidden mb-10 ${
-                        isFuchsiaSkill ? 'border-[#FF007A]/25' : 'border-[#00F0FF]/25'
-                      }`}
-                    >
-                      {/* Scanline decoration inside console */}
-                      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#00F0FF]/25 to-transparent"></div>
-                      
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-3 mb-3 border-white/5">
-                        <div className="flex items-center gap-2">
-                          <span className={`w-1.5 h-1.5 rounded-full ${isFuchsiaSkill ? 'bg-[#FF007A]' : 'bg-[#00F0FF]'}`}></span>
-                          <span className="text-white font-bold text-sm tracking-tight">{displayLabel}</span>
-                        </div>
-                        <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${
-                          isFuchsiaSkill ? 'bg-[#FF007A]/15 text-[#FF007A]' : 'bg-[#00F0FF]/15 text-[#00F0FF]'
-                        }`}>
-                          {skillRatingLabels[canonicalLabel]?.[currentLang] || detail.rating}
-                        </span>
-                      </div>
-
-                      <p className="text-gray-300 font-sans text-sm leading-relaxed mb-4">
-                        {resolvedInfo}
-                      </p>
-
-                      <div className="mb-4">
-                        <Link 
-                          to={`/normas?tab=${badgeToTabMap[canonicalLabel] || 'gestionycalidad'}`} 
-                          className={`inline-flex items-center gap-2 text-xs border rounded-xl px-4 py-2 transition duration-300 font-bold font-sans ${
-                            isFuchsiaSkill 
-                              ? 'text-[#FF007A] hover:text-white bg-[#FF007A]/10 border-[#FF007A]/30 hover:bg-[#FF007A]/20' 
-                              : 'text-[#00F0FF] hover:text-white bg-[#00F0FF]/10 border-[#00F0FF]/30 hover:bg-[#00F0FF]/25'
-                          }`}
-                        >
-                          <span>{interactiveProgramLabels[currentLang] || interactiveProgramLabels.es} // {displayLabel.toUpperCase()}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                      </div>
-
-                      <div className="flex justify-between items-center text-[10px] text-[#64748B] pt-1">
-                        <span>{systemStatusLabels[currentLang] || systemStatusLabels.es}</span>
-                        <span className="animate-pulse">{detail.systemLog}</span>
-                      </div>
-                    </motion.div>
-                  );
-                })()}
-
-                {/* Call to Action or Signature */}
-                <div className="flex items-center gap-4">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3].map((i) => (
-                      <div key={`cli-avatar-${i}`} className="w-8 h-8 rounded-full border-2 border-black overflow-hidden">
-                        <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="Client" />
-                      </div>
-                    ))}
+              {(() => {
+                const badge = data?.about?.badges?.[activeSkillIdx];
+                if (!badge) return null;
+                const lang = (i18n.language || 'es').slice(0, 2);
+                const canonical = canonicalBadgeLabels[activeSkillIdx] || badge.label;
+                const displayLabel = badgeLabelsByLanguage[lang]?.[activeSkillIdx] || badge.label;
+                const detail = skillDetails[canonical];
+                const detailText = detail?.info?.[lang] || detail?.info?.es || Object.values(detail?.info || {})[0] || '';
+                const Icon = iconMap[badge.icon] || CheckCircle2;
+                return <motion.div key={`profile-focus-${activeSkillIdx}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="profile-section__focus-card">
+                  <span className="profile-section__focus-icon"><Icon size={22} /></span>
+                  <div><h4>{displayLabel}</h4><p>{detailText}</p>
+                    <Link to={`/normas?tab=${badgeToTabMap[canonical] || 'gestionycalidad'}`}>{interactiveProgramLabels[lang] || interactiveProgramLabels.es}<ArrowRight size={15} /></Link>
                   </div>
-                  <p className="text-xs text-gray-500 font-medium">
-                    Confiado por líderes globales en manufactura y servicios.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
+                </motion.div>;
+              })()}
+
+              <div className="profile-section__actions">
+                <button onClick={() => setIsCurriculumModalOpen(true)} className="profile-section__cv-button"><BookOpen size={17} />{i18n.language.startsWith('pt') ? 'Ver currículo e credenciais' : i18n.language.startsWith('it') ? 'Consulta CV e credenziali' : i18n.language.startsWith('en') ? 'View CV and credentials' : 'Ver currículo y credenciales'}<ArrowRight size={16} /></button>
+                <span>{i18n.language.startsWith('pt') ? 'Trajetória, projetos e credenciais em detalhe' : i18n.language.startsWith('it') ? 'Percorso, progetti e credenziali nel dettaglio' : i18n.language.startsWith('en') ? 'Career, projects, and credentials in detail' : 'Trayectoria, proyectos y credenciales en detalle'}</span>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
