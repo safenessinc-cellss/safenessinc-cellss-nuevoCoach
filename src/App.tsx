@@ -75,10 +75,10 @@ const consoleHeadingLabels: Record<string, string> = {
   it: '[CONSOLE DI STATO DEI SISTEMI // ROBERT_TERAN.EXE]',
 };
 const interactiveProgramLabels: Record<string, string> = {
-  es: 'Visualizar programas y normas interactivas',
-  en: 'View interactive programs and standards',
-  pt: 'Ver programas e normas interativas',
-  it: 'Visualizza programmi e norme interattive',
+  es: 'Acceder al entorno técnico (requiere autorización)',
+  en: 'Access technical area (authorization required)',
+  pt: 'Acessar a área técnica (requer autorização)',
+  it: 'Accedi all’area tecnica (richiede autorizzazione)',
 };
 const systemStatusLabels: Record<string, string> = {
   es: 'ESTADO DEL SISTEMA: CONFORME',
