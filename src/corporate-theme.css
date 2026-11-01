@@ -665,3 +665,13 @@ button.bg-blue-700 {
   .profile-section__identity { max-width: 440px; margin-inline: auto; }
   .profile-section__expertise-heading { grid-template-columns: 1fr; gap: .85rem; }
 }
+
+
+/* Keep anchor destinations visible below the floating navigation. */
+.public-site section[id], .public-site footer[id] { scroll-margin-top: 108px; }
+.public-site #coaching-estrategico.coaching-executive-section { background: #f5f3ed; border-color: #e5e1d7; }
+.coaching-executive-section .coaching-method-panel { background: rgba(255,255,255,.9); border-color: #e1e3dc; box-shadow: 0 16px 42px rgba(32,49,45,.06); }
+.coaching-executive-section .coaching-method-panel h4 { color: #315c4e; }
+.coaching-executive-section .coaching-method-panel li { color: #4e5d56; }
+.coaching-executive-section .coaching-method-panel li strong { color: #20312d; }
+.coaching-executive-section .coaching-method-panel .text-teal-400 { color: #267165 !important; }
