@@ -338,3 +338,13 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
 .public-site button:not([class*="bg-"]):hover { color: #1a73e8; }
 .public-site .shadow-2xl,
 .public-site .shadow-xl { box-shadow: 0 4px 16px rgba(60,64,67,.12) !important; }
+
+
+/* Keep the mobile navigation control visible on the light public theme. */
+@media (max-width: 767px) {
+  .public-site nav > div:first-child > button[class~="md:hidden"] {
+    color: #3c4043 !important;
+    background: #f1f3f4;
+    border-radius: 12px;
+  }
+}
