@@ -86,6 +86,13 @@ const systemStatusLabels: Record<string, string> = {
   pt: 'STATUS DO SISTEMA: CONFORME',
   it: 'STATO DEL SISTEMA: CONFORME',
 };
+const coachingNavLabels: Record<string, string> = {
+  es: 'Coaching estratégico', en: 'Strategic coaching', pt: 'Coaching estratégico', it: 'Coaching strategico',
+};
+const contactNavLabels: Record<string, string> = {
+  es: 'Contacto', en: 'Contact', pt: 'Contato', it: 'Contatti',
+};
+
 const viewCoverageLabels: Record<string, string> = {
   es: '[VER COBERTURA]',
   en: '[VIEW COVERAGE]',
@@ -595,6 +602,8 @@ export default function App() {
             </Link>
             <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`transition ${activeSection === 'services' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.servicios')}</a>
             <a href="#comportamiento-humano" onClick={(e) => handleNavClick(e, 'comportamiento-humano')} className={`transition ${activeSection === 'comportamiento-humano' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('humanBehavior.navLabel')}</a>
+              <a href="#coaching-estrategico" onClick={(e) => handleNavClick(e, 'coaching-estrategico')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'coaching-estrategico' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{coachingNavLabels[(i18n.language || 'es').slice(0, 2)] || coachingNavLabels.es}</a>
+            <a href="#coaching-estrategico" onClick={(e) => handleNavClick(e, 'coaching-estrategico')} className={`transition ${activeSection === 'coaching-estrategico' ? 'text-red-500' : 'hover:text-red-500'}`}>{coachingNavLabels[(i18n.language || 'es').slice(0, 2)] || coachingNavLabels.es}</a>
             <a href="#procesos" onClick={(e) => handleNavClick(e, 'procesos')} className={`transition ${activeSection === 'procesos' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.procesos')}</a>
             <a href="#certifications" onClick={(e) => handleNavClick(e, 'certifications')} className={`transition ${activeSection === 'certifications' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.certificaciones')}</a>
             
@@ -606,7 +615,7 @@ export default function App() {
             </div>
 
             <Link to="/agendar" className="bg-white text-black px-4 py-1.5 rounded-full hover:bg-red-600 hover:text-white transition text-center ml-2">
-              {t('nav.contacto')}
+              {contactNavLabels[(i18n.language || 'es').slice(0, 2)] || contactNavLabels.es}
             </Link>
           </div>
 
@@ -660,7 +669,7 @@ export default function App() {
               </div>
 
               <div className="h-px w-full bg-white/10 my-2"></div>
-              <Link to="/normas" onClick={closeMenu} className="text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition text-blue-400 hover:bg-white/5">Visualizador ISO</Link>
+              <Link to="/normas" onClick={closeMenu} className="text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition text-blue-400 hover:bg-white/5">{i18n.language.startsWith('pt') ? 'Área técnica (acesso autorizado)' : i18n.language.startsWith('it') ? 'Area tecnica (accesso autorizzato)' : i18n.language.startsWith('en') ? 'Technical area (authorized access)' : 'Área técnica (acceso autorizado)'}</Link>
               <Link to="/agendar" onClick={closeMenu} className="bg-red-600 text-white px-4 py-4 rounded-xl hover:bg-red-700 transition text-center font-bold uppercase tracking-widest text-sm flex items-center justify-center gap-2">
                 {t('footer.agendar')}
               </Link>
@@ -1693,7 +1702,7 @@ export default function App() {
       )}
 
       {/* SECCIÓN: MÁS ALLÁ DE LA NORMA */}
-      <section id="comportamiento-humano" className="py-24 relative z-10 bg-slate-50 border-t border-slate-200">
+      <section id="coaching-estrategico" className="coaching-executive-section py-24 relative z-10 border-t">
         <div className="container mx-auto max-w-6xl px-4">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-2 rounded-full border border-blue-200 bg-blue-50 text-blue-800 text-xs font-bold mb-6 tracking-[0.12em] uppercase">
@@ -1715,7 +1724,7 @@ export default function App() {
               }`}
             >
               <span className="text-3xl mb-4 block">🎯</span>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-700 transition-colors">Decisiones Críticas</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">Decisiones Críticas</h3>
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 Mapeo de riesgos + coaching bajo presión para que líderes y equipos actúen con claridad en momentos de alta incertidumbre laboral.
               </p>
@@ -1734,7 +1743,7 @@ export default function App() {
               }`}
             >
               <span className="text-3xl mb-4 block">🧠</span>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-amber-700 transition-colors">Psicopedagogía Empresarial</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-amber-700 transition-colors">Psicopedagogía Empresarial</h3>
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 Aprendizaje adaptativo, gestión del estrés y comunicación asertiva. Transformo de manera didáctica la forma en que tu equipo aprende y colabora.
               </p>
@@ -1753,7 +1762,7 @@ export default function App() {
               }`}
             >
               <span className="text-3xl mb-4 block">🤝</span>
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors">Cohesión de Equipos</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-red-700 transition-colors">Cohesión de Equipos</h3>
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 De grupos disfuncionales a equipos de alto rendimiento. Alineación de OKRs estratégicos, resolución asertiva de conflictos y confianza operativa.
               </p>
@@ -1784,43 +1793,43 @@ export default function App() {
           </AnimatePresence>
 
           {/* ÁREAS DE ESPECIALIZACIÓN INTEGRADAS */}
-          <div className="glass rounded-3xl border border-white/10 p-8 md:p-12 mb-16 overflow-hidden relative">
+          <div className="coaching-method-panel rounded-3xl border p-8 md:p-12 mb-16 overflow-hidden relative">
             <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 blur-3xl rounded-full"></div>
             
-            <h3 className="text-2xl font-bold text-white mb-8 tracking-tight flex items-center gap-2">
+            <h3 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight flex items-center gap-2">
               <Layers className="text-blue-500 w-6 h-6" />
               Áreas de Especialización Integradas (El Método Robert Terán)
             </h3>
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Dimensión Técnica */}
-              <div className="space-y-4 bg-blue-950/20 p-6 rounded-2xl border border-blue-500/10">
+              <div className="space-y-4 bg-blue-50 p-6 rounded-2xl border border-blue-100">
                 <h4 className="text-lg font-bold text-blue-700 flex items-center gap-2 border-b border-blue-500/20 pb-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
                   Dimensión Técnica (Ingeniería de Procesos)
                 </h4>
                 <ul className="space-y-3">
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Auditoría Líder ISO:</strong> Certificación internacional multicriterio (9001, 14001, 27001, 45001, 22000, 42001).</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Mapeo de Procesos:</strong> Diagramación avanzada con flujos lógicos bajo el estándar BPMN.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Análisis Crítico:</strong> Diagnóstico riguroso y toma de decisiones basada en datos cualitativos y cuantitativos.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Optimización Lean & Six Sigma:</strong> Reducción de desperdicios operativos y aseguramiento del valor del servicio.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Gestión de Riesgos Corporativos:</strong> Aseguramiento sistémico de la continuidad de negocio y planes de mitigación.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-blue-700 font-bold mr-1">•</span>
                     <span><strong>Implementación de OKRs y KPIs:</strong> Establecimiento de objetivos y controles con rendimiento medible.</span>
                   </li>
@@ -1828,33 +1837,33 @@ export default function App() {
               </div>
 
               {/* Dimensión Human */}
-              <div className="space-y-4 bg-teal-950/20 p-6 rounded-2xl border border-teal-500/10">
-                <h4 className="text-lg font-bold text-teal-400 flex items-center gap-2 border-b border-teal-500/20 pb-3">
+              <div className="space-y-4 bg-teal-50 p-6 rounded-2xl border border-teal-100">
+                <h4 className="text-lg font-bold text-teal-800 flex items-center gap-2 border-b border-teal-200 pb-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
                   Dimensión Humana (Coaching & Psicopedagogía)
                 </h4>
                 <ul className="space-y-3">
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-teal-400 font-bold mr-1">•</span>
                     <span><strong>Coach Estratégico:</strong> Potenciación de las habilidades blandas de líderes y de mandos medios.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-teal-400 font-bold mr-1">•</span>
                     <span><strong>Liderazgo y Cohesión de Equipos:</strong> Alineación activa para motivar de forma asertiva al capital humano.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-teal-400 font-bold mr-1">•</span>
                     <span><strong>Decisiones Críticas bajo Presión:</strong> Manejo estratégico de la incertidumbre comercial y personal.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-teal-400 font-bold mr-1">•</span>
                     <span><strong>Psicopedagogía y Gestión del Aprendizaje:</strong> Formación didáctica orientada al crecimiento mutuo.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-teal-400 font-bold mr-1">•</span>
                     <span><strong>Gestión del Estrés y Resiliencia:</strong> Mitigar asertivamente el burnout diario corporativo.</span>
                   </li>
-                  <li className="text-sm text-gray-300 flex items-start gap-2">
+                  <li className="text-sm text-slate-700 flex items-start gap-2">
                     <span className="text-teal-400 font-bold mr-1">•</span>
                     <span><strong>Establecimiento de Objetivos:</strong> Lograr metas eficaces enfocándose en el equilibrio de vida integral.</span>
                   </li>
@@ -1863,7 +1872,7 @@ export default function App() {
             </div>
             
             {/* Formación Adicional Sub-panel */}
-            <div className="mt-8 pt-6 border-t border-slate-200 bg-white/[0.01] p-4 rounded-xl text-xs text-slate-600 leading-relaxed text-center">
+            <div className="mt-8 pt-6 border-t border-slate-200 bg-white p-4 rounded-xl text-xs text-slate-600 leading-relaxed text-center">
               🎓 Robert Terán es <strong>Ingeniero e Economista</strong> con estudios y especializaciones en <strong>Psicopedagogía</strong>, <strong>Bienestar Laboral</strong> e <strong>Inteligencia Emocional Organizacional</strong>, lo que refuerza su visión integral orientada a resultados de excelencia.
             </div>
           </div>
@@ -1943,9 +1952,9 @@ export default function App() {
             )}
             <p className="text-sm text-gray-500 font-mono tracking-tighter">coach-iso.eu // {profile.name || data.profile.name}</p>
             <span className="text-gray-700">|</span>
-            <Link to="/admin" className="text-xs text-gray-500 hover:text-red-500 transition-colors uppercase tracking-widest font-bold">Admin CRM</Link>
+            <Link to="/login" className="text-xs text-gray-500 hover:text-red-500 transition-colors uppercase tracking-widest font-bold">{i18n.language.startsWith('pt') ? 'Acesso privado' : i18n.language.startsWith('it') ? 'Accesso riservato' : i18n.language.startsWith('en') ? 'Private access' : 'Acceso privado'}</Link>
             <span className="text-gray-700">|</span>
-            <Link to="/normas" className="text-xs text-gray-500 hover:text-blue-500 transition-colors uppercase tracking-widest font-bold">Visualizador ISO</Link>
+            <Link to="/normas" className="text-xs text-gray-500 hover:text-blue-500 transition-colors uppercase tracking-widest font-bold">{i18n.language.startsWith('pt') ? 'Área técnica · acesso autorizado' : i18n.language.startsWith('it') ? 'Area tecnica · accesso autorizzato' : i18n.language.startsWith('en') ? 'Technical area · authorized access' : 'Área técnica · acceso autorizado'}</Link>
           </div>
           <div className="flex gap-4">
             <a href={data.profile.linkedin} className="p-4 glass rounded-full hover:bg-white hover:text-black transition">
@@ -2746,7 +2755,7 @@ export default function App() {
                         setSelectedCert(null);
                         const contactBtn = document.getElementById("agendar");
                         if (contactBtn) contactBtn.scrollIntoView({ behavior: 'smooth' });
-                        else window.location.href = '#agendar';
+                        else window.location.assign('/agendar');
                       }}
                       className="w-full sm:w-auto bg-red-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-red-700 transition"
                     >
@@ -3639,7 +3648,7 @@ export default function App() {
                         setSelectedSpecialty(null);
                         const contactBtn = document.getElementById("agendar");
                         if (contactBtn) contactBtn.scrollIntoView({ behavior: 'smooth' });
-                        else window.location.href = '#agendar';
+                        else window.location.assign('/agendar');
                       }}
                       className="w-full sm:w-auto bg-red-600 text-white text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-red-700 transition cursor-pointer"
                     >
