@@ -687,3 +687,7 @@ button.bg-blue-700 {
 
 .public-site .process-method-section { background: #f5f3ed; border-color: #e5e1d7; }
 .public-site .process-method-card { background: #fff; border-color: #e1e3dc; box-shadow: 0 12px 32px rgba(32,49,45,.045); }
+
+@media (max-width: 767px) {
+  .chat-widget-trigger, .whatsapp-widget-trigger { display: none !important; }
+}
