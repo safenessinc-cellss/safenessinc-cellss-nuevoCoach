@@ -550,27 +550,20 @@ export default function App() {
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center p-8"
+              className="consulting-loader fixed inset-0 z-[100] flex flex-col items-center justify-center p-8"
             >
-            <div className="w-full max-w-4xl space-y-8">
-              {/* Header Skeleton */}
-              <div className="flex justify-between items-center">
-                <div className="w-12 h-12 bg-white/5 rounded-lg animate-pulse"></div>
-                <div className="hidden md:flex gap-4">
-                  {[1, 2, 3, 4, 5].map(i => <div key={`skel-hdr-${i}`} className="w-20 h-4 bg-white/5 rounded animate-pulse"></div>)}
+              <div className="consulting-loader__inner" role="status" aria-label="Preparando la experiencia Coach ISO">
+                <div className="consulting-loader__mark"><span>CT</span></div>
+                <p className="consulting-loader__eyebrow">COACH ISO · {i18n.language.startsWith('pt') ? 'CONSULTORIA' : i18n.language.startsWith('it') ? 'CONSULENZA' : i18n.language.startsWith('en') ? 'CONSULTING' : 'CONSULTORÍA'}</p>
+                <div className="consulting-loader__flow" aria-hidden="true">
+                  <span className="consulting-loader__node"><Activity size={19} /></span>
+                  <span className="consulting-loader__connector"><i /></span>
+                  <span className="consulting-loader__node"><Workflow size={19} /></span>
+                  <span className="consulting-loader__connector"><i /></span>
+                  <span className="consulting-loader__node"><CheckCircle2 size={19} /></span>
                 </div>
+                <p className="consulting-loader__caption">{i18n.language.startsWith('pt') ? 'Sistemas claros. Melhoria duradoura.' : i18n.language.startsWith('it') ? 'Sistemi chiari. Miglioramento duraturo.' : i18n.language.startsWith('en') ? 'Clear systems. Lasting improvement.' : 'Sistemas claros. Mejora que perdura.'}</p>
               </div>
-              {/* Hero Skeleton */}
-              <div className="flex flex-col items-center text-center space-y-6 pt-20">
-                <div className="w-32 h-6 bg-white/5 rounded-full animate-pulse"></div>
-                <div className="w-3/4 h-16 md:h-24 bg-white/5 rounded-2xl animate-pulse"></div>
-                <div className="w-1/2 h-6 bg-white/5 rounded animate-pulse"></div>
-                <div className="flex gap-4 pt-8">
-                  <div className="w-40 h-12 bg-white/5 rounded-full animate-pulse"></div>
-                  <div className="w-40 h-12 bg-white/5 rounded-full animate-pulse"></div>
-                </div>
-              </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
