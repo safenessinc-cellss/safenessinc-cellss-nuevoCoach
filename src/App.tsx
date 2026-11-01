@@ -98,6 +98,12 @@ const coachingNavLabels: Record<string, string> = {
 const contactNavLabels: Record<string, string> = {
   es: 'Contacto', en: 'Contact', pt: 'Contato', it: 'Contatti',
 };
+const navCredentialsLabels: Record<string, string> = {
+  es: 'Credenciales', en: 'Credentials', pt: 'Credenciais', it: 'Credenziali',
+};
+const navCurriculumLabels: Record<string, string> = {
+  es: 'Currículo completo', en: 'Full CV', pt: 'Currículo completo', it: 'CV completo',
+};
 
 const viewCoverageLabels: Record<string, string> = {
   es: '[VER COBERTURA]',
@@ -601,10 +607,10 @@ export default function App() {
           <div className="hidden md:flex gap-6 text-xs font-medium uppercase tracking-widest text-gray-400 items-center">
             <button onClick={() => setIsProfileModalOpen(true)} className={`transition ${isProfileModalOpen ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.perfil')}</button>
             <button onClick={() => setIsCurriculumModalOpen(true)} className="text-amber-400 font-bold hover:text-amber-300 transition flex items-center gap-1">
-              <Award className="w-4 h-4" /> Certificados & Credenciales
+              <Award className="w-4 h-4" /> {navCredentialsLabels[activeLanguage] || navCredentialsLabels.es}
             </button>
-            <Link to="/curriculo" className="inline-flex items-center gap-2 rounded-full border border-amber-400/60 bg-amber-400/10 px-4 py-2 font-bold text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.12)] transition hover:border-amber-300 hover:bg-amber-400/20 hover:text-amber-200" aria-label="Abrir el currículo profesional completo">
-              <BookOpen className="w-4 h-4" /> Currículo completo
+            <Link to="/curriculo" className="inline-flex items-center gap-2 rounded-full border border-amber-400/60 bg-amber-400/10 px-4 py-2 font-bold text-amber-300 shadow-[0_0_18px_rgba(251,191,36,0.12)] transition hover:border-amber-300 hover:bg-amber-400/20 hover:text-amber-200" aria-label={navCurriculumLabels[activeLanguage] || navCurriculumLabels.es}>
+              <BookOpen className="w-4 h-4" /> {navCurriculumLabels[activeLanguage] || navCurriculumLabels.es}
             </Link>
             <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`transition ${activeSection === 'services' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('nav.servicios')}</a>
             <a href="#comportamiento-humano" onClick={(e) => handleNavClick(e, 'comportamiento-humano')} className={`transition ${activeSection === 'comportamiento-humano' ? 'text-red-500' : 'hover:text-red-500'}`}>{t('humanBehavior.navLabel')}</a>
@@ -652,7 +658,7 @@ export default function App() {
                 className="text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition text-amber-400 hover:bg-amber-500/10 flex items-center gap-2"
               >
                 <Award className="w-4 h-4" />
-                <span>Certificados & Credenciales</span>
+                <span>{navCredentialsLabels[activeLanguage] || navCredentialsLabels.es}</span>
               </button>
               <Link
                 to="/curriculo"
@@ -660,7 +666,7 @@ export default function App() {
                 className="text-left text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition border border-amber-400/50 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 flex items-center gap-2"
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Abrir currículo completo</span>
+                <span>{navCurriculumLabels[activeLanguage] || navCurriculumLabels.es}</span>
               </Link>
               <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'services' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('nav.servicios')}</a>
               <a href="#comportamiento-humano" onClick={(e) => handleNavClick(e, 'comportamiento-humano')} className={`text-sm font-bold uppercase tracking-widest px-4 py-3 rounded-xl transition ${activeSection === 'comportamiento-humano' ? 'text-white bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/5'}`}>{t('humanBehavior.navLabel')}</a>
