@@ -2743,7 +2743,7 @@ export default function App() {
         href={`https://wa.me/584143431185?text=${encodeURIComponent("Hola Robert, vengo de tu portafolio web. Me gustaría obtener más información sobre tus servicios.")}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 p-4 rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/20 hover:bg-[#20bd5a] hover:scale-110 transition-all z-50 flex items-center justify-center group"
+        className="whatsapp-widget-trigger fixed bottom-6 left-6 p-4 rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/20 hover:bg-[#20bd5a] hover:scale-110 transition-all z-50 flex items-center justify-center group"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" className="w-6 h-6">
           <path d="M11.99 2C6.47 2 2 6.48 2 12c0 1.76.46 3.42 1.27 4.88L2 22l5.24-1.12c1.42.75 3.03 1.15 4.75 1.15 5.52 0 10-4.48 10-10S17.51 2 11.99 2zm-.01 18.25c-1.48 0-2.88-.38-4.1-1.05l-.3-.17-3.05.65.81-2.97-.19-.31T3.75 12c0-4.55 3.7-8.25 8.25-8.25s8.25 3.7 8.25 8.25-3.7 8.25-8.25 8.25zm4.4-6.03c-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.21-.72-.65-1.21-1.45-1.35-1.69-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.79-.2-.47-.4-.41-.54-.42l-.46-.01c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.69 2.58 4.09 3.62 2.4 1.04 2.4 1.04 2.84 0 0-.16 1.1-1.34 1.25-1.81.15-.47.15-.87.11-.95-.04-.08-.2-.12-.44-.24z"/>
