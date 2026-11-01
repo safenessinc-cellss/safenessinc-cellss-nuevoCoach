@@ -625,3 +625,43 @@ button.bg-blue-700 {
 @media (prefers-reduced-motion: reduce) {
   .consulting-loader__mark, .consulting-loader__node, .consulting-loader__connector i { animation: none !important; }
 }
+
+/* Profile: a human, editorial introduction instead of the old status-console treatment. */
+.public-site #about.profile-section { background: #f5f3ed !important; padding-block: clamp(4.5rem, 8vw, 7.5rem) !important; }
+.profile-section__grid { align-items: center !important; }
+.profile-section__portrait {
+  position: relative; padding: 10px; border: 1px solid #e5e1d7; border-radius: 1.9rem;
+  background: rgba(255,255,255,.74); box-shadow: 0 22px 56px rgba(32,49,45,.09);
+}
+.profile-section__portrait img { display: block; filter: none !important; object-position: center 34%; }
+.profile-section__identity { padding: 1.35rem .7rem .2rem; }
+.profile-section__identity > span,
+.profile-section__eyebrow { color: #567466; font-size: .68rem; font-weight: 750; letter-spacing: .15em; line-height: 1.5; text-transform: uppercase; }
+.profile-section__identity h3 { margin-top: .45rem; color: #20312d !important; font-size: 1.2rem; font-weight: 750; letter-spacing: -.025em; }
+.profile-section__identity p { margin-top: .35rem; color: #66736d !important; font-size: .85rem; }
+.profile-section__title { margin-top: .8rem; max-width: 780px; color: #20312d !important; font-size: clamp(2.25rem, 4.2vw, 3.65rem); font-weight: 650; letter-spacing: -.055em; line-height: 1.08; text-wrap: balance; }
+.profile-section__intro { margin-top: 1.5rem; max-width: 760px; color: #56645e !important; font-size: clamp(1rem, 1.45vw, 1.16rem); line-height: 1.85; }
+.profile-section__quote { display: flex; gap: .85rem; margin-top: 1.8rem; padding: 1.15rem 1.35rem; border-left: 3px solid #b39a6a; border-radius: 0 .9rem .9rem 0; background: rgba(255,255,255,.72); }
+.profile-section__quote > span { color: #a1895f; font-family: Georgia, serif; font-size: 2.4rem; line-height: .9; }
+.profile-section__quote p { align-self: center; color: #4e5d56 !important; font-size: .98rem; font-style: italic; line-height: 1.65; }
+.profile-section__expertise-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.5fr); align-items: start; gap: 1.4rem; margin-top: 2.4rem; }
+.profile-section__expertise-heading h3 { margin-top: .45rem; color: #20312d !important; font-size: 1.05rem; font-weight: 700; line-height: 1.45; }
+.profile-section__chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.profile-section__chips button { padding: .52rem .78rem; border: 1px solid #dcded6; border-radius: 99px; background: #fff; color: #53615a !important; font-size: .72rem; font-weight: 600; line-height: 1.2; transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease; }
+.profile-section__chips button:hover { transform: translateY(-1px); border-color: #90a99a; }
+.profile-section__chips button.is-active { border-color: #275b4d; background: #275b4d; color: #fff !important; }
+.profile-section__focus-card { display: flex; gap: 1rem; margin-top: 1.2rem; padding: 1.25rem 1.35rem; border: 1px solid #e0e3db; border-radius: 1.15rem; background: rgba(255,255,255,.88); box-shadow: 0 8px 24px rgba(32,49,45,.04); }
+.profile-section__focus-icon { display: grid; width: 44px; height: 44px; flex: 0 0 44px; place-items: center; border-radius: 13px; background: #eaf0e9; color: #275b4d; }
+.profile-section__focus-card h4 { color: #20312d !important; font-size: 1rem; font-weight: 700; }
+.profile-section__focus-card p { margin-top: .4rem; color: #5d6b66 !important; font-size: .88rem; line-height: 1.65; }
+.profile-section__focus-card a { display: inline-flex; align-items: center; gap: .4rem; margin-top: .75rem; color: #275b4d !important; font-size: .8rem; font-weight: 700; }
+.profile-section__focus-card a:hover { color: #174438 !important; text-decoration: underline; text-underline-offset: 3px; }
+.profile-section__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.2rem; margin-top: 1.5rem; }
+.profile-section__cv-button { display: inline-flex; min-height: 46px; align-items: center; gap: .6rem; padding: .7rem 1rem; border: 0; border-radius: .75rem; background: #275b4d; color: #fff !important; font-size: .85rem; font-weight: 700; transition: background .18s ease, transform .18s ease; }
+.profile-section__cv-button:hover { transform: translateY(-1px); background: #174438; }
+.profile-section__actions > span { color: #66736d; font-size: .78rem; }
+@media (max-width: 767px) {
+  .profile-section__portrait { max-width: 440px; margin-inline: auto; }
+  .profile-section__identity { max-width: 440px; margin-inline: auto; }
+  .profile-section__expertise-heading { grid-template-columns: 1fr; gap: .85rem; }
+}
