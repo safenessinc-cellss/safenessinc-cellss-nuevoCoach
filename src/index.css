@@ -348,3 +348,11 @@ html, body { background-color: var(--theme-bg-base); color: var(--theme-text); }
     border-radius: 12px;
   }
 }
+@keyframes coach-globe-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.brand-globe-spin { animation: coach-globe-spin 36s linear infinite; transform-origin: 50% 50%; }
+@media (prefers-reduced-motion: reduce) {
+  .brand-globe-spin { animation: none; }
+}

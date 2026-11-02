@@ -47,7 +47,7 @@ export default function HomePage() {
   const email = safeEmail(links.email);
   const linkedin = safeWebUrl(links.linkedin);
   const whatsapp = safeWebUrl(links.whatsapp);
-  const logoUrl = safeWebUrl(profile.logoUrl);
+  const logoUrl = '/coach-iso-globe.png';
 
   useEffect(() => {
     document.title = `${profile.name || 'Robert Terán'} | Coach ISO · Consultoría`;
@@ -78,7 +78,7 @@ export default function HomePage() {
     <div className="new-site" style={{ '--site-accent': tokens.accent, '--site-accent-soft': `${tokens.accent}12`, '--site-warm': tokens.accent2 } as CSSProperties}>
       <header className="site-header">
         <Link className="site-brand" to="/" aria-label="Coach ISO inicio">
-          <span className="site-brand-mark">{logoUrl ? <img src={logoUrl} alt="" /> : 'CT'}</span>
+          <span className="site-brand-mark"><img className="brand-globe-spin" src={logoUrl} alt="" /></span>
           <span><strong>{copy.brand.name}</strong><small>{copy.brand.descriptor}</small></span>
         </Link>
         <nav className={`site-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
@@ -219,7 +219,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="site-footer"><Link className="site-brand" to="/" aria-label="Coach ISO inicio"><span className="site-brand-mark">{logoUrl ? <img src={logoUrl} alt="" /> : 'CT'}</span><span><strong>{copy.brand.name}</strong><small>{copy.brand.descriptor}</small></span></Link><p>{copy.footer.tagline}<small>{copy.footer.privacy}</small></p><Link to="/curriculo" className="site-footer-cv">CV <ArrowUpRight size={14} /></Link></footer>
+      <footer className="site-footer"><Link className="site-brand" to="/" aria-label="Coach ISO inicio"><span className="site-brand-mark"><img className="brand-globe-spin" src={logoUrl} alt="" /></span><span><strong>{copy.brand.name}</strong><small>{copy.brand.descriptor}</small></span></Link><p>{copy.footer.tagline}<small>{copy.footer.privacy}</small></p><Link to="/curriculo" className="site-footer-cv">CV <ArrowUpRight size={14} /></Link></footer>
     </div>
   );
 }

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useProfileSettings } from '../data/useProfileSettings';
 import { ShieldAlert, Loader2, Chrome, Clock, ShieldX } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function LoginPage() {
   const { loginWithGoogle, loading: authLoading } = useAuth();
-  const { profile } = useProfileSettings();
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
@@ -39,19 +37,10 @@ export default function LoginPage() {
       <div className="relative z-10 max-w-md w-full glass p-8 rounded-3xl border border-white/10 space-y-8 shadow-2xl overflow-hidden bg-black/60 backdrop-blur-md">
         <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-red-600 via-amber-500 to-blue-600"></div>
         <div className="text-center space-y-3">
-          <div className="mx-auto flex justify-center">
-            {profile.logoUrl ? (
-              <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/10 p-1 bg-white/5 shadow-inner">
-                <img src={profile.logoUrl} alt="Logo" className="w-full h-full object-contain" />
-              </div>
-            ) : (
-              <div className="w-16 h-16 bg-red-600/10 border border-red-500/20 rounded-2xl flex items-center justify-center shadow-lg">
-                <ShieldAlert className="w-8 h-8 text-red-500" />
-              </div>
-            )}
-          </div>
+          <div className="mx-auto flex justify-center"><img src="/coach-iso-globe.png" alt="COACH ISO" className="brand-globe-spin h-16 w-16 rounded-2xl shadow-lg" /></div>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight">Acceso Privado</h1>
+            <p className="text-[10px] font-bold tracking-[.24em] text-emerald-200">COACH ISO · CONSULTORÍA</p>
+            <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Acceso Privado</h1>
             <p className="text-gray-400 text-xs mt-1">Sistemas de Gestión ISO | Liderazgo y Coaching Estratégico</p>
           </div>
         </div>
