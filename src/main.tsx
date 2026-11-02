@@ -1,6 +1,6 @@
 import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './theme/ThemeContext';
@@ -10,7 +10,7 @@ import './corporate-theme.css';
 
 // Keep the public CV lean: the legacy portal, admin screens and scheduling tools
 // are loaded only when a visitor navigates to those routes.
-const App = lazy(() => import('./App'));
+const HomePage = lazy(() => import('./pages/HomePage'));
 const SchedulingPage = lazy(() => import('./pages/SchedulingPage'));
 const PublicCurriculumPage = lazy(() => import('./pages/PublicCurriculumPage'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
@@ -32,8 +32,8 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<App />} />
-              <Route path="/portal" element={<App />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/portal" element={<Navigate to="/" replace />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/agendar" element={<SchedulingPage />} />
               <Route path="/curriculo" element={<PublicCurriculumPage />} />
