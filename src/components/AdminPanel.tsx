@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 30711)
-Total output lines: 2428
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
@@ -925,7 +922,843 @@ function AdminPanel() {
               className="w-full text-left bg-white/5 hover:bg-white/10 border border-white/10 text-white text-[11px] font-medium py-2 px-3 rounded-lg flex items-center gap-2 transition"
             >
               <UploadCloud className="w-4.5 h-4.5 text-red-500" />
-     …12711 tokens truncated…        </thead>
+              {t('admin.common.reloadDemo')}
+            </button>
+          </div>
+        )}
+
+        {/* Sidebar Footer Logout */}
+        <div className="p-4 border-t border-white/5 flex flex-col gap-3">
+          <label className="flex items-center justify-between gap-3 text-[11px] text-gray-400">
+            <span>{t('admin.common.language')}</span>
+            <select aria-label={t('admin.common.language')} value={currentLanguage} onChange={(event) => void i18n.changeLanguage(event.target.value)} className="rounded-lg border border-white/10 bg-zinc-900 px-2 py-1.5 text-white outline-none">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+              <option value="pt">Português</option>
+              <option value="it">Italiano</option>
+            </select>
+          </label>
+          <div className="flex gap-2">
+          <Link 
+            to="/" 
+            className="flex-1 text-center py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[11px] font-medium border border-white/5 transition"
+          >
+            {t('admin.common.goToWebsite')}
+          </Link>
+          <button 
+            onClick={handleLogoutClick}
+            className="p-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 rounded-lg transition"
+            title={t('admin.common.logout')}
+          >
+            <LogOut className="w-4.5 h-4.5" />
+          </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* 2. MAIN WORKING STAGE */}
+      <main className="flex-1 bg-[#050505] p-6 md:p-10 overflow-y-auto max-w-7xl mx-auto w-full space-y-8">
+        
+        {/* HEADER SECTION */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-6">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              {activeTab === 'dashboard' && t('admin.title.dashboard')}
+              {activeTab === 'ai_demand' && t('admin.title.aiDemand')}
+              {activeTab === 'ai_curriculum' && t('admin.title.aiCurriculum')}
+              {activeTab === 'ai_assistant' && t('admin.title.aiAssistant')}
+              {activeTab === 'courses' && t('admin.title.courses')}
+              {activeTab === 'books' && t('admin.title.books')}
+              {activeTab === 'visits' && t('admin.title.visits')}
+              {activeTab === 'tutorials' && t('admin.title.tutorials')}
+              {activeTab === 'users' && t('admin.title.users')}
+              {activeTab === 'registry' && t('admin.title.registry')}
+              {activeTab === 'curriculum' && t('admin.title.curriculum')}
+              {activeTab === 'theme' && t('admin.title.theme')}
+              {activeTab === 'profile' && t('admin.title.profile')}
+              {activeTab === 'site_content' && (currentLanguage === 'pt' ? 'Conteúdo do site' : currentLanguage === 'it' ? 'Contenuti del sito' : currentLanguage === 'en' ? 'Website content' : 'Contenido web')}
+            </h2>
+            <p className="text-sm text-gray-400">
+              {activeTab === 'dashboard' && t('admin.description.dashboard')}
+              {activeTab === 'ai_demand' && t('admin.description.aiDemand')}
+              {activeTab === 'ai_curriculum' && t('admin.description.aiCurriculum')}
+              {activeTab === 'ai_assistant' && t('admin.description.aiAssistant')}
+              {activeTab === 'courses' && t('admin.description.courses')}
+              {activeTab === 'books' && t('admin.description.books')}
+              {activeTab === 'visits' && t('admin.description.visits')}
+              {activeTab === 'tutorials' && t('admin.description.tutorials')}
+              {activeTab === 'users' && t('admin.description.users')}
+              {activeTab === 'registry' && t('admin.description.registry')}
+              {activeTab === 'curriculum' && t('admin.description.curriculum')}
+              {activeTab === 'theme' && t('admin.description.theme')}
+              {activeTab === 'profile' && t('admin.description.profile')}
+              {activeTab === 'site_content' && (currentLanguage === 'pt' ? 'Edite as mensagens públicas e links por idioma.' : currentLanguage === 'it' ? 'Modifica testi pubblici e link per lingua.' : currentLanguage === 'en' ? 'Edit public copy and links by language.' : 'Edita los textos públicos y enlaces por idioma.')}
+            </p>
+          </div>
+
+          {/* Quick permissions state indicator */}
+          <div className="flex items-center gap-3">
+            {!canEdit && (
+              <span className="text-[11px] font-mono text-yellow-400 bg-yellow-500/10 px-3 py-1.5 rounded-lg border border-yellow-500/20 flex items-center gap-2">
+                <Info className="w-3.5 h-3.5" />
+                {t('admin.common.readOnly')}
+              </span>
+            )}
+            {activeTab !== 'dashboard' && activeTab !== 'registry' && activeTab !== 'profile' && activeTab !== 'curriculum' && activeTab !== 'users' && activeTab !== 'site_content' && canEdit && (
+              <button 
+                onClick={() => {
+                  if (activeTab === 'courses') { setEditingCourse(null); setIsCourseModalOpen(true); }
+                  if (activeTab === 'books') { setEditingBook(null); setIsBookModalOpen(true); }
+                  if (activeTab === 'visits') { setEditingVisit(null); setIsVisitModalOpen(true); }
+                  if (activeTab === 'tutorials') { setEditingTutorial(null); setIsTutorialModalOpen(true); }
+                }}
+                className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition tracking-wider uppercase cursor-pointer shadow-lg"
+              >
+                <Plus className="w-4 h-4 text-white" />
+                {t('admin.common.addRecord')}
+              </button>
+            )}
+            {activeTab === 'users' && currentUser?.isSuperAdmin && (
+              <button 
+                onClick={() => { setEditingUser(null); setIsUserModalOpen(true); }}
+                className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 transition tracking-wider uppercase cursor-pointer"
+              >
+                <Plus className="w-4 h-4 text-white" />
+                {t('admin.common.addCollaborator')}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* --- DYNAMIC TAB VIEWS IMPLEMENTATION --- */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`admin-tab-view-${activeTab}`}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.15 }}
+          >
+            
+            {activeTab === 'ai_assistant' && <AdminAssistantChat />}
+
+            {/* =======================================================
+                T1: DASHBOARD GENERAL
+                ======================================================= */}
+            {activeTab === 'dashboard' && (
+              <div className="space-y-10">
+                
+                {/* A. KPI CARDS */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  
+                  {/* KPI 1 */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 flex items-center gap-4 hover:border-red-500/20 transition-all">
+                    <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
+                      <GraduationCap className="w-6 h-6 text-red-500" />
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.activeCourses')}</p>
+                      <p className="text-3xl font-extrabold text-white mt-1">{kpis.activeC}</p>
+                    </div>
+                  </div>
+
+                  {/* KPI 2 */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 flex items-center gap-4 hover:border-yellow-500/20 transition-all">
+                    <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20">
+                      <BookOpen className="w-6 h-6 text-yellow-500" />
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.booksResources')}</p>
+                      <p className="text-3xl font-extrabold text-white mt-1">{kpis.countBooks}</p>
+                    </div>
+                  </div>
+
+                  {/* KPI 3 */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 flex items-center gap-4 hover:border-blue-500/20 transition-all">
+                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                      <MapPin className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.monthlyVisits')}</p>
+                      <p className="text-3xl font-extrabold text-white mt-1">{kpis.upcomingV}</p>
+                    </div>
+                  </div>
+
+                  {/* KPI 4 */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 flex items-center gap-4 hover:border-teal-500/20 transition-all">
+                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20">
+                      <Video className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{t('admin.dashboard.pendingTutorials')}</p>
+                      <p className="text-3xl font-extrabold text-white mt-1">{kpis.pendingT}</p>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* B. ANALYTICS GRAPHS */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  
+                  {/* Visitas onsite por mes */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                    <div>
+                      <h4 className="text-base font-bold tracking-tight text-white mb-1">{t('admin.dashboard.visitsTrend')}</h4>
+                      <p className="text-xs text-gray-400">{t('admin.dashboard.visitsByMonth')}</p>
+                    </div>
+                    <div className="h-[240px] w-full min-w-0">
+                      <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={180}>
+                        <AreaChart data={visitsChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <defs>
+                            <linearGradient id="visitasGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.2}/>
+                              <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+                          <XAxis dataKey="name" stroke="#555" fontSize={11} tickLine={false} />
+                          <YAxis stroke="#555" fontSize={11} tickLine={false} />
+                          <Tooltip contentStyle={{ backgroundColor: '#111', borderColor: '#333', borderRadius: '12px' }} />
+                          <Area type="monotone" dataKey="visitas" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#visitasGrad)" />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  {/* Top Descargas BarChart */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                    <div>
+                      <h4 className="text-base font-bold tracking-tight text-white mb-1">{t('admin.dashboard.topDownloaded')}</h4>
+                      <p className="text-xs text-gray-400">{t('admin.dashboard.isoResources')}</p>
+                    </div>
+                    <div className="h-[240px] w-full min-w-0">
+                      {downloadsChartData.length === 0 ? (
+                        <div className="h-full flex items-center justify-center text-gray-500 font-mono text-xs">{t('admin.dashboard.loadBooks')}</div>
+                      ) : (
+                        <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={180}>
+                          <BarChart data={downloadsChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#222" />
+                            <XAxis dataKey="name" stroke="#555" fontSize={10} tickLine={false} />
+                            <YAxis stroke="#555" fontSize={11} tickLine={false} />
+                            <Tooltip contentStyle={{ backgroundColor: '#111', borderColor: '#333', borderRadius: '12px' }} />
+                            <Bar dataKey="descargas" fill="#22c55e" radius={[4, 4, 0, 0]} barSize={25} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* C. TIMELINE & COMBINED ACTIVITIES GRID */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  
+                  {/* Proximas Actividades List */}
+                  <div className="lg:col-span-2 glass p-6 rounded-2xl border border-white/5 space-y-4">
+                    <div className="flex justify-between items-center bg-black/40 p-1 rounded-xl">
+                      <h4 className="text-sm font-bold text-white px-3">{t('admin.dashboard.upcomingActivities')}</h4>
+                      <span className="text-[10px] font-mono text-gray-500 uppercase">{t('admin.dashboard.chronological')}</span>
+                    </div>
+
+                    <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                      {nextActivities.length === 0 ? (
+                        <div className="text-center p-8 text-gray-500 text-xs">
+                          <CalendarIcon className="w-8 h-8 text-gray-600 mx-auto mb-2" />
+                          {t('admin.dashboard.noActivities')}
+                        </div>
+                      ) : (
+                        (Array.isArray(nextActivities) ? nextActivities : []).map((act, index) => (
+                          <div 
+                            key={`next-act-${act.title || index}-${index}`} 
+                            className="bg-zinc-900/40 p-4 rounded-xl border border-white/5 flex items-center justify-between gap-4 hover:bg-zinc-900/80 transition"
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className={`text-[10px] font-bold uppercase rounded-lg px-2.5 py-1 border ${act.color}`}>
+                                {act.type === 'Onsite Visit' ? `🏢 ${t('admin.dashboard.visit')}` : `💻 ${t('admin.dashboard.tutorial')}`}
+                              </span>
+                              <div>
+                                <p className="text-xs font-bold text-white">{act.title}</p>
+                                <p className="text-[11px] text-gray-400 mt-0.5">{act.subtitle}</p>
+                              </div>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <p className="font-mono text-xs text-white uppercase font-semibold">
+                                {new Date(act.date + 'T12:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}
+                              </p>
+                              <p className="text-[10px] text-gray-400 flex items-center gap-1 justify-end mt-0.5">
+                                <Clock className="w-3 h-3 text-red-500" /> {act.time}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Top 3 Libros Descargados Side Column */}
+                  <div className="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h4 className="text-sm font-bold text-white border-b border-white/5 pb-2">{t('admin.dashboard.featured')}</h4>
+                    <div className="space-y-4">
+                      {books.sort((a,b) => b.downloadsCount - a.downloadsCount).slice(0, 3).map((b, idx) => (
+                        <div key={`topbook-${b.id || idx}-${idx}`} className="flex gap-3 items-center">
+                          <div className="w-10 h-14 bg-zinc-800 rounded overflow-hidden shadow shrink-0">
+                            <img src={b.coverUrl || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=150"} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h5 className="font-bold text-xs truncate text-white">{b.title}</h5>
+                            <p className="text-[10px] text-gray-400 truncate">{b.category} • {b.author}</p>
+                            <p className="text-[10px] text-green-400 font-mono font-semibold mt-1">📥 {b.downloadsCount || 0} {t('admin.dashboard.downloads')}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* D. DEMANDA & IA ANALYTICS DASHBOARD */}
+                <div className="pt-6 border-t border-white/10">
+                  <AIDemandAnalyticsDashboard />
+                </div>
+
+              </div>
+            )}
+
+            {/* =======================================================
+                T1.5: DEMANDA & IA ANALYTICS DEDICATED TAB
+                ======================================================= */}
+            {activeTab === 'ai_demand' && (
+              <AIDemandAnalyticsDashboard />
+            )}
+
+            {/* =======================================================
+                T2: CURSOS MANAGEMENT
+                ======================================================= */}
+            {activeTab === 'courses' && (
+              <div className="space-y-8">
+                
+                {/* Search Header */}
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-500" />
+                    <input 
+                      type="text" 
+                      placeholder={t('adminModules.panel.searchCourses')}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-red-500 transition-colors"
+                    />
+                  </div>
+                  <div className="relative shrink-0">
+                    <select 
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                      className="bg-white/5 border border-white/10 rounded-xl py-2.5 px-4 text-xs text-white focus:outline-none focus:border-red-500 cursor-pointer min-w-[150px]"
+                    >
+                      <option value="all">{t('adminModules.panel.filterStatus')}</option>
+                      <option value="Activo">{t('adminModules.panel.activeOnly')}</option>
+                      <option value="Inactivo">{t('adminModules.panel.inactive')}</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Courses Card Grid */}
+                {loadingStates.courses ? (
+                  <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
+                ) : filteredCourses.length === 0 ? (
+                  <div className="glass p-12 rounded-3xl text-center border border-white/5">
+                    <GraduationCap className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">{t('adminModules.panel.noCourses')}</h3>
+                    <p className="text-gray-400">{t('adminModules.panel.courseEmpty')}</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {(Array.isArray(filteredCourses) ? filteredCourses : []).map((c, idx) => (
+                      <div key={`course-${c.id || idx}-${idx}`} className="glass rounded-2xl border border-white/5 overflow-hidden flex flex-col hover:border-white/10 transition duration-300 relative group">
+                        
+                        {/* Status tag */}
+                        <span className={`absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase border shadow-md font-mono ${
+                          c.status === 'Activo' 
+                            ? 'bg-green-500/10 text-green-400 border-green-500/20' 
+                            : 'bg-zinc-500/15 text-zinc-400 border-zinc-500/20'
+                        }`}>
+                          {c.status}
+                        </span>
+
+                        {/* Image Portada */}
+                        <div className="h-44 bg-zinc-900 overflow-hidden relative">
+                          <img src={c.imageUrl || "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=400"} alt="" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                          
+                          {/* Level classification badge */}
+                          <span className="absolute bottom-3 left-3 bg-red-600 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wide font-mono">
+                            {c.level}
+                          </span>
+                        </div>
+
+                        {/* Course metadata */}
+                        <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                          <div className="space-y-2">
+                            <h4 className="font-extrabold text-sm text-white line-clamp-1 group-hover:text-red-500 transition">{c.title}</h4>
+                            <p className="text-xs text-gray-400 line-clamp-3 leading-relaxed">{c.description}</p>
+                          </div>
+
+                          <div className="flex justify-between items-center font-mono border-t border-white/5 pt-3 text-[11px] text-gray-400">
+                            <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-red-500" /> {c.duration} horas</span>
+                            <span className="font-bold text-white text-xs">${c.price} USD</span>
+                          </div>
+
+                          {/* Action panel */}
+                          {canEdit && (
+                            <div className="flex gap-2 border-t border-white/5 pt-3">
+                              <button 
+                                onClick={() => {
+                                  setEditingCourse(c);
+                                  setCourseForm(c);
+                                  setIsCourseModalOpen(true);
+                                }}
+                                className="flex-1 bg-white/5 hover:bg-white/10 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition"
+                              >
+                                <Edit2 className="w-3.5 h-3.5" /> Editar
+                              </button>
+                              <button 
+                                onClick={() => handleDuplicateCourse(c)}
+                                className="bg-white/5 hover:bg-white/10 p-2 rounded-lg text-gray-400 hover:text-white transition"
+                                title={t('adminModules.panel.duplicateCourse')}
+                              >
+                                <Copy className="w-4 h-4" />
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteCourse(c.id)}
+                                className="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2 rounded-lg transition"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* =======================================================
+                T3: LIBROS / RECURSOS MANAGEMENT
+                ======================================================= */}
+            {activeTab === 'books' && (
+              <div className="space-y-8">
+                
+                {/* Search Book filter */}
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-500" />
+                    <input 
+                      type="text" 
+                      placeholder={t('adminModules.panel.searchBooks')}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-red-500 transition-colors"
+                    />
+                  </div>
+                  <div className="relative shrink-0">
+                    <select 
+                      value={categoryFilter}
+                      onChange={(e) => setCategoryFilter(e.target.value)}
+                      className="bg-white/5 border border-white/10 rounded-xl py-2.5 px-4 text-xs text-white focus:outline-none focus:border-red-500 cursor-pointer min-w-[155px]"
+                    >
+                      <option value="all">{t('adminModules.panel.isoCategories')}</option>
+                      <option value="ISO 9001">ISO 9001</option>
+                      <option value="ISO 27001">ISO 27001</option>
+                      <option value="Coaching">Coaching</option>
+                      <option value="Excelencia Operativa">{t('adminModules.panel.excelence')}</option>
+                    </select>
+                  </div>
+                </div>
+
+                {loadingStates.books ? (
+                  <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
+                ) : filteredBooks.length === 0 ? (
+                  <div className="glass p-12 rounded-3xl text-center border border-white/5">
+                    <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">{t('adminModules.panel.noBooks')}</h3>
+                    <p className="text-gray-400">{t('adminModules.panel.bookEmpty')}</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {(Array.isArray(filteredBooks) ? filteredBooks : []).map((b, idx) => (
+                      <div key={`book-${b.id || idx}-${idx}`} className="glass rounded-xl border border-white/5 overflow-hidden flex flex-col justify-between hover:border-white/10 transition">
+                        <div className="p-4 space-y-4">
+                          
+                          {/* Book Portada */}
+                          <div className="aspect-[3/4] rounded-lg bg-zinc-900 border border-white/5 overflow-hidden shadow-md relative">
+                            <img src={b.coverUrl || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=300"} alt="" className="w-full h-full object-cover" />
+                            <span className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-md text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider text-green-400 font-mono">
+                              {b.category}
+                            </span>
+                          </div>
+
+                          {/* Metadatos */}
+                          <div className="space-y-1.5">
+                            <h4 className="font-extrabold text-xs text-white line-clamp-2" title={b.title}>{b.title}</h4>
+                            <p className="text-[10px] text-gray-400">{b.author} • <span className="font-mono">{b.year}</span></p>
+                            <p className="text-[10px] text-emerald-400 font-mono font-semibold">📥 {b.downloadsCount || 0} Descargas registradas</p>
+                          </div>
+                        </div>
+
+                        {/* Trigger Actions */}
+                        <div className="p-4 bg-zinc-950 border-t border-white/5 flex gap-1.5">
+                          {b.pdfUrl && (
+                            <a 
+                              href={b.pdfUrl} 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => incrementDownload(b)}
+                              className="flex-1 bg-green-500/10 hover:bg-green-500/20 text-green-400 text-[10px] uppercase font-bold py-2 rounded-lg text-center flex items-center justify-center gap-1 transition border border-green-500/20"
+                            >
+                              <ExternalLink className="w-3 h-3" /> Descargar PDF
+                            </a>
+                          )}
+                          {canEdit && (
+                            <>
+                              <button 
+                                onClick={() => {
+                                  setEditingBook(b);
+                                  setBookForm(b);
+                                  setIsBookModalOpen(true);
+                                }}
+                                className="bg-white/5 hover:bg-white/15 p-2 rounded-lg text-gray-300 transition"
+                                title={t('adminModules.panel.edit')}
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </button>
+                              <button 
+                                onClick={() => handleDuplicateBook(b)}
+                                className="bg-white/5 hover:bg-white/15 p-2 rounded-lg text-gray-300 transition"
+                                title={t('adminModules.panel.duplicate')}
+                              >
+                                <Copy className="w-3.5 h-3.5" />
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteBook(b.id)}
+                                className="bg-red-500/10 hover:bg-red-500/20 p-2 rounded-lg text-red-400 transition"
+                                title={t('adminModules.panel.delete')}
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* =======================================================
+                T4: VISITAS ONSITE (PRESENCIALES) CALENDAR VIEW
+                ======================================================= */}
+            {activeTab === 'visits' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                {/* CALENDAR COLUMN */}
+                <div className="lg:col-span-2 glass p-6 rounded-2xl border border-white/5 space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-bold text-sm text-white uppercase tracking-wider flex items-center gap-2">
+                      <CalendarDays className="w-5 h-5 text-red-500" />
+                      Planificación Mensual
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => changeMonth(-1)} className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition"><ChevronLeft className="w-4 h-4" /></button>
+                      <span className="text-xs font-bold font-mono text-white tracking-widest uppercase">
+                        {calendarDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
+                      </span>
+                      <button onClick={() => changeMonth(1)} className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition"><ChevronRight className="w-4 h-4" /></button>
+                    </div>
+                  </div>
+
+                  {/* Calendar Grid Header */}
+                  <div className="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-gray-500 uppercase">
+                    {['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'].map((d, dIdx) => <span key={`cal-hdr-${d}-${dIdx}`}>{d}</span>)}
+                  </div>
+
+                  {/* Days grid */}
+                  <div className="grid grid-cols-7 gap-2">
+                    {/* Previous Month filler */}
+                    {Array(firstDayIndex).fill(null).map((_, i) => (
+                      <div key={`prev-${i}`} className="aspect-square bg-transparent rounded-xl"></div>
+                    ))}
+                    
+                    {/* Month Active Days */}
+                    {Array(daysInMonth).fill(null).map((_, i) => {
+                      const dayNumber = i + 1;
+                      const hasEvents = calendarEvents[dayNumber]?.length > 0;
+                      const isSelected = selectedCalendarDay === dayNumber;
+                      return (
+                        <button
+                          key={`cal-active-day-${dayNumber}`}
+                          onClick={() => setSelectedCalendarDay(dayNumber)}
+                          className={`aspect-square rounded-xl p-1.5 flex flex-col justify-between items-center transition relative border cursor-pointer ${
+                            isSelected 
+                              ? 'bg-red-600 border-red-500 text-white font-bold scale-102 shadow-lg shadow-red-500/20' 
+                              : 'bg-zinc-900/50 hover:bg-zinc-900/90 border-white/5 text-gray-300'
+                          }`}
+                        >
+                          <span className="text-xs font-mono">{dayNumber}</span>
+                          
+                          {/* Dot markers */}
+                          {hasEvents && (
+                            <div className="flex gap-1 justify-center mt-auto">
+                              {(calendarEvents[dayNumber] || []).slice(0, 3).map((ev: any, idx: number) => (
+                                <span key={`ev-dot-${ev.id || idx}-${idx}`} className={`w-1.5 h-1.5 rounded-full ${ev.color}`}></span>
+                              ))}
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* EVENTS PREVIEW FOR SPECIFIC DAY ON CALENDAR SIDEBAR */}
+                <div className="space-y-6">
+                  
+                  {/* Quick details header */}
+                  <div className="glass p-5 rounded-2xl border border-white/5 space-y-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-red-400">
+                      📅 Agenda del día {selectedCalendarDay || calendarDate.getDate()}
+                    </h4>
+
+                    <div className="space-y-3">
+                      {(() => {
+                        const activeDayNum = selectedCalendarDay || calendarDate.getDate();
+                        const dayEvents = calendarEvents[activeDayNum] || [];
+                        if (dayEvents.length === 0) {
+                          return (
+                            <div className="text-center py-6 text-gray-500 text-xs text-balance">
+                              No hay visitas corporativas ni tutorías programadas para este día del calendario.
+                            </div>
+                          );
+                        }
+                        return (dayEvents || []).map((ev, idx) => (
+                          <div key={`day-ev-${ev.id || ev.company || idx}-${idx}`} className="bg-black/40 p-3 rounded-lg border border-white/5 space-y-2">
+                            <span className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase border inline-block ${
+                              ev.labelType === 'Visita' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-teal-500/10 text-teal-400 border-teal-500/20'
+                            }`}>
+                              {ev.labelType}
+                            </span>
+                            <div className="space-y-0.5">
+                              <h5 className="font-bold text-xs text-white">{ev.company || ev.studentName}</h5>
+                              <p className="text-[10px] text-gray-400 flex items-center gap-1">
+                                <Clock className="w-3 h-3 text-red-500" /> {ev.time}
+                              </p>
+                              {ev.address && <p className="text-[10px] text-gray-500 truncate mt-1">📍 {ev.address}</p>}
+                              {ev.topic && <p className="text-[10px] text-gray-500 truncate mt-1 italic">"{ev.topic}"</p>}
+                            </div>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* FULL TEXT VISITS LIST */}
+                  <div className="glass p-5 rounded-2xl border border-white/5 space-y-4">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 border-b border-white/5 pb-2">
+                      Todas las visitas Onsite ({visits.length})
+                    </h4>
+                    
+                    <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+                      {(Array.isArray(visits) ? visits : []).map((v, idx) => (
+                        <div key={`video-${v.id || idx}-${idx}`} className="bg-zinc-900/50 p-3.5 rounded-xl border border-white/5 text-xs space-y-2 flex justify-between gap-1">
+                          <div className="space-y-1">
+                            <p className="font-extrabold text-white text-[13px]">{v.company}</p>
+                            <p className="text-gray-400 text-[11px]">{v.clientName}</p>
+                            <p className="text-[10px] text-gray-500 font-mono">📅 {v.date} • ⏰ {v.time}</p>
+                            <span className={`inline-block text-[9px] uppercase font-bold py-0.5 px-1.5 rounded ${
+                              v.status === 'completed' ? 'bg-green-500/15 text-green-400' :
+                              v.status === 'cancelled' ? 'bg-red-500/15 text-red-400' : 'bg-yellow-500/15 text-yellow-500'
+                            }`}>{v.status}</span>
+                          </div>
+
+                          <div className="flex flex-col justify-between items-end">
+                            {canEdit && (
+                              <div className="flex gap-1.5">
+                                <button 
+                                  onClick={() => {
+                                    setEditingVisit(v);
+                                    setVisitForm(v);
+                                    setIsVisitModalOpen(true);
+                                  }}
+                                  className="p-1.5 bg-white/5 hover:bg-white/10 rounded hover:text-white transition"
+                                  title={t('adminModules.panel.reschedule')}
+                                >
+                                  <Edit2 className="w-3 h-3" />
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteVisit(v.id)}
+                                  className="p-1.5 bg-red-500/10 hover:bg-red-500/20 rounded text-red-400 transition"
+                                >
+                                  <Trash2 className="w-3 h-3" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            )}
+
+            {/* =======================================================
+                T5: TUTORÍAS ONLINE MANAGEMENT
+                ======================================================= */}
+            {activeTab === 'tutorials' && (
+              <div className="space-y-8">
+                
+                {/* Tutorías responsive list */}
+                {loadingStates.tutorials ? (
+                  <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
+                ) : tutorials.length === 0 ? (
+                  <div className="glass p-12 rounded-3xl text-center border border-white/5">
+                    <Video className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">{t('adminModules.panel.noTutorials')}</h3>
+                    <p className="text-gray-400">{t('adminModules.panel.tutorialEmpty')}</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-6">
+                    {(Array.isArray(tutorials) ? tutorials : []).map((t, idx) => (
+                      <div key={`testim-${t.id || idx}-${idx}`} className="glass p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden hover:border-white/10 transition">
+                        
+                        {/* Status bar left */}
+                        <div className={`absolute left-0 top-0 bottom-0 w-1 ${
+                          t.status === 'confirmed' ? 'bg-green-500' :
+                          t.status === 'cancelled' ? 'bg-red-500' : 'bg-yellow-500'
+                        }`}></div>
+
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4 pl-3">
+                          
+                          {/* Student identity */}
+                          <div className="space-y-1">
+                            <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">{t('adminModules.panel.student')}</p>
+                            <h4 className="font-extrabold text-sm">{t.studentName}</h4>
+                            <p className="text-xs text-red-400 truncate">{t.email}</p>
+                          </div>
+
+                          {/* Chrono */}
+                          <div className="space-y-1">
+                            <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">{t('adminModules.panel.plannedTime')}</p>
+                            <p className="font-bold text-xs text-white">{t.date}</p>
+                            <span className="text-[11px] text-gray-400 flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-red-500" /> {t.time} ({t.duration} m)</span>
+                          </div>
+
+                          {/* Topic matter */}
+                          <div className="space-y-1">
+                            <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">{t('adminModules.panel.consultTopic')}</p>
+                            <p className="font-bold text-xs text-gray-300 italic mb-1">"{t.topic}"</p>
+                            {t.subtype && (
+                              <span className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full inline-block mt-1 font-bold ${
+                                t.subtype === 'Coaching' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/25' :
+                                t.subtype === 'Psicopedagogía' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/25' :
+                                'bg-blue-500/10 text-blue-400 border border-blue-500/25'
+                              }`}>
+                                {t.subtype === 'Coaching' ? '🛡️ Coaching Estratégico' :
+                                 t.subtype === 'Psicopedagogía' ? '🧠 Psicopedagogía' :
+                                 '⚙️ Tutoría Técnica ISO'
+                                }
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Platform link */}
+                          <div className="space-y-1 shrink-0">
+                            <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">{t('adminModules.panel.platform')}</p>
+                            <span className={`text-[10px] font-extrabold px-3 py-1 bg-zinc-900 border rounded-full inline-block ${
+                              t.platform === 'Zoom' ? 'text-blue-400 border-blue-500/20' :
+                              t.platform === 'Meet' ? 'text-green-400 border-green-500/20' : 'text-purple-400 border-purple-500/20'
+                            }`}>{t.platform}</span>
+                            {t.link && (
+                              <a 
+                                href={t.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="block text-red-400 hover:text-red-300 text-[10px] mt-1.5 flex items-center gap-1"
+                              >
+                                Unirse hoy <ChevronRight className="w-3 h-3" />
+                              </a>
+                            )}
+                          </div>
+
+                        </div>
+
+                        {/* Event action commands */}
+                        <div className="flex md:flex-col items-end gap-2 pr-2">
+                          <span className={`text-[9px] uppercase font-mono font-bold tracking-widest px-2.5 py-1 rounded inline-block ${
+                            t.status === 'confirmed' ? 'bg-green-500/10 text-green-400' :
+                            t.status === 'cancelled' ? 'bg-red-500/10 text-red-400' : 'bg-yellow-500/10 text-yellow-400'
+                          }`}>{t.status}</span>
+                          
+                          {canEdit && (
+                            <div className="flex gap-1.5 mt-2">
+                              <button 
+                                onClick={() => {
+                                  setEditingTutorial(t);
+                                  setTutorialForm(t);
+                                  setIsTutorialModalOpen(true);
+                                }}
+                                className="bg-white/5 hover:bg-white/10 p-2 rounded-lg text-gray-300 hover:text-white transition"
+                                title={t('adminModules.panel.edit')}
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteTutorial(t.id)}
+                                className="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2 rounded-lg transition"
+                                title={t('adminModules.panel.delete')}
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* =======================================================
+                T6: EQUIPO Y COLLABORATORS MANAGEMENT
+                ======================================================= */}
+            {activeTab === 'users' && (
+              <div className="space-y-8">
+                <div className="bg-[#111] p-4 rounded-xl border border-white/5 text-xs text-gray-300 flex items-start gap-3">
+                  <ShieldCheck className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                  <p>
+                    {t('adminModules.panel.manualText')}
+                  </p>
+                </div>
+
+                {loadingStates.users ? (
+                  <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
+                ) : (
+                  <div className="glass rounded-2xl border border-white/5 overflow-hidden">
+                    <table className="w-full text-left border-collapse h-full">
+                      <thead>
+                        <tr className="border-b border-white/5 bg-zinc-900/30 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                          <th className="p-4 pl-6">{t('adminModules.panel.memberName')}</th>
+                          <th className="p-4">{t('adminModules.panel.corporateEmail')}</th>
+                          <th className="p-4">{t('adminModules.panel.privileges')}</th>
+                          {currentUser?.isSuperAdmin && <th className="p-4 pr-6 text-right">{t('adminModules.panel.actions')}</th>}
+                        </tr>
+                      </thead>
                       <tbody className="divide-y divide-white/5 text-xs">
                         
                         {/* Default Hardcoded Owner Robert to showcase */}
