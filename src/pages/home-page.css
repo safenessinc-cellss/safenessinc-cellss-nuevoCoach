@@ -25,6 +25,7 @@
 .site-brand strong { color: var(--site-ink); display: block; font-size: 12px; letter-spacing: .16em; line-height: 1.3; }
 .site-brand small { color: #84909c; display: block; font-size: 8px; font-weight: 700; letter-spacing: .2em; margin-top: 2px; }
 .site-nav { align-items: center; display: flex; gap: 30px; }
+.site-nav { gap: clamp(10px,1.45vw,22px); }
 .site-nav > a:not(.site-nav-contact) { color: #586678; font-size: 12px; font-weight: 600; transition: color .2s; }
 .site-nav > a:hover { color: var(--site-accent); }
 .site-nav-contact { align-items: center; background: var(--site-ink); border-radius: 999px; color: #fff !important; display: inline-flex; font-size: 12px; font-weight: 600; gap: 9px; padding: 12px 17px; }
@@ -65,6 +66,13 @@
 .site-visual-note small { color: #d0e3dc; font-size: 8px; text-align: center; width: 78px; }
 .site-scroll-cue { align-items: center; border: 1px solid #d9e1e3; border-radius: 50%; bottom: 25px; color: #5d706c; display: flex; height: 36px; justify-content: center; left: 50%; position: absolute; transform: translateX(-50%); width: 36px; }
 .site-section { margin: 0 auto; max-width: 1320px; padding: 78px 64px 92px; }
+.site-iso-section { border-top: 1px solid var(--site-line); }
+.site-biotypes-section { background: #eef2ef; border-bottom: 1px solid #e1e8e4; border-top: 1px solid #e1e8e4; max-width: none; padding-left: max(64px,calc((100vw - 1192px)/2)); padding-right: max(64px,calc((100vw - 1192px)/2)); }
+.site-section-note { align-items: center; border-top: 1px solid #e1e7e5; color: #64747d; display: flex; gap: 12px; margin-top: 25px; padding-top: 18px; }
+.site-section-note > svg { color: #337565; flex: 0 0 auto; }
+.site-section-note p { font-size: 11px; line-height: 1.7; margin: 0; }
+.site-section-note a { align-items: center; color: #24695c; display: inline-flex; flex: 0 0 auto; font-size: 11px; font-weight: 700; gap: 5px; margin-left: auto; }
+.site-biotype-note { border-color: #d7e0dc; }
 .site-expertise { border-top: 1px solid var(--site-line); }
 .site-section-heading { align-items: end; display: flex; gap: 40px; justify-content: space-between; margin-bottom: 34px; }
 .site-section-heading .site-eyebrow { margin-bottom: 12px; }
@@ -95,7 +103,7 @@
 .site-result strong { color: #203e3a; font-family: "Space Grotesk",sans-serif; font-size: 20px; }
 .site-result span { color: #687984; font-size: 10px; }
 .site-results-strip > small { color: #879197; flex: 1 0 100%; font-size: 9px; margin-top: -12px; }
-.site-digital-feature { align-items: center; display: grid; gap: 70px; grid-template-columns: 1fr 1fr; margin: 0 auto; max-width: 1320px; padding: 90px 90px; }
+.site-digital-feature { align-items: center; display: grid; gap: 48px 70px; grid-template-columns: 1fr 1fr; margin: 0 auto; max-width: 1320px; padding: 90px; }
 .site-digital-visual { background: #e8eeeb; border: 1px solid #dce6e0; border-radius: 20px; height: 310px; overflow: hidden; position: relative; }
 .site-digital-visual::before,.site-digital-visual::after { border: 1px solid rgba(35,104,91,.17); border-radius: 50%; content: ""; height: 240px; left: 50%; position: absolute; top: 52%; transform: translate(-50%,-50%); width: 460px; }
 .site-digital-visual::after { height: 175px; width: 350px; }
@@ -108,6 +116,13 @@
 .site-digital-copy { max-width: 510px; }
 .site-digital-copy h2 { font-size: clamp(33px,3.4vw,45px); }
 .site-digital-copy > p:not(.site-eyebrow) { color: var(--site-muted); font-size: 13px; line-height: 1.85; margin: 17px 0 0; }
+.site-development-process { grid-column: 1 / -1; }
+.site-development-process h3 { color: #24384b; font-family: "Space Grotesk",Inter,sans-serif; font-size: 20px; letter-spacing: -.025em; margin: 0 0 18px; }
+.site-development-process ol { display: grid; gap: 12px; grid-template-columns: repeat(4,minmax(0,1fr)); list-style: none; margin: 0; padding: 0; }
+.site-development-process li { background: #fff; border: 1px solid #e0e7e4; border-radius: 14px; display: flex; gap: 12px; min-height: 145px; padding: 17px; }
+.site-process-number { align-items: center; background: #e8f1ed; border-radius: 50%; color: #397765; display: flex; flex: 0 0 30px; font-size: 10px; font-weight: 750; height: 30px; justify-content: center; }
+.site-development-process li strong { color: #293c4d; display: block; font-size: 12px; line-height: 1.5; }
+.site-development-process li p { color: #71808b; font-size: 10px; line-height: 1.7; margin: 8px 0 0; }
 .site-publications { border-top: 1px solid var(--site-line); }
 .site-book-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit,minmax(245px,1fr)); }
 .site-book-card { align-items: center; background: #fff; border: 1px solid #e1e6e8; border-radius: 16px; display: flex; gap: 18px; min-height: 184px; padding: 18px; }
@@ -132,13 +147,16 @@
 
 @media (max-width: 900px) {
   .site-header { padding: 0 26px; }
-  .site-nav { gap: 18px; }
+  .site-nav { gap: 10px; }
+  .site-nav > a:not(.site-nav-contact) { font-size: 10px; }
   .site-hero { gap: 20px; grid-template-columns: 1fr .8fr; padding: 36px 34px 78px; }
   .site-hero-visual { transform: scale(.88); transform-origin: center right; }
   .site-section { padding: 68px 34px 78px; }
+  .site-biotypes-section { padding-left: 34px; padding-right: 34px; }
   .site-experience-band { padding-left: 34px; padding-right: 34px; }
   .site-experience-band .site-section-heading { max-width: none; }
   .site-digital-feature { gap: 36px; padding: 75px 44px; }
+  .site-development-process ol { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .site-contact { padding: 55px 38px; }
   .site-footer { padding-left: 34px; padding-right: 34px; }
 }
@@ -164,6 +182,9 @@
   .site-visual-caption { bottom: 15px; left: 0; }
   .site-scroll-cue { bottom: 18px; }
   .site-section { padding: 58px 22px 64px; }
+  .site-biotypes-section { padding-left: 22px; padding-right: 22px; }
+  .site-section-note { align-items: flex-start; flex-wrap: wrap; }
+  .site-section-note a { margin-left: 29px; }
   .site-section-heading { align-items: flex-start; flex-direction: column; gap: 14px; margin-bottom: 24px; }
   .site-section-heading h2,.site-digital-copy h2,.site-contact h2 { font-size: 32px; }
   .site-section-heading > p,.site-experience-intro > p { font-size: 12px; }
@@ -181,6 +202,9 @@
   .site-result strong { font-size: 18px; }
   .site-result span { font-size: 9px; line-height: 1.4; }
   .site-digital-feature { gap: 27px; grid-template-columns: 1fr; padding: 58px 22px; }
+  .site-development-process { grid-column: auto; }
+  .site-development-process ol { grid-template-columns: 1fr; }
+  .site-development-process li { min-height: auto; }
   .site-digital-visual { height: 235px; }
   .site-contact { align-items: stretch; flex-direction: column; gap: 25px; padding: 46px 22px; }
   .site-contact-actions { flex: auto; }

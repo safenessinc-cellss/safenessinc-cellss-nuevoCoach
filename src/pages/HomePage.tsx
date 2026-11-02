@@ -83,6 +83,9 @@ export default function HomePage() {
         </Link>
         <nav className={`site-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
           <a href="#expertise" onClick={() => setMenuOpen(false)}>{copy.nav.expertise}</a>
+          <a href="#iso-systems" onClick={() => setMenuOpen(false)}>{copy.nav.iso}</a>
+          <a href="#biotypes" onClick={() => setMenuOpen(false)}>{copy.nav.biotypes}</a>
+          <a href="#development" onClick={() => setMenuOpen(false)}>{copy.nav.digital}</a>
           <a href="#experience" onClick={() => setMenuOpen(false)}>{copy.nav.experience}</a>
           <a href="#publications" onClick={() => setMenuOpen(false)}>{copy.nav.publication}</a>
           <a className="site-nav-contact" href="#contact" onClick={() => setMenuOpen(false)}>{copy.nav.contact}<ArrowUpRight size={15} /></a>
@@ -124,6 +127,34 @@ export default function HomePage() {
           <a className="site-scroll-cue" href="#expertise" aria-label={copy.nav.expertise}><ArrowDown size={16} /></a>
         </section>
 
+        <section className="site-section site-iso-section" id="iso-systems">
+          <div className="site-section-heading">
+            <div><p className="site-eyebrow">{copy.iso.eyebrow}</p><h2>{copy.iso.title}</h2></div>
+            <p>{copy.iso.description}</p>
+          </div>
+          <div className="site-service-grid">
+            {copy.iso.cards.map((card, index) => <article className="site-service-card" key={`${card.title}-${index}`}>
+              <span className="site-card-index">0{index + 1}</span><span className="site-card-rule" />
+              <h3>{card.title}</h3><p>{card.description}</p>
+            </article>)}
+          </div>
+          <div className="site-section-note"><ShieldCheck size={17} /><p>{copy.iso.transitionNote}</p><a href="#contact">{copy.iso.action}<ArrowUpRight size={15} /></a></div>
+        </section>
+
+        <section className="site-section site-biotypes-section" id="biotypes">
+          <div className="site-section-heading">
+            <div><p className="site-eyebrow">{copy.biotypes.eyebrow}</p><h2>{copy.biotypes.title}</h2></div>
+            <p>{copy.biotypes.description}</p>
+          </div>
+          <div className="site-service-grid">
+            {copy.biotypes.cards.map((card, index) => <article className="site-service-card site-biotype-card" key={`${card.title}-${index}`}>
+              <span className="site-card-index">0{index + 1}</span><span className="site-card-rule" />
+              <h3>{card.title}</h3><p>{card.description}</p>
+            </article>)}
+          </div>
+          <div className="site-section-note site-biotype-note"><p>{copy.biotypes.note}</p><a href="#contact">{copy.biotypes.action}<ArrowUpRight size={15} /></a></div>
+        </section>
+
         <section className="site-section site-expertise" id="expertise">
           <div className="site-section-heading">
             <div><p className="site-eyebrow">{copy.expertise.eyebrow}</p><h2>{copy.expertise.title}</h2></div>
@@ -162,9 +193,10 @@ export default function HomePage() {
           </div>}
         </section>
 
-        <section className="site-digital-feature">
+        <section className="site-digital-feature" id="development">
           <div className="site-digital-visual" aria-hidden="true"><div className="site-flow-node node-a" /><div className="site-flow-node node-b" /><div className="site-flow-node node-c" /><div className="site-flow-line line-a" /><div className="site-flow-line line-b" /><span>SAFENESS.INC</span></div>
           <div className="site-digital-copy"><p className="site-eyebrow">{copy.digital.eyebrow}</p><h2>{copy.digital.title}</h2><p>{copy.digital.description}</p><Link to="/curriculo">{copy.digital.linkLabel}<ArrowRight size={17} /></Link></div>
+          <div className="site-development-process"><h3>{copy.digital.stepsLabel}</h3><ol>{copy.digital.steps.map((step, index) => <li key={`${step.title}-${index}`}><span className="site-process-number">0{index + 1}</span><div><strong>{step.title}</strong><p>{step.description}</p></div></li>)}</ol></div>
         </section>
 
         {books.length > 0 && <section className="site-section site-publications" id="publications">

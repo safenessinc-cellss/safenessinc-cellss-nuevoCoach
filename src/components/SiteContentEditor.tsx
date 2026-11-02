@@ -51,6 +51,15 @@ export default function SiteContentEditor({ canEdit }: SiteContentEditorProps) {
     ...current,
     expertise: { ...current.expertise, cards: current.expertise.cards.filter((_, i) => i !== index) },
   }));
+  const updateCards = (section: 'iso' | 'biotypes' | 'digital', index: number, key: 'title' | 'description', value: string) => setCopy((current) => ({
+    ...current,
+    [section]: { ...current[section], [section === 'digital' ? 'steps' : 'cards']: current[section][section === 'digital' ? 'steps' : 'cards'].map((card, i) => i === index ? { ...card, [key]: value } : card) },
+  }));
+  const changeCards = (section: 'iso' | 'biotypes' | 'digital', action: 'add' | 'remove', index?: number) => setCopy((current) => {
+    const key = section === 'digital' ? 'steps' : 'cards';
+    const cards = current[section][key];
+    return { ...current, [section]: { ...current[section], [key]: action === 'add' ? [...cards, { title: '', description: '' }] : cards.filter((_, i) => i !== index) } };
+  });
   const addService = () => setCopy((current) => ({
     ...current,
     expertise: { ...current.expertise, cards: [...current.expertise.cards, { title: '', description: '' }] },
@@ -58,8 +67,8 @@ export default function SiteContentEditor({ canEdit }: SiteContentEditorProps) {
 
   const save = async () => {
     if (!canEdit) return;
-    if (copy.expertise.cards.some((card) => !card.title.trim() || !card.description.trim())) {
-      setMessage('Completa el título y la descripción de cada servicio antes de guardar.');
+    if ([...copy.expertise.cards, ...copy.iso.cards, ...copy.biotypes.cards, ...copy.digital.steps].some((card) => !card.title.trim() || !card.description.trim())) {
+      setMessage('Completa el título y la descripción de todas las tarjetas antes de guardar.');
       return;
     }
     setSaving(true);
@@ -109,6 +118,20 @@ export default function SiteContentEditor({ canEdit }: SiteContentEditorProps) {
         <TextField label="Descriptor de marca" value={copy.brand.descriptor} onChange={(value) => updateSection('brand', 'descriptor', value)} />
       </section>
 
+      <section className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <div><h3 className="font-bold text-slate-900">Sistemas ISO</h3><p className="mt-1 text-xs text-slate-500">Edita la sección pública de normas y acompañamiento.</p></div>
+        <div className="grid gap-4 sm:grid-cols-2"><TextField label="Etiqueta" value={copy.iso.eyebrow} onChange={(value) => updateSection('iso', 'eyebrow', value)} /><TextField label="Título" value={copy.iso.title} onChange={(value) => updateSection('iso', 'title', value)} /><div className="sm:col-span-2"><TextField label="Introducción" value={copy.iso.description} onChange={(value) => updateSection('iso', 'description', value)} multiline /></div><div className="sm:col-span-2"><TextField label="Nota sobre certificación" value={copy.iso.transitionNote} onChange={(value) => updateSection('iso', 'transitionNote', value)} multiline /></div><TextField label="Texto de contacto" value={copy.iso.action} onChange={(value) => updateSection('iso', 'action', value)} /></div>
+        {copy.iso.cards.map((card, index) => <div key={`iso-${index}`} className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end"><TextField label={`Norma ${index + 1}`} value={card.title} onChange={(value) => updateCards('iso', index, 'title', value)} /><TextField label="Descripción" value={card.description} onChange={(value) => updateCards('iso', index, 'description', value)} multiline /><button type="button" onClick={() => changeCards('iso', 'remove', index)} aria-label={`Quitar norma ${index + 1}`} className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 px-3 text-xs font-semibold text-rose-700 hover:bg-rose-50"><Trash2 size={15} />Quitar</button></div>)}
+        <button type="button" onClick={() => changeCards('iso', 'add')} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700"><Plus size={15} />Añadir norma</button>
+      </section>
+
+      <section className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <div><h3 className="font-bold text-slate-900">Biotipos y estilos de interacción</h3><p className="mt-1 text-xs text-slate-500">Contenido orientativo de coaching, editable por idioma.</p></div>
+        <div className="grid gap-4 sm:grid-cols-2"><TextField label="Etiqueta" value={copy.biotypes.eyebrow} onChange={(value) => updateSection('biotypes', 'eyebrow', value)} /><TextField label="Título" value={copy.biotypes.title} onChange={(value) => updateSection('biotypes', 'title', value)} /><div className="sm:col-span-2"><TextField label="Introducción" value={copy.biotypes.description} onChange={(value) => updateSection('biotypes', 'description', value)} multiline /></div><div className="sm:col-span-2"><TextField label="Nota orientativa" value={copy.biotypes.note} onChange={(value) => updateSection('biotypes', 'note', value)} multiline /></div><TextField label="Texto de contacto" value={copy.biotypes.action} onChange={(value) => updateSection('biotypes', 'action', value)} /></div>
+        {copy.biotypes.cards.map((card, index) => <div key={`biotype-${index}`} className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end"><TextField label={`Estilo ${index + 1}`} value={card.title} onChange={(value) => updateCards('biotypes', index, 'title', value)} /><TextField label="Descripción" value={card.description} onChange={(value) => updateCards('biotypes', index, 'description', value)} multiline /><button type="button" onClick={() => changeCards('biotypes', 'remove', index)} aria-label={`Quitar estilo ${index + 1}`} className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 px-3 text-xs font-semibold text-rose-700 hover:bg-rose-50"><Trash2 size={15} />Quitar</button></div>)}
+        <button type="button" onClick={() => changeCards('biotypes', 'add')} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700"><Plus size={15} />Añadir estilo</button>
+      </section>
+
       <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-2 sm:p-7">
         <div className="sm:col-span-2"><h3 className="font-bold text-slate-900">Portada</h3><p className="mt-1 text-xs text-slate-500">Mensaje principal que ve cada visitante.</p></div>
         <TextField label="Frase superior" value={copy.hero.eyebrow} onChange={(value) => updateSection('hero', 'eyebrow', value)} />
@@ -149,7 +172,12 @@ export default function SiteContentEditor({ canEdit }: SiteContentEditorProps) {
         <TextField label="Título de desarrollo digital" value={copy.digital.title} onChange={(value) => updateSection('digital', 'title', value)} />
         <TextField label="Texto de desarrollo digital" value={copy.digital.description} onChange={(value) => updateSection('digital', 'description', value)} multiline />
         <TextField label="Enlace de desarrollo digital" value={copy.digital.linkLabel} onChange={(value) => updateSection('digital', 'linkLabel', value)} />
+        <TextField label="Etiqueta del proceso" value={copy.digital.stepsLabel} onChange={(value) => updateSection('digital', 'stepsLabel', value)} />
       </section>
+
+      <section className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7"><div><h3 className="font-bold text-slate-900">Fases de desarrollo de aplicaciones</h3><p className="mt-1 text-xs text-slate-500">Describe cada etapa desde el descubrimiento hasta la mejora.</p></div>
+        {copy.digital.steps.map((card, index) => <div key={`step-${index}`} className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end"><TextField label={`Fase ${index + 1}`} value={card.title} onChange={(value) => updateCards('digital', index, 'title', value)} /><TextField label="Descripción" value={card.description} onChange={(value) => updateCards('digital', index, 'description', value)} multiline /><button type="button" onClick={() => changeCards('digital', 'remove', index)} aria-label={`Quitar fase ${index + 1}`} className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 px-3 text-xs font-semibold text-rose-700 hover:bg-rose-50"><Trash2 size={15} />Quitar</button></div>)}
+        <button type="button" onClick={() => changeCards('digital', 'add')} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700"><Plus size={15} />Añadir fase</button></section>
 
       <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-2 sm:p-7">
         <div className="sm:col-span-2"><h3 className="font-bold text-slate-900">Publicaciones y contacto</h3><p className="mt-1 text-xs text-slate-500">Los libros y portadas se gestionan en Publicaciones.</p></div>
