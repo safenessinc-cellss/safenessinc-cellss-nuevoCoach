@@ -8,12 +8,14 @@ import './i18n';
 import './index.css';
 import './corporate-theme.css';
 import './coach-iso-2026.css';
+import './coach-home.css';
 
 // Keep the public CV lean: the legacy portal, admin screens and scheduling tools
 // are loaded only when a visitor navigates to those routes.
 const App = lazy(() => import('./App'));
 const SchedulingPage = lazy(() => import('./pages/SchedulingPage'));
 const PublicCurriculumPage = lazy(() => import('./pages/PublicCurriculumPage'));
+const CoachIsoHomePage = lazy(() => import('./pages/CoachIsoHomePage'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const ClauseViewer = lazy(() => import('./components/ClauseViewer'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -33,7 +35,7 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<App />} />
+              <Route path="/" element={<CoachIsoHomePage />} />
               <Route path="/portal" element={<App />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/agendar" element={<SchedulingPage />} />
