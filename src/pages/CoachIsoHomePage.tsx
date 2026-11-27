@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, ArrowUpRight, Award, BarChart3, CheckCircle2, ChevronDown, Globe2, Layers3, Menu, ShieldCheck, Target, Users, Workflow, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Award, CheckCircle2, ChevronDown, Globe2, Layers3, Menu, ShieldCheck, Target, Users, Workflow, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useProfileSettings } from '../data/useProfileSettings';
