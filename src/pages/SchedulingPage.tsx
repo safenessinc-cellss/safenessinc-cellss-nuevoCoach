@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Clock, User, Mail, Building, FileText, CheckCircle, AlertCircle, LogIn, ArrowLeft, Loader2 } from 'lucide-react';
 import { auth, db } from '../firebase';
-import { signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { signInAnonymously, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
@@ -85,7 +85,7 @@ export default function SchedulingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    
     
     // Validate all fields before submitting
     const isNameValid = validateField('name', formData.name);
@@ -99,10 +99,11 @@ export default function SchedulingPage() {
 
     setStatus('submitting');
     try {
+      const bookingUser = user || (await signInAnonymously(auth)).user;
       const dateTime = new Date(`${formData.date}T${formData.time}`).toISOString();
       
-      const docRef = await addDoc(collection(db, 'consultations'), {
-        uid: user.uid,
+      await addDoc(collection(db, 'consultations'), {
+        uid: bookingUser.uid,
         name: formData.name,
         email: formData.email,
         company: formData.company,
@@ -118,7 +119,7 @@ export default function SchedulingPage() {
     } catch (error: any) {
       console.error(error);
       setStatus('error');
-      setErrorMessage(error.message || 'Error al agendar la consulta.');
+      setErrorMessage(error.message || 'No se pudo registrar la solicitud. Comprueba tu conexión e inténtalo de nuevo.');
     }
   };
 
@@ -178,30 +179,7 @@ export default function SchedulingPage() {
             <p className="text-gray-400 max-w-xl mx-auto text-sm leading-relaxed">Reserva una sesión estratégica de alta ingeniería operacional con Robert Terán para diagnosticar tus sistemas.</p>
           </div>
 
-          {!user ? (
-            <div className="text-center py-10">
-              <div className="w-16 h-16 bg-[#00F0FF]/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#00F0FF]/25">
-                <User className="w-8 h-8 text-[#00F0FF]" />
-              </div>
-              <h2 className="text-xl font-bold text-white mb-2 font-display">Inicia sesión para agendar</h2>
-              <p className="text-gray-400 mb-8 max-w-md mx-auto text-sm leading-relaxed">Para registrar tus consultas de manera segura bajo protocolos encriptados, inicia sesión con Google.</p>
-              
-              {status === 'error' && (
-                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/35 rounded-xl flex items-start gap-3 text-red-400 max-w-md mx-auto text-left">
-                  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                  <p className="text-xs font-mono">{errorMessage}</p>
-                </div>
-              )}
-
-              <button 
-                onClick={handleLogin}
-                className="inline-flex items-center gap-2 bg-[#090D1A] text-white border border-[#00F0FF]/30 px-8 py-4 rounded-xl font-mono text-xs uppercase tracking-wider hover:bg-[#00F0FF]/10 hover:border-[#00F0FF] transition-all shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:scale-105 active:scale-95 cursor-pointer"
-              >
-                <LogIn className="w-4 h-4 text-[#00F0FF]" />
-                AUTENTICAR_CON_GOOGLE
-              </button>
-            </div>
-          ) : status === 'success' ? (
+          {status === 'success' ? (
             <motion.div 
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -243,6 +221,7 @@ export default function SchedulingPage() {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              <p className="text-center text-sm text-gray-400">No necesitas crear una cuenta ni iniciar sesión. Tus datos se utilizarán únicamente para gestionar esta solicitud, según nuestra política de privacidad.</p>
               {status === 'error' && (
                 <motion.div 
                   initial={{ opacity: 0, y: -10 }}
