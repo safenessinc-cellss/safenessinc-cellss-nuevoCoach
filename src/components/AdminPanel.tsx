@@ -1093,6 +1093,56 @@ function AdminPanel() {
 
                 </div>
 
+                {/* Public consultation requests */}
+                <section className="glass p-6 rounded-2xl border border-white/5 space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h4 className="text-base font-bold tracking-tight text-white">Solicitudes de consulta</h4>
+                      <p className="text-xs text-gray-400">Reservas recibidas desde el formulario público, incluidas solicitudes de invitados.</p>
+                    </div>
+                    <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300">
+                      {consultations.filter((item) => item.status === 'pending').length} pendientes
+                    </span>
+                  </div>
+                  {loadingStates.consultations ? (
+                    <p className="py-6 text-center text-xs text-gray-500">Cargando solicitudes…</p>
+                  ) : consultations.length === 0 ? (
+                    <p className="py-6 text-center text-xs text-gray-500">Todavía no hay solicitudes de consulta.</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full min-w-[680px] text-left text-xs">
+                        <thead className="text-[10px] uppercase tracking-wider text-gray-500">
+                          <tr><th className="pb-3 pr-4">Contacto</th><th className="pb-3 pr-4">Fecha solicitada</th><th className="pb-3 pr-4">Motivo</th><th className="pb-3">Estado</th></tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                          {[...consultations].sort((a, b) => {
+                            const aDate = a.createdAt?.toDate?.()?.getTime?.() || Date.parse(a.date || '') || 0;
+                            const bDate = b.createdAt?.toDate?.()?.getTime?.() || Date.parse(b.date || '') || 0;
+                            return bDate - aDate;
+                          }).slice(0, 10).map((item) => (
+                            <tr key={item.id} className="align-top">
+                              <td className="py-3 pr-4">
+                                <p className="font-semibold text-white">{item.name || 'Sin nombre'}</p>
+                                <p className="mt-1 text-gray-400">{item.email || 'Sin correo'}</p>
+                                {item.company && <p className="mt-1 text-gray-500">{item.company}</p>}
+                              </td>
+                              <td className="py-3 pr-4 whitespace-nowrap text-gray-300">
+                                {item.date && !Number.isNaN(Date.parse(item.date)) ? new Date(item.date).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' }) : 'Fecha no disponible'}
+                              </td>
+                              <td className="py-3 pr-4 max-w-xs text-gray-400"><p className="line-clamp-3">{item.topic || 'Sin detalles'}</p></td>
+                              <td className="py-3">
+                                <span className={item.status === 'pending' ? 'rounded-full bg-amber-500/10 px-2 py-1 text-amber-300' : 'rounded-full bg-emerald-500/10 px-2 py-1 text-emerald-300'}>
+                                  {item.status === 'pending' ? 'Pendiente' : item.status || 'Registrada'}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </section>
+
                 {/* B. ANALYTICS GRAPHS */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   
