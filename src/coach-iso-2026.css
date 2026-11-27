@@ -1,0 +1,138 @@
+/* Coach ISO 2026 redesign — stage 1: visual foundation and first-screen hierarchy.
+   Scoped to the public experience; authenticated/admin surfaces remain untouched. */
+.public-site {
+  --coach-ink: #10233f;
+  --coach-blue: #2457a6;
+  --coach-blue-strong: #17458f;
+  --coach-sky: #eaf3ff;
+  --coach-muted: #5b6b80;
+  --coach-line: #dce5ef;
+  --coach-surface: #ffffff;
+  background: #f6f8fb !important;
+  color: var(--coach-ink) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+.public-site > div.fixed.inset-0 { display: none !important; }
+.public-site > .relative.z-10 { background: #f6f8fb; }
+.public-site nav {
+  top: 14px !important;
+  width: min(94%, 1240px) !important;
+  max-width: 1240px !important;
+}
+.public-site nav > div {
+  min-height: 66px;
+  padding: 10px 18px !important;
+  border: 1px solid rgba(210, 222, 237, .9) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.94) !important;
+  box-shadow: 0 10px 32px rgba(16,35,63,.08) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  color: var(--coach-ink) !important;
+}
+.public-site nav :is(button,a) {
+  color: #42536a !important;
+  font-size: 11px !important;
+  letter-spacing: .07em !important;
+  transition: color .2s ease, background .2s ease, transform .2s ease !important;
+}
+.public-site nav :is(button,a):hover { color: var(--coach-blue) !important; }
+.public-site nav img { border: 2px solid #d7e7fb !important; }
+.public-site nav button[class*="bg-red-600"],
+.public-site nav a[class*="bg-red-600"] {
+  background: var(--coach-blue) !important;
+  border: 1px solid var(--coach-blue) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 5px 14px rgba(36,87,166,.16) !important;
+}
+.public-site nav button[class*="bg-red-600"]:hover,
+.public-site nav a[class*="bg-red-600"]:hover { background: var(--coach-blue-strong) !important; }
+.public-site #inicio {
+  min-height: min(900px, 100svh) !important;
+  padding: 150px 24px 100px !important;
+  background:
+    radial-gradient(ellipse at 85% 20%, rgba(206,226,251,.62), transparent 34%),
+    radial-gradient(ellipse at 8% 70%, rgba(231,240,252,.9), transparent 34%),
+    linear-gradient(180deg, #fff 0%, #f5f8fc 100%) !important;
+  color: var(--coach-ink) !important;
+}
+.public-site #inicio > div[class*="blur-"] { display: none !important; }
+.public-site #inicio .container { max-width: 1120px !important; }
+.public-site #inicio h1 {
+  max-width: 1000px;
+  margin: 0 auto 26px !important;
+  color: var(--coach-ink) !important;
+  font-size: clamp(2.65rem, 6vw, 5.6rem) !important;
+  font-weight: 750 !important;
+  letter-spacing: -.065em !important;
+  line-height: 1.02 !important;
+  text-wrap: balance;
+}
+.public-site #inicio h1 span {
+  color: var(--coach-blue) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.public-site #inicio p {
+  max-width: 720px;
+  margin-inline: auto;
+  color: var(--coach-muted) !important;
+  font-size: clamp(1rem, 1.5vw, 1.18rem) !important;
+  line-height: 1.75 !important;
+}
+.public-site #inicio [class*="border-[#00F0FF]"],
+.public-site #inicio [class*="border-[#FF007A]"] {
+  border-color: #d6e4f4 !important;
+  background: rgba(255,255,255,.78) !important;
+  color: var(--coach-blue) !important;
+  box-shadow: none !important;
+}
+.public-site #inicio button[class*="bg-red-600"],
+.public-site #inicio a[class*="bg-red-600"],
+.public-site #inicio button[class*="bg-blue-"] {
+  min-height: 48px;
+  padding-inline: 22px !important;
+  border-radius: 12px !important;
+  background: var(--coach-blue) !important;
+  color: white !important;
+  box-shadow: 0 8px 20px rgba(36,87,166,.17) !important;
+  font-weight: 650 !important;
+}
+.public-site #inicio button[class*="bg-red-600"]:hover,
+.public-site #inicio a[class*="bg-red-600"]:hover { background: var(--coach-blue-strong) !important; }
+.public-site section[id]:not(#inicio) {
+  scroll-margin-top: 100px;
+  background-color: #f6f8fb;
+  color: var(--coach-ink);
+}
+.public-site section[id]:not(#inicio) h2,
+.public-site section[id]:not(#inicio) h3 { color: var(--coach-ink) !important; letter-spacing: -.035em; }
+.public-site section[id]:not(#inicio) p { color: var(--coach-muted); }
+.public-site section[id]:not(#inicio) article,
+.public-site section[id]:not(#inicio) [class*="rounded-2xl"][class*="border"] {
+  border-color: var(--coach-line) !important;
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 8px 28px rgba(16,35,63,.045) !important;
+}
+.public-site :is(button,a):focus-visible {
+  outline: 3px solid #8bb9f0 !important;
+  outline-offset: 3px !important;
+}
+.public-site .whatsapp-widget-trigger {
+  box-shadow: 0 8px 24px rgba(20,40,60,.18) !important;
+}
+@media (max-width: 767px) {
+  .public-site nav { top: 8px !important; width: calc(100% - 20px) !important; }
+  .public-site nav > div { min-height: 58px; padding: 8px 12px !important; border-radius: 15px !important; }
+  .public-site #inicio { min-height: 88svh !important; padding: 118px 20px 76px !important; }
+  .public-site #inicio h1 { font-size: clamp(2.35rem, 11vw, 3.8rem) !important; }
+  .public-site section[id]:not(#inicio) { padding-left: 20px !important; padding-right: 20px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .public-site *, .public-site *::before, .public-site *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
