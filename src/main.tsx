@@ -7,6 +7,7 @@ import { ThemeProvider } from './theme/ThemeContext';
 import './i18n';
 import './index.css';
 import './corporate-theme.css';
+import './coach-iso-2026.css';
 
 // Keep the public CV lean: the legacy portal, admin screens and scheduling tools
 // are loaded only when a visitor navigates to those routes.
