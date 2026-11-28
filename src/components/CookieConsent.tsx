@@ -14,7 +14,7 @@ export default function CookieConsent() {
   const [consent, setConsent] = useState<Consent | null>(() => readConsent());
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [analytics, setAnalytics] = useState(false);
-  const [marketing, setMarketing] = useState(false);
+  const [marketing, setMarketing (não ativo atualmente)] = useState(false);
 
   useEffect(() => {
     const open = () => setSettingsOpen(true);
@@ -36,13 +36,13 @@ export default function CookieConsent() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">Privacidade e transparência</p>
           <h2 id="cookie-title" className="mt-1 text-lg font-semibold">{settingsOpen ? 'Preferências de cookies' : 'Escolha como usamos cookies'}</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">Usamos recursos estritamente necessários para o funcionamento do site. Cookies ou tecnologias opcionais de análise e marketing só devem ser ativados com sua escolha. Você pode alterar sua decisão a qualquer momento.</p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Os recursos essenciais mantêm o site e o portal funcionando. No momento, o site não ativa ferramentas opcionais de análise ou publicidade. Se essas categorias forem introduzidas, dependerão de sua escolha prévia. Você pode rever sua preferência a qualquer momento.</p>
           <Link className="mt-2 inline-block text-sm font-medium text-blue-700 underline" to="/cookies">Ler a Política de Cookies</Link>
         </div>
         {settingsOpen && (
           <div className="grid gap-3 rounded-xl bg-slate-50 p-3 text-sm">
             <label className="flex items-start justify-between gap-4"><span><strong>Necessários</strong><span className="block text-xs text-slate-500">Segurança, navegação e preferências essenciais.</span></span><input type="checkbox" checked disabled aria-label="Cookies necessários sempre ativos" /></label>
-            <label className="flex items-start justify-between gap-4"><span><strong>Análise</strong><span className="block text-xs text-slate-500">Medição de utilização para melhorar o site.</span></span><input type="checkbox" checked={analytics} onChange={e => setAnalytics(e.target.checked)} /></label>
+            <label className="flex items-start justify-between gap-4"><span><strong>Análise (não ativa atualmente)</strong><span className="block text-xs text-slate-500">Medição de utilização para melhorar o site.</span></span><input type="checkbox" checked={analytics} onChange={e => setAnalytics(e.target.checked)} /></label>
             <label className="flex items-start justify-between gap-4"><span><strong>Marketing</strong><span className="block text-xs text-slate-500">Personalização e medição de campanhas, se ativadas.</span></span><input type="checkbox" checked={marketing} onChange={e => setMarketing(e.target.checked)} /></label>
           </div>
         )}
