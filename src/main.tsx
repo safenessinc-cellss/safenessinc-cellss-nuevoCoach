@@ -19,6 +19,8 @@ const CoachIsoHomePage = lazy(() => import('./pages/CoachIsoHomePage'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const ClauseViewer = lazy(() => import('./components/ClauseViewer'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
+const CookieConsent = lazy(() => import('./components/CookieConsent'));
 
 function RouteFallback() {
   return (
@@ -36,6 +38,9 @@ createRoot(document.getElementById('root')!).render(
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<CoachIsoHomePage />} />
+              <Route path="/privacidade" element={<LegalPage />} />
+              <Route path="/cookies" element={<LegalPage />} />
+              <Route path="/termos" element={<LegalPage />} />
               <Route path="/portal" element={<App />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/agendar" element={<SchedulingPage />} />
@@ -52,6 +57,7 @@ createRoot(document.getElementById('root')!).render(
                 </ProtectedRoute>
               } />
             </Routes>
+            <CookieConsent />
           </Suspense>
         </BrowserRouter>
       </AuthProvider>
