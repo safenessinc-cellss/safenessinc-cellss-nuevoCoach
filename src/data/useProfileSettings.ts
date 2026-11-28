@@ -28,7 +28,7 @@ const sanitizeProfile = (profile: ProfileSettings): ProfileSettings => ({
 });
 
 const DEFAULT_PROFILE: ProfileSettings = {
-  name: "Robert Terán",
+  name: "DEUWY ROBERT TERÁN MEDINA",
   title: "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
   coachTitle: "Optimización de Procesos",
   photoUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=256&h=256",
