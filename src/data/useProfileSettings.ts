@@ -35,7 +35,7 @@ const DEFAULT_PROFILE: ProfileSettings = {
   bio: "Ingeniero y Economista con más de 30 años de experiencia como Especialista en Sistemas de Gestión Integral, Auditoría y Optimización de Procesos. Su enfoque integra los sistemas de gestión integral corporativa con el análisis estratégico financiero y del capital humano, orientando sus metodologías a resultados de alto impacto y de excelencia operativa.",
   quote: "Optimización y estructuración de procesos. Sincronización del equipo humano con el rendimiento económico.",
   experienceYears: 30,
-  logoUrl: "https://images.unsplash.com/photo-1614607242094-b1b22e11a141?auto=format&fit=crop&q=80&w=256&h=256"
+  logoUrl: ""
 };
 
 export function useProfileSettings() {
