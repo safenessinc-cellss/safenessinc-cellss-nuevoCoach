@@ -146,8 +146,14 @@ export default function CoachIsoHomePage() {
     <main className="coach-home">
       <header className="coach-home__header">
         <Link to="/" className="coach-home__brand" aria-label="Coach ISO home">
-          <span className="coach-home__brand-mark">CI</span>
-          <span><strong>COACH ISO</strong><small>QUALITY · STRATEGY · PEOPLE</small></span>
+          {profile.logoUrl ? (
+            <img src={profile.logoUrl} alt="Logo Coach ISO" className="max-h-12 max-w-[190px] object-contain" />
+          ) : (
+            <>
+              <span className="coach-home__brand-mark">CI</span>
+              <span><strong>COACH ISO</strong><small>QUALITY · STRATEGY · PEOPLE</small></span>
+            </>
+          )}
         </Link>
         <nav className={menuOpen ? 'coach-home__nav is-open' : 'coach-home__nav'} aria-label="Main navigation">
           {t.nav.map((label, index) => <a key={label} href={['#sobre','#especialidades','#abordagem','#credenciais'][index]} onClick={closeMenu}>{label}</a>)}
@@ -219,7 +225,7 @@ export default function CoachIsoHomePage() {
         <div className="coach-home__section-label">{t.contact}</div><h2>{t.contactTitle}</h2><p>{t.contactBody}</p><Link to="/agendar" className="coach-home__button coach-home__button--light">{t.contactButton}<ArrowRight size={17}/></Link>
       </section>
 
-      <footer className="coach-home__footer"><Link to="/" className="coach-home__brand"><span className="coach-home__brand-mark">CI</span><span><strong>COACH ISO</strong><small>QUALITY · STRATEGY · PEOPLE</small></span></Link><p>{t.footer}</p><span>© {new Date().getFullYear()} Coach ISO</span><Link to="/portal">Portal completo <ChevronDown size={14}/></Link></footer>
+      <footer className="coach-home__footer"><Link to="/" className="coach-home__brand">{profile.logoUrl ? <img src={profile.logoUrl} alt="Logo Coach ISO" className="max-h-10 max-w-[170px] object-contain" /> : <><span className="coach-home__brand-mark">CI</span><span><strong>COACH ISO</strong><small>QUALITY · STRATEGY · PEOPLE</small></span></>}</Link><p>{t.footer}</p><span>© {new Date().getFullYear()} Coach ISO</span><div className="flex flex-wrap items-center gap-3 text-xs"><Link to="/privacidade">Privacidade</Link><Link to="/cookies">Cookies</Link><Link to="/termos">Termos de uso</Link><button type="button" onClick={() => window.dispatchEvent(new Event('coachiso:cookie-settings'))}>Preferências de cookies</button></div><Link to="/portal">Portal completo <ChevronDown size={14}/></Link></footer>
     </main>
   );
 }

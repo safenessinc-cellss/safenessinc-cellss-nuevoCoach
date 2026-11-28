@@ -105,7 +105,7 @@ service cloud.firestore {
     match /2fa_sessions/{id} { allow read, write: if false; }
     match /image_registry/{id} { allow read: if true; allow write: if isEditor(); }
     match /settings/{id} {
-      allow read: if true;
+      allow read: if id == 'profile' || isViewer();
       allow write: if (id == 'profile' && isSuperAdmin()) || (id != 'profile' && isEditor());
     }
 

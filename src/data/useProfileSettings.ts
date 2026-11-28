@@ -21,6 +21,7 @@ const removeUnwantedProfileLabel = (value: unknown): string =>
 
 const sanitizeProfile = (profile: ProfileSettings): ProfileSettings => ({
   ...profile,
+  name: "DEUWY ROBERT TERÁN MEDINA",
   title: removeUnwantedProfileLabel(profile.title),
   coachTitle: removeUnwantedProfileLabel(profile.coachTitle),
   bio: removeUnwantedProfileLabel(profile.bio),
@@ -28,14 +29,14 @@ const sanitizeProfile = (profile: ProfileSettings): ProfileSettings => ({
 });
 
 const DEFAULT_PROFILE: ProfileSettings = {
-  name: "Robert Terán",
+  name: "DEUWY ROBERT TERÁN MEDINA",
   title: "Ingeniero, Economista y Especialista en Sistemas de Gestión Integral",
   coachTitle: "Optimización de Procesos",
   photoUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=256&h=256",
   bio: "Ingeniero y Economista con más de 30 años de experiencia como Especialista en Sistemas de Gestión Integral, Auditoría y Optimización de Procesos. Su enfoque integra los sistemas de gestión integral corporativa con el análisis estratégico financiero y del capital humano, orientando sus metodologías a resultados de alto impacto y de excelencia operativa.",
   quote: "Optimización y estructuración de procesos. Sincronización del equipo humano con el rendimiento económico.",
   experienceYears: 30,
-  logoUrl: "https://images.unsplash.com/photo-1614607242094-b1b22e11a141?auto=format&fit=crop&q=80&w=256&h=256"
+  logoUrl: ""
 };
 
 export function useProfileSettings() {

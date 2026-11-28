@@ -19,6 +19,42 @@ export default function ProfileEditor() {
     setFormData(previous => ({ ...previous, [field]: value }));
   };
 
+  const handleLogoFile = (file?: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setNotice({ type: 'error', text: 'Selecciona un archivo de imagen válido para el logo.' });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setNotice({ type: 'error', text: 'El logo debe pesar menos de 5 MB.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onerror = () => setNotice({ type: 'error', text: 'No se pudo leer el logo seleccionado.' });
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => setNotice({ type: 'error', text: 'El archivo del logo no se pudo procesar.' });
+      image.onload = () => {
+        const maxDimension = 512;
+        const scale = Math.min(1, maxDimension / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.width * scale));
+        canvas.height = Math.max(1, Math.round(image.height * scale));
+        const context = canvas.getContext('2d');
+        if (!context) {
+          setNotice({ type: 'error', text: 'No se pudo preparar el logo.' });
+          return;
+        }
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const optimizedLogo = canvas.toDataURL('image/webp', 0.84);
+        setFormData(previous => ({ ...previous, logoUrl: optimizedLogo }));
+        setNotice({ type: 'success', text: 'Logo preparado. Pulsa Guardar para actualizar la web.' });
+      };
+      image.src = String(reader.result || '');
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handlePhotoFile = (file?: File) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -143,7 +179,23 @@ export default function ProfileEditor() {
             </div>
           </div>
         </div>
-        {textField('logoUrl', t('adminModules.profile.logo'))}
+        <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="flex h-24 w-40 shrink-0 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 p-3">
+              {formData.logoUrl ? (
+                <img src={formData.logoUrl} alt="Vista previa del logo principal de Coach ISO" className="max-h-full max-w-full object-contain" />
+              ) : (
+                <span className="text-xs font-semibold text-slate-400">Sin logo personalizado</span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1 space-y-2">
+              <label className="block text-xs font-semibold text-slate-700" htmlFor="profile-logo-upload">Logo principal de la web</label>
+              <input id="profile-logo-upload" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" onChange={event => handleLogoFile(event.target.files?.[0])} className="block w-full text-sm text-slate-700 file:mr-3 file:rounded-xl file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700 hover:file:bg-blue-100" />
+              <p className="text-xs leading-5 text-slate-500">Sube el logo que desarrollaste. Se optimiza para la web y aparece en la cabecera y el pie de página.</p>
+              {textField('logoUrl', t('adminModules.profile.logo'))}
+            </div>
+          </div>
+        </div>
         <div className="md:col-span-2">{textField('bio', t('adminModules.profile.bio'))}</div>
         <div className="md:col-span-2">{textField('quote', t('adminModules.profile.quote'))}</div>
       </section>
