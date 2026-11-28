@@ -31,7 +31,7 @@ export default function CookieConsent() {
 
   if (consent && !settingsOpen) return null;
   return (
-    <aside role="dialog" aria-modal="true" aria-labelledby="cookie-title" className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 text-slate-800 shadow-2xl sm:inset-x-6 sm:bottom-6">
+    <aside role="region" aria-label="Preferências de cookies" className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 text-slate-800 shadow-2xl sm:inset-x-6 sm:bottom-6">
       <div className="flex flex-col gap-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">Privacidade e transparência</p>
