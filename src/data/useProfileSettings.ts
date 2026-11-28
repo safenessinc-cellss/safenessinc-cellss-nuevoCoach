@@ -21,6 +21,7 @@ const removeUnwantedProfileLabel = (value: unknown): string =>
 
 const sanitizeProfile = (profile: ProfileSettings): ProfileSettings => ({
   ...profile,
+  name: "DEUWY ROBERT TERÁN MEDINA",
   title: removeUnwantedProfileLabel(profile.title),
   coachTitle: removeUnwantedProfileLabel(profile.coachTitle),
   bio: removeUnwantedProfileLabel(profile.bio),
