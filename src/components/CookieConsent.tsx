@@ -14,7 +14,7 @@ export default function CookieConsent() {
   const [consent, setConsent] = useState<Consent | null>(() => readConsent());
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [analytics, setAnalytics] = useState(false);
-  const [marketing, setMarketing (não ativo atualmente)] = useState(false);
+  const [marketing, setMarketing] = useState(false);
 
   useEffect(() => {
     const open = () => setSettingsOpen(true);
